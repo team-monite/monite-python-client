@@ -15,7 +15,7 @@ class TaxComponentResponse(UniversalBaseModel):
     name: typing.Optional[str] = None
     rate: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Component tax rate in percent [minor units](https://docs.monite.com/references/currencies#minor-units). Example: 12.5% is 1250.
+    Component tax rate in percent [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250.
     """
 
     if IS_PYDANTIC_V2:

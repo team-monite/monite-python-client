@@ -10,7 +10,7 @@ import typing
 class Discount(UniversalBaseModel):
     amount: int = pydantic.Field()
     """
-    The actual discount of the product in [minor units](https://docs.monite.com/references/currencies#minor-units) if type field equals amount, else in percent minor units
+    The actual discount of the product in [minor units](https://docs.monite.com/docs/currencies#minor-units) if type field equals amount, else in percent minor units
     """
 
     type: DiscountType = pydantic.Field()

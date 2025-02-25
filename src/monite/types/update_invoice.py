@@ -11,6 +11,10 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class UpdateInvoice(UniversalBaseModel):
+    """
+    Raise if None was explicitly passed to given fields
+    """
+
     contact_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Unique ID of the counterpart contact.
@@ -65,9 +69,10 @@ class UpdateInvoice(UniversalBaseModel):
 
     fulfillment_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The date when the goods are shipped or the service is provided. Can be a current, past, or future date.
+    The date when the goods are shipped or the service is provided.
     
-    If omitted or `null`, defaults to the invoice issue date and the value is automatically set when the invoice is moved to the `issued` status.
+    If omitted, defaults to the invoice issue date,
+    and the value is automatically set when the invoice status changes to `issued`.
     """
 
     line_items: typing.Optional[typing.List[LineItemUpdate]] = None

@@ -45,7 +45,7 @@ class EntityBankAccountResponse(UniversalBaseModel):
 
     currency: typing.Optional[CurrencyEnum] = pydantic.Field(default=None)
     """
-    The currency of the bank account, represented as a three-letter ISO [currency code](https://docs.monite.com/references/currencies).
+    The currency of the bank account, represented as a three-letter ISO [currency code](https://docs.monite.com/docs/currencies).
     """
 
     display_name: typing.Optional[str] = pydantic.Field(default=None)
@@ -65,7 +65,7 @@ class EntityBankAccountResponse(UniversalBaseModel):
 
     routing_number: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The bank's routing transit number (RTN) or branch code. Required if the account currency is USD. US routing numbers consist of 9 digits.
+    The bank's routing transit number (RTN). Required if the account currency is USD. US routing numbers consist of 9 digits.
     """
 
     sort_code: typing.Optional[str] = pydantic.Field(default=None)

@@ -6,12 +6,16 @@ import datetime as dt
 from .entity_address_response_schema import EntityAddressResponseSchema
 import typing
 from .individual_response_schema import IndividualResponseSchema
-from .file_schema3 import FileSchema3
-from .entity_status_enum import EntityStatusEnum
+from .file_schema4 import FileSchema4
+from .status_enum import StatusEnum
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class EntityIndividualResponse(UniversalBaseModel):
+    """
+    A base for an entity response schema
+    """
+
     id: str = pydantic.Field()
     """
     UUID entity ID
@@ -42,7 +46,7 @@ class EntityIndividualResponse(UniversalBaseModel):
     A set of metadata describing an individual
     """
 
-    logo: typing.Optional[FileSchema3] = pydantic.Field(default=None)
+    logo: typing.Optional[FileSchema4] = pydantic.Field(default=None)
     """
     A logo image of the entity
     """
@@ -52,7 +56,7 @@ class EntityIndividualResponse(UniversalBaseModel):
     A phone number of the entity
     """
 
-    status: EntityStatusEnum = pydantic.Field()
+    status: StatusEnum = pydantic.Field()
     """
     record status, 'active' by default
     """

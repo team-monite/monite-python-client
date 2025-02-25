@@ -14,6 +14,7 @@ from .quote_response_payload_entity import QuoteResponsePayloadEntity
 from .receivable_entity_address_schema import ReceivableEntityAddressSchema
 from .receivables_representation_of_entity_bank_account import ReceivablesRepresentationOfEntityBankAccount
 from .receivable_entity_vat_id_response import ReceivableEntityVatIdResponse
+from .receivable_file_schema import ReceivableFileSchema
 from .language_code_enum import LanguageCodeEnum
 from .response_item import ResponseItem
 from .quote_state_enum import QuoteStateEnum
@@ -61,6 +62,7 @@ class ReceivableResponse_Quote(UniversalBaseModel):
     entity_user_id: typing.Optional[str] = None
     entity_vat_id: typing.Optional[ReceivableEntityVatIdResponse] = None
     expiry_date: typing.Optional[str] = None
+    file: typing.Optional[ReceivableFileSchema] = None
     file_language: LanguageCodeEnum
     file_url: typing.Optional[str] = None
     issue_date: typing.Optional[dt.datetime] = None
@@ -128,6 +130,7 @@ class ReceivableResponse_Invoice(UniversalBaseModel):
     entity_bank_account: typing.Optional[ReceivablesRepresentationOfEntityBankAccount] = None
     entity_user_id: typing.Optional[str] = None
     entity_vat_id: typing.Optional[ReceivableEntityVatIdResponse] = None
+    file: typing.Optional[ReceivableFileSchema] = None
     file_language: LanguageCodeEnum
     file_url: typing.Optional[str] = None
     fulfillment_date: typing.Optional[str] = None
@@ -199,6 +202,7 @@ class ReceivableResponse_CreditNote(UniversalBaseModel):
     entity_bank_account: typing.Optional[ReceivablesRepresentationOfEntityBankAccount] = None
     entity_user_id: typing.Optional[str] = None
     entity_vat_id: typing.Optional[ReceivableEntityVatIdResponse] = None
+    file: typing.Optional[ReceivableFileSchema] = None
     file_language: LanguageCodeEnum
     file_url: typing.Optional[str] = None
     issue_date: typing.Optional[dt.datetime] = None

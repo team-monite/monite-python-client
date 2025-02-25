@@ -2,4 +2,4 @@
 
 import typing
 
-BankAccountVerificationType = typing.Union[typing.Literal["airwallex_plaid", "micro_deposit"], typing.Any]
+BankAccountVerificationType = typing.Literal["airwallex_plaid"]

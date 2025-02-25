@@ -36,17 +36,17 @@ class LineItemResponse(UniversalBaseModel):
 
     subtotal: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The subtotal (excluding VAT), in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units).
     """
 
     tax: typing.Optional[int] = pydantic.Field(default=None)
     """
-    VAT rate in percent [minor units](https://docs.monite.com/references/currencies#minor-units). Example: 12.5% is 1250.
+    VAT rate in percent [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250.
     """
 
     tax_amount: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Tax amount in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+    Tax amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
     """
 
     total: typing.Optional[int] = pydantic.Field(default=None)
@@ -61,7 +61,7 @@ class LineItemResponse(UniversalBaseModel):
 
     unit_price: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The unit price of the product, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+    The unit price of the product, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
     """
 
     was_created_by_user_id: typing.Optional[str] = pydantic.Field(default=None)

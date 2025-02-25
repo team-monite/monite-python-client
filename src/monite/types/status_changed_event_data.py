@@ -2,28 +2,14 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 from .receivables_status_enum import ReceivablesStatusEnum
-import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
+import pydantic
 
 
 class StatusChangedEventData(UniversalBaseModel):
-    """
-    Contains information about a document's status change. See the applicable
-    [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index),
-    [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index),
-    and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
-    """
-
-    new_status: ReceivablesStatusEnum = pydantic.Field()
-    """
-    The new status of a document.
-    """
-
-    old_status: ReceivablesStatusEnum = pydantic.Field()
-    """
-    The old status of a document.
-    """
+    new_status: ReceivablesStatusEnum
+    old_status: ReceivablesStatusEnum
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

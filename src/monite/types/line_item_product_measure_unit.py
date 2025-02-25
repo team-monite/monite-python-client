@@ -2,12 +2,15 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
+import datetime as dt
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
 
 class LineItemProductMeasureUnit(UniversalBaseModel):
     id: typing.Optional[str] = None
+    created_at: dt.datetime
+    updated_at: dt.datetime
     description: typing.Optional[str] = None
     name: str
 

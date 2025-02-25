@@ -4,14 +4,7 @@ import typing
 
 ReceivableHistoryEventTypeEnum = typing.Union[
     typing.Literal[
-        "status_changed",
-        "receivable_created",
-        "receivable_updated",
-        "based_on_receivable_created",
-        "payment_received",
-        "mail_sent",
-        "payment_reminder_mail_sent",
-        "overdue_reminder_mail_sent",
+        "status_changed", "receivable_updated", "based_on_receivable_created", "payment_received", "mail_sent"
     ],
     typing.Any,
 ]

@@ -14,6 +14,7 @@ from .credit_note_response_payload_entity import CreditNoteResponsePayloadEntity
 from .receivable_entity_address_schema import ReceivableEntityAddressSchema
 from .receivables_representation_of_entity_bank_account import ReceivablesRepresentationOfEntityBankAccount
 from .receivable_entity_vat_id_response import ReceivableEntityVatIdResponse
+from .receivable_file_schema import ReceivableFileSchema
 from .language_code_enum import LanguageCodeEnum
 from .response_item import ResponseItem
 from .credit_note_state_enum import CreditNoteStateEnum
@@ -117,7 +118,7 @@ class CreditNoteResponsePayload(UniversalBaseModel):
 
     discounted_subtotal: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Total price of the receivable with discounts before taxes [minor units](https://docs.monite.com/references/currencies#minor-units).
+    Total price of the receivable with discounts before taxes [minor units](https://docs.monite.com/docs/currencies#minor-units).
     """
 
     document_id: typing.Optional[str] = pydantic.Field(default=None)
@@ -139,6 +140,7 @@ class CreditNoteResponsePayload(UniversalBaseModel):
     """
 
     entity_vat_id: typing.Optional[ReceivableEntityVatIdResponse] = None
+    file: typing.Optional[ReceivableFileSchema] = None
     file_language: LanguageCodeEnum = pydantic.Field()
     """
     The language of the customer-facing PDF file (`file_url`). The value matches the counterpart's `language` at the time when this PDF file was generated.
@@ -192,7 +194,7 @@ class CreditNoteResponsePayload(UniversalBaseModel):
 
     subtotal: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The subtotal (excluding VAT), in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units).
     """
 
     tags: typing.Optional[typing.List[TagReadSchema]] = pydantic.Field(default=None)
@@ -202,12 +204,12 @@ class CreditNoteResponsePayload(UniversalBaseModel):
 
     total_amount: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Total price of the receivable in [minor units](https://docs.monite.com/references/currencies#minor-units). Calculated as a subtotal + total_vat_amount.
+    Total price of the receivable in [minor units](https://docs.monite.com/docs/currencies#minor-units). Calculated as a subtotal + total_vat_amount.
     """
 
     total_vat_amount: int = pydantic.Field()
     """
-    The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    The total VAT of all line items, in [minor units](https://docs.monite.com/docs/currencies#minor-units).
     """
 
     total_vat_amounts: typing.Optional[typing.List[TotalVatAmountItem]] = pydantic.Field(default=None)

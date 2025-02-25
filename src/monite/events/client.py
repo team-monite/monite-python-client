@@ -13,6 +13,7 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
+from ..types.error_schema_response import ErrorSchemaResponse
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..types.event_resource import EventResource
@@ -39,27 +40,21 @@ class EventsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EventPaginationResource:
         """
-        Returns all webhook events that were triggered for the specified entity based on your enabled webhook subscriptions. These are the same events that were sent to your configured webhook listener endpoints, aggregated into a single list. Results can be filtered by the related object type or time period.
-
-        You can use this to get the missed events for the time periods when your webhook listener was temporarily unavailable.
-
-        We guarantee access to event data only from the last three months. Earlier events may be unavailable.
+        Get events for a given entity.
 
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[EventCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         object_type : typing.Optional[WebhookObjectType]
 
@@ -128,9 +123,9 @@ class EventsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -142,12 +137,11 @@ class EventsClient:
 
     def get_by_id(self, event_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> EventResource:
         """
-        Get a webhook event by its ID. The data is the same as you might have previously received in a webhook sent by Monite to your server.
+        Get event by ID.
 
         Parameters
         ----------
         event_id : str
-            ID of the webhook event. This is the `id` value you might have received in a webhook or retrieved from `GET /events`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -197,9 +191,9 @@ class EventsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -229,27 +223,21 @@ class AsyncEventsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EventPaginationResource:
         """
-        Returns all webhook events that were triggered for the specified entity based on your enabled webhook subscriptions. These are the same events that were sent to your configured webhook listener endpoints, aggregated into a single list. Results can be filtered by the related object type or time period.
-
-        You can use this to get the missed events for the time periods when your webhook listener was temporarily unavailable.
-
-        We guarantee access to event data only from the last three months. Earlier events may be unavailable.
+        Get events for a given entity.
 
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[EventCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         object_type : typing.Optional[WebhookObjectType]
 
@@ -326,9 +314,9 @@ class AsyncEventsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -342,12 +330,11 @@ class AsyncEventsClient:
         self, event_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> EventResource:
         """
-        Get a webhook event by its ID. The data is the same as you might have previously received in a webhook sent by Monite to your server.
+        Get event by ID.
 
         Parameters
         ----------
         event_id : str
-            ID of the webhook event. This is the `id` value you might have received in a webhook or retrieved from `GET /events`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -405,9 +392,9 @@ class AsyncEventsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

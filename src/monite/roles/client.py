@@ -10,6 +10,7 @@ from ..types.role_pagination_response import RolePaginationResponse
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.bad_request_error import BadRequestError
+from ..types.error_schema_response import ErrorSchemaResponse
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_acceptable_error import NotAcceptableError
@@ -18,7 +19,7 @@ from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
-from ..types.biz_objects_schema_input import BizObjectsSchemaInput
+from ..types.biz_objects_schema import BizObjectsSchema
 from ..types.role_response import RoleResponse
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..core.jsonable_encoder import jsonable_encoder
@@ -54,18 +55,16 @@ class RolesClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[RoleCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -130,9 +129,9 @@ class RolesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -140,9 +139,9 @@ class RolesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -150,9 +149,9 @@ class RolesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -160,9 +159,9 @@ class RolesClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -180,9 +179,9 @@ class RolesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -193,7 +192,7 @@ class RolesClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, *, name: str, permissions: BizObjectsSchemaInput, request_options: typing.Optional[RequestOptions] = None
+        self, *, name: str, permissions: BizObjectsSchema, request_options: typing.Optional[RequestOptions] = None
     ) -> RoleResponse:
         """
         Create a new role from the specified values.
@@ -203,7 +202,7 @@ class RolesClient:
         name : str
             Role name
 
-        permissions : BizObjectsSchemaInput
+        permissions : BizObjectsSchema
             Access permissions
 
         request_options : typing.Optional[RequestOptions]
@@ -216,7 +215,7 @@ class RolesClient:
 
         Examples
         --------
-        from monite import BizObjectsSchemaInput, Monite
+        from monite import BizObjectsSchema, Monite
 
         client = Monite(
             monite_version="YOUR_MONITE_VERSION",
@@ -225,7 +224,7 @@ class RolesClient:
         )
         client.roles.create(
             name="name",
-            permissions=BizObjectsSchemaInput(),
+            permissions=BizObjectsSchema(),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -234,11 +233,8 @@ class RolesClient:
             json={
                 "name": name,
                 "permissions": convert_and_respect_annotation_metadata(
-                    object_=permissions, annotation=BizObjectsSchemaInput, direction="write"
+                    object_=permissions, annotation=BizObjectsSchema, direction="write"
                 ),
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -255,9 +251,9 @@ class RolesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -275,9 +271,9 @@ class RolesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -331,9 +327,9 @@ class RolesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -351,9 +347,9 @@ class RolesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -368,7 +364,7 @@ class RolesClient:
         role_id: str,
         *,
         name: typing.Optional[str] = OMIT,
-        permissions: typing.Optional[BizObjectsSchemaInput] = OMIT,
+        permissions: typing.Optional[BizObjectsSchema] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RoleResponse:
         """
@@ -381,7 +377,7 @@ class RolesClient:
         name : typing.Optional[str]
             Role name
 
-        permissions : typing.Optional[BizObjectsSchemaInput]
+        permissions : typing.Optional[BizObjectsSchema]
             Access permissions
 
         request_options : typing.Optional[RequestOptions]
@@ -411,11 +407,8 @@ class RolesClient:
             json={
                 "name": name,
                 "permissions": convert_and_respect_annotation_metadata(
-                    object_=permissions, annotation=BizObjectsSchemaInput, direction="write"
+                    object_=permissions, annotation=BizObjectsSchema, direction="write"
                 ),
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -432,9 +425,9 @@ class RolesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -452,9 +445,9 @@ class RolesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -491,18 +484,16 @@ class AsyncRolesClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[RoleCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -575,9 +566,9 @@ class AsyncRolesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -585,9 +576,9 @@ class AsyncRolesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -595,9 +586,9 @@ class AsyncRolesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -605,9 +596,9 @@ class AsyncRolesClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -625,9 +616,9 @@ class AsyncRolesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -638,7 +629,7 @@ class AsyncRolesClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, *, name: str, permissions: BizObjectsSchemaInput, request_options: typing.Optional[RequestOptions] = None
+        self, *, name: str, permissions: BizObjectsSchema, request_options: typing.Optional[RequestOptions] = None
     ) -> RoleResponse:
         """
         Create a new role from the specified values.
@@ -648,7 +639,7 @@ class AsyncRolesClient:
         name : str
             Role name
 
-        permissions : BizObjectsSchemaInput
+        permissions : BizObjectsSchema
             Access permissions
 
         request_options : typing.Optional[RequestOptions]
@@ -663,7 +654,7 @@ class AsyncRolesClient:
         --------
         import asyncio
 
-        from monite import AsyncMonite, BizObjectsSchemaInput
+        from monite import AsyncMonite, BizObjectsSchema
 
         client = AsyncMonite(
             monite_version="YOUR_MONITE_VERSION",
@@ -675,7 +666,7 @@ class AsyncRolesClient:
         async def main() -> None:
             await client.roles.create(
                 name="name",
-                permissions=BizObjectsSchemaInput(),
+                permissions=BizObjectsSchema(),
             )
 
 
@@ -687,11 +678,8 @@ class AsyncRolesClient:
             json={
                 "name": name,
                 "permissions": convert_and_respect_annotation_metadata(
-                    object_=permissions, annotation=BizObjectsSchemaInput, direction="write"
+                    object_=permissions, annotation=BizObjectsSchema, direction="write"
                 ),
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -708,9 +696,9 @@ class AsyncRolesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -728,9 +716,9 @@ class AsyncRolesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -792,9 +780,9 @@ class AsyncRolesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -812,9 +800,9 @@ class AsyncRolesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -829,7 +817,7 @@ class AsyncRolesClient:
         role_id: str,
         *,
         name: typing.Optional[str] = OMIT,
-        permissions: typing.Optional[BizObjectsSchemaInput] = OMIT,
+        permissions: typing.Optional[BizObjectsSchema] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RoleResponse:
         """
@@ -842,7 +830,7 @@ class AsyncRolesClient:
         name : typing.Optional[str]
             Role name
 
-        permissions : typing.Optional[BizObjectsSchemaInput]
+        permissions : typing.Optional[BizObjectsSchema]
             Access permissions
 
         request_options : typing.Optional[RequestOptions]
@@ -880,11 +868,8 @@ class AsyncRolesClient:
             json={
                 "name": name,
                 "permissions": convert_and_respect_annotation_metadata(
-                    object_=permissions, annotation=BizObjectsSchemaInput, direction="write"
+                    object_=permissions, annotation=BizObjectsSchema, direction="write"
                 ),
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -901,9 +886,9 @@ class AsyncRolesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -921,9 +906,9 @@ class AsyncRolesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

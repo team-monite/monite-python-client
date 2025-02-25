@@ -5,12 +5,40 @@ from ..core.pydantic_utilities import UniversalBaseModel
 import typing
 import datetime as dt
 from .entity_address_response_schema import EntityAddressResponseSchema
-from .individual_response_schema import IndividualResponseSchema
-from .file_schema3 import FileSchema3
-from .entity_status_enum import EntityStatusEnum
+from .file_schema4 import FileSchema4
+from .organization_response_schema import OrganizationResponseSchema
+from .status_enum import StatusEnum
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
-from .organization_response_schema import OrganizationResponseSchema
+from .individual_response_schema import IndividualResponseSchema
+
+
+class EntityResponse_Organization(UniversalBaseModel):
+    """
+    A schema for a response after creation of an entity of different types
+    """
+
+    type: typing.Literal["organization"] = "organization"
+    id: str
+    created_at: dt.datetime
+    updated_at: dt.datetime
+    address: EntityAddressResponseSchema
+    email: typing.Optional[str] = None
+    logo: typing.Optional[FileSchema4] = None
+    organization: OrganizationResponseSchema
+    phone: typing.Optional[str] = None
+    status: StatusEnum
+    tax_id: typing.Optional[str] = None
+    website: typing.Optional[str] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
 
 
 class EntityResponse_Individual(UniversalBaseModel):
@@ -25,9 +53,9 @@ class EntityResponse_Individual(UniversalBaseModel):
     address: EntityAddressResponseSchema
     email: typing.Optional[str] = None
     individual: IndividualResponseSchema
-    logo: typing.Optional[FileSchema3] = None
+    logo: typing.Optional[FileSchema4] = None
     phone: typing.Optional[str] = None
-    status: EntityStatusEnum
+    status: StatusEnum
     tax_id: typing.Optional[str] = None
     website: typing.Optional[str] = None
 
@@ -41,32 +69,4 @@ class EntityResponse_Individual(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
-class EntityResponse_Organization(UniversalBaseModel):
-    """
-    A schema for a response after creation of an entity of different types
-    """
-
-    type: typing.Literal["organization"] = "organization"
-    id: str
-    created_at: dt.datetime
-    updated_at: dt.datetime
-    address: EntityAddressResponseSchema
-    email: typing.Optional[str] = None
-    logo: typing.Optional[FileSchema3] = None
-    organization: OrganizationResponseSchema
-    phone: typing.Optional[str] = None
-    status: EntityStatusEnum
-    tax_id: typing.Optional[str] = None
-    website: typing.Optional[str] = None
-
-    if IS_PYDANTIC_V2:
-        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
-    else:
-
-        class Config:
-            frozen = True
-            smart_union = True
-            extra = pydantic.Extra.allow
-
-
-EntityResponse = typing.Union[EntityResponse_Individual, EntityResponse_Organization]
+EntityResponse = typing.Union[EntityResponse_Organization, EntityResponse_Individual]

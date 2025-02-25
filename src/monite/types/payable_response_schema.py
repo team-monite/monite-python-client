@@ -5,10 +5,9 @@ import pydantic
 import datetime as dt
 import typing
 from .counterpart_raw_data import CounterpartRawData
-from .payable_credit_note_data import PayableCreditNoteData
 from .currency_enum import CurrencyEnum
-from .currency_exchange_schema2 import CurrencyExchangeSchema2
-from .file_schema2 import FileSchema2
+from .currency_exchange_schema import CurrencyExchangeSchema
+from .file_schema3 import FileSchema3
 from .ocr_status_enum import OcrStatusEnum
 from .payable_response_schema_other_extracted_data import PayableResponseSchemaOtherExtractedData
 from .payable_origin_enum import PayableOriginEnum
@@ -95,25 +94,15 @@ class PayableResponseSchema(UniversalBaseModel):
     The ID of the role that the entity user who created this payable had at that time. If the payable was created using a partner access token, the value is `null`.
     """
 
-    credit_notes: typing.List[PayableCreditNoteData] = pydantic.Field()
-    """
-    The list of linked credit notes of the payable.
-    """
-
     currency: typing.Optional[CurrencyEnum] = pydantic.Field(default=None)
     """
-    The [currency code](https://docs.monite.com/references/currencies) of the currency used in the payable.
+    The [currency code](https://docs.monite.com/docs/currencies) of the currency used in the payable.
     """
 
-    currency_exchange: typing.Optional[CurrencyExchangeSchema2] = None
+    currency_exchange: typing.Optional[CurrencyExchangeSchema] = None
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
     An arbitrary description of this payable.
-    """
-
-    discount: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
     """
 
     document_id: typing.Optional[str] = pydantic.Field(default=None)
@@ -131,7 +120,7 @@ class PayableResponseSchema(UniversalBaseModel):
     The ID of the entity to which the payable was issued.
     """
 
-    file: typing.Optional[FileSchema2] = pydantic.Field(default=None)
+    file: typing.Optional[FileSchema3] = pydantic.Field(default=None)
     """
     The original file from which this payable was created.
     """
@@ -213,12 +202,12 @@ class PayableResponseSchema(UniversalBaseModel):
 
     status: PayableStateEnum = pydantic.Field()
     """
-    The [status](https://docs.monite.com/accounts-payable/payables/index) of the payable.
+    The [status](https://docs.monite.com/docs/payables-lifecycle) of the payable.
     """
 
     subtotal: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The subtotal amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+    The subtotal amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
     """
 
     suggested_payment_term: typing.Optional[SuggestedPaymentTerm] = pydantic.Field(default=None)
@@ -238,17 +227,12 @@ class PayableResponseSchema(UniversalBaseModel):
 
     tax_amount: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Tax amount in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+    Tax amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
     """
 
     total_amount: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The total amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
-    """
-
-    total_amount_with_credit_notes: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    The total price of the payable in [minor units](https://docs.monite.com/references/currencies#minor-units), excluding all issued credit notes.
+    The total amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
     """
 
     was_created_by_user_id: typing.Optional[str] = None

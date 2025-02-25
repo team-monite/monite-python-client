@@ -2,25 +2,25 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .business_profile_output import BusinessProfileOutput
+from .business_profile import BusinessProfile
 import pydantic
-from .ownership_declaration_output import OwnershipDeclarationOutput
-from .terms_of_service_acceptance_output import TermsOfServiceAcceptanceOutput
+from .ownership_declaration import OwnershipDeclaration
+from .terms_of_service_acceptance import TermsOfServiceAcceptance
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class EntityOnboardingDataResponse(UniversalBaseModel):
-    business_profile: typing.Optional[BusinessProfileOutput] = pydantic.Field(default=None)
+    business_profile: typing.Optional[BusinessProfile] = pydantic.Field(default=None)
     """
     Business information about the entity.
     """
 
-    ownership_declaration: typing.Optional[OwnershipDeclarationOutput] = pydantic.Field(default=None)
+    ownership_declaration: typing.Optional[OwnershipDeclaration] = pydantic.Field(default=None)
     """
     Used to attest that the beneficial owner information provided is both current and correct.
     """
 
-    tos_acceptance: typing.Optional[TermsOfServiceAcceptanceOutput] = pydantic.Field(default=None)
+    tos_acceptance: typing.Optional[TermsOfServiceAcceptance] = pydantic.Field(default=None)
     """
     Details on the entity's acceptance of the service agreement.
     """

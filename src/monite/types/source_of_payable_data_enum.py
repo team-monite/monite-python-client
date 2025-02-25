@@ -2,4 +2,4 @@
 
 import typing
 
-SourceOfPayableDataEnum = typing.Union[typing.Literal["ocr", "user_specified", "einvoicing"], typing.Any]
+SourceOfPayableDataEnum = typing.Union[typing.Literal["ocr", "user_specified"], typing.Any]

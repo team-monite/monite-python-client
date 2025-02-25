@@ -15,7 +15,7 @@ class LineItemUpdate(UniversalBaseModel):
 
     price: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The actual price of the product in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    The actual price of the product in [minor units](https://docs.monite.com/docs/currencies#minor-units).
     """
 
     quantity: typing.Optional[float] = pydantic.Field(default=None)

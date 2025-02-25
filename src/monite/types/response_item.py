@@ -20,9 +20,9 @@ class ResponseItem(UniversalBaseModel):
     The quantity of each of the goods, materials, or services listed in the receivable.
     """
 
-    total_before_vat: int = pydantic.Field()
+    total_before_vat: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Total of line_item before VAT in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    Total of line_item before VAT in [minor units](https://docs.monite.com/docs/currencies#minor-units).
     """
 
     if IS_PYDANTIC_V2:

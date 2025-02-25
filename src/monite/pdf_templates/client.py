@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
+from ..types.error_schema_response import ErrorSchemaResponse
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..types.template_receivable_response import TemplateReceivableResponse
@@ -71,9 +72,9 @@ class PdfTemplatesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -135,9 +136,9 @@ class PdfTemplatesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -203,9 +204,9 @@ class PdfTemplatesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -271,9 +272,9 @@ class PdfTemplatesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -294,7 +295,7 @@ class PdfTemplatesClient:
         document_template_id : str
 
         request_options : typing.Optional[RequestOptions]
-            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+            Request-specific configuration.
 
         Yields
         ------
@@ -308,8 +309,7 @@ class PdfTemplatesClient:
         ) as _response:
             try:
                 if 200 <= _response.status_code < 300:
-                    _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                    for _chunk in _response.iter_bytes(chunk_size=_chunk_size):
+                    for _chunk in _response.iter_bytes():
                         yield _chunk
                     return
                 _response.read()
@@ -326,9 +326,9 @@ class PdfTemplatesClient:
                 if _response.status_code == 500:
                     raise InternalServerError(
                         typing.cast(
-                            typing.Optional[typing.Any],
+                            ErrorSchemaResponse,
                             parse_obj_as(
-                                type_=typing.Optional[typing.Any],  # type: ignore
+                                type_=ErrorSchemaResponse,  # type: ignore
                                 object_=_response.json(),
                             ),
                         )
@@ -403,9 +403,9 @@ class AsyncPdfTemplatesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -475,9 +475,9 @@ class AsyncPdfTemplatesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -551,9 +551,9 @@ class AsyncPdfTemplatesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -627,9 +627,9 @@ class AsyncPdfTemplatesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -650,7 +650,7 @@ class AsyncPdfTemplatesClient:
         document_template_id : str
 
         request_options : typing.Optional[RequestOptions]
-            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+            Request-specific configuration.
 
         Yields
         ------
@@ -664,8 +664,7 @@ class AsyncPdfTemplatesClient:
         ) as _response:
             try:
                 if 200 <= _response.status_code < 300:
-                    _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                    async for _chunk in _response.aiter_bytes(chunk_size=_chunk_size):
+                    async for _chunk in _response.aiter_bytes():
                         yield _chunk
                     return
                 await _response.aread()
@@ -682,9 +681,9 @@ class AsyncPdfTemplatesClient:
                 if _response.status_code == 500:
                     raise InternalServerError(
                         typing.cast(
-                            typing.Optional[typing.Any],
+                            ErrorSchemaResponse,
                             parse_obj_as(
-                                type_=typing.Optional[typing.Any],  # type: ignore
+                                type_=ErrorSchemaResponse,  # type: ignore
                                 object_=_response.json(),
                             ),
                         )

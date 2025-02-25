@@ -1,6 +1,3 @@
-[project]
-name = "monite"
-
 [tool.poetry]
 name = "monite"
 version = "0.2.0"

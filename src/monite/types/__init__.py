@@ -2,6 +2,7 @@
 
 from .access_token_response import AccessTokenResponse
 from .account_disabled_reason import AccountDisabledReason
+from .account_response import AccountResponse
 from .accounting_connection_list import AccountingConnectionList
 from .accounting_connection_response import AccountingConnectionResponse
 from .accounting_customer_ref_object import AccountingCustomerRefObject
@@ -15,13 +16,13 @@ from .accounting_receivable import AccountingReceivable
 from .accounting_receivable_due_date import AccountingReceivableDueDate
 from .accounting_receivable_list import AccountingReceivableList
 from .accounting_ref_object import AccountingRefObject
-from .accounting_settings import AccountingSettings
+from .accounting_settings_payload import AccountingSettingsPayload
+from .accounting_settings_response import AccountingSettingsResponse
 from .accounting_tax_rate_list_response import AccountingTaxRateListResponse
 from .accounting_tax_rate_response import AccountingTaxRateResponse
 from .accounting_vendor_ref_object import AccountingVendorRefObject
 from .action_enum import ActionEnum
 from .action_schema import ActionSchema
-from .aggregation_function_enum import AggregationFunctionEnum
 from .airwallex_mandate import AirwallexMandate
 from .airwallex_mandate_type import AirwallexMandateType
 from .airwallex_mandate_version import AirwallexMandateVersion
@@ -32,9 +33,7 @@ from .airwallex_plaid_verification import AirwallexPlaidVerification
 from .all_document_export_response_schema import AllDocumentExportResponseSchema
 from .all_overdue_reminders_response import AllOverdueRemindersResponse
 from .allowed_countries import AllowedCountries
-from .allowed_einvoicing_country_codes import AllowedEinvoicingCountryCodes
 from .allowed_file_types import AllowedFileTypes
-from .analytics_data_point import AnalyticsDataPoint
 from .api_version import ApiVersion
 from .approval_policy_cursor_fields import ApprovalPolicyCursorFields
 from .approval_policy_resource import ApprovalPolicyResource
@@ -59,19 +58,20 @@ from .bank_account_verification_type import BankAccountVerificationType
 from .bank_account_verifications import BankAccountVerifications
 from .based_on_receivable_created_event_data import BasedOnReceivableCreatedEventData
 from .based_on_transition_type import BasedOnTransitionType
-from .biz_objects_schema_input import BizObjectsSchemaInput
-from .biz_objects_schema_output import BizObjectsSchemaOutput
-from .business_profile_input import BusinessProfileInput
-from .business_profile_output import BusinessProfileOutput
-from .button_theme import ButtonTheme
-from .card_theme import CardTheme
+from .biz_objects_schema import BizObjectsSchema
+from .business_profile import BusinessProfile
+from .button_theme_payload import ButtonThemePayload
+from .button_theme_response import ButtonThemeResponse
+from .card_theme_payload import CardThemePayload
+from .card_theme_response import CardThemeResponse
 from .comment_cursor_fields import CommentCursorFields
 from .comment_resource import CommentResource
 from .comment_resource_list import CommentResourceList
-from .common_schema_input import CommonSchemaInput
-from .common_schema_output import CommonSchemaOutput
+from .common_schema import CommonSchema
+from .complete_refresh_verification_request import CompleteRefreshVerificationRequest
 from .complete_refresh_verification_response import CompleteRefreshVerificationResponse
 from .complete_verification_airwallex_plaid_request import CompleteVerificationAirwallexPlaidRequest
+from .complete_verification_request import CompleteVerificationRequest
 from .complete_verification_response import CompleteVerificationResponse
 from .connection_status import ConnectionStatus
 from .counterpart_address import CounterpartAddress
@@ -117,15 +117,6 @@ from .counterpart_vat_id_resource_list import CounterpartVatIdResourceList
 from .counterpart_vat_id_response import CounterpartVatIdResponse
 from .create_export_task_response_schema import CreateExportTaskResponseSchema
 from .create_onboarding_link_request import CreateOnboardingLinkRequest
-from .credit_note_cursor_fields import CreditNoteCursorFields
-from .credit_note_dimension_enum import CreditNoteDimensionEnum
-from .credit_note_line_item_create_request import CreditNoteLineItemCreateRequest
-from .credit_note_line_item_cursor_fields import CreditNoteLineItemCursorFields
-from .credit_note_line_item_pagination_response import CreditNoteLineItemPaginationResponse
-from .credit_note_line_item_response import CreditNoteLineItemResponse
-from .credit_note_metric_enum import CreditNoteMetricEnum
-from .credit_note_pagination_response import CreditNotePaginationResponse
-from .credit_note_response import CreditNoteResponse
 from .credit_note_response_payload import CreditNoteResponsePayload
 from .credit_note_response_payload_entity import (
     CreditNoteResponsePayloadEntity,
@@ -135,16 +126,12 @@ from .credit_note_response_payload_entity import (
 from .credit_note_state_enum import CreditNoteStateEnum
 from .currency_enum import CurrencyEnum
 from .currency_exchange_schema import CurrencyExchangeSchema
-from .currency_exchange_schema2 import CurrencyExchangeSchema2
-from .currency_settings_input import CurrencySettingsInput
-from .currency_settings_output import CurrencySettingsOutput
+from .currency_settings import CurrencySettings
 from .custom_template_data_schema import CustomTemplateDataSchema
 from .custom_templates_cursor_fields import CustomTemplatesCursorFields
 from .custom_templates_pagination_response import CustomTemplatesPaginationResponse
 from .data_export_cursor_fields import DataExportCursorFields
-from .date_dimension_breakdown_enum import DateDimensionBreakdownEnum
 from .day_of_month import DayOfMonth
-from .default_ledger_account_i_ds import DefaultLedgerAccountIDs
 from .discount import Discount
 from .discount_type import DiscountType
 from .dns_record import DnsRecord
@@ -162,11 +149,9 @@ from .document_type_prefix import DocumentTypePrefix
 from .domain_list_response import DomainListResponse
 from .domain_response import DomainResponse
 from .domain_response_dns_records import DomainResponseDnsRecords
-from .e_invoicing_retrieve_list_data import EInvoicingRetrieveListData
-from .einvoice_schema_type_enum import EinvoiceSchemaTypeEnum
-from .einvoicing_address import EinvoicingAddress
-from .einvoicing_connection_response import EinvoicingConnectionResponse
-from .einvoicing_network_credentials_response import EinvoicingNetworkCredentialsResponse
+from .e_invoicing_provider_enum import EInvoicingProviderEnum
+from .e_invoicing_settings_payload import EInvoicingSettingsPayload
+from .e_invoicing_settings_response import EInvoicingSettingsResponse
 from .entity_address_response_schema import EntityAddressResponseSchema
 from .entity_address_schema import EntityAddressSchema
 from .entity_bank_account_pagination_response import EntityBankAccountPaginationResponse
@@ -179,7 +164,6 @@ from .entity_onboarding_documents import EntityOnboardingDocuments
 from .entity_organization_response import EntityOrganizationResponse
 from .entity_pagination_response import EntityPaginationResponse
 from .entity_response import EntityResponse, EntityResponse_Individual, EntityResponse_Organization
-from .entity_status_enum import EntityStatusEnum
 from .entity_type_enum import EntityTypeEnum
 from .entity_user_cursor_fields import EntityUserCursorFields
 from .entity_user_pagination_response import EntityUserPaginationResponse
@@ -187,9 +171,7 @@ from .entity_user_response import EntityUserResponse
 from .entity_vat_id_resource_list import EntityVatIdResourceList
 from .entity_vat_id_response import EntityVatIdResponse
 from .error_schema import ErrorSchema
-from .error_schema2 import ErrorSchema2
 from .error_schema_response import ErrorSchemaResponse
-from .error_schema_response2 import ErrorSchemaResponse2
 from .estimated_monthly_revenue import EstimatedMonthlyRevenue
 from .event_cursor_fields import EventCursorFields
 from .event_pagination_resource import EventPaginationResource
@@ -209,15 +191,6 @@ from .file_schema2 import FileSchema2
 from .file_schema3 import FileSchema3
 from .file_schema4 import FileSchema4
 from .files_response import FilesResponse
-from .financing_invoice import FinancingInvoice
-from .financing_invoice_cursor_fields import FinancingInvoiceCursorFields
-from .financing_invoice_list_response import FinancingInvoiceListResponse
-from .financing_invoice_type import FinancingInvoiceType
-from .financing_offer import FinancingOffer
-from .financing_offers_response import FinancingOffersResponse
-from .financing_push_invoices_request_invoice import FinancingPushInvoicesRequestInvoice
-from .financing_push_invoices_response import FinancingPushInvoicesResponse
-from .financing_token_response import FinancingTokenResponse
 from .get_all_payment_reminders import GetAllPaymentReminders
 from .get_all_recurrences import GetAllRecurrences
 from .get_onboarding_requirements_response import GetOnboardingRequirementsResponse
@@ -253,11 +226,18 @@ from .line_item_response import LineItemResponse
 from .line_item_update import LineItemUpdate
 from .line_items_replace_response import LineItemsReplaceResponse
 from .line_items_response import LineItemsResponse
+from .log_method_enum import LogMethodEnum
+from .log_response import LogResponse
+from .log_response_body import LogResponseBody
+from .log_type_enum import LogTypeEnum
+from .logs_response import LogsResponse
 from .mail_sent_event_data import MailSentEventData
-from .mail_settings import MailSettings
+from .mail_settings_payload import MailSettingsPayload
+from .mail_settings_response import MailSettingsResponse
 from .mailbox_data_response import MailboxDataResponse
 from .mailbox_object_type_enum import MailboxObjectTypeEnum
 from .mailbox_response import MailboxResponse
+from .merged_settings_response import MergedSettingsResponse
 from .message_response import MessageResponse
 from .missing_fields import MissingFields
 from .missing_line_item_fields import MissingLineItemFields
@@ -275,6 +255,7 @@ from .ocr_response_invoice_receipt_line_item import OcrResponseInvoiceReceiptLin
 from .ocr_response_invoice_receipt_line_item_raw import OcrResponseInvoiceReceiptLineItemRaw
 from .ocr_status_enum import OcrStatusEnum
 from .onboarding_link_public_response import OnboardingLinkPublicResponse
+from .onboarding_link_request import OnboardingLinkRequest
 from .onboarding_link_response import OnboardingLinkResponse
 from .onboarding_payment_methods_response import OnboardingPaymentMethodsResponse
 from .onboarding_requirements_error import OnboardingRequirementsError
@@ -286,31 +267,29 @@ from .optional_organization_schema import OptionalOrganizationSchema
 from .optional_person_address_request import OptionalPersonAddressRequest
 from .optional_person_relationship import OptionalPersonRelationship
 from .order_enum import OrderEnum
+from .order_enum2 import OrderEnum2
+from .order_enum3 import OrderEnum3
 from .organization_response_schema import OrganizationResponseSchema
 from .organization_schema import OrganizationSchema
 from .overdue_reminder_response import OverdueReminderResponse
 from .overdue_reminder_term import OverdueReminderTerm
-from .ownership_declaration_input import OwnershipDeclarationInput
-from .ownership_declaration_output import OwnershipDeclarationOutput
+from .ownership_declaration import OwnershipDeclaration
 from .page_schema import PageSchema
 from .page_schema2 import PageSchema2
 from .page_schema3 import PageSchema3
+from .page_schema4 import PageSchema4
 from .partner_metadata import PartnerMetadata
 from .partner_metadata_response import PartnerMetadataResponse
-from .partner_project_settings_payload_output import PartnerProjectSettingsPayloadOutput
+from .partner_project_settings_response import PartnerProjectSettingsResponse
 from .payable_action_enum import PayableActionEnum
 from .payable_action_schema import PayableActionSchema
 from .payable_aggregated_data_response import PayableAggregatedDataResponse
 from .payable_aggregated_item import PayableAggregatedItem
-from .payable_analytics_response import PayableAnalyticsResponse
-from .payable_credit_note_data import PayableCreditNoteData
 from .payable_cursor_fields import PayableCursorFields
-from .payable_dimension_enum import PayableDimensionEnum
 from .payable_entity_address_schema import PayableEntityAddressSchema
 from .payable_entity_individual_response import PayableEntityIndividualResponse
 from .payable_entity_organization_response import PayableEntityOrganizationResponse
 from .payable_individual_schema import PayableIndividualSchema
-from .payable_metric_enum import PayableMetricEnum
 from .payable_organization_schema import PayableOrganizationSchema
 from .payable_origin_enum import PayableOriginEnum
 from .payable_pagination_response import PayablePaginationResponse
@@ -319,9 +298,9 @@ from .payable_payment_term_final import PayablePaymentTermFinal
 from .payable_payment_terms_create_payload import PayablePaymentTermsCreatePayload
 from .payable_response_schema import PayableResponseSchema
 from .payable_response_schema_other_extracted_data import PayableResponseSchemaOtherExtractedData
-from .payable_schema_input import PayableSchemaInput
-from .payable_schema_output import PayableSchemaOutput
-from .payable_settings import PayableSettings
+from .payable_schema import PayableSchema
+from .payable_settings_payload import PayableSettingsPayload
+from .payable_settings_response import PayableSettingsResponse
 from .payable_state_enum import PayableStateEnum
 from .payable_templates_variable import PayableTemplatesVariable
 from .payable_templates_variables_object import PayableTemplatesVariablesObject
@@ -330,7 +309,6 @@ from .payable_validation_response import PayableValidationResponse
 from .payable_validations_resource import PayableValidationsResource
 from .payables_fields_allowed_for_validate import PayablesFieldsAllowedForValidate
 from .payables_variable_type import PayablesVariableType
-from .payer_account_response import PayerAccountResponse
 from .payment_account_object import PaymentAccountObject
 from .payment_account_type import PaymentAccountType
 from .payment_intent import PaymentIntent
@@ -348,7 +326,8 @@ from .payment_method_status import PaymentMethodStatus
 from .payment_object import PaymentObject
 from .payment_object_payable import PaymentObjectPayable
 from .payment_object_type import PaymentObjectType
-from .payment_page_theme import PaymentPageTheme
+from .payment_page_theme_payload import PaymentPageThemePayload
+from .payment_page_theme_response import PaymentPageThemeResponse
 from .payment_priority_enum import PaymentPriorityEnum
 from .payment_received_event_data import PaymentReceivedEventData
 from .payment_record_cursor_fields import PaymentRecordCursorFields
@@ -364,10 +343,11 @@ from .payment_term_discount_with_date import PaymentTermDiscountWithDate
 from .payment_terms import PaymentTerms
 from .payment_terms_list_response import PaymentTermsListResponse
 from .payment_terms_response import PaymentTermsResponse
+from .payments_batch_payment_request import PaymentsBatchPaymentRequest
 from .payments_batch_payment_response import PaymentsBatchPaymentResponse
 from .payments_batch_payment_status import PaymentsBatchPaymentStatus
-from .payments_settings_input import PaymentsSettingsInput
-from .payments_settings_output import PaymentsSettingsOutput
+from .payments_settings_payload import PaymentsSettingsPayload
+from .payments_settings_response import PaymentsSettingsResponse
 from .permission_enum import PermissionEnum
 from .person_address_request import PersonAddressRequest
 from .person_address_response import PersonAddressResponse
@@ -380,9 +360,9 @@ from .platform import Platform
 from .preview_schema import PreviewSchema
 from .preview_schema2 import PreviewSchema2
 from .preview_schema3 import PreviewSchema3
+from .preview_schema4 import PreviewSchema4
 from .preview_template_response import PreviewTemplateResponse
 from .price import Price
-from .pricing_plan import PricingPlan
 from .process_resource import ProcessResource
 from .process_resource_script_snapshot import ProcessResourceScriptSnapshot
 from .process_status_enum import ProcessStatusEnum
@@ -420,7 +400,6 @@ from .receivable_counterpart_contact import ReceivableCounterpartContact
 from .receivable_counterpart_type import ReceivableCounterpartType
 from .receivable_counterpart_vat_id_response import ReceivableCounterpartVatIdResponse
 from .receivable_create_based_on_payload import ReceivableCreateBasedOnPayload
-from .receivable_created_event_data import ReceivableCreatedEventData
 from .receivable_cursor_fields import ReceivableCursorFields
 from .receivable_edit_flow import ReceivableEditFlow
 from .receivable_entity_address_schema import ReceivableEntityAddressSchema
@@ -433,6 +412,7 @@ from .receivable_entity_vat_id_response import ReceivableEntityVatIdResponse
 from .receivable_facade_create_invoice_payload import ReceivableFacadeCreateInvoicePayload
 from .receivable_facade_create_payload import ReceivableFacadeCreatePayload
 from .receivable_facade_create_quote_payload import ReceivableFacadeCreateQuotePayload
+from .receivable_file_schema import ReceivableFileSchema
 from .receivable_file_url import ReceivableFileUrl
 from .receivable_history_cursor_fields import ReceivableHistoryCursorFields
 from .receivable_history_event_type_enum import ReceivableHistoryEventTypeEnum
@@ -445,8 +425,10 @@ from .receivable_mail_recipient_state import ReceivableMailRecipientState
 from .receivable_mail_recipients import ReceivableMailRecipients
 from .receivable_mail_response import ReceivableMailResponse
 from .receivable_mail_status_enum import ReceivableMailStatusEnum
+from .receivable_page_schema import ReceivablePageSchema
 from .receivable_pagination_response import ReceivablePaginationResponse
 from .receivable_preview_response import ReceivablePreviewResponse
+from .receivable_preview_schema import ReceivablePreviewSchema
 from .receivable_response import (
     ReceivableResponse,
     ReceivableResponse_CreditNote,
@@ -454,7 +436,8 @@ from .receivable_response import (
     ReceivableResponse_Quote,
 )
 from .receivable_send_response import ReceivableSendResponse
-from .receivable_settings import ReceivableSettings
+from .receivable_settings_payload import ReceivableSettingsPayload
+from .receivable_settings_response import ReceivableSettingsResponse
 from .receivable_templates_variable import ReceivableTemplatesVariable
 from .receivable_templates_variables_object import ReceivableTemplatesVariablesObject
 from .receivable_templates_variables_object_list import ReceivableTemplatesVariablesObjectList
@@ -477,79 +460,44 @@ from .recurrence_iteration import RecurrenceIteration
 from .recurrence_status import RecurrenceStatus
 from .related_documents import RelatedDocuments
 from .reminder import Reminder
-from .reminder_mail_sent_event_data import ReminderMailSentEventData
 from .reminder_type_enum import ReminderTypeEnum
 from .reminders_settings import RemindersSettings
-from .repayment_schedule import RepaymentSchedule
 from .requirements_error import RequirementsError
 from .response_item import ResponseItem
 from .role_cursor_fields import RoleCursorFields
 from .role_pagination_response import RolePaginationResponse
 from .role_response import RoleResponse
-from .root_schema_input import (
-    RootSchemaInput,
-    RootSchemaInput_ApprovalPolicy,
-    RootSchemaInput_ApprovalRequest,
-    RootSchemaInput_Comment,
-    RootSchemaInput_Counterpart,
-    RootSchemaInput_CounterpartVatId,
-    RootSchemaInput_Entity,
-    RootSchemaInput_EntityBankAccount,
-    RootSchemaInput_EntityUser,
-    RootSchemaInput_EntityVatIds,
-    RootSchemaInput_Export,
-    RootSchemaInput_Mailbox,
-    RootSchemaInput_Onboarding,
-    RootSchemaInput_OverdueReminder,
-    RootSchemaInput_Payable,
-    RootSchemaInput_PayablesPurchaseOrder,
-    RootSchemaInput_PaymentRecord,
-    RootSchemaInput_PaymentReminder,
-    RootSchemaInput_Person,
-    RootSchemaInput_Product,
-    RootSchemaInput_Project,
-    RootSchemaInput_Receivable,
-    RootSchemaInput_Reconciliation,
-    RootSchemaInput_Role,
-    RootSchemaInput_Tag,
-    RootSchemaInput_TodoTask,
-    RootSchemaInput_TodoTaskMute,
-    RootSchemaInput_Transaction,
-    RootSchemaInput_Workflow,
-)
-from .root_schema_output import (
-    RootSchemaOutput,
-    RootSchemaOutput_ApprovalPolicy,
-    RootSchemaOutput_ApprovalRequest,
-    RootSchemaOutput_Comment,
-    RootSchemaOutput_Counterpart,
-    RootSchemaOutput_CounterpartVatId,
-    RootSchemaOutput_Entity,
-    RootSchemaOutput_EntityBankAccount,
-    RootSchemaOutput_EntityUser,
-    RootSchemaOutput_EntityVatIds,
-    RootSchemaOutput_Export,
-    RootSchemaOutput_Mailbox,
-    RootSchemaOutput_Onboarding,
-    RootSchemaOutput_OverdueReminder,
-    RootSchemaOutput_Payable,
-    RootSchemaOutput_PayablesPurchaseOrder,
-    RootSchemaOutput_PaymentRecord,
-    RootSchemaOutput_PaymentReminder,
-    RootSchemaOutput_Person,
-    RootSchemaOutput_Product,
-    RootSchemaOutput_Project,
-    RootSchemaOutput_Receivable,
-    RootSchemaOutput_Reconciliation,
-    RootSchemaOutput_Role,
-    RootSchemaOutput_Tag,
-    RootSchemaOutput_TodoTask,
-    RootSchemaOutput_TodoTaskMute,
-    RootSchemaOutput_Transaction,
-    RootSchemaOutput_Workflow,
+from .root_schema import (
+    RootSchema,
+    RootSchema_ApprovalPolicy,
+    RootSchema_ApprovalRequest,
+    RootSchema_Comment,
+    RootSchema_Counterpart,
+    RootSchema_CounterpartVatId,
+    RootSchema_Entity,
+    RootSchema_EntityBankAccount,
+    RootSchema_EntityUser,
+    RootSchema_EntityVatIds,
+    RootSchema_Export,
+    RootSchema_Onboarding,
+    RootSchema_OverdueReminder,
+    RootSchema_Payable,
+    RootSchema_PayablesPurchaseOrder,
+    RootSchema_PaymentRecord,
+    RootSchema_PaymentReminder,
+    RootSchema_Person,
+    RootSchema_Product,
+    RootSchema_Project,
+    RootSchema_Receivable,
+    RootSchema_Reconciliation,
+    RootSchema_Role,
+    RootSchema_Tag,
+    RootSchema_TodoTask,
+    RootSchema_TodoTaskMute,
+    RootSchema_Transaction,
+    RootSchema_Workflow,
 )
 from .service_providers_enum import ServiceProvidersEnum
-from .settings_response import SettingsResponse
 from .signature import Signature
 from .single_onboarding_requirements_response import SingleOnboardingRequirementsResponse
 from .single_payment_intent import SinglePaymentIntent
@@ -579,8 +527,7 @@ from .template_list_response import TemplateListResponse
 from .template_receivable_response import TemplateReceivableResponse
 from .template_type_enum import TemplateTypeEnum
 from .term_final_with_date import TermFinalWithDate
-from .terms_of_service_acceptance_input import TermsOfServiceAcceptanceInput
-from .terms_of_service_acceptance_output import TermsOfServiceAcceptanceOutput
+from .terms_of_service_acceptance import TermsOfServiceAcceptance
 from .text_template_response import TextTemplateResponse
 from .text_template_response_list import TextTemplateResponseList
 from .text_template_type import TextTemplateType
@@ -625,10 +572,6 @@ from .verification_request import VerificationRequest
 from .verification_response import VerificationResponse
 from .verification_status_enum import VerificationStatusEnum
 from .verify_response import VerifyResponse
-from .wc_business_status import WcBusinessStatus
-from .wc_invoice_status import WcInvoiceStatus
-from .wc_offer_status import WcOfferStatus
-from .wc_repayment_type import WcRepaymentType
 from .webhook_delivery_cursor_fields import WebhookDeliveryCursorFields
 from .webhook_delivery_pagination_resource import WebhookDeliveryPaginationResource
 from .webhook_delivery_resource import WebhookDeliveryResource
@@ -642,6 +585,7 @@ from .webhook_subscription_status import WebhookSubscriptionStatus
 __all__ = [
     "AccessTokenResponse",
     "AccountDisabledReason",
+    "AccountResponse",
     "AccountingConnectionList",
     "AccountingConnectionResponse",
     "AccountingCustomerRefObject",
@@ -655,13 +599,13 @@ __all__ = [
     "AccountingReceivableDueDate",
     "AccountingReceivableList",
     "AccountingRefObject",
-    "AccountingSettings",
+    "AccountingSettingsPayload",
+    "AccountingSettingsResponse",
     "AccountingTaxRateListResponse",
     "AccountingTaxRateResponse",
     "AccountingVendorRefObject",
     "ActionEnum",
     "ActionSchema",
-    "AggregationFunctionEnum",
     "AirwallexMandate",
     "AirwallexMandateType",
     "AirwallexMandateVersion",
@@ -672,9 +616,7 @@ __all__ = [
     "AllDocumentExportResponseSchema",
     "AllOverdueRemindersResponse",
     "AllowedCountries",
-    "AllowedEinvoicingCountryCodes",
     "AllowedFileTypes",
-    "AnalyticsDataPoint",
     "ApiVersion",
     "ApprovalPolicyCursorFields",
     "ApprovalPolicyResource",
@@ -699,19 +641,20 @@ __all__ = [
     "BankAccountVerifications",
     "BasedOnReceivableCreatedEventData",
     "BasedOnTransitionType",
-    "BizObjectsSchemaInput",
-    "BizObjectsSchemaOutput",
-    "BusinessProfileInput",
-    "BusinessProfileOutput",
-    "ButtonTheme",
-    "CardTheme",
+    "BizObjectsSchema",
+    "BusinessProfile",
+    "ButtonThemePayload",
+    "ButtonThemeResponse",
+    "CardThemePayload",
+    "CardThemeResponse",
     "CommentCursorFields",
     "CommentResource",
     "CommentResourceList",
-    "CommonSchemaInput",
-    "CommonSchemaOutput",
+    "CommonSchema",
+    "CompleteRefreshVerificationRequest",
     "CompleteRefreshVerificationResponse",
     "CompleteVerificationAirwallexPlaidRequest",
+    "CompleteVerificationRequest",
     "CompleteVerificationResponse",
     "ConnectionStatus",
     "CounterpartAddress",
@@ -755,15 +698,6 @@ __all__ = [
     "CounterpartVatIdResponse",
     "CreateExportTaskResponseSchema",
     "CreateOnboardingLinkRequest",
-    "CreditNoteCursorFields",
-    "CreditNoteDimensionEnum",
-    "CreditNoteLineItemCreateRequest",
-    "CreditNoteLineItemCursorFields",
-    "CreditNoteLineItemPaginationResponse",
-    "CreditNoteLineItemResponse",
-    "CreditNoteMetricEnum",
-    "CreditNotePaginationResponse",
-    "CreditNoteResponse",
     "CreditNoteResponsePayload",
     "CreditNoteResponsePayloadEntity",
     "CreditNoteResponsePayloadEntity_Individual",
@@ -771,16 +705,12 @@ __all__ = [
     "CreditNoteStateEnum",
     "CurrencyEnum",
     "CurrencyExchangeSchema",
-    "CurrencyExchangeSchema2",
-    "CurrencySettingsInput",
-    "CurrencySettingsOutput",
+    "CurrencySettings",
     "CustomTemplateDataSchema",
     "CustomTemplatesCursorFields",
     "CustomTemplatesPaginationResponse",
     "DataExportCursorFields",
-    "DateDimensionBreakdownEnum",
     "DayOfMonth",
-    "DefaultLedgerAccountIDs",
     "Discount",
     "DiscountType",
     "DnsRecord",
@@ -798,11 +728,9 @@ __all__ = [
     "DomainListResponse",
     "DomainResponse",
     "DomainResponseDnsRecords",
-    "EInvoicingRetrieveListData",
-    "EinvoiceSchemaTypeEnum",
-    "EinvoicingAddress",
-    "EinvoicingConnectionResponse",
-    "EinvoicingNetworkCredentialsResponse",
+    "EInvoicingProviderEnum",
+    "EInvoicingSettingsPayload",
+    "EInvoicingSettingsResponse",
     "EntityAddressResponseSchema",
     "EntityAddressSchema",
     "EntityBankAccountPaginationResponse",
@@ -817,7 +745,6 @@ __all__ = [
     "EntityResponse",
     "EntityResponse_Individual",
     "EntityResponse_Organization",
-    "EntityStatusEnum",
     "EntityTypeEnum",
     "EntityUserCursorFields",
     "EntityUserPaginationResponse",
@@ -825,9 +752,7 @@ __all__ = [
     "EntityVatIdResourceList",
     "EntityVatIdResponse",
     "ErrorSchema",
-    "ErrorSchema2",
     "ErrorSchemaResponse",
-    "ErrorSchemaResponse2",
     "EstimatedMonthlyRevenue",
     "EventCursorFields",
     "EventPaginationResource",
@@ -849,15 +774,6 @@ __all__ = [
     "FileSchema3",
     "FileSchema4",
     "FilesResponse",
-    "FinancingInvoice",
-    "FinancingInvoiceCursorFields",
-    "FinancingInvoiceListResponse",
-    "FinancingInvoiceType",
-    "FinancingOffer",
-    "FinancingOffersResponse",
-    "FinancingPushInvoicesRequestInvoice",
-    "FinancingPushInvoicesResponse",
-    "FinancingTokenResponse",
     "GetAllPaymentReminders",
     "GetAllRecurrences",
     "GetOnboardingRequirementsResponse",
@@ -891,11 +807,18 @@ __all__ = [
     "LineItemUpdate",
     "LineItemsReplaceResponse",
     "LineItemsResponse",
+    "LogMethodEnum",
+    "LogResponse",
+    "LogResponseBody",
+    "LogTypeEnum",
+    "LogsResponse",
     "MailSentEventData",
-    "MailSettings",
+    "MailSettingsPayload",
+    "MailSettingsResponse",
     "MailboxDataResponse",
     "MailboxObjectTypeEnum",
     "MailboxResponse",
+    "MergedSettingsResponse",
     "MessageResponse",
     "MissingFields",
     "MissingLineItemFields",
@@ -913,6 +836,7 @@ __all__ = [
     "OcrResponseInvoiceReceiptLineItemRaw",
     "OcrStatusEnum",
     "OnboardingLinkPublicResponse",
+    "OnboardingLinkRequest",
     "OnboardingLinkResponse",
     "OnboardingPaymentMethodsResponse",
     "OnboardingRequirementsError",
@@ -924,31 +848,29 @@ __all__ = [
     "OptionalPersonAddressRequest",
     "OptionalPersonRelationship",
     "OrderEnum",
+    "OrderEnum2",
+    "OrderEnum3",
     "OrganizationResponseSchema",
     "OrganizationSchema",
     "OverdueReminderResponse",
     "OverdueReminderTerm",
-    "OwnershipDeclarationInput",
-    "OwnershipDeclarationOutput",
+    "OwnershipDeclaration",
     "PageSchema",
     "PageSchema2",
     "PageSchema3",
+    "PageSchema4",
     "PartnerMetadata",
     "PartnerMetadataResponse",
-    "PartnerProjectSettingsPayloadOutput",
+    "PartnerProjectSettingsResponse",
     "PayableActionEnum",
     "PayableActionSchema",
     "PayableAggregatedDataResponse",
     "PayableAggregatedItem",
-    "PayableAnalyticsResponse",
-    "PayableCreditNoteData",
     "PayableCursorFields",
-    "PayableDimensionEnum",
     "PayableEntityAddressSchema",
     "PayableEntityIndividualResponse",
     "PayableEntityOrganizationResponse",
     "PayableIndividualSchema",
-    "PayableMetricEnum",
     "PayableOrganizationSchema",
     "PayableOriginEnum",
     "PayablePaginationResponse",
@@ -957,9 +879,9 @@ __all__ = [
     "PayablePaymentTermsCreatePayload",
     "PayableResponseSchema",
     "PayableResponseSchemaOtherExtractedData",
-    "PayableSchemaInput",
-    "PayableSchemaOutput",
-    "PayableSettings",
+    "PayableSchema",
+    "PayableSettingsPayload",
+    "PayableSettingsResponse",
     "PayableStateEnum",
     "PayableTemplatesVariable",
     "PayableTemplatesVariablesObject",
@@ -968,7 +890,6 @@ __all__ = [
     "PayableValidationsResource",
     "PayablesFieldsAllowedForValidate",
     "PayablesVariableType",
-    "PayerAccountResponse",
     "PaymentAccountObject",
     "PaymentAccountType",
     "PaymentIntent",
@@ -986,7 +907,8 @@ __all__ = [
     "PaymentObject",
     "PaymentObjectPayable",
     "PaymentObjectType",
-    "PaymentPageTheme",
+    "PaymentPageThemePayload",
+    "PaymentPageThemeResponse",
     "PaymentPriorityEnum",
     "PaymentReceivedEventData",
     "PaymentRecordCursorFields",
@@ -1002,10 +924,11 @@ __all__ = [
     "PaymentTerms",
     "PaymentTermsListResponse",
     "PaymentTermsResponse",
+    "PaymentsBatchPaymentRequest",
     "PaymentsBatchPaymentResponse",
     "PaymentsBatchPaymentStatus",
-    "PaymentsSettingsInput",
-    "PaymentsSettingsOutput",
+    "PaymentsSettingsPayload",
+    "PaymentsSettingsResponse",
     "PermissionEnum",
     "PersonAddressRequest",
     "PersonAddressResponse",
@@ -1018,9 +941,9 @@ __all__ = [
     "PreviewSchema",
     "PreviewSchema2",
     "PreviewSchema3",
+    "PreviewSchema4",
     "PreviewTemplateResponse",
     "Price",
-    "PricingPlan",
     "ProcessResource",
     "ProcessResourceScriptSnapshot",
     "ProcessStatusEnum",
@@ -1056,7 +979,6 @@ __all__ = [
     "ReceivableCounterpartType",
     "ReceivableCounterpartVatIdResponse",
     "ReceivableCreateBasedOnPayload",
-    "ReceivableCreatedEventData",
     "ReceivableCursorFields",
     "ReceivableEditFlow",
     "ReceivableEntityAddressSchema",
@@ -1069,6 +991,7 @@ __all__ = [
     "ReceivableFacadeCreateInvoicePayload",
     "ReceivableFacadeCreatePayload",
     "ReceivableFacadeCreateQuotePayload",
+    "ReceivableFileSchema",
     "ReceivableFileUrl",
     "ReceivableHistoryCursorFields",
     "ReceivableHistoryEventTypeEnum",
@@ -1081,14 +1004,17 @@ __all__ = [
     "ReceivableMailRecipients",
     "ReceivableMailResponse",
     "ReceivableMailStatusEnum",
+    "ReceivablePageSchema",
     "ReceivablePaginationResponse",
     "ReceivablePreviewResponse",
+    "ReceivablePreviewSchema",
     "ReceivableResponse",
     "ReceivableResponse_CreditNote",
     "ReceivableResponse_Invoice",
     "ReceivableResponse_Quote",
     "ReceivableSendResponse",
-    "ReceivableSettings",
+    "ReceivableSettingsPayload",
+    "ReceivableSettingsResponse",
     "ReceivableTemplatesVariable",
     "ReceivableTemplatesVariablesObject",
     "ReceivableTemplatesVariablesObjectList",
@@ -1111,75 +1037,42 @@ __all__ = [
     "RecurrenceStatus",
     "RelatedDocuments",
     "Reminder",
-    "ReminderMailSentEventData",
     "ReminderTypeEnum",
     "RemindersSettings",
-    "RepaymentSchedule",
     "RequirementsError",
     "ResponseItem",
     "RoleCursorFields",
     "RolePaginationResponse",
     "RoleResponse",
-    "RootSchemaInput",
-    "RootSchemaInput_ApprovalPolicy",
-    "RootSchemaInput_ApprovalRequest",
-    "RootSchemaInput_Comment",
-    "RootSchemaInput_Counterpart",
-    "RootSchemaInput_CounterpartVatId",
-    "RootSchemaInput_Entity",
-    "RootSchemaInput_EntityBankAccount",
-    "RootSchemaInput_EntityUser",
-    "RootSchemaInput_EntityVatIds",
-    "RootSchemaInput_Export",
-    "RootSchemaInput_Mailbox",
-    "RootSchemaInput_Onboarding",
-    "RootSchemaInput_OverdueReminder",
-    "RootSchemaInput_Payable",
-    "RootSchemaInput_PayablesPurchaseOrder",
-    "RootSchemaInput_PaymentRecord",
-    "RootSchemaInput_PaymentReminder",
-    "RootSchemaInput_Person",
-    "RootSchemaInput_Product",
-    "RootSchemaInput_Project",
-    "RootSchemaInput_Receivable",
-    "RootSchemaInput_Reconciliation",
-    "RootSchemaInput_Role",
-    "RootSchemaInput_Tag",
-    "RootSchemaInput_TodoTask",
-    "RootSchemaInput_TodoTaskMute",
-    "RootSchemaInput_Transaction",
-    "RootSchemaInput_Workflow",
-    "RootSchemaOutput",
-    "RootSchemaOutput_ApprovalPolicy",
-    "RootSchemaOutput_ApprovalRequest",
-    "RootSchemaOutput_Comment",
-    "RootSchemaOutput_Counterpart",
-    "RootSchemaOutput_CounterpartVatId",
-    "RootSchemaOutput_Entity",
-    "RootSchemaOutput_EntityBankAccount",
-    "RootSchemaOutput_EntityUser",
-    "RootSchemaOutput_EntityVatIds",
-    "RootSchemaOutput_Export",
-    "RootSchemaOutput_Mailbox",
-    "RootSchemaOutput_Onboarding",
-    "RootSchemaOutput_OverdueReminder",
-    "RootSchemaOutput_Payable",
-    "RootSchemaOutput_PayablesPurchaseOrder",
-    "RootSchemaOutput_PaymentRecord",
-    "RootSchemaOutput_PaymentReminder",
-    "RootSchemaOutput_Person",
-    "RootSchemaOutput_Product",
-    "RootSchemaOutput_Project",
-    "RootSchemaOutput_Receivable",
-    "RootSchemaOutput_Reconciliation",
-    "RootSchemaOutput_Role",
-    "RootSchemaOutput_Tag",
-    "RootSchemaOutput_TodoTask",
-    "RootSchemaOutput_TodoTaskMute",
-    "RootSchemaOutput_Transaction",
-    "RootSchemaOutput_Workflow",
+    "RootSchema",
+    "RootSchema_ApprovalPolicy",
+    "RootSchema_ApprovalRequest",
+    "RootSchema_Comment",
+    "RootSchema_Counterpart",
+    "RootSchema_CounterpartVatId",
+    "RootSchema_Entity",
+    "RootSchema_EntityBankAccount",
+    "RootSchema_EntityUser",
+    "RootSchema_EntityVatIds",
+    "RootSchema_Export",
+    "RootSchema_Onboarding",
+    "RootSchema_OverdueReminder",
+    "RootSchema_Payable",
+    "RootSchema_PayablesPurchaseOrder",
+    "RootSchema_PaymentRecord",
+    "RootSchema_PaymentReminder",
+    "RootSchema_Person",
+    "RootSchema_Product",
+    "RootSchema_Project",
+    "RootSchema_Receivable",
+    "RootSchema_Reconciliation",
+    "RootSchema_Role",
+    "RootSchema_Tag",
+    "RootSchema_TodoTask",
+    "RootSchema_TodoTaskMute",
+    "RootSchema_Transaction",
+    "RootSchema_Workflow",
     "ServiceProvidersEnum",
-    "SettingsResponse",
     "Signature",
     "SingleOnboardingRequirementsResponse",
     "SinglePaymentIntent",
@@ -1209,8 +1102,7 @@ __all__ = [
     "TemplateReceivableResponse",
     "TemplateTypeEnum",
     "TermFinalWithDate",
-    "TermsOfServiceAcceptanceInput",
-    "TermsOfServiceAcceptanceOutput",
+    "TermsOfServiceAcceptance",
     "TextTemplateResponse",
     "TextTemplateResponseList",
     "TextTemplateType",
@@ -1253,10 +1145,6 @@ __all__ = [
     "VerificationResponse",
     "VerificationStatusEnum",
     "VerifyResponse",
-    "WcBusinessStatus",
-    "WcInvoiceStatus",
-    "WcOfferStatus",
-    "WcRepaymentType",
     "WebhookDeliveryCursorFields",
     "WebhookDeliveryPaginationResource",
     "WebhookDeliveryResource",

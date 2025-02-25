@@ -2,6 +2,4 @@
 
 import typing
 
-Platform = typing.Union[
-    typing.Literal["xero", "quickbooks", "quickbooks_online", "quickbooks_online_sandbox"], typing.Any
-]
+Platform = typing.Union[typing.Literal["xero", "quickbooks_online", "quickbooks_online_sandbox"], typing.Any]

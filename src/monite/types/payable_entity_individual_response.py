@@ -6,7 +6,7 @@ import datetime as dt
 from .payable_entity_address_schema import PayableEntityAddressSchema
 import typing
 from .payable_individual_schema import PayableIndividualSchema
-from .file_schema4 import FileSchema4
+from .file_schema2 import FileSchema2
 from .status_enum import StatusEnum
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -42,7 +42,7 @@ class PayableEntityIndividualResponse(UniversalBaseModel):
     A set of metadata describing an individual
     """
 
-    logo: typing.Optional[FileSchema4] = pydantic.Field(default=None)
+    logo: typing.Optional[FileSchema2] = pydantic.Field(default=None)
     """
     A logo image of the entity
     """

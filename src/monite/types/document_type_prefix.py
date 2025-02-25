@@ -7,10 +7,10 @@ import pydantic
 
 
 class DocumentTypePrefix(UniversalBaseModel):
-    credit_note: typing.Optional[str] = None
-    invoice: typing.Optional[str] = None
-    purchase_order: typing.Optional[str] = None
     quote: typing.Optional[str] = None
+    invoice: typing.Optional[str] = None
+    credit_note: typing.Optional[str] = None
+    purchase_order: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

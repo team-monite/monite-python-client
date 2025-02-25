@@ -4,28 +4,24 @@ import typing
 from .environment import MoniteEnvironment
 import httpx
 from .core.client_wrapper import SyncClientWrapper
-from .analytics.client import AnalyticsClient
 from .approval_policies.client import ApprovalPoliciesClient
 from .approval_requests.client import ApprovalRequestsClient
+from .audit_logs.client import AuditLogsClient
 from .access_tokens.client import AccessTokensClient
-from .batch_payments.client import BatchPaymentsClient
+from .entity_bank_account_verifications.client import EntityBankAccountVerificationsClient
 from .comments.client import CommentsClient
 from .counterparts.client import CounterpartsClient
 from .data_exports.client import DataExportsClient
 from .pdf_templates.client import PdfTemplatesClient
-from .e_invoicing_connections.client import EInvoicingConnectionsClient
 from .entities.client import EntitiesClient
 from .entity_users.client import EntityUsersClient
 from .events.client import EventsClient
 from .files.client import FilesClient
-from .financing.client import FinancingClient
 from .mail_templates.client import MailTemplatesClient
 from .mailbox_domains.client import MailboxDomainsClient
 from .mailboxes.client import MailboxesClient
 from .measure_units.client import MeasureUnitsClient
-from .onboarding_links.client import OnboardingLinksClient
 from .overdue_reminders.client import OverdueRemindersClient
-from .credit_notes.client import CreditNotesClient
 from .purchase_orders.client import PurchaseOrdersClient
 from .payables.client import PayablesClient
 from .payment_intents.client import PaymentIntentsClient
@@ -46,28 +42,24 @@ from .webhook_deliveries.client import WebhookDeliveriesClient
 from .webhook_subscriptions.client import WebhookSubscriptionsClient
 from .accounting.client import AccountingClient
 from .core.client_wrapper import AsyncClientWrapper
-from .analytics.client import AsyncAnalyticsClient
 from .approval_policies.client import AsyncApprovalPoliciesClient
 from .approval_requests.client import AsyncApprovalRequestsClient
+from .audit_logs.client import AsyncAuditLogsClient
 from .access_tokens.client import AsyncAccessTokensClient
-from .batch_payments.client import AsyncBatchPaymentsClient
+from .entity_bank_account_verifications.client import AsyncEntityBankAccountVerificationsClient
 from .comments.client import AsyncCommentsClient
 from .counterparts.client import AsyncCounterpartsClient
 from .data_exports.client import AsyncDataExportsClient
 from .pdf_templates.client import AsyncPdfTemplatesClient
-from .e_invoicing_connections.client import AsyncEInvoicingConnectionsClient
 from .entities.client import AsyncEntitiesClient
 from .entity_users.client import AsyncEntityUsersClient
 from .events.client import AsyncEventsClient
 from .files.client import AsyncFilesClient
-from .financing.client import AsyncFinancingClient
 from .mail_templates.client import AsyncMailTemplatesClient
 from .mailbox_domains.client import AsyncMailboxDomainsClient
 from .mailboxes.client import AsyncMailboxesClient
 from .measure_units.client import AsyncMeasureUnitsClient
-from .onboarding_links.client import AsyncOnboardingLinksClient
 from .overdue_reminders.client import AsyncOverdueRemindersClient
-from .credit_notes.client import AsyncCreditNotesClient
 from .purchase_orders.client import AsyncPurchaseOrdersClient
 from .payables.client import AsyncPayablesClient
 from .payment_intents.client import AsyncPaymentIntentsClient
@@ -155,28 +147,26 @@ class Monite:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
-        self.analytics = AnalyticsClient(client_wrapper=self._client_wrapper)
         self.approval_policies = ApprovalPoliciesClient(client_wrapper=self._client_wrapper)
         self.approval_requests = ApprovalRequestsClient(client_wrapper=self._client_wrapper)
+        self.audit_logs = AuditLogsClient(client_wrapper=self._client_wrapper)
         self.access_tokens = AccessTokensClient(client_wrapper=self._client_wrapper)
-        self.batch_payments = BatchPaymentsClient(client_wrapper=self._client_wrapper)
+        self.entity_bank_account_verifications = EntityBankAccountVerificationsClient(
+            client_wrapper=self._client_wrapper
+        )
         self.comments = CommentsClient(client_wrapper=self._client_wrapper)
         self.counterparts = CounterpartsClient(client_wrapper=self._client_wrapper)
         self.data_exports = DataExportsClient(client_wrapper=self._client_wrapper)
         self.pdf_templates = PdfTemplatesClient(client_wrapper=self._client_wrapper)
-        self.e_invoicing_connections = EInvoicingConnectionsClient(client_wrapper=self._client_wrapper)
         self.entities = EntitiesClient(client_wrapper=self._client_wrapper)
         self.entity_users = EntityUsersClient(client_wrapper=self._client_wrapper)
         self.events = EventsClient(client_wrapper=self._client_wrapper)
         self.files = FilesClient(client_wrapper=self._client_wrapper)
-        self.financing = FinancingClient(client_wrapper=self._client_wrapper)
         self.mail_templates = MailTemplatesClient(client_wrapper=self._client_wrapper)
         self.mailbox_domains = MailboxDomainsClient(client_wrapper=self._client_wrapper)
         self.mailboxes = MailboxesClient(client_wrapper=self._client_wrapper)
         self.measure_units = MeasureUnitsClient(client_wrapper=self._client_wrapper)
-        self.onboarding_links = OnboardingLinksClient(client_wrapper=self._client_wrapper)
         self.overdue_reminders = OverdueRemindersClient(client_wrapper=self._client_wrapper)
-        self.credit_notes = CreditNotesClient(client_wrapper=self._client_wrapper)
         self.purchase_orders = PurchaseOrdersClient(client_wrapper=self._client_wrapper)
         self.payables = PayablesClient(client_wrapper=self._client_wrapper)
         self.payment_intents = PaymentIntentsClient(client_wrapper=self._client_wrapper)
@@ -264,28 +254,26 @@ class AsyncMonite:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
-        self.analytics = AsyncAnalyticsClient(client_wrapper=self._client_wrapper)
         self.approval_policies = AsyncApprovalPoliciesClient(client_wrapper=self._client_wrapper)
         self.approval_requests = AsyncApprovalRequestsClient(client_wrapper=self._client_wrapper)
+        self.audit_logs = AsyncAuditLogsClient(client_wrapper=self._client_wrapper)
         self.access_tokens = AsyncAccessTokensClient(client_wrapper=self._client_wrapper)
-        self.batch_payments = AsyncBatchPaymentsClient(client_wrapper=self._client_wrapper)
+        self.entity_bank_account_verifications = AsyncEntityBankAccountVerificationsClient(
+            client_wrapper=self._client_wrapper
+        )
         self.comments = AsyncCommentsClient(client_wrapper=self._client_wrapper)
         self.counterparts = AsyncCounterpartsClient(client_wrapper=self._client_wrapper)
         self.data_exports = AsyncDataExportsClient(client_wrapper=self._client_wrapper)
         self.pdf_templates = AsyncPdfTemplatesClient(client_wrapper=self._client_wrapper)
-        self.e_invoicing_connections = AsyncEInvoicingConnectionsClient(client_wrapper=self._client_wrapper)
         self.entities = AsyncEntitiesClient(client_wrapper=self._client_wrapper)
         self.entity_users = AsyncEntityUsersClient(client_wrapper=self._client_wrapper)
         self.events = AsyncEventsClient(client_wrapper=self._client_wrapper)
         self.files = AsyncFilesClient(client_wrapper=self._client_wrapper)
-        self.financing = AsyncFinancingClient(client_wrapper=self._client_wrapper)
         self.mail_templates = AsyncMailTemplatesClient(client_wrapper=self._client_wrapper)
         self.mailbox_domains = AsyncMailboxDomainsClient(client_wrapper=self._client_wrapper)
         self.mailboxes = AsyncMailboxesClient(client_wrapper=self._client_wrapper)
         self.measure_units = AsyncMeasureUnitsClient(client_wrapper=self._client_wrapper)
-        self.onboarding_links = AsyncOnboardingLinksClient(client_wrapper=self._client_wrapper)
         self.overdue_reminders = AsyncOverdueRemindersClient(client_wrapper=self._client_wrapper)
-        self.credit_notes = AsyncCreditNotesClient(client_wrapper=self._client_wrapper)
         self.purchase_orders = AsyncPurchaseOrdersClient(client_wrapper=self._client_wrapper)
         self.payables = AsyncPayablesClient(client_wrapper=self._client_wrapper)
         self.payment_intents = AsyncPaymentIntentsClient(client_wrapper=self._client_wrapper)

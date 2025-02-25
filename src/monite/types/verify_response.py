@@ -12,11 +12,7 @@ class VerifyResponse(UniversalBaseModel):
     Entry UUID
     """
 
-    domain: str = pydantic.Field()
-    """
-    The domain name.
-    """
-
+    domain: str
     status: str
 
     if IS_PYDANTIC_V2:

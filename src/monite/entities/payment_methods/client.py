@@ -9,6 +9,7 @@ from ...core.pydantic_utilities import parse_obj_as
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
 from ...types.http_validation_error import HttpValidationError
 from ...errors.internal_server_error import InternalServerError
+from ...types.error_schema_response import ErrorSchemaResponse
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
 from ...types.monite_all_payment_methods_types import MoniteAllPaymentMethodsTypes
@@ -80,9 +81,9 @@ class PaymentMethodsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -146,9 +147,6 @@ class PaymentMethodsClient:
                 "payment_methods_receive": payment_methods_receive,
                 "payment_methods_send": payment_methods_send,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -174,9 +172,9 @@ class PaymentMethodsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -257,9 +255,9 @@ class AsyncPaymentMethodsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -331,9 +329,6 @@ class AsyncPaymentMethodsClient:
                 "payment_methods_receive": payment_methods_receive,
                 "payment_methods_send": payment_methods_send,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -359,9 +354,9 @@ class AsyncPaymentMethodsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

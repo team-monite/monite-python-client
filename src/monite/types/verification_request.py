@@ -10,7 +10,7 @@ import pydantic
 
 class VerificationRequest(UniversalBaseModel):
     airwallex_plaid: VerificationAirwallexPlaidRequest
-    type: BankAccountVerificationType
+    type: BankAccountVerificationType = "airwallex_plaid"
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

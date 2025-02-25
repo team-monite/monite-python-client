@@ -26,7 +26,7 @@ class OrganizationSchema(UniversalBaseModel):
 
     legal_name: str = pydantic.Field()
     """
-    The legal name of the organization. If this organization will use Monite payment rails, this name must be up to 100 characters long, otherwise it can be up to 255 characters long.
+    A legal name of an organization
     """
 
     owners_provided: typing.Optional[bool] = None

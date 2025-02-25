@@ -2,42 +2,42 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .document_type_prefix import DocumentTypePrefix
 import pydantic
-from .document_i_ds_settings_next_number import DocumentIDsSettingsNextNumber
 from .document_id_separators import DocumentIdSeparators
+from .document_type_prefix import DocumentTypePrefix
+from .document_i_ds_settings_next_number import DocumentIDsSettingsNextNumber
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class DocumentIDsSettingsRequest(UniversalBaseModel):
-    document_type_prefix: typing.Optional[DocumentTypePrefix] = pydantic.Field(default=None)
-    """
-    Prefixes for each document_type.
-    """
-
     include_date: typing.Optional[bool] = pydantic.Field(default=None)
     """
-    Optionally add 4-digit of the current year.
-    """
-
-    min_digits: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Minimal size of number in document ID Number will be left padded with zeros if less.
-    """
-
-    next_number: typing.Optional[DocumentIDsSettingsNextNumber] = pydantic.Field(default=None)
-    """
-    Write-only field. Changes which number will be issued next. Can't be less than the last issued document number.
+    Optionally add 4-digit of the current year
     """
 
     prefix: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Optional prefix. Does not substitute document_type prefix.
+    Optional prefix. Does not substitute document_type prefix
     """
 
     separator: typing.Optional[DocumentIdSeparators] = pydantic.Field(default=None)
     """
-    Which character should separate each part of the document_id.
+    Which character should separate each part of the document_id
+    """
+
+    document_type_prefix: typing.Optional[DocumentTypePrefix] = pydantic.Field(default=None)
+    """
+    Prefixes for each document_type
+    """
+
+    min_digits: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Minimal size of number in document ID Number will be left padded with zeros if less
+    """
+
+    next_number: typing.Optional[DocumentIDsSettingsNextNumber] = pydantic.Field(default=None)
+    """
+    Write-only field. Changes which number will be issued next. Can't be less than the last issued document number
     """
 
     if IS_PYDANTIC_V2:

@@ -11,6 +11,11 @@ class PreviewSchema2(UniversalBaseModel):
     A preview image generated for a file.
     """
 
+    height: int = pydantic.Field()
+    """
+    The image height in pixels.
+    """
+
     url: str = pydantic.Field()
     """
     The image URL.
@@ -19,11 +24,6 @@ class PreviewSchema2(UniversalBaseModel):
     width: int = pydantic.Field()
     """
     The image width in pixels.
-    """
-
-    height: int = pydantic.Field()
-    """
-    The image height in pixels.
     """
 
     if IS_PYDANTIC_V2:
