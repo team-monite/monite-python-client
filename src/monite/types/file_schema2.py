@@ -4,8 +4,8 @@ from ..core.pydantic_utilities import UniversalBaseModel
 import pydantic
 import datetime as dt
 import typing
-from .preview_schema2 import PreviewSchema2
 from .page_schema2 import PageSchema2
+from .preview_schema2 import PreviewSchema2
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -21,22 +21,12 @@ class FileSchema2(UniversalBaseModel):
 
     created_at: dt.datetime = pydantic.Field()
     """
-    UTC date and time when this file was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+    UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
     """
 
     file_type: str = pydantic.Field()
     """
     The type of the business object associated with this file.
-    """
-
-    name: str = pydantic.Field()
-    """
-    The original file name (if available).
-    """
-
-    region: str = pydantic.Field()
-    """
-    Geographical region of the data center where the file is stored.
     """
 
     md5: str = pydantic.Field()
@@ -46,17 +36,17 @@ class FileSchema2(UniversalBaseModel):
 
     mimetype: str = pydantic.Field()
     """
-    The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types).
+    The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types).
     """
 
-    url: str = pydantic.Field()
+    name: str = pydantic.Field()
     """
-    The URL to download the file.
+    The original file name (if available).
     """
 
-    size: int = pydantic.Field()
+    pages: typing.Optional[typing.List[PageSchema2]] = pydantic.Field(default=None)
     """
-    The file size in bytes.
+    If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.
     """
 
     previews: typing.Optional[typing.List[PreviewSchema2]] = pydantic.Field(default=None)
@@ -64,9 +54,19 @@ class FileSchema2(UniversalBaseModel):
     Preview images generated for this file. There can be multiple images with different sizes.
     """
 
-    pages: typing.Optional[typing.List[PageSchema2]] = pydantic.Field(default=None)
+    region: str = pydantic.Field()
     """
-    If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.
+    Geographical region of the data center where the file is stored.
+    """
+
+    size: int = pydantic.Field()
+    """
+    The file size in bytes.
+    """
+
+    url: str = pydantic.Field()
+    """
+    The URL to download the file.
     """
 
     if IS_PYDANTIC_V2:

@@ -19,7 +19,7 @@ class PageSchema(UniversalBaseModel):
 
     mimetype: str = pydantic.Field()
     """
-    The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types) of the image.
+    The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the image.
     """
 
     number: int = pydantic.Field()

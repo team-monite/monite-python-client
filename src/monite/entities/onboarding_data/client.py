@@ -7,15 +7,16 @@ from ...types.entity_onboarding_data_response import EntityOnboardingDataRespons
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import parse_obj_as
 from ...errors.not_found_error import NotFoundError
+from ...types.error_schema_response import ErrorSchemaResponse
 from ...errors.conflict_error import ConflictError
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
 from ...types.http_validation_error import HttpValidationError
 from ...errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
-from ...types.business_profile_input import BusinessProfileInput
-from ...types.ownership_declaration_input import OwnershipDeclarationInput
-from ...types.terms_of_service_acceptance_input import TermsOfServiceAcceptanceInput
+from ...types.business_profile import BusinessProfile
+from ...types.ownership_declaration import OwnershipDeclaration
+from ...types.terms_of_service_acceptance import TermsOfServiceAcceptance
 from ...core.serialization import convert_and_respect_annotation_metadata
 from ...core.client_wrapper import AsyncClientWrapper
 
@@ -73,9 +74,9 @@ class OnboardingDataClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -83,9 +84,9 @@ class OnboardingDataClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -103,9 +104,9 @@ class OnboardingDataClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -119,9 +120,9 @@ class OnboardingDataClient:
         self,
         entity_id: str,
         *,
-        business_profile: typing.Optional[BusinessProfileInput] = OMIT,
-        ownership_declaration: typing.Optional[OwnershipDeclarationInput] = OMIT,
-        tos_acceptance: typing.Optional[TermsOfServiceAcceptanceInput] = OMIT,
+        business_profile: typing.Optional[BusinessProfile] = OMIT,
+        ownership_declaration: typing.Optional[OwnershipDeclaration] = OMIT,
+        tos_acceptance: typing.Optional[TermsOfServiceAcceptance] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityOnboardingDataResponse:
         """
@@ -129,13 +130,13 @@ class OnboardingDataClient:
         ----------
         entity_id : str
 
-        business_profile : typing.Optional[BusinessProfileInput]
+        business_profile : typing.Optional[BusinessProfile]
             Business information about the entity.
 
-        ownership_declaration : typing.Optional[OwnershipDeclarationInput]
+        ownership_declaration : typing.Optional[OwnershipDeclaration]
             Used to attest that the beneficial owner information provided is both current and correct.
 
-        tos_acceptance : typing.Optional[TermsOfServiceAcceptanceInput]
+        tos_acceptance : typing.Optional[TermsOfServiceAcceptance]
             Details on the entity's acceptance of the service agreement.
 
         request_options : typing.Optional[RequestOptions]
@@ -164,17 +165,14 @@ class OnboardingDataClient:
             method="PATCH",
             json={
                 "business_profile": convert_and_respect_annotation_metadata(
-                    object_=business_profile, annotation=BusinessProfileInput, direction="write"
+                    object_=business_profile, annotation=BusinessProfile, direction="write"
                 ),
                 "ownership_declaration": convert_and_respect_annotation_metadata(
-                    object_=ownership_declaration, annotation=OwnershipDeclarationInput, direction="write"
+                    object_=ownership_declaration, annotation=OwnershipDeclaration, direction="write"
                 ),
                 "tos_acceptance": convert_and_respect_annotation_metadata(
-                    object_=tos_acceptance, annotation=TermsOfServiceAcceptanceInput, direction="write"
+                    object_=tos_acceptance, annotation=TermsOfServiceAcceptance, direction="write"
                 ),
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -191,9 +189,9 @@ class OnboardingDataClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -201,9 +199,9 @@ class OnboardingDataClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -221,9 +219,9 @@ class OnboardingDataClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -292,9 +290,9 @@ class AsyncOnboardingDataClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -302,9 +300,9 @@ class AsyncOnboardingDataClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -322,9 +320,9 @@ class AsyncOnboardingDataClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -338,9 +336,9 @@ class AsyncOnboardingDataClient:
         self,
         entity_id: str,
         *,
-        business_profile: typing.Optional[BusinessProfileInput] = OMIT,
-        ownership_declaration: typing.Optional[OwnershipDeclarationInput] = OMIT,
-        tos_acceptance: typing.Optional[TermsOfServiceAcceptanceInput] = OMIT,
+        business_profile: typing.Optional[BusinessProfile] = OMIT,
+        ownership_declaration: typing.Optional[OwnershipDeclaration] = OMIT,
+        tos_acceptance: typing.Optional[TermsOfServiceAcceptance] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityOnboardingDataResponse:
         """
@@ -348,13 +346,13 @@ class AsyncOnboardingDataClient:
         ----------
         entity_id : str
 
-        business_profile : typing.Optional[BusinessProfileInput]
+        business_profile : typing.Optional[BusinessProfile]
             Business information about the entity.
 
-        ownership_declaration : typing.Optional[OwnershipDeclarationInput]
+        ownership_declaration : typing.Optional[OwnershipDeclaration]
             Used to attest that the beneficial owner information provided is both current and correct.
 
-        tos_acceptance : typing.Optional[TermsOfServiceAcceptanceInput]
+        tos_acceptance : typing.Optional[TermsOfServiceAcceptance]
             Details on the entity's acceptance of the service agreement.
 
         request_options : typing.Optional[RequestOptions]
@@ -391,17 +389,14 @@ class AsyncOnboardingDataClient:
             method="PATCH",
             json={
                 "business_profile": convert_and_respect_annotation_metadata(
-                    object_=business_profile, annotation=BusinessProfileInput, direction="write"
+                    object_=business_profile, annotation=BusinessProfile, direction="write"
                 ),
                 "ownership_declaration": convert_and_respect_annotation_metadata(
-                    object_=ownership_declaration, annotation=OwnershipDeclarationInput, direction="write"
+                    object_=ownership_declaration, annotation=OwnershipDeclaration, direction="write"
                 ),
                 "tos_acceptance": convert_and_respect_annotation_metadata(
-                    object_=tos_acceptance, annotation=TermsOfServiceAcceptanceInput, direction="write"
+                    object_=tos_acceptance, annotation=TermsOfServiceAcceptance, direction="write"
                 ),
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -418,9 +413,9 @@ class AsyncOnboardingDataClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -428,9 +423,9 @@ class AsyncOnboardingDataClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -448,9 +443,9 @@ class AsyncOnboardingDataClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

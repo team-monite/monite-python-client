@@ -2,6 +2,4 @@
 
 import typing
 
-ObjectMatchTypes = typing.Union[
-    typing.Literal["product", "customer", "vendor", "receivable", "bill", "payment_record"], typing.Any
-]
+ObjectMatchTypes = typing.Union[typing.Literal["product", "customer", "vendor", "receivable", "bill"], typing.Any]

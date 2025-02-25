@@ -6,6 +6,7 @@ from ...core.request_options import RequestOptions
 from ...types.entity_bank_account_pagination_response import EntityBankAccountPaginationResponse
 from ...core.pydantic_utilities import parse_obj_as
 from ...errors.conflict_error import ConflictError
+from ...types.error_schema_response import ErrorSchemaResponse
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
 from ...types.http_validation_error import HttpValidationError
 from ...errors.internal_server_error import InternalServerError
@@ -14,16 +15,8 @@ from ...core.api_error import ApiError
 from ...types.allowed_countries import AllowedCountries
 from ...types.currency_enum import CurrencyEnum
 from ...types.entity_bank_account_response import EntityBankAccountResponse
-from ...types.complete_verification_airwallex_plaid_request import CompleteVerificationAirwallexPlaidRequest
-from ...types.bank_account_verification_type import BankAccountVerificationType
-from ...types.complete_verification_response import CompleteVerificationResponse
-from ...core.serialization import convert_and_respect_annotation_metadata
-from ...types.verification_airwallex_plaid_request import VerificationAirwallexPlaidRequest
-from ...types.verification_response import VerificationResponse
 from ...core.jsonable_encoder import jsonable_encoder
 from ...errors.not_found_error import NotFoundError
-from ...types.complete_refresh_verification_response import CompleteRefreshVerificationResponse
-from ...types.bank_account_verifications import BankAccountVerifications
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -76,9 +69,9 @@ class BankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -96,9 +89,9 @@ class BankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -143,7 +136,7 @@ class BankAccountsClient:
             The country in which the bank account is registered, repsesented as a two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
 
         currency : CurrencyEnum
-            The currency of the bank account, represented as a three-letter ISO [currency code](https://docs.monite.com/references/currencies).
+            The currency of the bank account, represented as a three-letter ISO [currency code](https://docs.monite.com/docs/currencies).
 
         account_holder_name : typing.Optional[str]
             The name of the person or business that owns this bank account. Required if the account currency is GBP or USD.
@@ -167,7 +160,7 @@ class BankAccountsClient:
             If set to `true` or if this is the first bank account added for the given currency, this account becomes the default one for its currency.
 
         routing_number : typing.Optional[str]
-            The bank's routing transit number (RTN) or branch code. Required if the account currency is USD. US routing numbers consist of 9 digits.
+            The bank's routing transit number (RTN). Required if the account currency is USD. US routing numbers consist of 9 digits.
 
         sort_code : typing.Optional[str]
             The bank's sort code. Required if the account currency is GBP.
@@ -210,9 +203,6 @@ class BankAccountsClient:
                 "routing_number": routing_number,
                 "sort_code": sort_code,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -228,9 +218,9 @@ class BankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -248,203 +238,9 @@ class BankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def complete_verification(
-        self,
-        *,
-        airwallex_plaid: CompleteVerificationAirwallexPlaidRequest,
-        type: BankAccountVerificationType,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CompleteVerificationResponse:
-        """
-        Parameters
-        ----------
-        airwallex_plaid : CompleteVerificationAirwallexPlaidRequest
-
-        type : BankAccountVerificationType
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CompleteVerificationResponse
-            Successful Response
-
-        Examples
-        --------
-        from monite import (
-            AirwallexMandate,
-            AirwallexPlaidAccount,
-            AirwallexPlaidInstitution,
-            CompleteVerificationAirwallexPlaidRequest,
-            Monite,
-        )
-
-        client = Monite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-        client.entities.bank_accounts.complete_verification(
-            airwallex_plaid=CompleteVerificationAirwallexPlaidRequest(
-                account=AirwallexPlaidAccount(
-                    id="id",
-                    mask="mask",
-                    name="name",
-                ),
-                institution=AirwallexPlaidInstitution(
-                    id="id",
-                    name="name",
-                ),
-                mandate=AirwallexMandate(
-                    email="email",
-                    signatory="signatory",
-                ),
-                public_token="public_token",
-            ),
-            type="airwallex_plaid",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "bank_accounts/complete_verification",
-            method="POST",
-            json={
-                "airwallex_plaid": convert_and_respect_annotation_metadata(
-                    object_=airwallex_plaid, annotation=CompleteVerificationAirwallexPlaidRequest, direction="write"
-                ),
-                "type": type,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    CompleteVerificationResponse,
-                    parse_obj_as(
-                        type_=CompleteVerificationResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def start_verification(
-        self,
-        *,
-        airwallex_plaid: VerificationAirwallexPlaidRequest,
-        type: BankAccountVerificationType,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> VerificationResponse:
-        """
-        Start entity bank account verification. The flow depends on verification type.
-        For airwallex_plaid it generates Plaid Link token to init the Plaid SDK.
-
-        Parameters
-        ----------
-        airwallex_plaid : VerificationAirwallexPlaidRequest
-
-        type : BankAccountVerificationType
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        VerificationResponse
-            Successful Response
-
-        Examples
-        --------
-        from monite import Monite, VerificationAirwallexPlaidRequest
-
-        client = Monite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-        client.entities.bank_accounts.start_verification(
-            airwallex_plaid=VerificationAirwallexPlaidRequest(
-                client_name="client_name",
-                redirect_url="redirect_url",
-            ),
-            type="airwallex_plaid",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "bank_accounts/start_verification",
-            method="POST",
-            json={
-                "airwallex_plaid": convert_and_respect_annotation_metadata(
-                    object_=airwallex_plaid, annotation=VerificationAirwallexPlaidRequest, direction="write"
-                ),
-                "type": type,
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    VerificationResponse,
-                    parse_obj_as(
-                        type_=VerificationResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -502,9 +298,9 @@ class BankAccountsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -512,9 +308,9 @@ class BankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -532,9 +328,9 @@ class BankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -583,9 +379,9 @@ class BankAccountsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -593,9 +389,9 @@ class BankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -613,9 +409,9 @@ class BankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -674,9 +470,6 @@ class BankAccountsClient:
                 "account_holder_name": account_holder_name,
                 "display_name": display_name,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -692,9 +485,9 @@ class BankAccountsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -702,9 +495,9 @@ class BankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -722,91 +515,9 @@ class BankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def complete_verification_by_id(
-        self,
-        bank_account_id: str,
-        *,
-        type: BankAccountVerificationType,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CompleteRefreshVerificationResponse:
-        """
-        Parameters
-        ----------
-        bank_account_id : str
-
-        type : BankAccountVerificationType
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CompleteRefreshVerificationResponse
-            Successful Response
-
-        Examples
-        --------
-        from monite import Monite
-
-        client = Monite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-        client.entities.bank_accounts.complete_verification_by_id(
-            bank_account_id="bank_account_id",
-            type="airwallex_plaid",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"bank_accounts/{jsonable_encoder(bank_account_id)}/complete_verification",
-            method="POST",
-            json={
-                "type": type,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    CompleteRefreshVerificationResponse,
-                    parse_obj_as(
-                        type_=CompleteRefreshVerificationResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -864,9 +575,9 @@ class BankAccountsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -874,9 +585,9 @@ class BankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -894,166 +605,9 @@ class BankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def refresh_verification_by_id(
-        self,
-        bank_account_id: str,
-        *,
-        airwallex_plaid: VerificationAirwallexPlaidRequest,
-        type: BankAccountVerificationType,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> VerificationResponse:
-        """
-        Parameters
-        ----------
-        bank_account_id : str
-
-        airwallex_plaid : VerificationAirwallexPlaidRequest
-
-        type : BankAccountVerificationType
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        VerificationResponse
-            Successful Response
-
-        Examples
-        --------
-        from monite import Monite, VerificationAirwallexPlaidRequest
-
-        client = Monite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-        client.entities.bank_accounts.refresh_verification_by_id(
-            bank_account_id="bank_account_id",
-            airwallex_plaid=VerificationAirwallexPlaidRequest(
-                client_name="client_name",
-                redirect_url="redirect_url",
-            ),
-            type="airwallex_plaid",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"bank_accounts/{jsonable_encoder(bank_account_id)}/refresh_verification",
-            method="POST",
-            json={
-                "airwallex_plaid": convert_and_respect_annotation_metadata(
-                    object_=airwallex_plaid, annotation=VerificationAirwallexPlaidRequest, direction="write"
-                ),
-                "type": type,
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    VerificationResponse,
-                    parse_obj_as(
-                        type_=VerificationResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def get_verifications_by_id(
-        self, bank_account_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> BankAccountVerifications:
-        """
-        Parameters
-        ----------
-        bank_account_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        BankAccountVerifications
-            Successful Response
-
-        Examples
-        --------
-        from monite import Monite
-
-        client = Monite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-        client.entities.bank_accounts.get_verifications_by_id(
-            bank_account_id="bank_account_id",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"bank_accounts/{jsonable_encoder(bank_account_id)}/verifications",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    BankAccountVerifications,
-                    parse_obj_as(
-                        type_=BankAccountVerifications,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1120,9 +674,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1140,9 +694,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1187,7 +741,7 @@ class AsyncBankAccountsClient:
             The country in which the bank account is registered, repsesented as a two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
 
         currency : CurrencyEnum
-            The currency of the bank account, represented as a three-letter ISO [currency code](https://docs.monite.com/references/currencies).
+            The currency of the bank account, represented as a three-letter ISO [currency code](https://docs.monite.com/docs/currencies).
 
         account_holder_name : typing.Optional[str]
             The name of the person or business that owns this bank account. Required if the account currency is GBP or USD.
@@ -1211,7 +765,7 @@ class AsyncBankAccountsClient:
             If set to `true` or if this is the first bank account added for the given currency, this account becomes the default one for its currency.
 
         routing_number : typing.Optional[str]
-            The bank's routing transit number (RTN) or branch code. Required if the account currency is USD. US routing numbers consist of 9 digits.
+            The bank's routing transit number (RTN). Required if the account currency is USD. US routing numbers consist of 9 digits.
 
         sort_code : typing.Optional[str]
             The bank's sort code. Required if the account currency is GBP.
@@ -1262,9 +816,6 @@ class AsyncBankAccountsClient:
                 "routing_number": routing_number,
                 "sort_code": sort_code,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1280,9 +831,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1300,219 +851,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def complete_verification(
-        self,
-        *,
-        airwallex_plaid: CompleteVerificationAirwallexPlaidRequest,
-        type: BankAccountVerificationType,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CompleteVerificationResponse:
-        """
-        Parameters
-        ----------
-        airwallex_plaid : CompleteVerificationAirwallexPlaidRequest
-
-        type : BankAccountVerificationType
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CompleteVerificationResponse
-            Successful Response
-
-        Examples
-        --------
-        import asyncio
-
-        from monite import (
-            AirwallexMandate,
-            AirwallexPlaidAccount,
-            AirwallexPlaidInstitution,
-            AsyncMonite,
-            CompleteVerificationAirwallexPlaidRequest,
-        )
-
-        client = AsyncMonite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.entities.bank_accounts.complete_verification(
-                airwallex_plaid=CompleteVerificationAirwallexPlaidRequest(
-                    account=AirwallexPlaidAccount(
-                        id="id",
-                        mask="mask",
-                        name="name",
-                    ),
-                    institution=AirwallexPlaidInstitution(
-                        id="id",
-                        name="name",
-                    ),
-                    mandate=AirwallexMandate(
-                        email="email",
-                        signatory="signatory",
-                    ),
-                    public_token="public_token",
-                ),
-                type="airwallex_plaid",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "bank_accounts/complete_verification",
-            method="POST",
-            json={
-                "airwallex_plaid": convert_and_respect_annotation_metadata(
-                    object_=airwallex_plaid, annotation=CompleteVerificationAirwallexPlaidRequest, direction="write"
-                ),
-                "type": type,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    CompleteVerificationResponse,
-                    parse_obj_as(
-                        type_=CompleteVerificationResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def start_verification(
-        self,
-        *,
-        airwallex_plaid: VerificationAirwallexPlaidRequest,
-        type: BankAccountVerificationType,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> VerificationResponse:
-        """
-        Start entity bank account verification. The flow depends on verification type.
-        For airwallex_plaid it generates Plaid Link token to init the Plaid SDK.
-
-        Parameters
-        ----------
-        airwallex_plaid : VerificationAirwallexPlaidRequest
-
-        type : BankAccountVerificationType
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        VerificationResponse
-            Successful Response
-
-        Examples
-        --------
-        import asyncio
-
-        from monite import AsyncMonite, VerificationAirwallexPlaidRequest
-
-        client = AsyncMonite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.entities.bank_accounts.start_verification(
-                airwallex_plaid=VerificationAirwallexPlaidRequest(
-                    client_name="client_name",
-                    redirect_url="redirect_url",
-                ),
-                type="airwallex_plaid",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "bank_accounts/start_verification",
-            method="POST",
-            json={
-                "airwallex_plaid": convert_and_respect_annotation_metadata(
-                    object_=airwallex_plaid, annotation=VerificationAirwallexPlaidRequest, direction="write"
-                ),
-                "type": type,
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    VerificationResponse,
-                    parse_obj_as(
-                        type_=VerificationResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1578,9 +919,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1588,9 +929,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1608,9 +949,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1669,9 +1010,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1679,9 +1020,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1699,9 +1040,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1768,9 +1109,6 @@ class AsyncBankAccountsClient:
                 "account_holder_name": account_holder_name,
                 "display_name": display_name,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1786,9 +1124,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1796,9 +1134,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1816,99 +1154,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def complete_verification_by_id(
-        self,
-        bank_account_id: str,
-        *,
-        type: BankAccountVerificationType,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CompleteRefreshVerificationResponse:
-        """
-        Parameters
-        ----------
-        bank_account_id : str
-
-        type : BankAccountVerificationType
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CompleteRefreshVerificationResponse
-            Successful Response
-
-        Examples
-        --------
-        import asyncio
-
-        from monite import AsyncMonite
-
-        client = AsyncMonite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.entities.bank_accounts.complete_verification_by_id(
-                bank_account_id="bank_account_id",
-                type="airwallex_plaid",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"bank_accounts/{jsonable_encoder(bank_account_id)}/complete_verification",
-            method="POST",
-            json={
-                "type": type,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    CompleteRefreshVerificationResponse,
-                    parse_obj_as(
-                        type_=CompleteRefreshVerificationResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1974,9 +1222,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1984,9 +1232,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2004,182 +1252,9 @@ class AsyncBankAccountsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def refresh_verification_by_id(
-        self,
-        bank_account_id: str,
-        *,
-        airwallex_plaid: VerificationAirwallexPlaidRequest,
-        type: BankAccountVerificationType,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> VerificationResponse:
-        """
-        Parameters
-        ----------
-        bank_account_id : str
-
-        airwallex_plaid : VerificationAirwallexPlaidRequest
-
-        type : BankAccountVerificationType
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        VerificationResponse
-            Successful Response
-
-        Examples
-        --------
-        import asyncio
-
-        from monite import AsyncMonite, VerificationAirwallexPlaidRequest
-
-        client = AsyncMonite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.entities.bank_accounts.refresh_verification_by_id(
-                bank_account_id="bank_account_id",
-                airwallex_plaid=VerificationAirwallexPlaidRequest(
-                    client_name="client_name",
-                    redirect_url="redirect_url",
-                ),
-                type="airwallex_plaid",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"bank_accounts/{jsonable_encoder(bank_account_id)}/refresh_verification",
-            method="POST",
-            json={
-                "airwallex_plaid": convert_and_respect_annotation_metadata(
-                    object_=airwallex_plaid, annotation=VerificationAirwallexPlaidRequest, direction="write"
-                ),
-                "type": type,
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    VerificationResponse,
-                    parse_obj_as(
-                        type_=VerificationResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def get_verifications_by_id(
-        self, bank_account_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> BankAccountVerifications:
-        """
-        Parameters
-        ----------
-        bank_account_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        BankAccountVerifications
-            Successful Response
-
-        Examples
-        --------
-        import asyncio
-
-        from monite import AsyncMonite
-
-        client = AsyncMonite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.entities.bank_accounts.get_verifications_by_id(
-                bank_account_id="bank_account_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"bank_accounts/{jsonable_encoder(bank_account_id)}/verifications",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    BankAccountVerifications,
-                    parse_obj_as(
-                        type_=BankAccountVerifications,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

@@ -9,6 +9,10 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class EntityUserResponse(UniversalBaseModel):
+    """
+    A scheme for validation an entity user additional info
+    """
+
     id: str = pydantic.Field()
     """
     UUID entity user ID

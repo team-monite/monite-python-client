@@ -2,6 +2,7 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import pydantic
+import datetime as dt
 import typing
 from .line_item_product_measure_unit import LineItemProductMeasureUnit
 from .price import Price
@@ -16,11 +17,23 @@ class LineItemProduct(UniversalBaseModel):
     Unique ID of the product.
     """
 
+    created_at: dt.datetime = pydantic.Field()
+    """
+    Time at which the product was created. Timestamps follow the ISO 8601 standard.
+    """
+
+    updated_at: dt.datetime = pydantic.Field()
+    """
+    Time at which the product was last updated. Timestamps follow the ISO 8601 standard.
+    """
+
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
     Description of the product.
     """
 
+    entity_id: str
+    entity_user_id: typing.Optional[str] = None
     is_inline: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Indicates whether the product is inline
@@ -28,6 +41,11 @@ class LineItemProduct(UniversalBaseModel):
 
     ledger_account_id: typing.Optional[str] = None
     measure_unit: typing.Optional[LineItemProductMeasureUnit] = None
+    measure_unit_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The unique ID reference of the unit used to measure the quantity of this product (e.g. items, meters, kilograms).
+    """
+
     name: str = pydantic.Field()
     """
     Name of the product.

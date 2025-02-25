@@ -10,15 +10,9 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class OcrResponseInvoiceReceiptData(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["invoice"]] = None
     total: typing.Optional[int] = pydantic.Field(default=None)
     """
     Total in cents/eurocents. Outdated, actual conversion happens in payables.
-    """
-
-    total_paid_amount_raw: typing.Optional[float] = pydantic.Field(default=None)
-    """
-    Total paid amount
     """
 
     total_raw: typing.Optional[float] = pydantic.Field(default=None)

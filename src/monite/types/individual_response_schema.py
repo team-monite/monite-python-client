@@ -25,13 +25,7 @@ class IndividualResponseSchema(UniversalBaseModel):
     A last name of an individual
     """
 
-    ssn_last4: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="ssn_last_4")] = pydantic.Field(
-        default=None
-    )
-    """
-    The last four digits of the individual's Social Security number
-    """
-
+    ssn_last4: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="ssn_last_4")] = None
     title: typing.Optional[str] = pydantic.Field(default=None)
     """
     A title of an individual

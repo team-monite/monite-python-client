@@ -2,4 +2,4 @@
 
 import typing
 
-PayableOriginEnum = typing.Union[typing.Literal["upload", "email", "einvoicing"], typing.Any]
+PayableOriginEnum = typing.Union[typing.Literal["upload", "email"], typing.Any]

@@ -7,6 +7,14 @@ from ..types.payment_record_cursor_fields import PaymentRecordCursorFields
 from ..core.request_options import RequestOptions
 from ..types.payment_record_response_list import PaymentRecordResponseList
 from ..core.pydantic_utilities import parse_obj_as
+from ..errors.bad_request_error import BadRequestError
+from ..types.error_schema_response import ErrorSchemaResponse
+from ..errors.unauthorized_error import UnauthorizedError
+from ..errors.forbidden_error import ForbiddenError
+from ..errors.not_found_error import NotFoundError
+from ..errors.not_acceptable_error import NotAcceptableError
+from ..errors.conflict_error import ConflictError
+from ..errors.range_not_satisfiable_error import RangeNotSatisfiableError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
@@ -99,6 +107,76 @@ class PaymentRecordsClient:
                         object_=_response.json(),
                     ),
                 )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 406:
+                raise NotAcceptableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 416:
+                raise RangeNotSatisfiableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
@@ -112,9 +190,9 @@ class PaymentRecordsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -195,9 +273,6 @@ class PaymentRecordsClient:
                 "paid_at": paid_at,
                 "payment_intent_id": payment_intent_id,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -209,6 +284,76 @@ class PaymentRecordsClient:
                         type_=PaymentRecordResponse,  # type: ignore
                         object_=_response.json(),
                     ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 406:
+                raise NotAcceptableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 416:
+                raise RangeNotSatisfiableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
                 )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
@@ -223,9 +368,9 @@ class PaymentRecordsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -278,6 +423,76 @@ class PaymentRecordsClient:
                         object_=_response.json(),
                     ),
                 )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 406:
+                raise NotAcceptableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 416:
+                raise RangeNotSatisfiableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
@@ -291,9 +506,9 @@ class PaymentRecordsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -387,6 +602,76 @@ class AsyncPaymentRecordsClient:
                         object_=_response.json(),
                     ),
                 )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 406:
+                raise NotAcceptableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 416:
+                raise RangeNotSatisfiableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
@@ -400,9 +685,9 @@ class AsyncPaymentRecordsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -490,9 +775,6 @@ class AsyncPaymentRecordsClient:
                 "paid_at": paid_at,
                 "payment_intent_id": payment_intent_id,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -504,6 +786,76 @@ class AsyncPaymentRecordsClient:
                         type_=PaymentRecordResponse,  # type: ignore
                         object_=_response.json(),
                     ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 406:
+                raise NotAcceptableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 416:
+                raise RangeNotSatisfiableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
                 )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
@@ -518,9 +870,9 @@ class AsyncPaymentRecordsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -581,6 +933,76 @@ class AsyncPaymentRecordsClient:
                         object_=_response.json(),
                     ),
                 )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 406:
+                raise NotAcceptableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 416:
+                raise RangeNotSatisfiableError(
+                    typing.cast(
+                        ErrorSchemaResponse,
+                        parse_obj_as(
+                            type_=ErrorSchemaResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
@@ -594,9 +1016,9 @@ class AsyncPaymentRecordsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

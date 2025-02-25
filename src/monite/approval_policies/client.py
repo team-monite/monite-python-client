@@ -13,6 +13,7 @@ from ..types.approval_policy_resource_list import ApprovalPolicyResourceList
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.unauthorized_error import UnauthorizedError
+from ..types.error_schema_response import ErrorSchemaResponse
 from ..errors.conflict_error import ConflictError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
@@ -44,7 +45,6 @@ class ApprovalPoliciesClient:
     def get(
         self,
         *,
-        process_id: typing.Optional[str] = None,
         order: typing.Optional[OrderEnum] = None,
         limit: typing.Optional[int] = None,
         pagination_token: typing.Optional[str] = None,
@@ -75,8 +75,6 @@ class ApprovalPoliciesClient:
 
         Parameters
         ----------
-        process_id : typing.Optional[str]
-
         order : typing.Optional[OrderEnum]
             Order by
 
@@ -142,7 +140,6 @@ class ApprovalPoliciesClient:
             "approval_policies",
             method="GET",
             params={
-                "process_id": process_id,
                 "order": order,
                 "limit": limit,
                 "pagination_token": pagination_token,
@@ -177,9 +174,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -187,9 +184,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -207,9 +204,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -225,8 +222,6 @@ class ApprovalPoliciesClient:
         name: str,
         description: str,
         script: typing.Sequence[ApprovalPolicyCreateScriptItem],
-        starts_at: typing.Optional[dt.datetime] = OMIT,
-        ends_at: typing.Optional[dt.datetime] = OMIT,
         trigger: typing.Optional[ApprovalPolicyCreateTrigger] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ApprovalPolicyResource:
@@ -243,12 +238,6 @@ class ApprovalPoliciesClient:
 
         script : typing.Sequence[ApprovalPolicyCreateScriptItem]
             A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
-
-        starts_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
-
-        ends_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
 
         trigger : typing.Optional[ApprovalPolicyCreateTrigger]
             A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.
@@ -280,8 +269,6 @@ class ApprovalPoliciesClient:
             "approval_policies",
             method="POST",
             json={
-                "starts_at": starts_at,
-                "ends_at": ends_at,
                 "name": name,
                 "description": description,
                 "script": convert_and_respect_annotation_metadata(
@@ -290,9 +277,6 @@ class ApprovalPoliciesClient:
                 "trigger": convert_and_respect_annotation_metadata(
                     object_=trigger, annotation=ApprovalPolicyCreateTrigger, direction="write"
                 ),
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -309,9 +293,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -319,9 +303,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -329,9 +313,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -349,9 +333,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -409,9 +393,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -419,9 +403,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -429,9 +413,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -449,9 +433,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -500,9 +484,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -510,9 +494,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -520,9 +504,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -540,9 +524,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -556,8 +540,6 @@ class ApprovalPoliciesClient:
         self,
         approval_policy_id: str,
         *,
-        starts_at: typing.Optional[dt.datetime] = OMIT,
-        ends_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         script: typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]] = OMIT,
@@ -571,12 +553,6 @@ class ApprovalPoliciesClient:
         Parameters
         ----------
         approval_policy_id : str
-
-        starts_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
-
-        ends_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
 
         name : typing.Optional[str]
             The name of the approval policy.
@@ -618,8 +594,6 @@ class ApprovalPoliciesClient:
             f"approval_policies/{jsonable_encoder(approval_policy_id)}",
             method="PATCH",
             json={
-                "starts_at": starts_at,
-                "ends_at": ends_at,
                 "name": name,
                 "description": description,
                 "script": convert_and_respect_annotation_metadata(
@@ -629,9 +603,6 @@ class ApprovalPoliciesClient:
                     object_=trigger, annotation=ApprovalPolicyUpdateTrigger, direction="write"
                 ),
                 "status": status,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -648,9 +619,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -658,9 +629,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -668,9 +639,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -678,9 +649,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -698,9 +669,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -719,7 +690,6 @@ class AsyncApprovalPoliciesClient:
     async def get(
         self,
         *,
-        process_id: typing.Optional[str] = None,
         order: typing.Optional[OrderEnum] = None,
         limit: typing.Optional[int] = None,
         pagination_token: typing.Optional[str] = None,
@@ -750,8 +720,6 @@ class AsyncApprovalPoliciesClient:
 
         Parameters
         ----------
-        process_id : typing.Optional[str]
-
         order : typing.Optional[OrderEnum]
             Order by
 
@@ -825,7 +793,6 @@ class AsyncApprovalPoliciesClient:
             "approval_policies",
             method="GET",
             params={
-                "process_id": process_id,
                 "order": order,
                 "limit": limit,
                 "pagination_token": pagination_token,
@@ -860,9 +827,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -870,9 +837,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -890,9 +857,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -908,8 +875,6 @@ class AsyncApprovalPoliciesClient:
         name: str,
         description: str,
         script: typing.Sequence[ApprovalPolicyCreateScriptItem],
-        starts_at: typing.Optional[dt.datetime] = OMIT,
-        ends_at: typing.Optional[dt.datetime] = OMIT,
         trigger: typing.Optional[ApprovalPolicyCreateTrigger] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ApprovalPolicyResource:
@@ -926,12 +891,6 @@ class AsyncApprovalPoliciesClient:
 
         script : typing.Sequence[ApprovalPolicyCreateScriptItem]
             A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
-
-        starts_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
-
-        ends_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
 
         trigger : typing.Optional[ApprovalPolicyCreateTrigger]
             A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.
@@ -971,8 +930,6 @@ class AsyncApprovalPoliciesClient:
             "approval_policies",
             method="POST",
             json={
-                "starts_at": starts_at,
-                "ends_at": ends_at,
                 "name": name,
                 "description": description,
                 "script": convert_and_respect_annotation_metadata(
@@ -981,9 +938,6 @@ class AsyncApprovalPoliciesClient:
                 "trigger": convert_and_respect_annotation_metadata(
                     object_=trigger, annotation=ApprovalPolicyCreateTrigger, direction="write"
                 ),
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1000,9 +954,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1010,9 +964,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1020,9 +974,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1040,9 +994,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1108,9 +1062,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1118,9 +1072,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1128,9 +1082,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1148,9 +1102,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1209,9 +1163,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1219,9 +1173,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1229,9 +1183,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1249,9 +1203,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1265,8 +1219,6 @@ class AsyncApprovalPoliciesClient:
         self,
         approval_policy_id: str,
         *,
-        starts_at: typing.Optional[dt.datetime] = OMIT,
-        ends_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         script: typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]] = OMIT,
@@ -1280,12 +1232,6 @@ class AsyncApprovalPoliciesClient:
         Parameters
         ----------
         approval_policy_id : str
-
-        starts_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
-
-        ends_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
 
         name : typing.Optional[str]
             The name of the approval policy.
@@ -1335,8 +1281,6 @@ class AsyncApprovalPoliciesClient:
             f"approval_policies/{jsonable_encoder(approval_policy_id)}",
             method="PATCH",
             json={
-                "starts_at": starts_at,
-                "ends_at": ends_at,
                 "name": name,
                 "description": description,
                 "script": convert_and_respect_annotation_metadata(
@@ -1346,9 +1290,6 @@ class AsyncApprovalPoliciesClient:
                     object_=trigger, annotation=ApprovalPolicyUpdateTrigger, direction="write"
                 ),
                 "status": status,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1365,9 +1306,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1375,9 +1316,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1385,9 +1326,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1395,9 +1336,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1415,9 +1356,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

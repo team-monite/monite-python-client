@@ -10,12 +10,12 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 class EstimatedMonthlyRevenue(UniversalBaseModel):
     amount: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The amount of the monthly revenue, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+    The amount of the monthly revenue, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250..
     """
 
     currency: typing.Optional[CurrencyEnum] = pydantic.Field(default=None)
     """
-    [Currency code](https://docs.monite.com/references/currencies) of the revenue.
+    [Currency code](https://docs.monite.com/docs/currencies) of the revenue.
     """
 
     if IS_PYDANTIC_V2:

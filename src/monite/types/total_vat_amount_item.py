@@ -10,7 +10,7 @@ class TotalVatAmountItem(UniversalBaseModel):
     id: typing.Optional[str] = None
     amount: int = pydantic.Field()
     """
-    The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    The total VAT of all line items, in [minor units](https://docs.monite.com/docs/currencies#minor-units).
     """
 
     value: int = pydantic.Field()

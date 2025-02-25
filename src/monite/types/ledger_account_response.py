@@ -19,7 +19,7 @@ class LedgerAccountResponse(UniversalBaseModel):
 
     currency: typing.Optional[CurrencyEnum] = pydantic.Field(default=None)
     """
-    The currency of the ledger account, specified as a three-letter [currency code](https://docs.monite.com/references/currencies) (ISO 4217).
+    The currency of the ledger account, specified as a three-letter [currency code](https://docs.monite.com/docs/currencies) (ISO 4217).
     """
 
     current_balance: typing.Optional[int] = pydantic.Field(default=None)

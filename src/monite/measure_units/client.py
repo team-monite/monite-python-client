@@ -6,6 +6,7 @@ from ..core.request_options import RequestOptions
 from ..types.unit_list_response import UnitListResponse
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.bad_request_error import BadRequestError
+from ..types.error_schema_response import ErrorSchemaResponse
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
@@ -66,9 +67,9 @@ class MeasureUnitsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -76,9 +77,9 @@ class MeasureUnitsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -86,9 +87,9 @@ class MeasureUnitsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -106,9 +107,9 @@ class MeasureUnitsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -175,9 +176,9 @@ class MeasureUnitsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -185,9 +186,9 @@ class MeasureUnitsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -195,9 +196,9 @@ class MeasureUnitsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -215,9 +216,9 @@ class MeasureUnitsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -271,9 +272,9 @@ class MeasureUnitsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -281,9 +282,9 @@ class MeasureUnitsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -291,9 +292,9 @@ class MeasureUnitsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -301,9 +302,9 @@ class MeasureUnitsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -321,9 +322,9 @@ class MeasureUnitsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -370,9 +371,9 @@ class MeasureUnitsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -380,9 +381,9 @@ class MeasureUnitsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -390,9 +391,9 @@ class MeasureUnitsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -400,9 +401,9 @@ class MeasureUnitsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -420,9 +421,9 @@ class MeasureUnitsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -477,9 +478,6 @@ class MeasureUnitsClient:
                 "description": description,
                 "name": name,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -495,9 +493,9 @@ class MeasureUnitsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -505,9 +503,9 @@ class MeasureUnitsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -515,9 +513,9 @@ class MeasureUnitsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -525,9 +523,9 @@ class MeasureUnitsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -545,9 +543,9 @@ class MeasureUnitsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -610,9 +608,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -620,9 +618,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -630,9 +628,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -650,9 +648,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -727,9 +725,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -737,9 +735,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -747,9 +745,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -767,9 +765,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -831,9 +829,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -841,9 +839,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -851,9 +849,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -861,9 +859,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -881,9 +879,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -938,9 +936,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -948,9 +946,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -958,9 +956,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -968,9 +966,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -988,9 +986,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1053,9 +1051,6 @@ class AsyncMeasureUnitsClient:
                 "description": description,
                 "name": name,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1071,9 +1066,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1081,9 +1076,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1091,9 +1086,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1101,9 +1096,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1121,9 +1116,9 @@ class AsyncMeasureUnitsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

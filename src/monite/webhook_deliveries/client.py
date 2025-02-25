@@ -13,6 +13,7 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
+from ..types.error_schema_response import ErrorSchemaResponse
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper
@@ -39,27 +40,19 @@ class WebhookDeliveriesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> WebhookDeliveryPaginationResource:
         """
-        Returns an aggregated log of webhook delivery attempts. The data contains a list of triggered webhook events, how many times Monite tried to send each event to your server, the last HTTP status code returned by your webhook listener endpoint, and whether the final attempt to deliver that event was successful.
-
-        We guarantee access to webhook delivery data only from the last three months. Earlier data may be unavailable.
-
-        Note that if the same event type is included in multiple webhook subscriptions, the results will include several entries for each occurrence of this event - one entry per subscription.
-
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[WebhookDeliveryCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         event_id : typing.Optional[str]
 
@@ -134,9 +127,9 @@ class WebhookDeliveriesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -168,27 +161,19 @@ class AsyncWebhookDeliveriesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> WebhookDeliveryPaginationResource:
         """
-        Returns an aggregated log of webhook delivery attempts. The data contains a list of triggered webhook events, how many times Monite tried to send each event to your server, the last HTTP status code returned by your webhook listener endpoint, and whether the final attempt to deliver that event was successful.
-
-        We guarantee access to webhook delivery data only from the last three months. Earlier data may be unavailable.
-
-        Note that if the same event type is included in multiple webhook subscriptions, the results will include several entries for each occurrence of this event - one entry per subscription.
-
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[WebhookDeliveryCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         event_id : typing.Optional[str]
 
@@ -271,9 +256,9 @@ class AsyncWebhookDeliveriesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

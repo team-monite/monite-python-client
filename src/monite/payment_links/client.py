@@ -15,6 +15,7 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
+from ..types.error_schema_response import ErrorSchemaResponse
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.jsonable_encoder import jsonable_encoder
@@ -50,7 +51,7 @@ class PaymentLinksClient:
         recipient : PaymentAccountObject
 
         amount : typing.Optional[int]
-            The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Required if `object` is not specified.
+            The payment amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). Required if `object` is not specified.
 
         currency : typing.Optional[CurrencyEnum]
             The payment currency. Required if `object` is not specified.
@@ -67,7 +68,6 @@ class PaymentLinksClient:
             A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Required if `object` is not specified.
 
         return_url : typing.Optional[str]
-            The URL where to redirect the payer after the payment. If `return_url` is specified, then after the payment is completed the payment page will display the "Return to platform" link that navigates to this URL.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -114,9 +114,6 @@ class PaymentLinksClient:
                 ),
                 "return_url": return_url,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -142,9 +139,9 @@ class PaymentLinksClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -210,9 +207,9 @@ class PaymentLinksClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -278,9 +275,9 @@ class PaymentLinksClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -317,7 +314,7 @@ class AsyncPaymentLinksClient:
         recipient : PaymentAccountObject
 
         amount : typing.Optional[int]
-            The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Required if `object` is not specified.
+            The payment amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). Required if `object` is not specified.
 
         currency : typing.Optional[CurrencyEnum]
             The payment currency. Required if `object` is not specified.
@@ -334,7 +331,6 @@ class AsyncPaymentLinksClient:
             A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Required if `object` is not specified.
 
         return_url : typing.Optional[str]
-            The URL where to redirect the payer after the payment. If `return_url` is specified, then after the payment is completed the payment page will display the "Return to platform" link that navigates to this URL.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -389,9 +385,6 @@ class AsyncPaymentLinksClient:
                 ),
                 "return_url": return_url,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -417,9 +410,9 @@ class AsyncPaymentLinksClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -493,9 +486,9 @@ class AsyncPaymentLinksClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -569,9 +562,9 @@ class AsyncPaymentLinksClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

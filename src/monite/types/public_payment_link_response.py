@@ -5,11 +5,11 @@ from .currency_enum import CurrencyEnum
 import datetime as dt
 import typing
 from .invoice import Invoice
-from .payer_account_response import PayerAccountResponse
+from .account_response import AccountResponse
 from .payment_intent import PaymentIntent
 from .recipient_account_response import RecipientAccountResponse
-import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class PublicPaymentLinkResponse(UniversalBaseModel):
@@ -18,18 +18,14 @@ class PublicPaymentLinkResponse(UniversalBaseModel):
     currency: CurrencyEnum
     expires_at: dt.datetime
     invoice: typing.Optional[Invoice] = None
-    payer: typing.Optional[PayerAccountResponse] = None
+    payer: typing.Optional[AccountResponse] = None
     payment_intent: typing.Optional[PaymentIntent] = None
     payment_intent_id: str
     payment_methods: typing.List[str]
     payment_page_url: str
     payment_reference: typing.Optional[str] = None
     recipient: RecipientAccountResponse
-    return_url: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The URL where to redirect the payer after the payment. If `return_url` is specified, then after the payment is completed the payment page will display the "Return to platform" link that navigates to this URL.
-    """
-
+    return_url: typing.Optional[str] = None
     status: str
 
     if IS_PYDANTIC_V2:

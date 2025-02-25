@@ -2,9 +2,9 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import pydantic
-from .biz_objects_schema_output import BizObjectsSchemaOutput
-from .status_enum import StatusEnum
 import datetime as dt
+from .biz_objects_schema import BizObjectsSchema
+from .status_enum import StatusEnum
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
@@ -15,21 +15,6 @@ class RoleResponse(UniversalBaseModel):
     UUID role ID
     """
 
-    name: str = pydantic.Field()
-    """
-    Role name
-    """
-
-    permissions: BizObjectsSchemaOutput = pydantic.Field()
-    """
-    Access permissions
-    """
-
-    status: StatusEnum = pydantic.Field()
-    """
-    record status, 'active' by default
-    """
-
     created_at: dt.datetime = pydantic.Field()
     """
     UTC datetime
@@ -38,6 +23,21 @@ class RoleResponse(UniversalBaseModel):
     updated_at: dt.datetime = pydantic.Field()
     """
     UTC datetime
+    """
+
+    name: str = pydantic.Field()
+    """
+    Role name
+    """
+
+    permissions: BizObjectsSchema = pydantic.Field()
+    """
+    Access permissions
+    """
+
+    status: StatusEnum = pydantic.Field()
+    """
+    record status, 'active' by default
     """
 
     if IS_PYDANTIC_V2:

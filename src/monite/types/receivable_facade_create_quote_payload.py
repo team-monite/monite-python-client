@@ -50,11 +50,6 @@ class ReceivableFacadeCreateQuotePayload(UniversalBaseModel):
     The discount for a receivable.
     """
 
-    document_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The document number of the receivable, which will appear in the PDF document. Can be set manually only in the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance). Otherwise (or if omitted), it will be generated automatically based on the entity's [document number customization](https://docs.monite.com/advanced/document-number-customization) settings when the document is issued.
-    """
-
     entity: typing.Optional[ReceivableEntityBase] = None
     entity_bank_account_id: typing.Optional[str] = pydantic.Field(default=None)
     """

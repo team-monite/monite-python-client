@@ -9,8 +9,8 @@ import pydantic
 
 class ExchangeRate(UniversalBaseModel):
     base: CurrencyEnum
-    to: CurrencyEnum
     rate: float
+    to: CurrencyEnum
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

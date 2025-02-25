@@ -3,18 +3,14 @@
 import typing
 from .status_changed_event_data import StatusChangedEventData
 from .receivable_updated_event_data import ReceivableUpdatedEventData
-from .receivable_created_event_data import ReceivableCreatedEventData
 from .based_on_receivable_created_event_data import BasedOnReceivableCreatedEventData
 from .payment_received_event_data import PaymentReceivedEventData
 from .mail_sent_event_data import MailSentEventData
-from .reminder_mail_sent_event_data import ReminderMailSentEventData
 
 ReceivableHistoryResponseEventData = typing.Union[
     StatusChangedEventData,
     ReceivableUpdatedEventData,
-    ReceivableCreatedEventData,
     BasedOnReceivableCreatedEventData,
     PaymentReceivedEventData,
     MailSentEventData,
-    ReminderMailSentEventData,
 ]

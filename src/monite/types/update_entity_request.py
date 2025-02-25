@@ -4,8 +4,8 @@ from ..core.pydantic_utilities import UniversalBaseModel
 import typing
 from .update_entity_address_schema import UpdateEntityAddressSchema
 import pydantic
-from .optional_organization_schema import OptionalOrganizationSchema
 from .optional_individual_schema import OptionalIndividualSchema
+from .optional_organization_schema import OptionalOrganizationSchema
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -24,19 +24,9 @@ class UpdateEntityRequest(UniversalBaseModel):
     An official email address of the entity
     """
 
-    phone: typing.Optional[str] = pydantic.Field(default=None)
+    individual: typing.Optional[OptionalIndividualSchema] = pydantic.Field(default=None)
     """
-    The contact phone number of the entity. Required for US organizations to use payments.
-    """
-
-    website: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    A website of the entity
-    """
-
-    tax_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    A set of meta data describing the individual
     """
 
     organization: typing.Optional[OptionalOrganizationSchema] = pydantic.Field(default=None)
@@ -44,9 +34,19 @@ class UpdateEntityRequest(UniversalBaseModel):
     A set of meta data describing the organization
     """
 
-    individual: typing.Optional[OptionalIndividualSchema] = pydantic.Field(default=None)
+    phone: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A set of meta data describing the individual
+    A phone number of the entity
+    """
+
+    tax_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    """
+
+    website: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    A website of the entity
     """
 
     if IS_PYDANTIC_V2:

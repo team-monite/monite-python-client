@@ -2,4 +2,4 @@
 
 import typing
 
-OcrStatusEnum = typing.Union[typing.Literal["processing", "error", "success", "canceled"], typing.Any]
+OcrStatusEnum = typing.Union[typing.Literal["processing", "error", "success"], typing.Any]

@@ -53,7 +53,7 @@ class PurchaseOrderCounterpartIndividualRootResponse(UniversalBaseModel):
     individual: PurchaseOrderCounterpartIndividualResponse
     language: typing.Optional[LanguageCodeEnum] = pydantic.Field(default=None)
     """
-    The language used to generate PDF documents for this counterpart.
+    The language used to generate pdf documents for this counterpart.
     """
 
     reminders_enabled: typing.Optional[bool] = None

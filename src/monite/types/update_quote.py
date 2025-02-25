@@ -11,6 +11,10 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class UpdateQuote(UniversalBaseModel):
+    """
+    Raise if None was explicitly passed to given fields
+    """
+
     contact_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Unique ID of the counterpart contact.

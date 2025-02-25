@@ -50,11 +50,6 @@ class ReceivableFacadeCreateInvoicePayload(UniversalBaseModel):
     The discount for a receivable.
     """
 
-    document_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The document number of the receivable, which will appear in the PDF document. Can be set manually only in the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance). Otherwise (or if omitted), it will be generated automatically based on the entity's [document number customization](https://docs.monite.com/advanced/document-number-customization) settings when the document is issued.
-    """
-
     entity: typing.Optional[ReceivableEntityBase] = None
     entity_bank_account_id: typing.Optional[str] = pydantic.Field(default=None)
     """
@@ -68,9 +63,10 @@ class ReceivableFacadeCreateInvoicePayload(UniversalBaseModel):
 
     fulfillment_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The date when the goods are shipped or the service is provided. Can be a current, past, or future date.
+    The date when the goods are shipped or the service is provided.
     
-    If omitted or `null`, defaults to the invoice issue date and the value is automatically set when the invoice is moved to the `issued` status.
+    If omitted, defaults to the invoice issue date,
+    and the value is automatically set when the invoice status changes to `issued`.
     """
 
     line_items: typing.List[LineItem]

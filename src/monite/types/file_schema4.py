@@ -4,8 +4,8 @@ from ..core.pydantic_utilities import UniversalBaseModel
 import pydantic
 import datetime as dt
 import typing
-from .page_schema3 import PageSchema3
-from .preview_schema3 import PreviewSchema3
+from .page_schema4 import PageSchema4
+from .preview_schema4 import PreviewSchema4
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -21,7 +21,7 @@ class FileSchema4(UniversalBaseModel):
 
     created_at: dt.datetime = pydantic.Field()
     """
-    UTC date and time when this file was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+    UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
     """
 
     file_type: str = pydantic.Field()
@@ -36,7 +36,7 @@ class FileSchema4(UniversalBaseModel):
 
     mimetype: str = pydantic.Field()
     """
-    The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types).
+    The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types).
     """
 
     name: str = pydantic.Field()
@@ -44,12 +44,12 @@ class FileSchema4(UniversalBaseModel):
     The original file name (if available).
     """
 
-    pages: typing.Optional[typing.List[PageSchema3]] = pydantic.Field(default=None)
+    pages: typing.Optional[typing.List[PageSchema4]] = pydantic.Field(default=None)
     """
     If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.
     """
 
-    previews: typing.Optional[typing.List[PreviewSchema3]] = pydantic.Field(default=None)
+    previews: typing.Optional[typing.List[PreviewSchema4]] = pydantic.Field(default=None)
     """
     Preview images generated for this file. There can be multiple images with different sizes.
     """

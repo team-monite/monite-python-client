@@ -26,7 +26,7 @@ class OrganizationResponseSchema(UniversalBaseModel):
 
     legal_name: str = pydantic.Field()
     """
-    The legal name of the organization.
+    A legal name of an organization
     """
 
     owners_provided: typing.Optional[bool] = None

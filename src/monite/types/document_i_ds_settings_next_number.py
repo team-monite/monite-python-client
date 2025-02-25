@@ -7,10 +7,10 @@ import pydantic
 
 
 class DocumentIDsSettingsNextNumber(UniversalBaseModel):
-    credit_note: typing.Optional[int] = None
-    invoice: typing.Optional[int] = None
-    purchase_order: typing.Optional[int] = None
     quote: typing.Optional[int] = None
+    invoice: typing.Optional[int] = None
+    credit_note: typing.Optional[int] = None
+    purchase_order: typing.Optional[int] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

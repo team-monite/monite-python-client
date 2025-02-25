@@ -3,10 +3,9 @@
 from ..core.pydantic_utilities import UniversalBaseModel
 import datetime as dt
 import pydantic
-import typing
 from .day_of_month import DayOfMonth
+import typing
 from .recurrence_iteration import RecurrenceIteration
-from .recipients import Recipients
 from .recurrence_status import RecurrenceStatus
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -23,18 +22,15 @@ class Recurrence(UniversalBaseModel):
     Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard.
     """
 
-    body_text: typing.Optional[str] = None
     current_iteration: int
     day_of_month: DayOfMonth
     end_month: int
     end_year: int
     invoice_id: str
     iterations: typing.List[RecurrenceIteration]
-    recipients: typing.Optional[Recipients] = None
     start_month: int
     start_year: int
     status: RecurrenceStatus
-    subject_text: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

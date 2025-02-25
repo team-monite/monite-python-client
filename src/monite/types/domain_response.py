@@ -20,11 +20,7 @@ class DomainResponse(UniversalBaseModel):
     """
 
     dns_records: DomainResponseDnsRecords
-    domain: str = pydantic.Field()
-    """
-    The domain name.
-    """
-
+    domain: str
     last_updated_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
     The time the domain was updated for the last time

@@ -52,7 +52,7 @@ class PurchaseOrderCounterpartOrganizationRootResponse(UniversalBaseModel):
 
     language: typing.Optional[LanguageCodeEnum] = pydantic.Field(default=None)
     """
-    The language used to generate PDF documents for this counterpart.
+    The language used to generate pdf documents for this counterpart.
     """
 
     organization: PurchaseOrderCounterpartOrganizationResponse

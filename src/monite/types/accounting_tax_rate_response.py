@@ -17,14 +17,14 @@ class AccountingTaxRateResponse(UniversalBaseModel):
     components: typing.Optional[typing.List[TaxComponentResponse]] = None
     effective_tax_rate: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Effective tax rate in percent [minor units](https://docs.monite.com/references/currencies#minor-units). Example: 12.5% is 1250.
+    Effective tax rate in percent [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250.
     """
 
     name: typing.Optional[str] = None
     status: typing.Optional[str] = None
     total_tax_rate: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Total (not compounded) sum of the components of a tax rate in [minor units](https://docs.monite.com/references/currencies#minor-units). Example: 12.5% is 1250.
+    Total (not compounded) sum of the components of a tax rate in [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250.
     """
 
     if IS_PYDANTIC_V2:

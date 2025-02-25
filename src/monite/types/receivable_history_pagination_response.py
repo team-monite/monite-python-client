@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class ReceivableHistoryPaginationResponse(UniversalBaseModel):
-    """
-    A paginated list of change history records.
-    """
-
     data: typing.List[ReceivableHistoryResponse]
     next_pagination_token: typing.Optional[str] = pydantic.Field(default=None)
     """

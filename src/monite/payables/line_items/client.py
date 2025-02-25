@@ -9,6 +9,7 @@ from ...types.line_item_pagination_response import LineItemPaginationResponse
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import parse_obj_as
 from ...errors.bad_request_error import BadRequestError
+from ...types.error_schema_response import ErrorSchemaResponse
 from ...errors.unauthorized_error import UnauthorizedError
 from ...errors.forbidden_error import ForbiddenError
 from ...errors.not_acceptable_error import NotAcceptableError
@@ -46,31 +47,29 @@ class LineItemsClient:
     ) -> LineItemPaginationResponse:
         """
         Get a list of all line items related to a specific payable.
-        Related guide: [List all payable line items](https://docs.monite.com/accounts-payable/payables/line-items#list-all-line-items-of-a-payable)
+        Related guide: [List all payable line items](https://docs.monite.com/docs/manage-line-items#list-all-line-items-of-a-payable)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
         payable_id : str
 
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[LineItemCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         was_created_by_user_id : typing.Optional[str]
 
@@ -119,9 +118,9 @@ class LineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -129,9 +128,9 @@ class LineItemsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -139,9 +138,9 @@ class LineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -149,9 +148,9 @@ class LineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -169,9 +168,9 @@ class LineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -202,13 +201,13 @@ class LineItemsClient:
          `quantity`, and `tax` fields, therefore, are read-only and appear only in the response schema. The field
           `ledger_account_id` is required **only** for account integration, otherwise, it is optional.
 
-        Related guide: [Add line items to a payable](https://docs.monite.com/accounts-payable/payables/line-items#add-line-items-to-a-payable)
+        Related guide: [Add line items to a payable](https://docs.monite.com/docs/manage-line-items#add-line-items-to-a-payable)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
@@ -230,13 +229,13 @@ class LineItemsClient:
             The quantity of each of the goods, materials, or services listed in the payable.
 
         tax : typing.Optional[int]
-            VAT rate in percent [minor units](https://docs.monite.com/references/currencies#minor-units). Example: 12.5% is 1250.
+            VAT rate in percent [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250.
 
         unit : typing.Optional[str]
             The unit of the product
 
         unit_price : typing.Optional[int]
-            The unit price of the product, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The unit price of the product, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -287,9 +286,9 @@ class LineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -297,9 +296,9 @@ class LineItemsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -307,9 +306,9 @@ class LineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -317,9 +316,9 @@ class LineItemsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -327,9 +326,9 @@ class LineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -347,9 +346,9 @@ class LineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -369,13 +368,13 @@ class LineItemsClient:
         """
         Replaces the information of all line items of a specific payable.
 
-        Related guide: [Replace all line items](https://docs.monite.com/accounts-payable/payables/line-items#replace-all-line-items)
+        Related guide: [Replace all line items](https://docs.monite.com/docs/manage-line-items#replace-all-line-items)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
@@ -413,9 +412,6 @@ class LineItemsClient:
                     object_=data, annotation=typing.Sequence[LineItemInternalRequest], direction="write"
                 ),
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -431,9 +427,9 @@ class LineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -441,9 +437,9 @@ class LineItemsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -451,9 +447,9 @@ class LineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -461,9 +457,9 @@ class LineItemsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -471,9 +467,9 @@ class LineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -481,9 +477,9 @@ class LineItemsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -501,9 +497,9 @@ class LineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -519,13 +515,13 @@ class LineItemsClient:
         """
         Get information about a specific line item with a given ID.
 
-        Related guide: [Retrieve a line item](https://docs.monite.com/accounts-payable/payables/line-items#retrieve-a-line-item)
+        Related guide: [Retrieve a line item](https://docs.monite.com/docs/manage-line-items#retrieve-a-line-item)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
@@ -572,9 +568,9 @@ class LineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -582,9 +578,9 @@ class LineItemsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -592,9 +588,9 @@ class LineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -602,9 +598,9 @@ class LineItemsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -612,9 +608,9 @@ class LineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -632,9 +628,9 @@ class LineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -650,13 +646,13 @@ class LineItemsClient:
         """
         Delete the line item with the given ID.
 
-        Related guide: [Remove a line item](https://docs.monite.com/accounts-payable/payables/line-items#remove-a-line-item)
+        Related guide: [Remove a line item](https://docs.monite.com/docs/manage-line-items#remove-a-line-item)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
@@ -696,9 +692,9 @@ class LineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -706,9 +702,9 @@ class LineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -716,9 +712,9 @@ class LineItemsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -726,9 +722,9 @@ class LineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -746,9 +742,9 @@ class LineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -776,13 +772,13 @@ class LineItemsClient:
         """
         Edits the information of a specific line item.
 
-        Related guide: [Update a line item](https://docs.monite.com/accounts-payable/payables/line-items#update-a-line-item)
+        Related guide: [Update a line item](https://docs.monite.com/docs/manage-line-items#update-a-line-item)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
@@ -806,13 +802,13 @@ class LineItemsClient:
             The quantity of each of the goods, materials, or services listed in the payable.
 
         tax : typing.Optional[int]
-            VAT rate in percent [minor units](https://docs.monite.com/references/currencies#minor-units). Example: 12.5% is 1250.
+            VAT rate in percent [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250.
 
         unit : typing.Optional[str]
             The unit of the product
 
         unit_price : typing.Optional[int]
-            The unit price of the product, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The unit price of the product, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -864,9 +860,9 @@ class LineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -874,9 +870,9 @@ class LineItemsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -884,9 +880,9 @@ class LineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -894,9 +890,9 @@ class LineItemsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -904,9 +900,9 @@ class LineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -924,9 +920,9 @@ class LineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -954,31 +950,29 @@ class AsyncLineItemsClient:
     ) -> LineItemPaginationResponse:
         """
         Get a list of all line items related to a specific payable.
-        Related guide: [List all payable line items](https://docs.monite.com/accounts-payable/payables/line-items#list-all-line-items-of-a-payable)
+        Related guide: [List all payable line items](https://docs.monite.com/docs/manage-line-items#list-all-line-items-of-a-payable)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
         payable_id : str
 
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[LineItemCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         was_created_by_user_id : typing.Optional[str]
 
@@ -1035,9 +1029,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1045,9 +1039,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1055,9 +1049,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1065,9 +1059,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1085,9 +1079,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1118,13 +1112,13 @@ class AsyncLineItemsClient:
          `quantity`, and `tax` fields, therefore, are read-only and appear only in the response schema. The field
           `ledger_account_id` is required **only** for account integration, otherwise, it is optional.
 
-        Related guide: [Add line items to a payable](https://docs.monite.com/accounts-payable/payables/line-items#add-line-items-to-a-payable)
+        Related guide: [Add line items to a payable](https://docs.monite.com/docs/manage-line-items#add-line-items-to-a-payable)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
@@ -1146,13 +1140,13 @@ class AsyncLineItemsClient:
             The quantity of each of the goods, materials, or services listed in the payable.
 
         tax : typing.Optional[int]
-            VAT rate in percent [minor units](https://docs.monite.com/references/currencies#minor-units). Example: 12.5% is 1250.
+            VAT rate in percent [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250.
 
         unit : typing.Optional[str]
             The unit of the product
 
         unit_price : typing.Optional[int]
-            The unit price of the product, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The unit price of the product, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1211,9 +1205,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1221,9 +1215,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1231,9 +1225,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1241,9 +1235,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1251,9 +1245,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1271,9 +1265,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1293,13 +1287,13 @@ class AsyncLineItemsClient:
         """
         Replaces the information of all line items of a specific payable.
 
-        Related guide: [Replace all line items](https://docs.monite.com/accounts-payable/payables/line-items#replace-all-line-items)
+        Related guide: [Replace all line items](https://docs.monite.com/docs/manage-line-items#replace-all-line-items)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
@@ -1345,9 +1339,6 @@ class AsyncLineItemsClient:
                     object_=data, annotation=typing.Sequence[LineItemInternalRequest], direction="write"
                 ),
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1363,9 +1354,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1373,9 +1364,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1383,9 +1374,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1393,9 +1384,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1403,9 +1394,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1413,9 +1404,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1433,9 +1424,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1451,13 +1442,13 @@ class AsyncLineItemsClient:
         """
         Get information about a specific line item with a given ID.
 
-        Related guide: [Retrieve a line item](https://docs.monite.com/accounts-payable/payables/line-items#retrieve-a-line-item)
+        Related guide: [Retrieve a line item](https://docs.monite.com/docs/manage-line-items#retrieve-a-line-item)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
@@ -1512,9 +1503,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1522,9 +1513,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1532,9 +1523,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1542,9 +1533,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1552,9 +1543,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1572,9 +1563,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1590,13 +1581,13 @@ class AsyncLineItemsClient:
         """
         Delete the line item with the given ID.
 
-        Related guide: [Remove a line item](https://docs.monite.com/accounts-payable/payables/line-items#remove-a-line-item)
+        Related guide: [Remove a line item](https://docs.monite.com/docs/manage-line-items#remove-a-line-item)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
@@ -1644,9 +1635,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1654,9 +1645,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1664,9 +1655,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1674,9 +1665,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1694,9 +1685,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1724,13 +1715,13 @@ class AsyncLineItemsClient:
         """
         Edits the information of a specific line item.
 
-        Related guide: [Update a line item](https://docs.monite.com/accounts-payable/payables/line-items#update-a-line-item)
+        Related guide: [Update a line item](https://docs.monite.com/docs/manage-line-items#update-a-line-item)
 
         See also:
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
-        [Collect payables](https://docs.monite.com/accounts-payable/payables/collect)
+        [Collect payables](https://docs.monite.com/docs/collect-payables)
 
         Parameters
         ----------
@@ -1754,13 +1745,13 @@ class AsyncLineItemsClient:
             The quantity of each of the goods, materials, or services listed in the payable.
 
         tax : typing.Optional[int]
-            VAT rate in percent [minor units](https://docs.monite.com/references/currencies#minor-units). Example: 12.5% is 1250.
+            VAT rate in percent [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250.
 
         unit : typing.Optional[str]
             The unit of the product
 
         unit_price : typing.Optional[int]
-            The unit price of the product, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The unit price of the product, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1820,9 +1811,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1830,9 +1821,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1840,9 +1831,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1850,9 +1841,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1860,9 +1851,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1880,9 +1871,9 @@ class AsyncLineItemsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

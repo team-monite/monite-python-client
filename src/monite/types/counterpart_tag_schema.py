@@ -35,7 +35,7 @@ class CounterpartTagSchema(UniversalBaseModel):
 
     created_by_entity_user_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    ID of the user who created the tag.
+    ID of the user who created the tag
     """
 
     description: typing.Optional[str] = pydantic.Field(default=None)

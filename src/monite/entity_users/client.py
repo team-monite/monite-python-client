@@ -10,6 +10,7 @@ from ..types.entity_user_pagination_response import EntityUserPaginationResponse
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.bad_request_error import BadRequestError
+from ..types.error_schema_response import ErrorSchemaResponse
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_acceptable_error import NotAcceptableError
@@ -21,8 +22,8 @@ from ..core.api_error import ApiError
 from ..types.entity_user_response import EntityUserResponse
 from ..types.entity_response import EntityResponse
 from ..types.update_entity_address_schema import UpdateEntityAddressSchema
-from ..types.optional_organization_schema import OptionalOrganizationSchema
 from ..types.optional_individual_schema import OptionalIndividualSchema
+from ..types.optional_organization_schema import OptionalOrganizationSchema
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..types.role_response import RoleResponse
 from ..core.jsonable_encoder import jsonable_encoder
@@ -50,7 +51,6 @@ class EntityUsersClient:
         login: typing.Optional[str] = None,
         status: typing.Optional[str] = None,
         first_name: typing.Optional[str] = None,
-        name_istartswith: typing.Optional[str] = None,
         created_at_gt: typing.Optional[dt.datetime] = None,
         created_at_lt: typing.Optional[dt.datetime] = None,
         created_at_gte: typing.Optional[dt.datetime] = None,
@@ -63,18 +63,16 @@ class EntityUsersClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[EntityUserCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -89,8 +87,6 @@ class EntityUsersClient:
         status : typing.Optional[str]
 
         first_name : typing.Optional[str]
-
-        name_istartswith : typing.Optional[str]
 
         created_at_gt : typing.Optional[dt.datetime]
 
@@ -134,7 +130,6 @@ class EntityUsersClient:
                 "login": login,
                 "status": status,
                 "first_name": first_name,
-                "name__istartswith": name_istartswith,
                 "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
                 "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
                 "created_at__gte": serialize_datetime(created_at_gte) if created_at_gte is not None else None,
@@ -154,9 +149,9 @@ class EntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -164,9 +159,9 @@ class EntityUsersClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -174,9 +169,9 @@ class EntityUsersClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -184,9 +179,9 @@ class EntityUsersClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -204,9 +199,9 @@ class EntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -271,7 +266,7 @@ class EntityUsersClient:
             token="YOUR_TOKEN",
         )
         client.entity_users.create(
-            first_name="Casey",
+            first_name="Andrey",
             login="login",
         )
         """
@@ -286,9 +281,6 @@ class EntityUsersClient:
                 "phone": phone,
                 "role_id": role_id,
                 "title": title,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -305,9 +297,9 @@ class EntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -325,9 +317,9 @@ class EntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -379,9 +371,9 @@ class EntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -399,9 +391,9 @@ class EntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -470,9 +462,6 @@ class EntityUsersClient:
                 "phone": phone,
                 "title": title,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -488,9 +477,9 @@ class EntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -508,9 +497,9 @@ class EntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -562,9 +551,9 @@ class EntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -582,9 +571,9 @@ class EntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -599,11 +588,11 @@ class EntityUsersClient:
         *,
         address: typing.Optional[UpdateEntityAddressSchema] = OMIT,
         email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
+        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -617,20 +606,20 @@ class EntityUsersClient:
         email : typing.Optional[str]
             An official email address of the entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
-
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+        individual : typing.Optional[OptionalIndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[OptionalIndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            A phone number of the entity
+
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -659,15 +648,15 @@ class EntityUsersClient:
                     object_=address, annotation=UpdateEntityAddressSchema, direction="write"
                 ),
                 "email": email,
-                "phone": phone,
-                "website": website,
-                "tax_id": tax_id,
-                "organization": convert_and_respect_annotation_metadata(
-                    object_=organization, annotation=OptionalOrganizationSchema, direction="write"
-                ),
                 "individual": convert_and_respect_annotation_metadata(
                     object_=individual, annotation=OptionalIndividualSchema, direction="write"
                 ),
+                "organization": convert_and_respect_annotation_metadata(
+                    object_=organization, annotation=OptionalOrganizationSchema, direction="write"
+                ),
+                "phone": phone,
+                "tax_id": tax_id,
+                "website": website,
             },
             request_options=request_options,
             omit=OMIT,
@@ -684,9 +673,9 @@ class EntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -704,9 +693,9 @@ class EntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -768,9 +757,9 @@ class EntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -828,9 +817,9 @@ class EntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -848,9 +837,9 @@ class EntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -897,9 +886,9 @@ class EntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -917,9 +906,9 @@ class EntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1003,9 +992,6 @@ class EntityUsersClient:
                 "role_id": role_id,
                 "title": title,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1021,9 +1007,9 @@ class EntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1041,9 +1027,9 @@ class EntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1072,7 +1058,6 @@ class AsyncEntityUsersClient:
         login: typing.Optional[str] = None,
         status: typing.Optional[str] = None,
         first_name: typing.Optional[str] = None,
-        name_istartswith: typing.Optional[str] = None,
         created_at_gt: typing.Optional[dt.datetime] = None,
         created_at_lt: typing.Optional[dt.datetime] = None,
         created_at_gte: typing.Optional[dt.datetime] = None,
@@ -1085,18 +1070,16 @@ class AsyncEntityUsersClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[EntityUserCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -1111,8 +1094,6 @@ class AsyncEntityUsersClient:
         status : typing.Optional[str]
 
         first_name : typing.Optional[str]
-
-        name_istartswith : typing.Optional[str]
 
         created_at_gt : typing.Optional[dt.datetime]
 
@@ -1164,7 +1145,6 @@ class AsyncEntityUsersClient:
                 "login": login,
                 "status": status,
                 "first_name": first_name,
-                "name__istartswith": name_istartswith,
                 "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
                 "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
                 "created_at__gte": serialize_datetime(created_at_gte) if created_at_gte is not None else None,
@@ -1184,9 +1164,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1194,9 +1174,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1204,9 +1184,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1214,9 +1194,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1234,9 +1214,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1306,7 +1286,7 @@ class AsyncEntityUsersClient:
 
         async def main() -> None:
             await client.entity_users.create(
-                first_name="Casey",
+                first_name="Andrey",
                 login="login",
             )
 
@@ -1325,9 +1305,6 @@ class AsyncEntityUsersClient:
                 "role_id": role_id,
                 "title": title,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1343,9 +1320,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1363,9 +1340,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1425,9 +1402,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1445,9 +1422,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1524,9 +1501,6 @@ class AsyncEntityUsersClient:
                 "phone": phone,
                 "title": title,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1542,9 +1516,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1562,9 +1536,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1624,9 +1598,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1644,9 +1618,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1661,11 +1635,11 @@ class AsyncEntityUsersClient:
         *,
         address: typing.Optional[UpdateEntityAddressSchema] = OMIT,
         email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
+        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -1679,20 +1653,20 @@ class AsyncEntityUsersClient:
         email : typing.Optional[str]
             An official email address of the entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
-
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+        individual : typing.Optional[OptionalIndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[OptionalIndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            A phone number of the entity
+
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1729,15 +1703,15 @@ class AsyncEntityUsersClient:
                     object_=address, annotation=UpdateEntityAddressSchema, direction="write"
                 ),
                 "email": email,
-                "phone": phone,
-                "website": website,
-                "tax_id": tax_id,
-                "organization": convert_and_respect_annotation_metadata(
-                    object_=organization, annotation=OptionalOrganizationSchema, direction="write"
-                ),
                 "individual": convert_and_respect_annotation_metadata(
                     object_=individual, annotation=OptionalIndividualSchema, direction="write"
                 ),
+                "organization": convert_and_respect_annotation_metadata(
+                    object_=organization, annotation=OptionalOrganizationSchema, direction="write"
+                ),
+                "phone": phone,
+                "tax_id": tax_id,
+                "website": website,
             },
             request_options=request_options,
             omit=OMIT,
@@ -1754,9 +1728,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1774,9 +1748,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1846,9 +1820,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1914,9 +1888,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1934,9 +1908,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1993,9 +1967,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2013,9 +1987,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2107,9 +2081,6 @@ class AsyncEntityUsersClient:
                 "role_id": role_id,
                 "title": title,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -2125,9 +2096,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2145,9 +2116,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

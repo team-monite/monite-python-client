@@ -52,14 +52,14 @@ class CounterpartOrganizationRootResponse(UniversalBaseModel):
 
     language: typing.Optional[LanguageCodeEnum] = pydantic.Field(default=None)
     """
-    The language used to generate PDF documents for this counterpart.
+    The language used to generate pdf documents for this counterpart.
     """
 
     organization: CounterpartOrganizationResponse
     reminders_enabled: typing.Optional[bool] = None
     tax_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The counterpart's taxpayer identification number or tax ID.
+    The counterpart's taxpayer identification number or tax ID. This field is required for counterparts that are non-VAT registered.
     """
 
     type: CounterpartType = pydantic.Field()

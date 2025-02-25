@@ -19,17 +19,17 @@ class PageSchema2(UniversalBaseModel):
 
     mimetype: str = pydantic.Field()
     """
-    The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types) of the image.
-    """
-
-    size: int = pydantic.Field()
-    """
-    Image file size, in bytes.
+    The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the image.
     """
 
     number: int = pydantic.Field()
     """
     The page number in the PDF document, from 0.
+    """
+
+    size: int = pydantic.Field()
+    """
+    Image file size, in bytes.
     """
 
     url: str = pydantic.Field()

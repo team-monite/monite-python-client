@@ -7,19 +7,19 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class OcrAutoTaggingSettingsRequest(UniversalBaseModel):
-    enabled: bool = pydantic.Field()
+    tag_id: str = pydantic.Field()
     """
-    A switch to temporarily disable a keyword without removing it from the list.
+    Tag identifier that will be assigned to the payable document if one of the words listed in keywords is found during OCR
     """
 
     keywords: typing.List[str] = pydantic.Field()
     """
-    A list of words that will be searched for assigning a tag in the recognized fields of the document after OCR processing. If at least one match is found, the tag will be assigned. Each keyword must be between 2 and 25 characters long.
+    A list of words that will be searched for assigning a tag in the recognized fields of the document after OCR processing. If at least one match is found, the tag will be assigned. Each keyword must be between 2 and 25 characters long
     """
 
-    tag_id: str = pydantic.Field()
+    enabled: bool = pydantic.Field()
     """
-    Tag identifier that will be assigned to the payable document if one of the words listed in keywords is found during OCR.
+    A switch to temporarily disable a keyword without removing it from the list
     """
 
     if IS_PYDANTIC_V2:

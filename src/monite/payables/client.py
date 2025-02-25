@@ -15,6 +15,7 @@ from ..types.payable_pagination_response import PayablePaginationResponse
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.bad_request_error import BadRequestError
+from ..types.error_schema_response import ErrorSchemaResponse
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_acceptable_error import NotAcceptableError
@@ -100,9 +101,9 @@ class PayablesClient:
         Lists all payables from the connected entity.
 
         If you already have the data of the payable (amount in [minor units](
-        https://docs.monite.com/references/currencies#minor-units), currency, vendor information, and other details)
+        https://docs.monite.com/docs/currencies#minor-units), currency, vendor information, and other details)
         stored somewhere as individual attributes, you can create a payable with these attributes by calling [POST
-        /payables](https://docs.monite.com/api/payables/post-payables) and providing the [base64-encoded](
+        /payables](https://docs.monite.com/reference/post_payables) and providing the [base64-encoded](
         https://en.wikipedia.org/wiki/Base64) contents of the original invoice file in the field `base64_encoded_file`.
 
         A payable is a financial document given by an entity`s supplier itemizing the purchase of a good or a service and
@@ -112,155 +113,105 @@ class PayablesClient:
         to automatically set `suggested_payment_term`, this object can be omitted from the request body.
 
         The `id` generated for this payable can be used in other API calls to update the data of this payable or trigger [
-        status transitions](https://docs.monite.com/accounts-payable/approvals/manual-transition), for example. essential data
+        status transitions](https://docs.monite.com/docs/payable-status-transitions), for example. essential data
         fields to move from `draft` to `new`
 
-        Related guide: [Create a payable from data](https://docs.monite.com/accounts-payable/payables/collect#create-a-payable-from-data)
+        Related guide: [Create a payable from data](https://docs.monite.com/docs/collect-payables#create-a-payable-from-data)
 
         See also:
 
 
-        [Automatic calculation of due date](https://docs.monite.com/accounts-payable/payables/collect#automatic-calculation-of-due-date)
+        [Automatic calculation of due date](https://docs.monite.com/docs/collect-payables#automatic-calculation-of-due-date)
 
-        [Suggested payment date](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
+        [Suggested payment date](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
 
-        [Attach file](https://docs.monite.com/accounts-payable/payables/collect#attach-file)
+        [Attach file](https://docs.monite.com/docs/collect-payables#attach-file)
 
-        [Collect payables by email](https://docs.monite.com/accounts-payable/payables/collect#send-payables-by-email)
+        [Collect payables by email](https://docs.monite.com/docs/collect-payables#send-payables-by-email)
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[PayableCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         created_at_gt : typing.Optional[dt.datetime]
-            Return only payables created in Monite after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm].
 
         created_at_lt : typing.Optional[dt.datetime]
-            Return only payables created in Monite before the specified date and time.
 
         created_at_gte : typing.Optional[dt.datetime]
-            Return only payables created in Monite on or after the specified date and time.
 
         created_at_lte : typing.Optional[dt.datetime]
-            Return only payables created in Monite before or on the specified date and time.
 
         status : typing.Optional[PayableStateEnum]
-            Return only payables that have the specified [status](https://docs.monite.com/accounts-payable/payables/index).
-
-            To query multiple statuses at once, use the `status__in` parameter instead.
 
         status_in : typing.Optional[typing.Union[PayableStateEnum, typing.Sequence[PayableStateEnum]]]
-            Return only payables that have the specified [statuses](https://docs.monite.com/accounts-payable/payables/index).
-
-            To specify multiple statuses, repeat this parameter for each value: `status__in=draft&status__in=new`
 
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Return only payables with specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
-
-            To specify multiple IDs, repeat this parameter for each value: `id__in=<id1>&id__in=<id2>`
 
         total_amount : typing.Optional[int]
-            Return only payables with the exact specified total amount. The amount must be specified in the minor units of currency. For example, $12.5 is represented as 1250.
 
         total_amount_gt : typing.Optional[int]
-            Return only payables whose total amount (in minor units) exceeds the specified value.
 
         total_amount_lt : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is less than the specified value.
 
         total_amount_gte : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is greater than or equal to the specified value.
 
         total_amount_lte : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is less than or equal to the specified value.
 
         amount : typing.Optional[int]
-            Return only payables with the specified amount.
 
         amount_gt : typing.Optional[int]
-            Return only payables whose amount (in minor units) exceeds the specified value.
 
         amount_lt : typing.Optional[int]
-            Return only payables whose amount (in minor units) is less than the specified value.
 
         amount_gte : typing.Optional[int]
-            Return only payables whose amount (in minor units) is greater than or equal to the specified value.
 
         amount_lte : typing.Optional[int]
-            Return only payables whose amount (in minor units) is less than or equal to the specified value.
 
         currency : typing.Optional[CurrencyEnum]
-            Return only payables that use the specified currency.
 
         counterpart_name : typing.Optional[str]
-            Return only payables received from counterparts with the specified name (exact match, case-sensitive).
-
-            For counterparts of `type = individual`, the full name is formatted as `first_name last_name`.
 
         counterpart_name_contains : typing.Optional[str]
-            Return only payables received from counterparts whose name contains the specified string (case-sensitive).
 
         counterpart_name_icontains : typing.Optional[str]
-            Return only payables received from counterparts whose name contains the specified string (case-insensitive).
 
         search_text : typing.Optional[str]
-            Apply the `icontains` condition to search for the specified text in the `document_id` and `counterpart_name` fields in the payables.
 
         due_date : typing.Optional[str]
-            Return payables that are due on the specified date (YYYY-MM-DD)
 
         due_date_gt : typing.Optional[str]
-            Return payables that are due after the specified date (exclusive, YYYY-MM-DD).
 
         due_date_lt : typing.Optional[str]
-            Return payables that are due before the specified date (exclusive, YYYY-MM-DD).
 
         due_date_gte : typing.Optional[str]
-            Return payables that are due on or after the specified date (YYYY-MM-DD).
 
         due_date_lte : typing.Optional[str]
-            Return payables that are due before or on the specified date (YYYY-MM-DD).
 
         document_id : typing.Optional[str]
-            Return a payable with the exact specified document number (case-sensitive).
-
-            The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
 
         document_id_contains : typing.Optional[str]
-            Return only payables whose document number (`document_id`) contains the specified string (case-sensitive).
 
         document_id_icontains : typing.Optional[str]
-            Return only payables whose document number (`document_id`) contains the specified string (case-insensitive).
 
         was_created_by_user_id : typing.Optional[str]
-            Return only payables created in Monite by the entity user with the specified ID.
 
         counterpart_id : typing.Optional[str]
-            Return only payables received from the counterpart with the specified ID.
-
-            Counterparts that have been deleted but have associated payables will still return results here because the payables contain a frozen copy of the counterpart data.
-
-            If the specified counterpart ID does not exist and never existed, no results are returned.
 
         source_of_payable_data : typing.Optional[SourceOfPayableDataEnum]
-            Return only payables coming from the specified source.
 
         ocr_status : typing.Optional[OcrStatusEnum]
-            Return only payables with specific OCR statuses.
 
         line_item_id : typing.Optional[str]
             Search for a payable by the identifier of the line item associated with it.
@@ -269,12 +220,10 @@ class PayablesClient:
             Search for a payable by the identifier of the purchase order associated with it.
 
         project_id : typing.Optional[str]
-            Return only payables assigned to the project with the specified ID.
-
-            Valid but nonexistent project IDs do not raise errors but return no results.
+            Search for a payable by the identifier of the project associated with it.
 
         tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+            Search for a payable by the identifiers of the tags associated with it.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -356,9 +305,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -366,9 +315,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -376,9 +325,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -386,9 +335,9 @@ class PayablesClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -406,9 +355,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -428,7 +377,6 @@ class PayablesClient:
         counterpart_vat_id_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[CurrencyEnum] = OMIT,
         description: typing.Optional[str] = OMIT,
-        discount: typing.Optional[int] = OMIT,
         document_id: typing.Optional[str] = OMIT,
         due_date: typing.Optional[str] = OMIT,
         file_name: typing.Optional[str] = OMIT,
@@ -453,7 +401,7 @@ class PayablesClient:
         You can use this endpoint to bypass the Monite OCR service and provide the data directly
         (for example, if you already have the data in place).
 
-        A newly created payable has the the `draft` [status](https://docs.monite.com/accounts-payable/payables/index).
+        A newly created payable has the the `draft` [status](https://docs.monite.com/docs/payables-lifecycle).
 
         Parameters
         ----------
@@ -475,13 +423,10 @@ class PayablesClient:
             The ID of counterpart VAT ID object stored in counterparts service
 
         currency : typing.Optional[CurrencyEnum]
-            The [currency code](https://docs.monite.com/references/currencies) of the currency used in the payable.
+            The [currency code](https://docs.monite.com/docs/currencies) of the currency used in the payable.
 
         description : typing.Optional[str]
             An arbitrary description of this payable.
-
-        discount : typing.Optional[int]
-            The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         document_id : typing.Optional[str]
             A unique invoice number assigned by the invoice issuer for payment tracking purposes.
@@ -511,7 +456,7 @@ class PayablesClient:
             The email address from which the invoice was sent to the entity.
 
         subtotal : typing.Optional[int]
-            The subtotal amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The subtotal amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         suggested_payment_term : typing.Optional[SuggestedPaymentTerm]
             The suggested date and corresponding discount in which payable could be paid. The date is in the YYYY-MM-DD format. The discount is calculated as X * (10^-4) - for example, 100 is 1%, 25 is 0,25%, 10000 is 100 %. Date varies depending on the payment terms and may even be equal to the due date with discount 0.
@@ -523,10 +468,10 @@ class PayablesClient:
             Registered tax percentage applied for a service price in minor units, e.g. 200 means 2%. 1050 means 10.5%.
 
         tax_amount : typing.Optional[int]
-            Tax amount in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            Tax amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         total_amount : typing.Optional[int]
-            The total amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The total amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -558,7 +503,6 @@ class PayablesClient:
                 "counterpart_vat_id_id": counterpart_vat_id_id,
                 "currency": currency,
                 "description": description,
-                "discount": discount,
                 "document_id": document_id,
                 "due_date": due_date,
                 "file_name": file_name,
@@ -579,9 +523,6 @@ class PayablesClient:
                 "tax_amount": tax_amount,
                 "total_amount": total_amount,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -597,9 +538,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -607,9 +548,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -617,9 +558,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -637,9 +578,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -695,125 +636,75 @@ class PayablesClient:
         """
         Retrieve aggregated statistics for payables, including total amount and count, both overall and by status.
 
-        For more flexible configuration and retrieval of other data types, use `GET /analytics/payables`.
-
         Parameters
         ----------
         created_at_gt : typing.Optional[dt.datetime]
-            Return only payables created in Monite after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm].
 
         created_at_lt : typing.Optional[dt.datetime]
-            Return only payables created in Monite before the specified date and time.
 
         created_at_gte : typing.Optional[dt.datetime]
-            Return only payables created in Monite on or after the specified date and time.
 
         created_at_lte : typing.Optional[dt.datetime]
-            Return only payables created in Monite before or on the specified date and time.
 
         status : typing.Optional[PayableStateEnum]
-            Return only payables that have the specified [status](https://docs.monite.com/accounts-payable/payables/index).
-
-            To query multiple statuses at once, use the `status__in` parameter instead.
 
         status_in : typing.Optional[typing.Union[PayableStateEnum, typing.Sequence[PayableStateEnum]]]
-            Return only payables that have the specified [statuses](https://docs.monite.com/accounts-payable/payables/index).
-
-            To specify multiple statuses, repeat this parameter for each value: `status__in=draft&status__in=new`
 
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Return only payables with specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
-
-            To specify multiple IDs, repeat this parameter for each value: `id__in=<id1>&id__in=<id2>`
 
         total_amount : typing.Optional[int]
-            Return only payables with the exact specified total amount. The amount must be specified in the minor units of currency. For example, $12.5 is represented as 1250.
 
         total_amount_gt : typing.Optional[int]
-            Return only payables whose total amount (in minor units) exceeds the specified value.
 
         total_amount_lt : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is less than the specified value.
 
         total_amount_gte : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is greater than or equal to the specified value.
 
         total_amount_lte : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is less than or equal to the specified value.
 
         amount : typing.Optional[int]
-            Return only payables with the specified amount.
 
         amount_gt : typing.Optional[int]
-            Return only payables whose amount (in minor units) exceeds the specified value.
 
         amount_lt : typing.Optional[int]
-            Return only payables whose amount (in minor units) is less than the specified value.
 
         amount_gte : typing.Optional[int]
-            Return only payables whose amount (in minor units) is greater than or equal to the specified value.
 
         amount_lte : typing.Optional[int]
-            Return only payables whose amount (in minor units) is less than or equal to the specified value.
 
         currency : typing.Optional[CurrencyEnum]
-            Return only payables that use the specified currency.
 
         counterpart_name : typing.Optional[str]
-            Return only payables received from counterparts with the specified name (exact match, case-sensitive).
-
-            For counterparts of `type = individual`, the full name is formatted as `first_name last_name`.
 
         counterpart_name_contains : typing.Optional[str]
-            Return only payables received from counterparts whose name contains the specified string (case-sensitive).
 
         counterpart_name_icontains : typing.Optional[str]
-            Return only payables received from counterparts whose name contains the specified string (case-insensitive).
 
         search_text : typing.Optional[str]
-            Apply the `icontains` condition to search for the specified text in the `document_id` and `counterpart_name` fields in the payables.
 
         due_date : typing.Optional[str]
-            Return payables that are due on the specified date (YYYY-MM-DD)
 
         due_date_gt : typing.Optional[str]
-            Return payables that are due after the specified date (exclusive, YYYY-MM-DD).
 
         due_date_lt : typing.Optional[str]
-            Return payables that are due before the specified date (exclusive, YYYY-MM-DD).
 
         due_date_gte : typing.Optional[str]
-            Return payables that are due on or after the specified date (YYYY-MM-DD).
 
         due_date_lte : typing.Optional[str]
-            Return payables that are due before or on the specified date (YYYY-MM-DD).
 
         document_id : typing.Optional[str]
-            Return a payable with the exact specified document number (case-sensitive).
-
-            The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
 
         document_id_contains : typing.Optional[str]
-            Return only payables whose document number (`document_id`) contains the specified string (case-sensitive).
 
         document_id_icontains : typing.Optional[str]
-            Return only payables whose document number (`document_id`) contains the specified string (case-insensitive).
 
         was_created_by_user_id : typing.Optional[str]
-            Return only payables created in Monite by the entity user with the specified ID.
 
         counterpart_id : typing.Optional[str]
-            Return only payables received from the counterpart with the specified ID.
-
-            Counterparts that have been deleted but have associated payables will still return results here because the payables contain a frozen copy of the counterpart data.
-
-            If the specified counterpart ID does not exist and never existed, no results are returned.
 
         source_of_payable_data : typing.Optional[SourceOfPayableDataEnum]
-            Return only payables coming from the specified source.
 
         ocr_status : typing.Optional[OcrStatusEnum]
-            Return only payables with specific OCR statuses.
 
         line_item_id : typing.Optional[str]
             Search for a payable by the identifier of the line item associated with it.
@@ -822,12 +713,10 @@ class PayablesClient:
             Search for a payable by the identifier of the purchase order associated with it.
 
         project_id : typing.Optional[str]
-            Return only payables assigned to the project with the specified ID.
-
-            Valid but nonexistent project IDs do not raise errors but return no results.
+            Search for a payable by the identifier of the project associated with it.
 
         tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+            Search for a payable by the identifiers of the tags associated with it.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -905,9 +794,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -915,9 +804,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -935,9 +824,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -999,9 +888,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1009,9 +898,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1019,9 +908,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1029,9 +918,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1049,9 +938,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1103,9 +992,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1113,9 +1002,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1123,9 +1012,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1143,9 +1032,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1195,9 +1084,6 @@ class PayablesClient:
             json={
                 "required_fields": required_fields,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1213,9 +1099,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1223,9 +1109,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1233,9 +1119,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1253,9 +1139,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1309,9 +1195,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1319,9 +1205,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1329,9 +1215,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1349,9 +1235,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1405,9 +1291,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1425,9 +1311,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1485,9 +1371,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1495,9 +1381,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1505,9 +1391,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1515,9 +1401,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1535,9 +1421,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1586,9 +1472,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1596,9 +1482,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1606,9 +1492,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1616,9 +1502,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1636,9 +1522,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1659,7 +1545,6 @@ class PayablesClient:
         counterpart_vat_id_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[CurrencyEnum] = OMIT,
         description: typing.Optional[str] = OMIT,
-        discount: typing.Optional[int] = OMIT,
         document_id: typing.Optional[str] = OMIT,
         due_date: typing.Optional[str] = OMIT,
         issued_at: typing.Optional[str] = OMIT,
@@ -1699,13 +1584,10 @@ class PayablesClient:
             The ID of counterpart VAT ID object stored in counterparts service
 
         currency : typing.Optional[CurrencyEnum]
-            The [currency code](https://docs.monite.com/references/currencies) of the currency used in the payable.
+            The [currency code](https://docs.monite.com/docs/currencies) of the currency used in the payable.
 
         description : typing.Optional[str]
             An arbitrary description of this payable.
-
-        discount : typing.Optional[int]
-            The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         document_id : typing.Optional[str]
             A unique invoice number assigned by the invoice issuer for payment tracking purposes.
@@ -1732,7 +1614,7 @@ class PayablesClient:
             The email address from which the invoice was sent to the entity.
 
         subtotal : typing.Optional[int]
-            The subtotal amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The subtotal amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         suggested_payment_term : typing.Optional[SuggestedPaymentTerm]
             The suggested date and corresponding discount in which payable could be paid. The date is in the YYYY-MM-DD format. The discount is calculated as X * (10^-4) - for example, 100 is 1%, 25 is 0,25%, 10000 is 100 %. Date varies depending on the payment terms and may even be equal to the due date with discount 0.
@@ -1744,10 +1626,10 @@ class PayablesClient:
             Registered tax percentage applied for a service price in minor units, e.g. 200 means 2%, 1050 means 10.5%.
 
         tax_amount : typing.Optional[int]
-            Tax amount in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            Tax amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         total_amount : typing.Optional[int]
-            The total amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The total amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1783,7 +1665,6 @@ class PayablesClient:
                 "counterpart_vat_id_id": counterpart_vat_id_id,
                 "currency": currency,
                 "description": description,
-                "discount": discount,
                 "document_id": document_id,
                 "due_date": due_date,
                 "issued_at": issued_at,
@@ -1803,9 +1684,6 @@ class PayablesClient:
                 "tax_amount": tax_amount,
                 "total_amount": total_amount,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1821,9 +1699,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1831,9 +1709,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1841,9 +1719,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1851,9 +1729,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1871,9 +1749,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1931,9 +1809,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1941,9 +1819,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1951,9 +1829,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1961,9 +1839,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1971,9 +1849,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1991,9 +1869,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2059,9 +1937,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2069,9 +1947,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2079,9 +1957,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2089,9 +1967,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2109,9 +1987,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2169,9 +2047,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2179,9 +2057,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2189,9 +2067,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2199,9 +2077,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2209,9 +2087,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2229,129 +2107,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def post_payables_id_cancel_ocr(
-        self, payable_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> PayableResponseSchema:
-        """
-        Request to cancel the OCR processing of the specified payable.
-
-        Parameters
-        ----------
-        payable_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        PayableResponseSchema
-            Successful Response
-
-        Examples
-        --------
-        from monite import Monite
-
-        client = Monite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-        client.payables.post_payables_id_cancel_ocr(
-            payable_id="payable_id",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"payables/{jsonable_encoder(payable_id)}/cancel_ocr",
-            method="POST",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    PayableResponseSchema,
-                    parse_obj_as(
-                        type_=PayableResponseSchema,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 409:
-                raise ConflictError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2384,13 +2142,13 @@ class PayablesClient:
         - The `amount_to_pay` field is automatically calculated based on the `amount_due` less the percentage described
         in the `payment_terms.discount` value.
 
-        Related guide: [Mark a payable as paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-paid)
+        Related guide: [Mark a payable as paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-paid)
 
         See also:
 
-        [Payables lifecycle](https://docs.monite.com/accounts-payable/payables/index)
+        [Payables lifecycle](https://docs.monite.com/docs/payables-lifecycle)
 
-        [Payables status transitions](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
+        [Payables status transitions](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
 
         Parameters
         ----------
@@ -2426,9 +2184,6 @@ class PayablesClient:
             json={
                 "comment": comment,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -2444,9 +2199,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2454,9 +2209,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2464,9 +2219,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2474,9 +2229,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2484,9 +2239,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2504,9 +2259,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2535,15 +2290,15 @@ class PayablesClient:
         - The `amount_to_pay` field is automatically calculated based on the `amount_due` less the percentage described
         in the `payment_terms.discount` value.
 
-        Related guide: [Mark a payable as partially paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-partially-paid)
+        Related guide: [Mark a payable as partially paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-partially-paid)
 
         See also:
 
-        [Payables lifecycle](https://docs.monite.com/accounts-payable/payables/index)
+        [Payables lifecycle](https://docs.monite.com/docs/payables-lifecycle)
 
-        [Payables status transitions](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
+        [Payables status transitions](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
 
-        [Mark a payable as paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-paid)
+        [Mark a payable as paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-paid)
 
         Parameters
         ----------
@@ -2580,9 +2335,6 @@ class PayablesClient:
             json={
                 "amount_paid": amount_paid,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -2598,9 +2350,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2608,9 +2360,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2618,9 +2370,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2628,9 +2380,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2638,9 +2390,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2658,9 +2410,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2718,9 +2470,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2728,9 +2480,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2738,9 +2490,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2748,9 +2500,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2758,9 +2510,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2778,9 +2530,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2838,9 +2590,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2848,9 +2600,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2858,9 +2610,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2868,9 +2620,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2878,9 +2630,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2898,9 +2650,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2958,9 +2710,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2968,9 +2720,9 @@ class PayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2978,9 +2730,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2988,9 +2740,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2998,9 +2750,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3018,9 +2770,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3078,9 +2830,9 @@ class PayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3088,9 +2840,9 @@ class PayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3098,9 +2850,9 @@ class PayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3108,9 +2860,9 @@ class PayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3128,9 +2880,9 @@ class PayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3197,9 +2949,9 @@ class AsyncPayablesClient:
         Lists all payables from the connected entity.
 
         If you already have the data of the payable (amount in [minor units](
-        https://docs.monite.com/references/currencies#minor-units), currency, vendor information, and other details)
+        https://docs.monite.com/docs/currencies#minor-units), currency, vendor information, and other details)
         stored somewhere as individual attributes, you can create a payable with these attributes by calling [POST
-        /payables](https://docs.monite.com/api/payables/post-payables) and providing the [base64-encoded](
+        /payables](https://docs.monite.com/reference/post_payables) and providing the [base64-encoded](
         https://en.wikipedia.org/wiki/Base64) contents of the original invoice file in the field `base64_encoded_file`.
 
         A payable is a financial document given by an entity`s supplier itemizing the purchase of a good or a service and
@@ -3209,155 +2961,105 @@ class AsyncPayablesClient:
         to automatically set `suggested_payment_term`, this object can be omitted from the request body.
 
         The `id` generated for this payable can be used in other API calls to update the data of this payable or trigger [
-        status transitions](https://docs.monite.com/accounts-payable/approvals/manual-transition), for example. essential data
+        status transitions](https://docs.monite.com/docs/payable-status-transitions), for example. essential data
         fields to move from `draft` to `new`
 
-        Related guide: [Create a payable from data](https://docs.monite.com/accounts-payable/payables/collect#create-a-payable-from-data)
+        Related guide: [Create a payable from data](https://docs.monite.com/docs/collect-payables#create-a-payable-from-data)
 
         See also:
 
 
-        [Automatic calculation of due date](https://docs.monite.com/accounts-payable/payables/collect#automatic-calculation-of-due-date)
+        [Automatic calculation of due date](https://docs.monite.com/docs/collect-payables#automatic-calculation-of-due-date)
 
-        [Suggested payment date](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
+        [Suggested payment date](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
 
-        [Attach file](https://docs.monite.com/accounts-payable/payables/collect#attach-file)
+        [Attach file](https://docs.monite.com/docs/collect-payables#attach-file)
 
-        [Collect payables by email](https://docs.monite.com/accounts-payable/payables/collect#send-payables-by-email)
+        [Collect payables by email](https://docs.monite.com/docs/collect-payables#send-payables-by-email)
 
-        [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+        [Manage line items](https://docs.monite.com/docs/manage-line-items)
 
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Sort order (ascending by default). Typically used together with the `sort` parameter.
+            Order by
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            Max is 100
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-
-            If not specified, the first page of results will be returned.
+            A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[PayableCursorFields]
-            The field to sort the results by. Typically used together with the `order` parameter.
+            Allowed sort fields
 
         created_at_gt : typing.Optional[dt.datetime]
-            Return only payables created in Monite after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm].
 
         created_at_lt : typing.Optional[dt.datetime]
-            Return only payables created in Monite before the specified date and time.
 
         created_at_gte : typing.Optional[dt.datetime]
-            Return only payables created in Monite on or after the specified date and time.
 
         created_at_lte : typing.Optional[dt.datetime]
-            Return only payables created in Monite before or on the specified date and time.
 
         status : typing.Optional[PayableStateEnum]
-            Return only payables that have the specified [status](https://docs.monite.com/accounts-payable/payables/index).
-
-            To query multiple statuses at once, use the `status__in` parameter instead.
 
         status_in : typing.Optional[typing.Union[PayableStateEnum, typing.Sequence[PayableStateEnum]]]
-            Return only payables that have the specified [statuses](https://docs.monite.com/accounts-payable/payables/index).
-
-            To specify multiple statuses, repeat this parameter for each value: `status__in=draft&status__in=new`
 
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Return only payables with specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
-
-            To specify multiple IDs, repeat this parameter for each value: `id__in=<id1>&id__in=<id2>`
 
         total_amount : typing.Optional[int]
-            Return only payables with the exact specified total amount. The amount must be specified in the minor units of currency. For example, $12.5 is represented as 1250.
 
         total_amount_gt : typing.Optional[int]
-            Return only payables whose total amount (in minor units) exceeds the specified value.
 
         total_amount_lt : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is less than the specified value.
 
         total_amount_gte : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is greater than or equal to the specified value.
 
         total_amount_lte : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is less than or equal to the specified value.
 
         amount : typing.Optional[int]
-            Return only payables with the specified amount.
 
         amount_gt : typing.Optional[int]
-            Return only payables whose amount (in minor units) exceeds the specified value.
 
         amount_lt : typing.Optional[int]
-            Return only payables whose amount (in minor units) is less than the specified value.
 
         amount_gte : typing.Optional[int]
-            Return only payables whose amount (in minor units) is greater than or equal to the specified value.
 
         amount_lte : typing.Optional[int]
-            Return only payables whose amount (in minor units) is less than or equal to the specified value.
 
         currency : typing.Optional[CurrencyEnum]
-            Return only payables that use the specified currency.
 
         counterpart_name : typing.Optional[str]
-            Return only payables received from counterparts with the specified name (exact match, case-sensitive).
-
-            For counterparts of `type = individual`, the full name is formatted as `first_name last_name`.
 
         counterpart_name_contains : typing.Optional[str]
-            Return only payables received from counterparts whose name contains the specified string (case-sensitive).
 
         counterpart_name_icontains : typing.Optional[str]
-            Return only payables received from counterparts whose name contains the specified string (case-insensitive).
 
         search_text : typing.Optional[str]
-            Apply the `icontains` condition to search for the specified text in the `document_id` and `counterpart_name` fields in the payables.
 
         due_date : typing.Optional[str]
-            Return payables that are due on the specified date (YYYY-MM-DD)
 
         due_date_gt : typing.Optional[str]
-            Return payables that are due after the specified date (exclusive, YYYY-MM-DD).
 
         due_date_lt : typing.Optional[str]
-            Return payables that are due before the specified date (exclusive, YYYY-MM-DD).
 
         due_date_gte : typing.Optional[str]
-            Return payables that are due on or after the specified date (YYYY-MM-DD).
 
         due_date_lte : typing.Optional[str]
-            Return payables that are due before or on the specified date (YYYY-MM-DD).
 
         document_id : typing.Optional[str]
-            Return a payable with the exact specified document number (case-sensitive).
-
-            The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
 
         document_id_contains : typing.Optional[str]
-            Return only payables whose document number (`document_id`) contains the specified string (case-sensitive).
 
         document_id_icontains : typing.Optional[str]
-            Return only payables whose document number (`document_id`) contains the specified string (case-insensitive).
 
         was_created_by_user_id : typing.Optional[str]
-            Return only payables created in Monite by the entity user with the specified ID.
 
         counterpart_id : typing.Optional[str]
-            Return only payables received from the counterpart with the specified ID.
-
-            Counterparts that have been deleted but have associated payables will still return results here because the payables contain a frozen copy of the counterpart data.
-
-            If the specified counterpart ID does not exist and never existed, no results are returned.
 
         source_of_payable_data : typing.Optional[SourceOfPayableDataEnum]
-            Return only payables coming from the specified source.
 
         ocr_status : typing.Optional[OcrStatusEnum]
-            Return only payables with specific OCR statuses.
 
         line_item_id : typing.Optional[str]
             Search for a payable by the identifier of the line item associated with it.
@@ -3366,12 +3068,10 @@ class AsyncPayablesClient:
             Search for a payable by the identifier of the purchase order associated with it.
 
         project_id : typing.Optional[str]
-            Return only payables assigned to the project with the specified ID.
-
-            Valid but nonexistent project IDs do not raise errors but return no results.
+            Search for a payable by the identifier of the project associated with it.
 
         tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+            Search for a payable by the identifiers of the tags associated with it.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3461,9 +3161,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3471,9 +3171,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3481,9 +3181,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3491,9 +3191,9 @@ class AsyncPayablesClient:
             if _response.status_code == 406:
                 raise NotAcceptableError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3511,9 +3211,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3533,7 +3233,6 @@ class AsyncPayablesClient:
         counterpart_vat_id_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[CurrencyEnum] = OMIT,
         description: typing.Optional[str] = OMIT,
-        discount: typing.Optional[int] = OMIT,
         document_id: typing.Optional[str] = OMIT,
         due_date: typing.Optional[str] = OMIT,
         file_name: typing.Optional[str] = OMIT,
@@ -3558,7 +3257,7 @@ class AsyncPayablesClient:
         You can use this endpoint to bypass the Monite OCR service and provide the data directly
         (for example, if you already have the data in place).
 
-        A newly created payable has the the `draft` [status](https://docs.monite.com/accounts-payable/payables/index).
+        A newly created payable has the the `draft` [status](https://docs.monite.com/docs/payables-lifecycle).
 
         Parameters
         ----------
@@ -3580,13 +3279,10 @@ class AsyncPayablesClient:
             The ID of counterpart VAT ID object stored in counterparts service
 
         currency : typing.Optional[CurrencyEnum]
-            The [currency code](https://docs.monite.com/references/currencies) of the currency used in the payable.
+            The [currency code](https://docs.monite.com/docs/currencies) of the currency used in the payable.
 
         description : typing.Optional[str]
             An arbitrary description of this payable.
-
-        discount : typing.Optional[int]
-            The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         document_id : typing.Optional[str]
             A unique invoice number assigned by the invoice issuer for payment tracking purposes.
@@ -3616,7 +3312,7 @@ class AsyncPayablesClient:
             The email address from which the invoice was sent to the entity.
 
         subtotal : typing.Optional[int]
-            The subtotal amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The subtotal amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         suggested_payment_term : typing.Optional[SuggestedPaymentTerm]
             The suggested date and corresponding discount in which payable could be paid. The date is in the YYYY-MM-DD format. The discount is calculated as X * (10^-4) - for example, 100 is 1%, 25 is 0,25%, 10000 is 100 %. Date varies depending on the payment terms and may even be equal to the due date with discount 0.
@@ -3628,10 +3324,10 @@ class AsyncPayablesClient:
             Registered tax percentage applied for a service price in minor units, e.g. 200 means 2%. 1050 means 10.5%.
 
         tax_amount : typing.Optional[int]
-            Tax amount in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            Tax amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         total_amount : typing.Optional[int]
-            The total amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The total amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3671,7 +3367,6 @@ class AsyncPayablesClient:
                 "counterpart_vat_id_id": counterpart_vat_id_id,
                 "currency": currency,
                 "description": description,
-                "discount": discount,
                 "document_id": document_id,
                 "due_date": due_date,
                 "file_name": file_name,
@@ -3692,9 +3387,6 @@ class AsyncPayablesClient:
                 "tax_amount": tax_amount,
                 "total_amount": total_amount,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -3710,9 +3402,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3720,9 +3412,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3730,9 +3422,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3750,9 +3442,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3808,125 +3500,75 @@ class AsyncPayablesClient:
         """
         Retrieve aggregated statistics for payables, including total amount and count, both overall and by status.
 
-        For more flexible configuration and retrieval of other data types, use `GET /analytics/payables`.
-
         Parameters
         ----------
         created_at_gt : typing.Optional[dt.datetime]
-            Return only payables created in Monite after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm].
 
         created_at_lt : typing.Optional[dt.datetime]
-            Return only payables created in Monite before the specified date and time.
 
         created_at_gte : typing.Optional[dt.datetime]
-            Return only payables created in Monite on or after the specified date and time.
 
         created_at_lte : typing.Optional[dt.datetime]
-            Return only payables created in Monite before or on the specified date and time.
 
         status : typing.Optional[PayableStateEnum]
-            Return only payables that have the specified [status](https://docs.monite.com/accounts-payable/payables/index).
-
-            To query multiple statuses at once, use the `status__in` parameter instead.
 
         status_in : typing.Optional[typing.Union[PayableStateEnum, typing.Sequence[PayableStateEnum]]]
-            Return only payables that have the specified [statuses](https://docs.monite.com/accounts-payable/payables/index).
-
-            To specify multiple statuses, repeat this parameter for each value: `status__in=draft&status__in=new`
 
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Return only payables with specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
-
-            To specify multiple IDs, repeat this parameter for each value: `id__in=<id1>&id__in=<id2>`
 
         total_amount : typing.Optional[int]
-            Return only payables with the exact specified total amount. The amount must be specified in the minor units of currency. For example, $12.5 is represented as 1250.
 
         total_amount_gt : typing.Optional[int]
-            Return only payables whose total amount (in minor units) exceeds the specified value.
 
         total_amount_lt : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is less than the specified value.
 
         total_amount_gte : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is greater than or equal to the specified value.
 
         total_amount_lte : typing.Optional[int]
-            Return only payables whose total amount (in minor units) is less than or equal to the specified value.
 
         amount : typing.Optional[int]
-            Return only payables with the specified amount.
 
         amount_gt : typing.Optional[int]
-            Return only payables whose amount (in minor units) exceeds the specified value.
 
         amount_lt : typing.Optional[int]
-            Return only payables whose amount (in minor units) is less than the specified value.
 
         amount_gte : typing.Optional[int]
-            Return only payables whose amount (in minor units) is greater than or equal to the specified value.
 
         amount_lte : typing.Optional[int]
-            Return only payables whose amount (in minor units) is less than or equal to the specified value.
 
         currency : typing.Optional[CurrencyEnum]
-            Return only payables that use the specified currency.
 
         counterpart_name : typing.Optional[str]
-            Return only payables received from counterparts with the specified name (exact match, case-sensitive).
-
-            For counterparts of `type = individual`, the full name is formatted as `first_name last_name`.
 
         counterpart_name_contains : typing.Optional[str]
-            Return only payables received from counterparts whose name contains the specified string (case-sensitive).
 
         counterpart_name_icontains : typing.Optional[str]
-            Return only payables received from counterparts whose name contains the specified string (case-insensitive).
 
         search_text : typing.Optional[str]
-            Apply the `icontains` condition to search for the specified text in the `document_id` and `counterpart_name` fields in the payables.
 
         due_date : typing.Optional[str]
-            Return payables that are due on the specified date (YYYY-MM-DD)
 
         due_date_gt : typing.Optional[str]
-            Return payables that are due after the specified date (exclusive, YYYY-MM-DD).
 
         due_date_lt : typing.Optional[str]
-            Return payables that are due before the specified date (exclusive, YYYY-MM-DD).
 
         due_date_gte : typing.Optional[str]
-            Return payables that are due on or after the specified date (YYYY-MM-DD).
 
         due_date_lte : typing.Optional[str]
-            Return payables that are due before or on the specified date (YYYY-MM-DD).
 
         document_id : typing.Optional[str]
-            Return a payable with the exact specified document number (case-sensitive).
-
-            The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
 
         document_id_contains : typing.Optional[str]
-            Return only payables whose document number (`document_id`) contains the specified string (case-sensitive).
 
         document_id_icontains : typing.Optional[str]
-            Return only payables whose document number (`document_id`) contains the specified string (case-insensitive).
 
         was_created_by_user_id : typing.Optional[str]
-            Return only payables created in Monite by the entity user with the specified ID.
 
         counterpart_id : typing.Optional[str]
-            Return only payables received from the counterpart with the specified ID.
-
-            Counterparts that have been deleted but have associated payables will still return results here because the payables contain a frozen copy of the counterpart data.
-
-            If the specified counterpart ID does not exist and never existed, no results are returned.
 
         source_of_payable_data : typing.Optional[SourceOfPayableDataEnum]
-            Return only payables coming from the specified source.
 
         ocr_status : typing.Optional[OcrStatusEnum]
-            Return only payables with specific OCR statuses.
 
         line_item_id : typing.Optional[str]
             Search for a payable by the identifier of the line item associated with it.
@@ -3935,12 +3577,10 @@ class AsyncPayablesClient:
             Search for a payable by the identifier of the purchase order associated with it.
 
         project_id : typing.Optional[str]
-            Return only payables assigned to the project with the specified ID.
-
-            Valid but nonexistent project IDs do not raise errors but return no results.
+            Search for a payable by the identifier of the project associated with it.
 
         tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+            Search for a payable by the identifiers of the tags associated with it.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4026,9 +3666,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4036,9 +3676,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4056,9 +3696,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4128,9 +3768,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4138,9 +3778,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4148,9 +3788,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4158,9 +3798,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4178,9 +3818,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4242,9 +3882,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4252,9 +3892,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4262,9 +3902,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4282,9 +3922,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4342,9 +3982,6 @@ class AsyncPayablesClient:
             json={
                 "required_fields": required_fields,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -4360,9 +3997,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4370,9 +4007,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4380,9 +4017,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4400,9 +4037,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4464,9 +4101,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4474,9 +4111,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4484,9 +4121,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4504,9 +4141,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4568,9 +4205,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4588,9 +4225,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4656,9 +4293,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4666,9 +4303,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4676,9 +4313,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4686,9 +4323,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4706,9 +4343,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4765,9 +4402,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4775,9 +4412,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4785,9 +4422,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4795,9 +4432,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4815,9 +4452,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4838,7 +4475,6 @@ class AsyncPayablesClient:
         counterpart_vat_id_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[CurrencyEnum] = OMIT,
         description: typing.Optional[str] = OMIT,
-        discount: typing.Optional[int] = OMIT,
         document_id: typing.Optional[str] = OMIT,
         due_date: typing.Optional[str] = OMIT,
         issued_at: typing.Optional[str] = OMIT,
@@ -4878,13 +4514,10 @@ class AsyncPayablesClient:
             The ID of counterpart VAT ID object stored in counterparts service
 
         currency : typing.Optional[CurrencyEnum]
-            The [currency code](https://docs.monite.com/references/currencies) of the currency used in the payable.
+            The [currency code](https://docs.monite.com/docs/currencies) of the currency used in the payable.
 
         description : typing.Optional[str]
             An arbitrary description of this payable.
-
-        discount : typing.Optional[int]
-            The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         document_id : typing.Optional[str]
             A unique invoice number assigned by the invoice issuer for payment tracking purposes.
@@ -4911,7 +4544,7 @@ class AsyncPayablesClient:
             The email address from which the invoice was sent to the entity.
 
         subtotal : typing.Optional[int]
-            The subtotal amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The subtotal amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         suggested_payment_term : typing.Optional[SuggestedPaymentTerm]
             The suggested date and corresponding discount in which payable could be paid. The date is in the YYYY-MM-DD format. The discount is calculated as X * (10^-4) - for example, 100 is 1%, 25 is 0,25%, 10000 is 100 %. Date varies depending on the payment terms and may even be equal to the due date with discount 0.
@@ -4923,10 +4556,10 @@ class AsyncPayablesClient:
             Registered tax percentage applied for a service price in minor units, e.g. 200 means 2%, 1050 means 10.5%.
 
         tax_amount : typing.Optional[int]
-            Tax amount in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            Tax amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         total_amount : typing.Optional[int]
-            The total amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250.
+            The total amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4970,7 +4603,6 @@ class AsyncPayablesClient:
                 "counterpart_vat_id_id": counterpart_vat_id_id,
                 "currency": currency,
                 "description": description,
-                "discount": discount,
                 "document_id": document_id,
                 "due_date": due_date,
                 "issued_at": issued_at,
@@ -4990,9 +4622,6 @@ class AsyncPayablesClient:
                 "tax_amount": tax_amount,
                 "total_amount": total_amount,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -5008,9 +4637,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5018,9 +4647,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5028,9 +4657,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5038,9 +4667,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5058,9 +4687,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5126,9 +4755,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5136,9 +4765,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5146,9 +4775,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5156,9 +4785,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5166,9 +4795,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5186,9 +4815,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5262,9 +4891,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5272,9 +4901,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5282,9 +4911,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5292,9 +4921,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5312,9 +4941,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5380,9 +5009,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5390,9 +5019,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5400,9 +5029,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5410,9 +5039,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5420,9 +5049,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5440,137 +5069,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def post_payables_id_cancel_ocr(
-        self, payable_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> PayableResponseSchema:
-        """
-        Request to cancel the OCR processing of the specified payable.
-
-        Parameters
-        ----------
-        payable_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        PayableResponseSchema
-            Successful Response
-
-        Examples
-        --------
-        import asyncio
-
-        from monite import AsyncMonite
-
-        client = AsyncMonite(
-            monite_version="YOUR_MONITE_VERSION",
-            monite_entity_id="YOUR_MONITE_ENTITY_ID",
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.payables.post_payables_id_cancel_ocr(
-                payable_id="payable_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"payables/{jsonable_encoder(payable_id)}/cancel_ocr",
-            method="POST",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    PayableResponseSchema,
-                    parse_obj_as(
-                        type_=PayableResponseSchema,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 409:
-                raise ConflictError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 422:
-                raise UnprocessableEntityError(
-                    typing.cast(
-                        HttpValidationError,
-                        parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5603,13 +5104,13 @@ class AsyncPayablesClient:
         - The `amount_to_pay` field is automatically calculated based on the `amount_due` less the percentage described
         in the `payment_terms.discount` value.
 
-        Related guide: [Mark a payable as paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-paid)
+        Related guide: [Mark a payable as paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-paid)
 
         See also:
 
-        [Payables lifecycle](https://docs.monite.com/accounts-payable/payables/index)
+        [Payables lifecycle](https://docs.monite.com/docs/payables-lifecycle)
 
-        [Payables status transitions](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
+        [Payables status transitions](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
 
         Parameters
         ----------
@@ -5653,9 +5154,6 @@ class AsyncPayablesClient:
             json={
                 "comment": comment,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -5671,9 +5169,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5681,9 +5179,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5691,9 +5189,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5701,9 +5199,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5711,9 +5209,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5731,9 +5229,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5762,15 +5260,15 @@ class AsyncPayablesClient:
         - The `amount_to_pay` field is automatically calculated based on the `amount_due` less the percentage described
         in the `payment_terms.discount` value.
 
-        Related guide: [Mark a payable as partially paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-partially-paid)
+        Related guide: [Mark a payable as partially paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-partially-paid)
 
         See also:
 
-        [Payables lifecycle](https://docs.monite.com/accounts-payable/payables/index)
+        [Payables lifecycle](https://docs.monite.com/docs/payables-lifecycle)
 
-        [Payables status transitions](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
+        [Payables status transitions](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
 
-        [Mark a payable as paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-paid)
+        [Mark a payable as paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-paid)
 
         Parameters
         ----------
@@ -5815,9 +5313,6 @@ class AsyncPayablesClient:
             json={
                 "amount_paid": amount_paid,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -5833,9 +5328,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5843,9 +5338,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5853,9 +5348,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5863,9 +5358,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5873,9 +5368,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5893,9 +5388,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5961,9 +5456,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5971,9 +5466,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5981,9 +5476,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5991,9 +5486,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6001,9 +5496,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6021,9 +5516,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6089,9 +5584,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6099,9 +5594,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6109,9 +5604,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6119,9 +5614,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6129,9 +5624,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6149,9 +5644,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6217,9 +5712,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6227,9 +5722,9 @@ class AsyncPayablesClient:
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6237,9 +5732,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6247,9 +5742,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6257,9 +5752,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6277,9 +5772,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6345,9 +5840,9 @@ class AsyncPayablesClient:
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6355,9 +5850,9 @@ class AsyncPayablesClient:
             if _response.status_code == 403:
                 raise ForbiddenError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6365,9 +5860,9 @@ class AsyncPayablesClient:
             if _response.status_code == 404:
                 raise NotFoundError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6375,9 +5870,9 @@ class AsyncPayablesClient:
             if _response.status_code == 409:
                 raise ConflictError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6395,9 +5890,9 @@ class AsyncPayablesClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

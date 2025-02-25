@@ -3,21 +3,24 @@
 import typing
 from ..core.client_wrapper import SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.partner_project_settings_payload_output import PartnerProjectSettingsPayloadOutput
+from ..types.partner_project_settings_response import PartnerProjectSettingsResponse
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.bad_request_error import BadRequestError
+from ..types.error_schema_response import ErrorSchemaResponse
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
-from ..types.currency_settings_input import CurrencySettingsInput
-from ..types.payable_settings import PayableSettings
-from ..types.receivable_settings import ReceivableSettings
-from ..types.mail_settings import MailSettings
-from ..types.unit import Unit
-from ..types.payments_settings_input import PaymentsSettingsInput
+from ..types.accounting_settings_payload import AccountingSettingsPayload
 from ..types.api_version import ApiVersion
+from ..types.currency_settings import CurrencySettings
+from ..types.e_invoicing_settings_payload import EInvoicingSettingsPayload
+from ..types.mail_settings_payload import MailSettingsPayload
+from ..types.payable_settings_payload import PayableSettingsPayload
+from ..types.payments_settings_payload import PaymentsSettingsPayload
+from ..types.receivable_settings_payload import ReceivableSettingsPayload
+from ..types.unit import Unit
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..core.client_wrapper import AsyncClientWrapper
 
@@ -29,7 +32,7 @@ class PartnerSettingsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def get(self, *, request_options: typing.Optional[RequestOptions] = None) -> PartnerProjectSettingsPayloadOutput:
+    def get(self, *, request_options: typing.Optional[RequestOptions] = None) -> PartnerProjectSettingsResponse:
         """
         Retrieve all settings for this partner.
 
@@ -40,7 +43,7 @@ class PartnerSettingsClient:
 
         Returns
         -------
-        PartnerProjectSettingsPayloadOutput
+        PartnerProjectSettingsResponse
             Successful Response
 
         Examples
@@ -62,18 +65,18 @@ class PartnerSettingsClient:
         try:
             if 200 <= _response.status_code < 300:
                 return typing.cast(
-                    PartnerProjectSettingsPayloadOutput,
+                    PartnerProjectSettingsResponse,
                     parse_obj_as(
-                        type_=PartnerProjectSettingsPayloadOutput,  # type: ignore
+                        type_=PartnerProjectSettingsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -91,9 +94,9 @@ class PartnerSettingsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -106,58 +109,66 @@ class PartnerSettingsClient:
     def update(
         self,
         *,
-        currency: typing.Optional[CurrencySettingsInput] = OMIT,
-        payable: typing.Optional[PayableSettings] = OMIT,
-        receivable: typing.Optional[ReceivableSettings] = OMIT,
-        mail: typing.Optional[MailSettings] = OMIT,
+        accounting: typing.Optional[AccountingSettingsPayload] = OMIT,
+        api_version: typing.Optional[ApiVersion] = OMIT,
         commercial_conditions: typing.Optional[typing.Sequence[str]] = OMIT,
+        currency: typing.Optional[CurrencySettings] = OMIT,
+        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        einvoicing: typing.Optional[EInvoicingSettingsPayload] = OMIT,
+        mail: typing.Optional[MailSettingsPayload] = OMIT,
+        payable: typing.Optional[PayableSettingsPayload] = OMIT,
+        payments: typing.Optional[PaymentsSettingsPayload] = OMIT,
+        receivable: typing.Optional[ReceivableSettingsPayload] = OMIT,
         units: typing.Optional[typing.Sequence[Unit]] = OMIT,
         website: typing.Optional[str] = OMIT,
-        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        payments: typing.Optional[PaymentsSettingsInput] = OMIT,
-        api_version: typing.Optional[ApiVersion] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PartnerProjectSettingsPayloadOutput:
+    ) -> PartnerProjectSettingsResponse:
         """
         Change the specified fields with the provided values.
 
         Parameters
         ----------
-        currency : typing.Optional[CurrencySettingsInput]
-            Custom currency exchange rates.
+        accounting : typing.Optional[AccountingSettingsPayload]
+            Settings for the accounting module.
 
-        payable : typing.Optional[PayableSettings]
-            Settings for the payables module.
-
-        receivable : typing.Optional[ReceivableSettings]
-            Settings for the receivables module.
-
-        mail : typing.Optional[MailSettings]
-            Settings for email and mailboxes.
+        api_version : typing.Optional[ApiVersion]
+            Default API version for partner.
 
         commercial_conditions : typing.Optional[typing.Sequence[str]]
             Commercial conditions for receivables.
+
+        currency : typing.Optional[CurrencySettings]
+            Custom currency exchange rates.
+
+        default_role : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            A default role to provision upon new entity creation.
+
+        einvoicing : typing.Optional[EInvoicingSettingsPayload]
+            Settings for the e-invoicing module.
+
+        mail : typing.Optional[MailSettingsPayload]
+            Settings for email and mailboxes.
+
+        payable : typing.Optional[PayableSettingsPayload]
+            Settings for the payables module.
+
+        payments : typing.Optional[PaymentsSettingsPayload]
+            Settings for the payments module.
+
+        receivable : typing.Optional[ReceivableSettingsPayload]
+            Settings for the receivables module.
 
         units : typing.Optional[typing.Sequence[Unit]]
             Measurement units.
 
         website : typing.Optional[str]
 
-        default_role : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            A default role to provision upon new entity creation.
-
-        payments : typing.Optional[PaymentsSettingsInput]
-            Settings for the payments module.
-
-        api_version : typing.Optional[ApiVersion]
-            Default API version for partner.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        PartnerProjectSettingsPayloadOutput
+        PartnerProjectSettingsResponse
             Successful Response
 
         Examples
@@ -175,31 +186,34 @@ class PartnerSettingsClient:
             "settings",
             method="PATCH",
             json={
+                "accounting": convert_and_respect_annotation_metadata(
+                    object_=accounting, annotation=AccountingSettingsPayload, direction="write"
+                ),
+                "api_version": api_version,
+                "commercial_conditions": commercial_conditions,
                 "currency": convert_and_respect_annotation_metadata(
-                    object_=currency, annotation=CurrencySettingsInput, direction="write"
+                    object_=currency, annotation=CurrencySettings, direction="write"
                 ),
-                "payable": convert_and_respect_annotation_metadata(
-                    object_=payable, annotation=PayableSettings, direction="write"
-                ),
-                "receivable": convert_and_respect_annotation_metadata(
-                    object_=receivable, annotation=ReceivableSettings, direction="write"
+                "default_role": default_role,
+                "einvoicing": convert_and_respect_annotation_metadata(
+                    object_=einvoicing, annotation=EInvoicingSettingsPayload, direction="write"
                 ),
                 "mail": convert_and_respect_annotation_metadata(
-                    object_=mail, annotation=MailSettings, direction="write"
+                    object_=mail, annotation=MailSettingsPayload, direction="write"
                 ),
-                "commercial_conditions": commercial_conditions,
+                "payable": convert_and_respect_annotation_metadata(
+                    object_=payable, annotation=PayableSettingsPayload, direction="write"
+                ),
+                "payments": convert_and_respect_annotation_metadata(
+                    object_=payments, annotation=PaymentsSettingsPayload, direction="write"
+                ),
+                "receivable": convert_and_respect_annotation_metadata(
+                    object_=receivable, annotation=ReceivableSettingsPayload, direction="write"
+                ),
                 "units": convert_and_respect_annotation_metadata(
                     object_=units, annotation=typing.Sequence[Unit], direction="write"
                 ),
                 "website": website,
-                "default_role": default_role,
-                "payments": convert_and_respect_annotation_metadata(
-                    object_=payments, annotation=PaymentsSettingsInput, direction="write"
-                ),
-                "api_version": api_version,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -207,18 +221,18 @@ class PartnerSettingsClient:
         try:
             if 200 <= _response.status_code < 300:
                 return typing.cast(
-                    PartnerProjectSettingsPayloadOutput,
+                    PartnerProjectSettingsResponse,
                     parse_obj_as(
-                        type_=PartnerProjectSettingsPayloadOutput,  # type: ignore
+                        type_=PartnerProjectSettingsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -236,9 +250,9 @@ class PartnerSettingsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -253,9 +267,7 @@ class AsyncPartnerSettingsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def get(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> PartnerProjectSettingsPayloadOutput:
+    async def get(self, *, request_options: typing.Optional[RequestOptions] = None) -> PartnerProjectSettingsResponse:
         """
         Retrieve all settings for this partner.
 
@@ -266,7 +278,7 @@ class AsyncPartnerSettingsClient:
 
         Returns
         -------
-        PartnerProjectSettingsPayloadOutput
+        PartnerProjectSettingsResponse
             Successful Response
 
         Examples
@@ -296,18 +308,18 @@ class AsyncPartnerSettingsClient:
         try:
             if 200 <= _response.status_code < 300:
                 return typing.cast(
-                    PartnerProjectSettingsPayloadOutput,
+                    PartnerProjectSettingsResponse,
                     parse_obj_as(
-                        type_=PartnerProjectSettingsPayloadOutput,  # type: ignore
+                        type_=PartnerProjectSettingsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -325,9 +337,9 @@ class AsyncPartnerSettingsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -340,58 +352,66 @@ class AsyncPartnerSettingsClient:
     async def update(
         self,
         *,
-        currency: typing.Optional[CurrencySettingsInput] = OMIT,
-        payable: typing.Optional[PayableSettings] = OMIT,
-        receivable: typing.Optional[ReceivableSettings] = OMIT,
-        mail: typing.Optional[MailSettings] = OMIT,
+        accounting: typing.Optional[AccountingSettingsPayload] = OMIT,
+        api_version: typing.Optional[ApiVersion] = OMIT,
         commercial_conditions: typing.Optional[typing.Sequence[str]] = OMIT,
+        currency: typing.Optional[CurrencySettings] = OMIT,
+        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        einvoicing: typing.Optional[EInvoicingSettingsPayload] = OMIT,
+        mail: typing.Optional[MailSettingsPayload] = OMIT,
+        payable: typing.Optional[PayableSettingsPayload] = OMIT,
+        payments: typing.Optional[PaymentsSettingsPayload] = OMIT,
+        receivable: typing.Optional[ReceivableSettingsPayload] = OMIT,
         units: typing.Optional[typing.Sequence[Unit]] = OMIT,
         website: typing.Optional[str] = OMIT,
-        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        payments: typing.Optional[PaymentsSettingsInput] = OMIT,
-        api_version: typing.Optional[ApiVersion] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PartnerProjectSettingsPayloadOutput:
+    ) -> PartnerProjectSettingsResponse:
         """
         Change the specified fields with the provided values.
 
         Parameters
         ----------
-        currency : typing.Optional[CurrencySettingsInput]
-            Custom currency exchange rates.
+        accounting : typing.Optional[AccountingSettingsPayload]
+            Settings for the accounting module.
 
-        payable : typing.Optional[PayableSettings]
-            Settings for the payables module.
-
-        receivable : typing.Optional[ReceivableSettings]
-            Settings for the receivables module.
-
-        mail : typing.Optional[MailSettings]
-            Settings for email and mailboxes.
+        api_version : typing.Optional[ApiVersion]
+            Default API version for partner.
 
         commercial_conditions : typing.Optional[typing.Sequence[str]]
             Commercial conditions for receivables.
+
+        currency : typing.Optional[CurrencySettings]
+            Custom currency exchange rates.
+
+        default_role : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            A default role to provision upon new entity creation.
+
+        einvoicing : typing.Optional[EInvoicingSettingsPayload]
+            Settings for the e-invoicing module.
+
+        mail : typing.Optional[MailSettingsPayload]
+            Settings for email and mailboxes.
+
+        payable : typing.Optional[PayableSettingsPayload]
+            Settings for the payables module.
+
+        payments : typing.Optional[PaymentsSettingsPayload]
+            Settings for the payments module.
+
+        receivable : typing.Optional[ReceivableSettingsPayload]
+            Settings for the receivables module.
 
         units : typing.Optional[typing.Sequence[Unit]]
             Measurement units.
 
         website : typing.Optional[str]
 
-        default_role : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            A default role to provision upon new entity creation.
-
-        payments : typing.Optional[PaymentsSettingsInput]
-            Settings for the payments module.
-
-        api_version : typing.Optional[ApiVersion]
-            Default API version for partner.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        PartnerProjectSettingsPayloadOutput
+        PartnerProjectSettingsResponse
             Successful Response
 
         Examples
@@ -417,31 +437,34 @@ class AsyncPartnerSettingsClient:
             "settings",
             method="PATCH",
             json={
+                "accounting": convert_and_respect_annotation_metadata(
+                    object_=accounting, annotation=AccountingSettingsPayload, direction="write"
+                ),
+                "api_version": api_version,
+                "commercial_conditions": commercial_conditions,
                 "currency": convert_and_respect_annotation_metadata(
-                    object_=currency, annotation=CurrencySettingsInput, direction="write"
+                    object_=currency, annotation=CurrencySettings, direction="write"
                 ),
-                "payable": convert_and_respect_annotation_metadata(
-                    object_=payable, annotation=PayableSettings, direction="write"
-                ),
-                "receivable": convert_and_respect_annotation_metadata(
-                    object_=receivable, annotation=ReceivableSettings, direction="write"
+                "default_role": default_role,
+                "einvoicing": convert_and_respect_annotation_metadata(
+                    object_=einvoicing, annotation=EInvoicingSettingsPayload, direction="write"
                 ),
                 "mail": convert_and_respect_annotation_metadata(
-                    object_=mail, annotation=MailSettings, direction="write"
+                    object_=mail, annotation=MailSettingsPayload, direction="write"
                 ),
-                "commercial_conditions": commercial_conditions,
+                "payable": convert_and_respect_annotation_metadata(
+                    object_=payable, annotation=PayableSettingsPayload, direction="write"
+                ),
+                "payments": convert_and_respect_annotation_metadata(
+                    object_=payments, annotation=PaymentsSettingsPayload, direction="write"
+                ),
+                "receivable": convert_and_respect_annotation_metadata(
+                    object_=receivable, annotation=ReceivableSettingsPayload, direction="write"
+                ),
                 "units": convert_and_respect_annotation_metadata(
                     object_=units, annotation=typing.Sequence[Unit], direction="write"
                 ),
                 "website": website,
-                "default_role": default_role,
-                "payments": convert_and_respect_annotation_metadata(
-                    object_=payments, annotation=PaymentsSettingsInput, direction="write"
-                ),
-                "api_version": api_version,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -449,18 +472,18 @@ class AsyncPartnerSettingsClient:
         try:
             if 200 <= _response.status_code < 300:
                 return typing.cast(
-                    PartnerProjectSettingsPayloadOutput,
+                    PartnerProjectSettingsResponse,
                     parse_obj_as(
-                        type_=PartnerProjectSettingsPayloadOutput,  # type: ignore
+                        type_=PartnerProjectSettingsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
             if _response.status_code == 400:
                 raise BadRequestError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -478,9 +501,9 @@ class AsyncPartnerSettingsClient:
             if _response.status_code == 500:
                 raise InternalServerError(
                     typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorSchemaResponse,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorSchemaResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     )

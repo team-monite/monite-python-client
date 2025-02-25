@@ -20,7 +20,7 @@ class PurchaseOrderItem(UniversalBaseModel):
 
     price: int = pydantic.Field()
     """
-    The subtotal cost (excluding VAT), in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    The subtotal cost (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units).
     """
 
     quantity: int = pydantic.Field()

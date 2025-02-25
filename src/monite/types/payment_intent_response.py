@@ -5,7 +5,7 @@ import datetime as dt
 import typing
 from .invoice import Invoice
 from .payment_object import PaymentObject
-from .payer_account_response import PayerAccountResponse
+from .account_response import AccountResponse
 from .monite_all_payment_methods_types import MoniteAllPaymentMethodsTypes
 from .recipient_account_response import RecipientAccountResponse
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
@@ -21,7 +21,7 @@ class PaymentIntentResponse(UniversalBaseModel):
     currency: str
     invoice: typing.Optional[Invoice] = None
     object: typing.Optional[PaymentObject] = None
-    payer: typing.Optional[PayerAccountResponse] = None
+    payer: typing.Optional[AccountResponse] = None
     payment_link_id: typing.Optional[str] = None
     payment_methods: typing.List[MoniteAllPaymentMethodsTypes]
     payment_reference: typing.Optional[str] = None
