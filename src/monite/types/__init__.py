@@ -70,8 +70,10 @@ from .comment_resource import CommentResource
 from .comment_resource_list import CommentResourceList
 from .common_schema_input import CommonSchemaInput
 from .common_schema_output import CommonSchemaOutput
+from .complete_refresh_verification_request import CompleteRefreshVerificationRequest
 from .complete_refresh_verification_response import CompleteRefreshVerificationResponse
 from .complete_verification_airwallex_plaid_request import CompleteVerificationAirwallexPlaidRequest
+from .complete_verification_request import CompleteVerificationRequest
 from .complete_verification_response import CompleteVerificationResponse
 from .connection_status import ConnectionStatus
 from .counterpart_address import CounterpartAddress
@@ -275,6 +277,7 @@ from .ocr_response_invoice_receipt_line_item import OcrResponseInvoiceReceiptLin
 from .ocr_response_invoice_receipt_line_item_raw import OcrResponseInvoiceReceiptLineItemRaw
 from .ocr_status_enum import OcrStatusEnum
 from .onboarding_link_public_response import OnboardingLinkPublicResponse
+from .onboarding_link_request import OnboardingLinkRequest
 from .onboarding_link_response import OnboardingLinkResponse
 from .onboarding_payment_methods_response import OnboardingPaymentMethodsResponse
 from .onboarding_requirements_error import OnboardingRequirementsError
@@ -364,6 +367,7 @@ from .payment_term_discount_with_date import PaymentTermDiscountWithDate
 from .payment_terms import PaymentTerms
 from .payment_terms_list_response import PaymentTermsListResponse
 from .payment_terms_response import PaymentTermsResponse
+from .payments_batch_payment_request import PaymentsBatchPaymentRequest
 from .payments_batch_payment_response import PaymentsBatchPaymentResponse
 from .payments_batch_payment_status import PaymentsBatchPaymentStatus
 from .payments_settings_input import PaymentsSettingsInput
@@ -710,8 +714,10 @@ __all__ = [
     "CommentResourceList",
     "CommonSchemaInput",
     "CommonSchemaOutput",
+    "CompleteRefreshVerificationRequest",
     "CompleteRefreshVerificationResponse",
     "CompleteVerificationAirwallexPlaidRequest",
+    "CompleteVerificationRequest",
     "CompleteVerificationResponse",
     "ConnectionStatus",
     "CounterpartAddress",
@@ -913,6 +919,7 @@ __all__ = [
     "OcrResponseInvoiceReceiptLineItemRaw",
     "OcrStatusEnum",
     "OnboardingLinkPublicResponse",
+    "OnboardingLinkRequest",
     "OnboardingLinkResponse",
     "OnboardingPaymentMethodsResponse",
     "OnboardingRequirementsError",
@@ -1002,6 +1009,7 @@ __all__ = [
     "PaymentTerms",
     "PaymentTermsListResponse",
     "PaymentTermsResponse",
+    "PaymentsBatchPaymentRequest",
     "PaymentsBatchPaymentResponse",
     "PaymentsBatchPaymentStatus",
     "PaymentsSettingsInput",
