@@ -8,7 +8,6 @@ from .analytics.client import AnalyticsClient
 from .approval_policies.client import ApprovalPoliciesClient
 from .approval_requests.client import ApprovalRequestsClient
 from .access_tokens.client import AccessTokensClient
-from .batch_payments.client import BatchPaymentsClient
 from .comments.client import CommentsClient
 from .counterparts.client import CounterpartsClient
 from .data_exports.client import DataExportsClient
@@ -23,7 +22,6 @@ from .mail_templates.client import MailTemplatesClient
 from .mailbox_domains.client import MailboxDomainsClient
 from .mailboxes.client import MailboxesClient
 from .measure_units.client import MeasureUnitsClient
-from .onboarding_links.client import OnboardingLinksClient
 from .overdue_reminders.client import OverdueRemindersClient
 from .credit_notes.client import CreditNotesClient
 from .purchase_orders.client import PurchaseOrdersClient
@@ -50,7 +48,6 @@ from .analytics.client import AsyncAnalyticsClient
 from .approval_policies.client import AsyncApprovalPoliciesClient
 from .approval_requests.client import AsyncApprovalRequestsClient
 from .access_tokens.client import AsyncAccessTokensClient
-from .batch_payments.client import AsyncBatchPaymentsClient
 from .comments.client import AsyncCommentsClient
 from .counterparts.client import AsyncCounterpartsClient
 from .data_exports.client import AsyncDataExportsClient
@@ -65,7 +62,6 @@ from .mail_templates.client import AsyncMailTemplatesClient
 from .mailbox_domains.client import AsyncMailboxDomainsClient
 from .mailboxes.client import AsyncMailboxesClient
 from .measure_units.client import AsyncMeasureUnitsClient
-from .onboarding_links.client import AsyncOnboardingLinksClient
 from .overdue_reminders.client import AsyncOverdueRemindersClient
 from .credit_notes.client import AsyncCreditNotesClient
 from .purchase_orders.client import AsyncPurchaseOrdersClient
@@ -159,7 +155,6 @@ class Monite:
         self.approval_policies = ApprovalPoliciesClient(client_wrapper=self._client_wrapper)
         self.approval_requests = ApprovalRequestsClient(client_wrapper=self._client_wrapper)
         self.access_tokens = AccessTokensClient(client_wrapper=self._client_wrapper)
-        self.batch_payments = BatchPaymentsClient(client_wrapper=self._client_wrapper)
         self.comments = CommentsClient(client_wrapper=self._client_wrapper)
         self.counterparts = CounterpartsClient(client_wrapper=self._client_wrapper)
         self.data_exports = DataExportsClient(client_wrapper=self._client_wrapper)
@@ -174,7 +169,6 @@ class Monite:
         self.mailbox_domains = MailboxDomainsClient(client_wrapper=self._client_wrapper)
         self.mailboxes = MailboxesClient(client_wrapper=self._client_wrapper)
         self.measure_units = MeasureUnitsClient(client_wrapper=self._client_wrapper)
-        self.onboarding_links = OnboardingLinksClient(client_wrapper=self._client_wrapper)
         self.overdue_reminders = OverdueRemindersClient(client_wrapper=self._client_wrapper)
         self.credit_notes = CreditNotesClient(client_wrapper=self._client_wrapper)
         self.purchase_orders = PurchaseOrdersClient(client_wrapper=self._client_wrapper)
@@ -268,7 +262,6 @@ class AsyncMonite:
         self.approval_policies = AsyncApprovalPoliciesClient(client_wrapper=self._client_wrapper)
         self.approval_requests = AsyncApprovalRequestsClient(client_wrapper=self._client_wrapper)
         self.access_tokens = AsyncAccessTokensClient(client_wrapper=self._client_wrapper)
-        self.batch_payments = AsyncBatchPaymentsClient(client_wrapper=self._client_wrapper)
         self.comments = AsyncCommentsClient(client_wrapper=self._client_wrapper)
         self.counterparts = AsyncCounterpartsClient(client_wrapper=self._client_wrapper)
         self.data_exports = AsyncDataExportsClient(client_wrapper=self._client_wrapper)
@@ -283,7 +276,6 @@ class AsyncMonite:
         self.mailbox_domains = AsyncMailboxDomainsClient(client_wrapper=self._client_wrapper)
         self.mailboxes = AsyncMailboxesClient(client_wrapper=self._client_wrapper)
         self.measure_units = AsyncMeasureUnitsClient(client_wrapper=self._client_wrapper)
-        self.onboarding_links = AsyncOnboardingLinksClient(client_wrapper=self._client_wrapper)
         self.overdue_reminders = AsyncOverdueRemindersClient(client_wrapper=self._client_wrapper)
         self.credit_notes = AsyncCreditNotesClient(client_wrapper=self._client_wrapper)
         self.purchase_orders = AsyncPurchaseOrdersClient(client_wrapper=self._client_wrapper)
