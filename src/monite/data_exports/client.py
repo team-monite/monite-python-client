@@ -220,7 +220,7 @@ class DataExportsClient:
 
         Examples
         --------
-        from monite import ExportObjectSchema_Receivable, Monite
+        from monite import ExportObjectSchema_Payable, Monite
 
         client = Monite(
             monite_version="YOUR_MONITE_VERSION",
@@ -232,7 +232,7 @@ class DataExportsClient:
             date_to="date_to",
             format="csv",
             objects=[
-                ExportObjectSchema_Receivable(
+                ExportObjectSchema_Payable(
                     statuses=["draft"],
                 )
             ],
@@ -707,7 +707,7 @@ class AsyncDataExportsClient:
         --------
         import asyncio
 
-        from monite import AsyncMonite, ExportObjectSchema_Receivable
+        from monite import AsyncMonite, ExportObjectSchema_Payable
 
         client = AsyncMonite(
             monite_version="YOUR_MONITE_VERSION",
@@ -722,7 +722,7 @@ class AsyncDataExportsClient:
                 date_to="date_to",
                 format="csv",
                 objects=[
-                    ExportObjectSchema_Receivable(
+                    ExportObjectSchema_Payable(
                         statuses=["draft"],
                     )
                 ],

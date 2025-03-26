@@ -278,8 +278,8 @@ class CounterpartsClient:
         --------
         from monite import (
             CounterpartAddress,
-            CounterpartCreatePayload_Individual,
-            CounterpartIndividualCreatePayload,
+            CounterpartCreatePayload_Organization,
+            CounterpartOrganizationCreatePayload,
             Monite,
         )
 
@@ -289,18 +289,17 @@ class CounterpartsClient:
             token="YOUR_TOKEN",
         )
         client.counterparts.create(
-            request=CounterpartCreatePayload_Individual(
-                individual=CounterpartIndividualCreatePayload(
+            request=CounterpartCreatePayload_Organization(
+                organization=CounterpartOrganizationCreatePayload(
                     address=CounterpartAddress(
                         city="Berlin",
                         country="AF",
                         line1="Flughafenstrasse 52",
                         postal_code="10115",
                     ),
-                    first_name="Adnan",
                     is_customer=True,
                     is_vendor=True,
-                    last_name="Singh",
+                    legal_name="Acme Inc.",
                 ),
             ),
         )
@@ -992,8 +991,8 @@ class AsyncCounterpartsClient:
         from monite import (
             AsyncMonite,
             CounterpartAddress,
-            CounterpartCreatePayload_Individual,
-            CounterpartIndividualCreatePayload,
+            CounterpartCreatePayload_Organization,
+            CounterpartOrganizationCreatePayload,
         )
 
         client = AsyncMonite(
@@ -1005,18 +1004,17 @@ class AsyncCounterpartsClient:
 
         async def main() -> None:
             await client.counterparts.create(
-                request=CounterpartCreatePayload_Individual(
-                    individual=CounterpartIndividualCreatePayload(
+                request=CounterpartCreatePayload_Organization(
+                    organization=CounterpartOrganizationCreatePayload(
                         address=CounterpartAddress(
                             city="Berlin",
                             country="AF",
                             line1="Flughafenstrasse 52",
                             postal_code="10115",
                         ),
-                        first_name="Adnan",
                         is_customer=True,
                         is_vendor=True,
-                        last_name="Singh",
+                        legal_name="Acme Inc.",
                     ),
                 ),
             )
