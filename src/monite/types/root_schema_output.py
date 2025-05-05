@@ -79,6 +79,20 @@ class RootSchemaOutput_CounterpartVatId(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class RootSchemaOutput_DeliveryNote(UniversalBaseModel):
+    object_type: typing.Literal["delivery_note"] = "delivery_note"
+    actions: typing.Optional[typing.List[ActionSchema]] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 class RootSchemaOutput_Entity(UniversalBaseModel):
     object_type: typing.Literal["entity"] = "entity"
     actions: typing.Optional[typing.List[ActionSchema]] = None
@@ -151,6 +165,20 @@ class RootSchemaOutput_Export(UniversalBaseModel):
 
 class RootSchemaOutput_Mailbox(UniversalBaseModel):
     object_type: typing.Literal["mailbox"] = "mailbox"
+    actions: typing.Optional[typing.List[ActionSchema]] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
+class RootSchemaOutput_OcrTask(UniversalBaseModel):
+    object_type: typing.Literal["ocr_task"] = "ocr_task"
     actions: typing.Optional[typing.List[ActionSchema]] = None
 
     if IS_PYDANTIC_V2:
@@ -407,12 +435,14 @@ RootSchemaOutput = typing.Union[
     RootSchemaOutput_Comment,
     RootSchemaOutput_Counterpart,
     RootSchemaOutput_CounterpartVatId,
+    RootSchemaOutput_DeliveryNote,
     RootSchemaOutput_Entity,
     RootSchemaOutput_EntityBankAccount,
     RootSchemaOutput_EntityUser,
     RootSchemaOutput_EntityVatIds,
     RootSchemaOutput_Export,
     RootSchemaOutput_Mailbox,
+    RootSchemaOutput_OcrTask,
     RootSchemaOutput_Onboarding,
     RootSchemaOutput_OverdueReminder,
     RootSchemaOutput_Payable,

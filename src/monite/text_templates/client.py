@@ -3,12 +3,11 @@
 import typing
 from ..core.client_wrapper import SyncClientWrapper
 from ..types.text_template_type import TextTemplateType
-from ..types.document_type_enum import DocumentTypeEnum
+from ..types.text_template_document_type_enum import TextTemplateDocumentTypeEnum
 from ..core.request_options import RequestOptions
 from ..types.text_template_response_list import TextTemplateResponseList
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
@@ -28,7 +27,7 @@ class TextTemplatesClient:
         self,
         *,
         type: typing.Optional[TextTemplateType] = None,
-        document_type: typing.Optional[DocumentTypeEnum] = None,
+        document_type: typing.Optional[TextTemplateDocumentTypeEnum] = None,
         is_default: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> TextTemplateResponseList:
@@ -39,7 +38,7 @@ class TextTemplatesClient:
         ----------
         type : typing.Optional[TextTemplateType]
 
-        document_type : typing.Optional[DocumentTypeEnum]
+        document_type : typing.Optional[TextTemplateDocumentTypeEnum]
 
         is_default : typing.Optional[bool]
 
@@ -84,9 +83,9 @@ class TextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -109,7 +108,7 @@ class TextTemplatesClient:
     def create(
         self,
         *,
-        document_type: DocumentTypeEnum,
+        document_type: TextTemplateDocumentTypeEnum,
         name: str,
         template: str,
         type: TextTemplateType,
@@ -120,7 +119,7 @@ class TextTemplatesClient:
 
         Parameters
         ----------
-        document_type : DocumentTypeEnum
+        document_type : TextTemplateDocumentTypeEnum
 
         name : str
 
@@ -179,9 +178,9 @@ class TextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -249,9 +248,9 @@ class TextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -311,9 +310,9 @@ class TextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -399,9 +398,9 @@ class TextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -470,9 +469,9 @@ class TextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -501,7 +500,7 @@ class AsyncTextTemplatesClient:
         self,
         *,
         type: typing.Optional[TextTemplateType] = None,
-        document_type: typing.Optional[DocumentTypeEnum] = None,
+        document_type: typing.Optional[TextTemplateDocumentTypeEnum] = None,
         is_default: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> TextTemplateResponseList:
@@ -512,7 +511,7 @@ class AsyncTextTemplatesClient:
         ----------
         type : typing.Optional[TextTemplateType]
 
-        document_type : typing.Optional[DocumentTypeEnum]
+        document_type : typing.Optional[TextTemplateDocumentTypeEnum]
 
         is_default : typing.Optional[bool]
 
@@ -565,9 +564,9 @@ class AsyncTextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -590,7 +589,7 @@ class AsyncTextTemplatesClient:
     async def create(
         self,
         *,
-        document_type: DocumentTypeEnum,
+        document_type: TextTemplateDocumentTypeEnum,
         name: str,
         template: str,
         type: TextTemplateType,
@@ -601,7 +600,7 @@ class AsyncTextTemplatesClient:
 
         Parameters
         ----------
-        document_type : DocumentTypeEnum
+        document_type : TextTemplateDocumentTypeEnum
 
         name : str
 
@@ -668,9 +667,9 @@ class AsyncTextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -746,9 +745,9 @@ class AsyncTextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -818,9 +817,9 @@ class AsyncTextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -914,9 +913,9 @@ class AsyncTextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -993,9 +992,9 @@ class AsyncTextTemplatesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

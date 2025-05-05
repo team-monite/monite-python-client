@@ -85,6 +85,14 @@ client.analytics.get_analytics_credit_notes(
 <dl>
 <dd>
 
+**limit:** `typing.Optional[int]` — The number of items (0 .. 400) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **created_at_gt:** `typing.Optional[dt.datetime]` 
     
 </dd>
@@ -189,6 +197,14 @@ client.analytics.get_analytics_credit_notes(
 <dl>
 <dd>
 
+**has_file:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **total_amount_gt:** `typing.Optional[int]` 
     
 </dd>
@@ -277,7 +293,7 @@ client.analytics.get_analytics_credit_notes(
 <dl>
 <dd>
 
-**status:** `typing.Optional[CreditNoteStateEnum]` 
+**status:** `typing.Optional[PayableCreditNoteStateEnum]` 
     
 </dd>
 </dl>
@@ -286,7 +302,9 @@ client.analytics.get_analytics_credit_notes(
 <dd>
 
 **status_in:** `typing.Optional[
-    typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]
+    typing.Union[
+        PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]
+    ]
 ]` 
     
 </dd>
@@ -296,7 +314,9 @@ client.analytics.get_analytics_credit_notes(
 <dd>
 
 **status_not_in:** `typing.Optional[
-    typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]
+    typing.Union[
+        PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]
+    ]
 ]` 
     
 </dd>
@@ -305,7 +325,31 @@ client.analytics.get_analytics_credit_notes(
 <dl>
 <dd>
 
+**origin:** `typing.Optional[OriginEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **currency:** `typing.Optional[CurrencyEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
 </dl>
@@ -403,6 +447,14 @@ client.analytics.get_analytics_payables(
 <dd>
 
 **date_dimension_breakdown:** `typing.Optional[DateDimensionBreakdownEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — The number of items (0 .. 400) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -644,6 +696,46 @@ For counterparts of `type = individual`, the full name is formatted as `first_na
 <dl>
 <dd>
 
+**issued_at:** `typing.Optional[str]` — Return payables that are issued at the specified date (YYYY-MM-DD)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_gt:** `typing.Optional[str]` — Return payables that are issued after the specified date (exclusive, YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_lt:** `typing.Optional[str]` — Return payables that are issued before the specified date (exclusive, YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_gte:** `typing.Optional[str]` — Return payables that are issued on or after the specified date (YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_lte:** `typing.Optional[str]` — Return payables that are issued before or on the specified date (YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **document_id:** `typing.Optional[str]` 
 
 Return a payable with the exact specified document number (case-sensitive).
@@ -738,7 +830,550 @@ Valid but nonexistent project IDs do not raise errors but return no results.
 <dl>
 <dd>
 
+**project_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only payables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **tag_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag_ids_not_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**origin:** `typing.Optional[PayableOriginEnum]` — Return only payables from a given origin ['einvoice', 'upload', 'email']
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_file:** `typing.Optional[bool]` — Return only payables with or without attachments (files)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.analytics.<a href="src/monite/analytics/client.py">get_analytics_receivables</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve aggregated statistics for receivables with different breakdowns.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.analytics.get_analytics_receivables(
+    metric="id",
+    aggregation_function="count",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**metric:** `ReceivableMetricEnum` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**aggregation_function:** `AggregationFunctionEnum` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dimension:** `typing.Optional[ReceivableDimensionEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**date_dimension_breakdown:** `typing.Optional[DateDimensionBreakdownEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` 
+
+The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page. 
+
+When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only receivables with the specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
+
+To specify multiple IDs, repeat this parameter for each value:
+`id__in=<id1>&id__in=<id2>`
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status_in:** `typing.Optional[
+    typing.Union[
+        GetAnalyticsReceivablesRequestStatusInItem,
+        typing.Sequence[GetAnalyticsReceivablesRequestStatusInItem],
+    ]
+]` 
+
+Return only receivables that have the specified statuses. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
+
+To specify multiple statuses, repeat this parameter for each value:
+`status__in=draft&status__in=issued`
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_user_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only receivables created by the entity users with the specified IDs.To specify multiple user IDs, repeat this parameter for each ID:
+`entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+
+If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `typing.Optional[ReceivableCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag_ids_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only receivables whose [tags](https://docs.monite.com/common/tags) include at least one of the tags with the specified IDs.
+
+For example, given receivables with the following tags:
+1. tagA
+2. tagB
+3. tagA, tagB
+4. tagC
+5. tagB, tagC
+
+
+`tag_ids__in=<tagA>&tag_ids__in=<tagB>` will return receivables 1, 2, 3, and 5.
+
+Valid but nonexistent tag IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only receivables whose [tags](https://docs.monite.com/common/tags) include all of the tags with the specified IDs and optionally other tags that are not specified.
+
+For example, given receivables with the following tags:
+1. tagA
+2. tagB
+3. tagA, tagB
+4. tagC
+5. tagA, tagB, tagC
+
+
+`tag_ids=<tagA>&tag_ids=<tagB>` will return receivables 3 and 5.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**product_ids_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only receivables whose line items include at least one of the product IDs with the specified IDs. 
+
+To specify multiple product IDs, repeat this parameter for each ID:
+`product_ids__in=<product1>&product_ids__in=<product2>`
+
+For example, given receivables with the following product IDs:
+1. productA
+2. productB
+3. productA, productB
+4. productC
+5. productB, productC
+
+
+`product_ids__in=<productA>&product_ids__in=<productB>` will return receivables 1, 2, 3, and 5.Valid but nonexistent product IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**product_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only receivables whose line items include all of the product IDs with the specified IDs and optionally other products that are not specified. 
+
+To specify multiple product IDs, repeat this parameter for each ID:
+`product_ids=<product1>&product_ids=<product2>`
+
+For example, given receivables with the following product IDs:
+1. productA
+2. productB
+3. productA, productB
+4. productC
+5. productA, productB, productC
+
+
+`product_ids=<productA>&product_ids=<productB>` will return receivables 3 and 5.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only receivables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `typing.Optional[ReceivableType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id_contains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id_icontains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issue_date_gt:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issue_date_lt:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issue_date_gte:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issue_date_lte:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gt:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lt:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gte:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lte:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_name_contains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_name_icontains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_gt:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_lt:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_gte:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_lte:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[GetAnalyticsReceivablesRequestStatus]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_user_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**based_on:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**due_date_gt:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**due_date_lt:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**due_date_gte:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**due_date_lte:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -817,7 +1452,7 @@ client.approval_policies.get()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -825,7 +1460,7 @@ client.approval_policies.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -833,7 +1468,11 @@ client.approval_policies.get()
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -841,7 +1480,7 @@ client.approval_policies.get()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[ApprovalPolicyCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[ApprovalPolicyCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -1022,7 +1661,6 @@ client = Monite(
 )
 client.approval_policies.create(
     name="name",
-    description="description",
     script=[True],
 )
 
@@ -1048,14 +1686,6 @@ client.approval_policies.create(
 <dl>
 <dd>
 
-**description:** `str` — A brief description of the approval policy.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **script:** `typing.Sequence[ApprovalPolicyCreateScriptItem]` — A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
     
 </dd>
@@ -1064,7 +1694,7 @@ client.approval_policies.create(
 <dl>
 <dd>
 
-**starts_at:** `typing.Optional[dt.datetime]` — The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
+**description:** `typing.Optional[str]` — A brief description of the approval policy.
     
 </dd>
 </dl>
@@ -1073,6 +1703,14 @@ client.approval_policies.create(
 <dd>
 
 **ends_at:** `typing.Optional[dt.datetime]` — The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starts_at:** `typing.Optional[dt.datetime]` — The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
     
 </dd>
 </dl>
@@ -1304,7 +1942,7 @@ client.approval_policies.update_by_id(
 <dl>
 <dd>
 
-**starts_at:** `typing.Optional[dt.datetime]` — The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
+**description:** `typing.Optional[str]` — A brief description of the approval policy.
     
 </dd>
 </dl>
@@ -1328,14 +1966,6 @@ client.approval_policies.update_by_id(
 <dl>
 <dd>
 
-**description:** `typing.Optional[str]` — A brief description of the approval policy.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **script:** `typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]]` — A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
     
 </dd>
@@ -1344,7 +1974,7 @@ client.approval_policies.update_by_id(
 <dl>
 <dd>
 
-**trigger:** `typing.Optional[ApprovalPolicyUpdateTrigger]` — A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.
+**starts_at:** `typing.Optional[dt.datetime]` — The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
     
 </dd>
 </dl>
@@ -1353,6 +1983,14 @@ client.approval_policies.update_by_id(
 <dd>
 
 **status:** `typing.Optional[ApprovalPolicyStatus]` — A string that represents the current status of the approval policy.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trigger:** `typing.Optional[ApprovalPolicyUpdateTrigger]` — A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.
     
 </dd>
 </dl>
@@ -2075,146 +2713,6 @@ client.access_tokens.create(
 </dl>
 </details>
 
-## Batch payments
-<details><summary><code>client.batch_payments.<a href="src/monite/batch_payments/client.py">create</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from monite import (
-    Monite,
-    PaymentIntentsRecipient,
-    PaymentObjectPayable,
-    SinglePaymentIntent,
-)
-
-client = Monite(
-    monite_version="YOUR_MONITE_VERSION",
-    monite_entity_id="YOUR_MONITE_ENTITY_ID",
-    token="YOUR_TOKEN",
-)
-client.batch_payments.create(
-    payer_bank_account_id="payer_bank_account_id",
-    payment_intents=[
-        SinglePaymentIntent(
-            object=PaymentObjectPayable(
-                id="id",
-            ),
-            recipient=PaymentIntentsRecipient(
-                id="id",
-            ),
-        )
-    ],
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**payer_bank_account_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_intents:** `typing.Sequence[SinglePaymentIntent]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.batch_payments.<a href="src/monite/batch_payments/client.py">get_by_id</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from monite import Monite
-
-client = Monite(
-    monite_version="YOUR_MONITE_VERSION",
-    monite_entity_id="YOUR_MONITE_ENTITY_ID",
-    token="YOUR_TOKEN",
-)
-client.batch_payments.get_by_id(
-    batch_payment_id="batch_payment_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**batch_payment_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Comments
 <details><summary><code>client.comments.<a href="src/monite/comments/client.py">get</a>(...)</code></summary>
 <dl>
@@ -2769,7 +3267,7 @@ client.counterparts.get(
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -2777,7 +3275,7 @@ client.counterparts.get(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -2785,7 +3283,11 @@ client.counterparts.get(
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -2793,7 +3295,7 @@ client.counterparts.get(
 <dl>
 <dd>
 
-**sort:** `typing.Optional[CounterpartCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[CounterpartCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -2996,8 +3498,8 @@ client.counterparts.get(
 ```python
 from monite import (
     CounterpartAddress,
-    CounterpartCreatePayload_Individual,
-    CounterpartIndividualCreatePayload,
+    CounterpartCreatePayload_Organization,
+    CounterpartOrganizationCreatePayload,
     Monite,
 )
 
@@ -3007,18 +3509,17 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.counterparts.create(
-    request=CounterpartCreatePayload_Individual(
-        individual=CounterpartIndividualCreatePayload(
+    request=CounterpartCreatePayload_Organization(
+        organization=CounterpartOrganizationCreatePayload(
             address=CounterpartAddress(
                 city="Berlin",
                 country="AF",
                 line1="Flughafenstrasse 52",
                 postal_code="10115",
             ),
-            first_name="Adnan",
             is_customer=True,
             is_vendor=True,
-            last_name="Singh",
+            legal_name="Acme Inc.",
         ),
     ),
 )
@@ -3371,6 +3872,351 @@ client.counterparts.update_partner_metadata_by_id(
 </dl>
 </details>
 
+## Counterpart e-invoicing credentials
+<details><summary><code>client.counterpart_e_invoicing_credentials.<a href="src/monite/counterpart_e_invoicing_credentials/client.py">get_counterparts_id_einvoicing_credentials</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials(
+    counterpart_id="counterpart_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**counterpart_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.counterpart_e_invoicing_credentials.<a href="src/monite/counterpart_e_invoicing_credentials/client.py">post_counterparts_id_einvoicing_credentials</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import CreateCounterpartEinvoicingCredentialCounterpartVatId, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_credentials(
+    counterpart_id="counterpart_id",
+    request=CreateCounterpartEinvoicingCredentialCounterpartVatId(
+        counterpart_vat_id_id="counterpart_vat_id_id",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**counterpart_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CreateCounterpartEinvoicingCredentialPayload` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.counterpart_e_invoicing_credentials.<a href="src/monite/counterpart_e_invoicing_credentials/client.py">get_counterparts_id_einvoicing_credentials_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials_id(
+    credential_id="credential_id",
+    counterpart_id="counterpart_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**credential_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.counterpart_e_invoicing_credentials.<a href="src/monite/counterpart_e_invoicing_credentials/client.py">delete_counterparts_id_einvoicing_credentials_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterpart_e_invoicing_credentials.delete_counterparts_id_einvoicing_credentials_id(
+    credential_id="credential_id",
+    counterpart_id="counterpart_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**credential_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.counterpart_e_invoicing_credentials.<a href="src/monite/counterpart_e_invoicing_credentials/client.py">patch_counterparts_id_einvoicing_credentials_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterpart_e_invoicing_credentials.patch_counterparts_id_einvoicing_credentials_id(
+    credential_id="credential_id",
+    counterpart_id="counterpart_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**credential_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**network_identifier:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**network_schema:** `typing.Optional[EinvoiceSchemaTypeEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## DataExports
 <details><summary><code>client.data_exports.<a href="src/monite/data_exports/client.py">get</a>(...)</code></summary>
 <dl>
@@ -3519,7 +4365,7 @@ Request the export of payable and receivable documents with the specified status
 <dd>
 
 ```python
-from monite import ExportObjectSchema_Receivable, Monite
+from monite import ExportObjectSchema_Payable, Monite
 
 client = Monite(
     monite_version="YOUR_MONITE_VERSION",
@@ -3531,7 +4377,7 @@ client.data_exports.create(
     date_to="date_to",
     format="csv",
     objects=[
-        ExportObjectSchema_Receivable(
+        ExportObjectSchema_Payable(
             statuses=["draft"],
         )
     ],
@@ -3682,6 +4528,703 @@ client.data_exports.get_by_id(
 <dd>
 
 **document_export_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Delivery notes
+<details><summary><code>client.delivery_notes.<a href="src/monite/delivery_notes/client.py">get_delivery_notes</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get all delivery notes with filtering and pagination.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.get_delivery_notes()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `typing.Optional[DeliveryNoteCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[DeliveryNoteStatusEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status_in:** `typing.Optional[
+    typing.Union[
+        DeliveryNoteStatusEnum, typing.Sequence[DeliveryNoteStatusEnum]
+    ]
+]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id_contains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id_icontains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_by_entity_user_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**based_on:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**based_on_document_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**based_on_document_id_contains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**based_on_document_id_icontains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gt:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lt:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gte:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lte:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**delivery_date_gt:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**delivery_date_lt:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**delivery_date_gte:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**delivery_date_lte:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.delivery_notes.<a href="src/monite/delivery_notes/client.py">post_delivery_notes</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import (
+    DeliveryNoteCreateLineItem,
+    DeliveryNoteCreateRequest,
+    DeliveryNoteLineItemProduct,
+    Monite,
+    UnitRequest,
+)
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.post_delivery_notes(
+    request=DeliveryNoteCreateRequest(
+        counterpart_address_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+        counterpart_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+        delivery_date="2025-01-01",
+        delivery_number="102-2025-0987",
+        display_signature_placeholder=True,
+        line_items=[
+            DeliveryNoteCreateLineItem(
+                product_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+                quantity=10.0,
+            ),
+            DeliveryNoteCreateLineItem(
+                product=DeliveryNoteLineItemProduct(
+                    description="Description of product 2",
+                    measure_unit=UnitRequest(
+                        description="pieces",
+                        name="pcs",
+                    ),
+                    name="Product 2",
+                ),
+                quantity=20.0,
+            ),
+        ],
+        memo="This is a memo",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Payload` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.delivery_notes.<a href="src/monite/delivery_notes/client.py">get_delivery_notes_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.get_delivery_notes_id(
+    delivery_note_id="delivery_note_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**delivery_note_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.delivery_notes.<a href="src/monite/delivery_notes/client.py">delete_delivery_notes_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.delete_delivery_notes_id(
+    delivery_note_id="delivery_note_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**delivery_note_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.delivery_notes.<a href="src/monite/delivery_notes/client.py">patch_delivery_notes_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.patch_delivery_notes_id(
+    delivery_note_id="delivery_note_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**delivery_note_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_address_id:** `typing.Optional[str]` — ID of the counterpart address selected for the delivery note
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_id:** `typing.Optional[str]` — ID of the counterpart
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**delivery_date:** `typing.Optional[str]` — Date of delivery
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**delivery_number:** `typing.Optional[str]` — Delivery number
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**display_signature_placeholder:** `typing.Optional[bool]` — Whether to display a signature placeholder in the generated PDF
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_items:** `typing.Optional[typing.Sequence[DeliveryNoteCreateLineItem]]` — List of line items in the delivery note
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**memo:** `typing.Optional[str]` — Additional information regarding the delivery note
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.delivery_notes.<a href="src/monite/delivery_notes/client.py">post_delivery_notes_id_cancel</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.post_delivery_notes_id_cancel(
+    delivery_note_id="delivery_note_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**delivery_note_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.delivery_notes.<a href="src/monite/delivery_notes/client.py">post_delivery_notes_id_mark_as_delivered</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.post_delivery_notes_id_mark_as_delivered(
+    delivery_note_id="delivery_note_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**delivery_note_id:** `str` 
     
 </dd>
 </dl>
@@ -4421,6 +5964,14 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
+**status:** `typing.Optional[EntityStatusEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -4549,6 +6100,22 @@ client.entities.create(
 <dd>
 
 **tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_number:** `typing.Optional[str]` — (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
     
 </dd>
 </dl>
@@ -4713,6 +6280,22 @@ client.entities.patch_entities_me()
 <dd>
 
 **tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_number:** `typing.Optional[str]` — (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
     
 </dd>
 </dl>
@@ -4913,6 +6496,22 @@ client.entities.update_by_id(
 <dd>
 
 **tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_number:** `typing.Optional[str]` — (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
     
 </dd>
 </dl>
@@ -5549,6 +7148,14 @@ client.entities.update_settings_by_id(
 <dl>
 <dd>
 
+**vat_inclusive_discount_mode:** `typing.Optional[VatModeEnum]` — Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **payment_priority:** `typing.Optional[PaymentPriorityEnum]` — Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
     
 </dd>
@@ -5597,7 +7204,13 @@ client.entities.update_settings_by_id(
 <dl>
 <dd>
 
-**generate_paid_invoice_pdf:** `typing.Optional[bool]` — If enabled, the paid invoice's PDF will be in a new layout set by the user.
+**generate_paid_invoice_pdf:** `typing.Optional[bool]` 
+
+This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.
+
+The PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.
+
+This field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.
     
 </dd>
 </dl>
@@ -5606,6 +7219,22 @@ client.entities.update_settings_by_id(
 <dd>
 
 **accounting:** `typing.Optional[AccountingSettings]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payables_skip_approval_flow:** `typing.Optional[bool]` — If enabled, the approval policy will be skipped and the payable will be moved to `waiting_to_be_paid` status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_rendering:** `typing.Optional[DocumentRenderingSettings]` — Settings for rendering documents in PDF format.
     
 </dd>
 </dl>
@@ -6462,6 +8091,22 @@ client.entity_users.update_current_entity()
 <dd>
 
 **tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_number:** `typing.Optional[str]` — (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
     
 </dd>
 </dl>
@@ -9408,8 +11053,8 @@ client.measure_units.update_by_id(
 </dl>
 </details>
 
-## Onboarding links
-<details><summary><code>client.onboarding_links.<a href="src/monite/onboarding_links/client.py">create</a>(...)</code></summary>
+## OCR
+<details><summary><code>client.ocr.<a href="src/monite/ocr/client.py">get_ocr_tasks</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -9422,8 +11067,6 @@ client.measure_units.update_by_id(
 <dd>
 
 ```python
-import datetime
-
 from monite import Monite
 
 client = Monite(
@@ -9431,12 +11074,152 @@ client = Monite(
     monite_entity_id="YOUR_MONITE_ENTITY_ID",
     token="YOUR_TOKEN",
 )
-client.onboarding_links.create(
-    expires_at=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
-    refresh_url="refresh_url",
-    return_url="return_url",
+client.ocr.get_ocr_tasks()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `typing.Optional[CursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gt:** `typing.Optional[dt.datetime]` — Return only ocr tasks created after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm].
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lt:** `typing.Optional[dt.datetime]` — Return only ocr tasks created in Monite before the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gte:** `typing.Optional[dt.datetime]` — Return only ocr tasks created on or after the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lte:** `typing.Optional[dt.datetime]` — Return only ocr tasks created before or on the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[OcrTaskStatus]` — Return only ocr tasks that have the specified status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_type:** `typing.Optional[OcrDocumentTypeEnum]` — Return only OCR tasks related to documents of a specific type.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only ocr tasks with specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
+
+To specify multiple IDs, repeat this parameter for each value: `id__in=<id1>&id__in=<id2>`
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ocr.<a href="src/monite/ocr/client.py">post_ocr_tasks</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.ocr.post_ocr_tasks(
+    file_url="file_url",
 )
 
 ```
@@ -9453,7 +11236,7 @@ client.onboarding_links.create(
 <dl>
 <dd>
 
-**expires_at:** `dt.datetime` 
+**file_url:** `str` 
     
 </dd>
 </dl>
@@ -9461,7 +11244,7 @@ client.onboarding_links.create(
 <dl>
 <dd>
 
-**refresh_url:** `str` 
+**document_type:** `typing.Optional[OcrDocumentTypeEnum]` 
     
 </dd>
 </dl>
@@ -9469,7 +11252,123 @@ client.onboarding_links.create(
 <dl>
 <dd>
 
-**return_url:** `str` 
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ocr.<a href="src/monite/ocr/client.py">post_ocr_tasks_upload_from_file</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.ocr.post_ocr_tasks_upload_from_file()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**file:** `from __future__ import annotations
+
+core.File` — See core.File for more documentation
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_type:** `typing.Optional[OcrDocumentTypeEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ocr.<a href="src/monite/ocr/client.py">get_ocr_tasks_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.ocr.get_ocr_tasks_id(
+    task_id="task_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**task_id:** `str` 
     
 </dd>
 </dl>
@@ -9987,6 +11886,14 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
+**has_file:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **total_amount_gt:** `typing.Optional[int]` 
     
 </dd>
@@ -10075,7 +11982,7 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**status:** `typing.Optional[CreditNoteStateEnum]` 
+**status:** `typing.Optional[PayableCreditNoteStateEnum]` 
     
 </dd>
 </dl>
@@ -10084,7 +11991,9 @@ If not specified, the first page of results will be returned.
 <dd>
 
 **status_in:** `typing.Optional[
-    typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]
+    typing.Union[
+        PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]
+    ]
 ]` 
     
 </dd>
@@ -10094,7 +12003,9 @@ If not specified, the first page of results will be returned.
 <dd>
 
 **status_not_in:** `typing.Optional[
-    typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]
+    typing.Union[
+        PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]
+    ]
 ]` 
     
 </dd>
@@ -10103,7 +12014,31 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
+**origin:** `typing.Optional[OriginEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **currency:** `typing.Optional[CurrencyEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
 </dl>
@@ -10366,6 +12301,202 @@ core.File` — See core.File for more documentation
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credit_notes.<a href="src/monite/credit_notes/client.py">get_payable_credit_notes_validations</a>()</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get credit notes validations.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.get_payable_credit_notes_validations()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credit_notes.<a href="src/monite/credit_notes/client.py">put_payable_credit_notes_validations</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update credit notes validations.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.put_payable_credit_notes_validations(
+    required_fields=["currency"],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**required_fields:** `typing.Sequence[CreditNoteFieldsAllowedForValidate]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credit_notes.<a href="src/monite/credit_notes/client.py">post_payable_credit_notes_validations_reset</a>()</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Reset credit notes validations.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.post_payable_credit_notes_validations_reset()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>
@@ -11888,6 +14019,64 @@ client.credit_notes.post_payable_credit_notes_id_submit_for_approval(
 </dl>
 </details>
 
+<details><summary><code>client.credit_notes.<a href="src/monite/credit_notes/client.py">get_payable_credit_notes_id_validate</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.get_payable_credit_notes_id_validate(
+    credit_note_id="credit_note_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**credit_note_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Purchase orders
 <details><summary><code>client.purchase_orders.<a href="src/monite/purchase_orders/client.py">get</a>(...)</code></summary>
 <dl>
@@ -12129,6 +14318,14 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
+**project_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -12241,6 +14438,14 @@ client.purchase_orders.create(
 <dd>
 
 **entity_vat_id_id:** `typing.Optional[str]` — Entity VAT ID identifier that applied to purchase order
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[str]` — Project ID of a purchase order
     
 </dd>
 </dl>
@@ -12517,6 +14722,14 @@ client.purchase_orders.update_by_id(
 <dd>
 
 **message:** `typing.Optional[str]` — Msg which will be send to counterpart for who the purchase order is issued.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[str]` — Project ID of a purchase order
     
 </dd>
 </dl>
@@ -13048,6 +15261,46 @@ For counterparts of `type = individual`, the full name is formatted as `first_na
 <dl>
 <dd>
 
+**issued_at:** `typing.Optional[str]` — Return payables that are issued at the specified date (YYYY-MM-DD)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_gt:** `typing.Optional[str]` — Return payables that are issued after the specified date (exclusive, YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_lt:** `typing.Optional[str]` — Return payables that are issued before the specified date (exclusive, YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_gte:** `typing.Optional[str]` — Return payables that are issued on or after the specified date (YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_lte:** `typing.Optional[str]` — Return payables that are issued before or on the specified date (YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **document_id:** `typing.Optional[str]` 
 
 Return a payable with the exact specified document number (case-sensitive).
@@ -13142,7 +15395,39 @@ Valid but nonexistent project IDs do not raise errors but return no results.
 <dl>
 <dd>
 
+**project_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only payables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **tag_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag_ids_not_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**origin:** `typing.Optional[PayableOriginEnum]` — Return only payables from a given origin ['einvoice', 'upload', 'email']
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_file:** `typing.Optional[bool]` — Return only payables with or without attachments (files)
     
 </dd>
 </dl>
@@ -13704,6 +15989,46 @@ For counterparts of `type = individual`, the full name is formatted as `first_na
 <dl>
 <dd>
 
+**issued_at:** `typing.Optional[str]` — Return payables that are issued at the specified date (YYYY-MM-DD)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_gt:** `typing.Optional[str]` — Return payables that are issued after the specified date (exclusive, YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_lt:** `typing.Optional[str]` — Return payables that are issued before the specified date (exclusive, YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_gte:** `typing.Optional[str]` — Return payables that are issued on or after the specified date (YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at_lte:** `typing.Optional[str]` — Return payables that are issued before or on the specified date (YYYY-MM-DD).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **document_id:** `typing.Optional[str]` 
 
 Return a payable with the exact specified document number (case-sensitive).
@@ -13798,7 +16123,39 @@ Valid but nonexistent project IDs do not raise errors but return no results.
 <dl>
 <dd>
 
+**project_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only payables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **tag_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag_ids_not_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**origin:** `typing.Optional[PayableOriginEnum]` — Return only payables from a given origin ['einvoice', 'upload', 'email']
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_file:** `typing.Optional[bool]` — Return only payables with or without attachments (files)
     
 </dd>
 </dl>
@@ -15408,6 +17765,14 @@ client.payment_intents.get()
 <dl>
 <dd>
 
+**object_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — A list of payable IDs and/or receivable IDs. If provided, returns only payment intents associated with the specified payable and receivable invoices. Valid but nonexistent IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -15915,7 +18280,7 @@ client.payment_records.get()
 <dl>
 <dd>
 
-**is_external:** `typing.Optional[bool]` 
+**is_external:** `typing.Optional[bool]` — Identifies whether payment is from our rails or external system
     
 </dd>
 </dl>
@@ -15923,7 +18288,127 @@ client.payment_records.get()
 <dl>
 <dd>
 
-**object_id:** `typing.Optional[str]` 
+**object_id:** `typing.Optional[str]` — ID of the object, that is connected to payment
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**object_type:** `typing.Optional[ObjectTypeEnum]` — Type of an object, which is connected with payment
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gt:** `typing.Optional[dt.datetime]` — Created after this datetime (exclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lt:** `typing.Optional[dt.datetime]` — Created before this datetime (exclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**updated_at_gt:** `typing.Optional[dt.datetime]` — Updated after this datetime (exclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**updated_at_lt:** `typing.Optional[dt.datetime]` — Updated before this datetime (exclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paid_at_gt:** `typing.Optional[dt.datetime]` — Paid after this datetime (exclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paid_at_lt:** `typing.Optional[dt.datetime]` — Paid before this datetime (exclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**planned_payment_date:** `typing.Optional[str]` — Optional date of the upcoming payment (equality)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**planned_payment_date_gt:** `typing.Optional[str]` — Planned after this date (exclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**planned_payment_date_lt:** `typing.Optional[str]` — Planned before this date (exclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**planned_payment_date_gte:** `typing.Optional[str]` — Planned at or after this date (inclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**planned_payment_date_lte:** `typing.Optional[str]` — Planned at or before this date (inclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[PaymentRecordStatusEnum]` — One of the payment record statuses
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_intent_status:** `typing.Optional[str]` — Payment intent status as a raw string
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method:** `typing.Optional[str]` — Payment method used for the transaction
     
 </dd>
 </dl>
@@ -15956,8 +18441,6 @@ client.payment_records.get()
 <dd>
 
 ```python
-import datetime
-
 from monite import Monite, PaymentRecordObjectRequest
 
 client = Monite(
@@ -15971,9 +18454,6 @@ client.payment_records.create(
     object=PaymentRecordObjectRequest(
         id="id",
         type="receivable",
-    ),
-    paid_at=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
     ),
     payment_intent_id="payment_intent_id",
 )
@@ -15992,7 +18472,7 @@ client.payment_records.create(
 <dl>
 <dd>
 
-**amount:** `int` 
+**amount:** `int` — Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents).
     
 </dd>
 </dl>
@@ -16000,7 +18480,7 @@ client.payment_records.create(
 <dl>
 <dd>
 
-**currency:** `CurrencyEnum` 
+**currency:** `CurrencyEnum` — Currency code (ISO 4217) indicating the currency in which the payment was made.
     
 </dd>
 </dl>
@@ -16008,7 +18488,7 @@ client.payment_records.create(
 <dl>
 <dd>
 
-**object:** `PaymentRecordObjectRequest` 
+**object:** `PaymentRecordObjectRequest` — Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier.
     
 </dd>
 </dl>
@@ -16016,7 +18496,7 @@ client.payment_records.create(
 <dl>
 <dd>
 
-**paid_at:** `dt.datetime` 
+**payment_intent_id:** `str` — Identifier for an payment intent.
     
 </dd>
 </dl>
@@ -16024,7 +18504,7 @@ client.payment_records.create(
 <dl>
 <dd>
 
-**payment_intent_id:** `str` 
+**entity_user_id:** `typing.Optional[str]` — ID of the user associated with the payment, if applicable.
     
 </dd>
 </dl>
@@ -16032,7 +18512,39 @@ client.payment_records.create(
 <dl>
 <dd>
 
-**entity_user_id:** `typing.Optional[str]` 
+**paid_at:** `typing.Optional[dt.datetime]` — Timestamp marking when the payment was executed. Null if payment hasn't occurred yet.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_intent_status:** `typing.Optional[str]` — Raw status string of the external payment intent.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method:** `typing.Optional[str]` — Payment method used or planned for the transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**planned_payment_date:** `typing.Optional[str]` — Scheduled date for future payments, required when the payment is planned but not yet executed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[PaymentRecordRequestStatus]` — Status of the payment record indicating its current stage (e.g., created, processing, succeeded).
     
 </dd>
 </dl>
@@ -16091,6 +18603,347 @@ client.payment_records.get_by_id(
 <dd>
 
 **payment_record_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_records.<a href="src/monite/payment_records/client.py">patch_payment_records_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_records.patch_payment_records_id(
+    payment_record_id="payment_record_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payment_record_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `typing.Optional[int]` — Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[CurrencyEnum]` — Currency code (ISO 4217) indicating the currency in which the payment was made.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_user_id:** `typing.Optional[str]` — ID of the user associated with the payment, if applicable.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**object:** `typing.Optional[PaymentRecordObjectRequest]` — Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paid_at:** `typing.Optional[dt.datetime]` — Timestamp marking when the payment was executed. Null if payment hasn't occurred yet.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_intent_id:** `typing.Optional[str]` — Identifier for an payment intent.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_intent_status:** `typing.Optional[str]` — Raw status string of the external payment intent.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method:** `typing.Optional[str]` — Payment method used or planned for the transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**planned_payment_date:** `typing.Optional[str]` — Scheduled date for future payments, required when the payment is planned but not yet executed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_records.<a href="src/monite/payment_records/client.py">post_payment_records_id_cancel</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_records.post_payment_records_id_cancel(
+    payment_record_id="payment_record_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payment_record_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_intent_status:** `typing.Optional[str]` — Raw status string of the external payment intent.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_records.<a href="src/monite/payment_records/client.py">post_payment_records_id_mark_as_succeeded</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_records.post_payment_records_id_mark_as_succeeded(
+    payment_record_id="payment_record_id",
+    paid_at=datetime.datetime.fromisoformat(
+        "2024-01-15 09:30:00+00:00",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payment_record_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paid_at:** `dt.datetime` — Timestamp marking when the payment was executed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_intent_status:** `typing.Optional[str]` — Raw status string of the external payment intent.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_records.<a href="src/monite/payment_records/client.py">post_payment_records_id_start_processing</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_records.post_payment_records_id_start_processing(
+    payment_record_id="payment_record_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payment_record_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_intent_status:** `typing.Optional[str]` — Raw status string of the external payment intent.
     
 </dd>
 </dl>
@@ -16856,7 +19709,7 @@ client.products.get()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -16864,7 +19717,7 @@ client.products.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -16872,7 +19725,11 @@ client.products.get()
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -16880,7 +19737,7 @@ client.products.get()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[ProductCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[ProductCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -18181,7 +21038,7 @@ client.receivables.get()
 
 **limit:** `typing.Optional[int]` 
 
-The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page. 
+The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page. 
 
 When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
     
@@ -18292,6 +21149,60 @@ For example, given receivables with the following tags:
 
 
 `tag_ids=<tagA>&tag_ids=<tagB>` will return receivables 3 and 5.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**product_ids_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only receivables whose line items include at least one of the product IDs with the specified IDs. 
+
+To specify multiple product IDs, repeat this parameter for each ID:
+`product_ids__in=<product1>&product_ids__in=<product2>`
+
+For example, given receivables with the following product IDs:
+1. productA
+2. productB
+3. productA, productB
+4. productC
+5. productB, productC
+
+
+`product_ids__in=<productA>&product_ids__in=<productB>` will return receivables 1, 2, 3, and 5.Valid but nonexistent product IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**product_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only receivables whose line items include all of the product IDs with the specified IDs and optionally other products that are not specified. 
+
+To specify multiple product IDs, repeat this parameter for each ID:
+`product_ids=<product1>&product_ids=<product2>`
+
+For example, given receivables with the following product IDs:
+1. productA
+2. productB
+3. productA, productB
+4. productC
+5. productA, productB, productC
+
+
+`product_ids=<productA>&product_ids=<productB>` will return receivables 3 and 5.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return only receivables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
     
 </dd>
 </dl>
@@ -18591,6 +21502,116 @@ client.receivables.create(
 <dd>
 
 **request:** `ReceivableFacadeCreatePayload` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receivables.<a href="src/monite/receivables/client.py">get_receivables_required_fields</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get field requirements for invoice creation given the entity and counterpart details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.get_receivables_required_fields()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**counterpart_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_billing_address_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_country:** `typing.Optional[AllowedCountries]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_type:** `typing.Optional[CounterpartType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_vat_id_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_vat_id_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -19167,7 +22188,7 @@ client.receivables.get_history(
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -19175,7 +22196,7 @@ client.receivables.get_history(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -19183,7 +22204,11 @@ client.receivables.get_history(
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -19191,7 +22216,7 @@ client.receivables.get_history(
 <dl>
 <dd>
 
-**sort:** `typing.Optional[ReceivableHistoryCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[ReceivableHistoryCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -19540,7 +22565,7 @@ client.receivables.get_mails(
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -19548,7 +22573,7 @@ client.receivables.get_mails(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -19556,7 +22581,11 @@ client.receivables.get_mails(
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -19564,7 +22593,7 @@ client.receivables.get_mails(
 <dl>
 <dd>
 
-**sort:** `typing.Optional[ReceivableMailCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[ReceivableMailCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -20439,6 +23468,23 @@ client.recurrences.create(
 <dl>
 <dd>
 
+**automation_level:** `typing.Optional[AutomationLevel]` 
+
+Controls how invoices are processed when generated:
+- "draft": Creates invoices in draft status, requiring manual review, issuing, and sending
+- "issue": Automatically issues invoices but requires manual sending
+- "issue_and_send": Fully automates the process (creates, issues, and sends invoices)
+
+Default: "issue" (or "issue_and_send" if subject_text and body_text are provided)
+
+Note: When using "issue_and_send", both subject_text and body_text must be provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **body_text:** `typing.Optional[str]` 
     
 </dd>
@@ -20572,6 +23618,23 @@ client.recurrences.update_by_id(
 <dd>
 
 **recurrence_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**automation_level:** `typing.Optional[AutomationLevel]` 
+
+Controls how invoices are processed when generated:
+- "draft": Creates invoices in draft status, requiring manual review, issuing, and sending
+- "issue": Automatically issues invoices but requires manual sending
+- "issue_and_send": Fully automates the process (creates, issues, and sends invoices)
+
+Default: "issue" (or "issue_and_send" if subject_text and body_text are provided)
+
+Note: When using "issue_and_send", both subject_text and body_text must be provided.
     
 </dd>
 </dl>
@@ -20954,6 +24017,78 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.roles.get_by_id(
+    role_id="role_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**role_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.roles.<a href="src/monite/roles/client.py">delete_roles_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete a role with the specified ID. The role being deleted must not be in use by any entity users, otherwise a 409 error is returned. To check if there are entity users that have this role, call `GET /entity_users?role_id=ROLE_ID`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.roles.delete_roles_id(
     role_id="role_id",
 )
 
@@ -21801,7 +24936,7 @@ client.text_templates.get()
 <dl>
 <dd>
 
-**document_type:** `typing.Optional[DocumentTypeEnum]` 
+**document_type:** `typing.Optional[TextTemplateDocumentTypeEnum]` 
     
 </dd>
 </dl>
@@ -21884,7 +25019,7 @@ client.text_templates.create(
 <dl>
 <dd>
 
-**document_type:** `DocumentTypeEnum` 
+**document_type:** `TextTemplateDocumentTypeEnum` 
     
 </dd>
 </dl>
@@ -23750,7 +26885,7 @@ client.accounting.synced_records.get(
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -23758,7 +26893,7 @@ client.accounting.synced_records.get(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -23766,7 +26901,11 @@ client.accounting.synced_records.get(
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -23774,7 +26913,7 @@ client.accounting.synced_records.get(
 <dl>
 <dd>
 
-**sort:** `typing.Optional[SyncRecordCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[SyncRecordCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -24069,7 +27208,7 @@ client.accounting.tax_rates.get()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -24077,7 +27216,7 @@ client.accounting.tax_rates.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -24085,7 +27224,11 @@ client.accounting.tax_rates.get()
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -24093,7 +27236,7 @@ client.accounting.tax_rates.get()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[TaxRateAccountCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[TaxRateAccountCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -24236,7 +27379,7 @@ client.accounting.ledger_accounts.get()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -24244,7 +27387,7 @@ client.accounting.ledger_accounts.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -24252,7 +27395,11 @@ client.accounting.ledger_accounts.get()
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -24260,7 +27407,7 @@ client.accounting.ledger_accounts.get()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[LedgerAccountCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[LedgerAccountCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -27023,10 +30170,13 @@ client.entities.bank_accounts.get()
 <dl>
 <dd>
 
-Add a new bank account for the specified entity.
+Adds a new bank account for the specified entity.
 
-The minimum required fields are `currency` and `country`. Other required fields depend on the currency:
+The minimum required fields are `currency` and `country`. Other required fields depend on the currency and country.
 
+Bank accounts in African countries can use any fields or combinations of fields.
+
+For other countries:
 * EUR accounts require `iban`.
 * GBP accounts require `account_holder_name`, `account_number`, and `sort_code`.
 * USD accounts require `account_holder_name`, `account_number`, and `routing_number`.
@@ -27090,7 +30240,11 @@ client.entities.bank_accounts.create(
 <dl>
 <dd>
 
-**account_holder_name:** `typing.Optional[str]` — The name of the person or business that owns this bank account. Required if the account currency is GBP or USD.
+**account_holder_name:** `typing.Optional[str]` 
+
+The name of the person or business that owns this bank account. Required in the following cases:
+* the account currency is GBP or USD,
+* the account currency is EUR and the entity wishes to receive SEPA Credit transfers to this account.
     
 </dd>
 </dl>
@@ -27114,7 +30268,11 @@ client.entities.bank_accounts.create(
 <dl>
 <dd>
 
-**bic:** `typing.Optional[str]` — The SWIFT/BIC code of the bank.
+**bic:** `typing.Optional[str]` 
+
+The SWIFT/BIC code of the bank. Can be either 8 or 11 characters long. Monite verifies the BIC length, country code, and whether the structure conforms to ISO 9362.
+
+If `bic` is specified, `iban` must also be specified.
     
 </dd>
 </dl>
@@ -27130,7 +30288,7 @@ client.entities.bank_accounts.create(
 <dl>
 <dd>
 
-**iban:** `typing.Optional[str]` — The IBAN of the bank account. Required if the account currency is EUR.
+**iban:** `typing.Optional[str]` — The IBAN of the bank account, up to 34 characters. Required if the account currency is EUR. Monite verifies the IBAN length, checksum digits, and country-specific format according to ISO 13616.
     
 </dd>
 </dl>
@@ -27155,179 +30313,6 @@ client.entities.bank_accounts.create(
 <dd>
 
 **sort_code:** `typing.Optional[str]` — The bank's sort code. Required if the account currency is GBP.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entities.bank_accounts.<a href="src/monite/entities/bank_accounts/client.py">complete_verification</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from monite import (
-    AirwallexMandate,
-    AirwallexPlaidAccount,
-    AirwallexPlaidInstitution,
-    CompleteVerificationAirwallexPlaidRequest,
-    Monite,
-)
-
-client = Monite(
-    monite_version="YOUR_MONITE_VERSION",
-    monite_entity_id="YOUR_MONITE_ENTITY_ID",
-    token="YOUR_TOKEN",
-)
-client.entities.bank_accounts.complete_verification(
-    airwallex_plaid=CompleteVerificationAirwallexPlaidRequest(
-        account=AirwallexPlaidAccount(
-            id="id",
-            mask="mask",
-            name="name",
-        ),
-        institution=AirwallexPlaidInstitution(
-            id="id",
-            name="name",
-        ),
-        mandate=AirwallexMandate(
-            email="email",
-            signatory="signatory",
-        ),
-        public_token="public_token",
-    ),
-    type="airwallex_plaid",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**airwallex_plaid:** `CompleteVerificationAirwallexPlaidRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**type:** `BankAccountVerificationType` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entities.bank_accounts.<a href="src/monite/entities/bank_accounts/client.py">start_verification</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Start entity bank account verification. The flow depends on verification type.
-For airwallex_plaid it generates Plaid Link token to init the Plaid SDK.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from monite import Monite, VerificationAirwallexPlaidRequest
-
-client = Monite(
-    monite_version="YOUR_MONITE_VERSION",
-    monite_entity_id="YOUR_MONITE_ENTITY_ID",
-    token="YOUR_TOKEN",
-)
-client.entities.bank_accounts.start_verification(
-    airwallex_plaid=VerificationAirwallexPlaidRequest(
-        client_name="client_name",
-        redirect_url="redirect_url",
-    ),
-    type="airwallex_plaid",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**airwallex_plaid:** `VerificationAirwallexPlaidRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**type:** `BankAccountVerificationType` 
     
 </dd>
 </dl>
@@ -27579,73 +30564,6 @@ client.entities.bank_accounts.update_by_id(
 </dl>
 </details>
 
-<details><summary><code>client.entities.bank_accounts.<a href="src/monite/entities/bank_accounts/client.py">complete_verification_by_id</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from monite import Monite
-
-client = Monite(
-    monite_version="YOUR_MONITE_VERSION",
-    monite_entity_id="YOUR_MONITE_ENTITY_ID",
-    token="YOUR_TOKEN",
-)
-client.entities.bank_accounts.complete_verification_by_id(
-    bank_account_id="bank_account_id",
-    type="airwallex_plaid",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**bank_account_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**type:** `BankAccountVerificationType` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.entities.bank_accounts.<a href="src/monite/entities/bank_accounts/client.py">make_default_by_id</a>(...)</code></summary>
 <dl>
 <dd>
@@ -27681,143 +30599,6 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.entities.bank_accounts.make_default_by_id(
-    bank_account_id="bank_account_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**bank_account_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entities.bank_accounts.<a href="src/monite/entities/bank_accounts/client.py">refresh_verification_by_id</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from monite import Monite, VerificationAirwallexPlaidRequest
-
-client = Monite(
-    monite_version="YOUR_MONITE_VERSION",
-    monite_entity_id="YOUR_MONITE_ENTITY_ID",
-    token="YOUR_TOKEN",
-)
-client.entities.bank_accounts.refresh_verification_by_id(
-    bank_account_id="bank_account_id",
-    airwallex_plaid=VerificationAirwallexPlaidRequest(
-        client_name="client_name",
-        redirect_url="redirect_url",
-    ),
-    type="airwallex_plaid",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**bank_account_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**airwallex_plaid:** `VerificationAirwallexPlaidRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**type:** `BankAccountVerificationType` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entities.bank_accounts.<a href="src/monite/entities/bank_accounts/client.py">get_verifications_by_id</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from monite import Monite
-
-client = Monite(
-    monite_version="YOUR_MONITE_VERSION",
-    monite_entity_id="YOUR_MONITE_ENTITY_ID",
-    token="YOUR_TOKEN",
-)
-client.entities.bank_accounts.get_verifications_by_id(
     bank_account_id="bank_account_id",
 )
 
@@ -28603,9 +31384,9 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.entities.persons.create(
+    email="email",
     first_name="first_name",
     last_name="last_name",
-    email="email",
     relationship=PersonRelationshipRequest(),
 )
 
@@ -28623,6 +31404,14 @@ client.entities.persons.create(
 <dl>
 <dd>
 
+**email:** `str` — The person's email address
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **first_name:** `str` — The person's first name
     
 </dd>
@@ -28632,14 +31421,6 @@ client.entities.persons.create(
 <dd>
 
 **last_name:** `str` — The person's last name
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email:** `str` — The person's email address
     
 </dd>
 </dl>
@@ -28663,7 +31444,7 @@ client.entities.persons.create(
 <dl>
 <dd>
 
-**date_of_birth:** `typing.Optional[str]` — The person's date of birth
+**citizenship:** `typing.Optional[AllowedCountries]` — Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
     
 </dd>
 </dl>
@@ -28671,7 +31452,7 @@ client.entities.persons.create(
 <dl>
 <dd>
 
-**phone:** `typing.Optional[str]` — The person's phone number
+**date_of_birth:** `typing.Optional[str]` — The person's date of birth
     
 </dd>
 </dl>
@@ -28687,7 +31468,7 @@ client.entities.persons.create(
 <dl>
 <dd>
 
-**ssn_last4:** `typing.Optional[str]` — The last four digits of the person's Social Security number
+**phone:** `typing.Optional[str]` — The person's phone number
     
 </dd>
 </dl>
@@ -28695,7 +31476,7 @@ client.entities.persons.create(
 <dl>
 <dd>
 
-**citizenship:** `typing.Optional[AllowedCountries]` — Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
+**ssn_last4:** `typing.Optional[str]` — The last four digits of the person's Social Security number
     
 </dd>
 </dl>
@@ -28885,7 +31666,23 @@ client.entities.persons.update_by_id(
 <dl>
 <dd>
 
+**citizenship:** `typing.Optional[AllowedCountries]` — Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **date_of_birth:** `typing.Optional[str]` — The person's date of birth
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `typing.Optional[str]` — The person's email address
     
 </dd>
 </dl>
@@ -28901,7 +31698,7 @@ client.entities.persons.update_by_id(
 <dl>
 <dd>
 
-**last_name:** `typing.Optional[str]` — The person's last name
+**id_number:** `typing.Optional[str]` — The person's ID number, as appropriate for their country
     
 </dd>
 </dl>
@@ -28909,7 +31706,7 @@ client.entities.persons.update_by_id(
 <dl>
 <dd>
 
-**email:** `typing.Optional[str]` — The person's email address
+**last_name:** `typing.Optional[str]` — The person's last name
     
 </dd>
 </dl>
@@ -28933,23 +31730,7 @@ client.entities.persons.update_by_id(
 <dl>
 <dd>
 
-**id_number:** `typing.Optional[str]` — The person's ID number, as appropriate for their country
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **ssn_last4:** `typing.Optional[str]` — The last four digits of the person's Social Security number
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**citizenship:** `typing.Optional[AllowedCountries]` — Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
     
 </dd>
 </dl>

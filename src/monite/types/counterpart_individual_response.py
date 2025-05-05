@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class CounterpartIndividualResponse(UniversalBaseModel):
-    """
-    Represents counterparts that are individuals (natural persons).
-    """
-
     email: typing.Optional[str] = pydantic.Field(default=None)
     """
     The person's email address.

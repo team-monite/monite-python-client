@@ -4,7 +4,7 @@ from ..core.pydantic_utilities import UniversalBaseModel
 import typing
 import datetime as dt
 from .document_type_enum import DocumentTypeEnum
-from .file_schema import FileSchema
+from .file_response import FileResponse
 from .template_type_enum import TemplateTypeEnum
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
@@ -19,7 +19,7 @@ class TemplateReceivableResponse(UniversalBaseModel):
     is_default: bool
     language: str
     name: str
-    preview: typing.Optional[FileSchema] = None
+    preview: typing.Optional[FileResponse] = None
     template: str
     template_type: typing.Optional[TemplateTypeEnum] = None
 

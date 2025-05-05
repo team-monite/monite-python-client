@@ -10,6 +10,7 @@ from ..types.payable_state_enum import PayableStateEnum
 from ..types.currency_enum import CurrencyEnum
 from ..types.source_of_payable_data_enum import SourceOfPayableDataEnum
 from ..types.ocr_status_enum import OcrStatusEnum
+from ..types.payable_origin_enum import PayableOriginEnum
 from ..core.request_options import RequestOptions
 from ..types.payable_pagination_response import PayablePaginationResponse
 from ..core.datetime_utils import serialize_datetime
@@ -19,7 +20,6 @@ from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_acceptable_error import NotAcceptableError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
@@ -83,6 +83,11 @@ class PayablesClient:
         due_date_lt: typing.Optional[str] = None,
         due_date_gte: typing.Optional[str] = None,
         due_date_lte: typing.Optional[str] = None,
+        issued_at: typing.Optional[str] = None,
+        issued_at_gt: typing.Optional[str] = None,
+        issued_at_lt: typing.Optional[str] = None,
+        issued_at_gte: typing.Optional[str] = None,
+        issued_at_lte: typing.Optional[str] = None,
         document_id: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
         document_id_icontains: typing.Optional[str] = None,
@@ -93,7 +98,11 @@ class PayablesClient:
         line_item_id: typing.Optional[str] = None,
         purchase_order_id: typing.Optional[str] = None,
         project_id: typing.Optional[str] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        origin: typing.Optional[PayableOriginEnum] = None,
+        has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PayablePaginationResponse:
         """
@@ -235,6 +244,21 @@ class PayablesClient:
         due_date_lte : typing.Optional[str]
             Return payables that are due before or on the specified date (YYYY-MM-DD).
 
+        issued_at : typing.Optional[str]
+            Return payables that are issued at the specified date (YYYY-MM-DD)
+
+        issued_at_gt : typing.Optional[str]
+            Return payables that are issued after the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_lt : typing.Optional[str]
+            Return payables that are issued before the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_gte : typing.Optional[str]
+            Return payables that are issued on or after the specified date (YYYY-MM-DD).
+
+        issued_at_lte : typing.Optional[str]
+            Return payables that are issued before or on the specified date (YYYY-MM-DD).
+
         document_id : typing.Optional[str]
             Return a payable with the exact specified document number (case-sensitive).
 
@@ -273,8 +297,20 @@ class PayablesClient:
 
             Valid but nonexistent project IDs do not raise errors but return no results.
 
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+
         tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+
+        tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
+
+        origin : typing.Optional[PayableOriginEnum]
+            Return only payables from a given origin ['einvoice', 'upload', 'email']
+
+        has_file : typing.Optional[bool]
+            Return only payables with or without attachments (files)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -330,6 +366,11 @@ class PayablesClient:
                 "due_date__lt": due_date_lt,
                 "due_date__gte": due_date_gte,
                 "due_date__lte": due_date_lte,
+                "issued_at": issued_at,
+                "issued_at__gt": issued_at_gt,
+                "issued_at__lt": issued_at_lt,
+                "issued_at__gte": issued_at_gte,
+                "issued_at__lte": issued_at_lte,
                 "document_id": document_id,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
@@ -340,7 +381,11 @@ class PayablesClient:
                 "line_item_id": line_item_id,
                 "purchase_order_id": purchase_order_id,
                 "project_id": project_id,
+                "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
+                "tag_ids__not_in": tag_ids_not_in,
+                "origin": origin,
+                "has_file": has_file,
             },
             request_options=request_options,
         )
@@ -396,9 +441,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -627,9 +672,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -679,6 +724,11 @@ class PayablesClient:
         due_date_lt: typing.Optional[str] = None,
         due_date_gte: typing.Optional[str] = None,
         due_date_lte: typing.Optional[str] = None,
+        issued_at: typing.Optional[str] = None,
+        issued_at_gt: typing.Optional[str] = None,
+        issued_at_lt: typing.Optional[str] = None,
+        issued_at_gte: typing.Optional[str] = None,
+        issued_at_lte: typing.Optional[str] = None,
         document_id: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
         document_id_icontains: typing.Optional[str] = None,
@@ -689,7 +739,11 @@ class PayablesClient:
         line_item_id: typing.Optional[str] = None,
         purchase_order_id: typing.Optional[str] = None,
         project_id: typing.Optional[str] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        origin: typing.Optional[PayableOriginEnum] = None,
+        has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PayableAggregatedDataResponse:
         """
@@ -788,6 +842,21 @@ class PayablesClient:
         due_date_lte : typing.Optional[str]
             Return payables that are due before or on the specified date (YYYY-MM-DD).
 
+        issued_at : typing.Optional[str]
+            Return payables that are issued at the specified date (YYYY-MM-DD)
+
+        issued_at_gt : typing.Optional[str]
+            Return payables that are issued after the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_lt : typing.Optional[str]
+            Return payables that are issued before the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_gte : typing.Optional[str]
+            Return payables that are issued on or after the specified date (YYYY-MM-DD).
+
+        issued_at_lte : typing.Optional[str]
+            Return payables that are issued before or on the specified date (YYYY-MM-DD).
+
         document_id : typing.Optional[str]
             Return a payable with the exact specified document number (case-sensitive).
 
@@ -826,8 +895,20 @@ class PayablesClient:
 
             Valid but nonexistent project IDs do not raise errors but return no results.
 
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+
         tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+
+        tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
+
+        origin : typing.Optional[PayableOriginEnum]
+            Return only payables from a given origin ['einvoice', 'upload', 'email']
+
+        has_file : typing.Optional[bool]
+            Return only payables with or without attachments (files)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -879,6 +960,11 @@ class PayablesClient:
                 "due_date__lt": due_date_lt,
                 "due_date__gte": due_date_gte,
                 "due_date__lte": due_date_lte,
+                "issued_at": issued_at,
+                "issued_at__gt": issued_at_gt,
+                "issued_at__lt": issued_at_lt,
+                "issued_at__gte": issued_at_gte,
+                "issued_at__lte": issued_at_lte,
                 "document_id": document_id,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
@@ -889,7 +975,11 @@ class PayablesClient:
                 "line_item_id": line_item_id,
                 "purchase_order_id": purchase_order_id,
                 "project_id": project_id,
+                "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
+                "tag_ids__not_in": tag_ids_not_in,
+                "origin": origin,
+                "has_file": has_file,
             },
             request_options=request_options,
         )
@@ -925,9 +1015,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1039,9 +1129,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1133,9 +1223,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1243,9 +1333,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1339,9 +1429,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1415,9 +1505,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1525,9 +1615,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1626,9 +1716,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1861,9 +1951,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1981,9 +2071,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2099,9 +2189,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2219,9 +2309,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2339,9 +2429,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2494,9 +2584,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2648,9 +2738,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2768,9 +2858,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2888,9 +2978,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3008,9 +3098,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3118,9 +3208,9 @@ class PayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3180,6 +3270,11 @@ class AsyncPayablesClient:
         due_date_lt: typing.Optional[str] = None,
         due_date_gte: typing.Optional[str] = None,
         due_date_lte: typing.Optional[str] = None,
+        issued_at: typing.Optional[str] = None,
+        issued_at_gt: typing.Optional[str] = None,
+        issued_at_lt: typing.Optional[str] = None,
+        issued_at_gte: typing.Optional[str] = None,
+        issued_at_lte: typing.Optional[str] = None,
         document_id: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
         document_id_icontains: typing.Optional[str] = None,
@@ -3190,7 +3285,11 @@ class AsyncPayablesClient:
         line_item_id: typing.Optional[str] = None,
         purchase_order_id: typing.Optional[str] = None,
         project_id: typing.Optional[str] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        origin: typing.Optional[PayableOriginEnum] = None,
+        has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PayablePaginationResponse:
         """
@@ -3332,6 +3431,21 @@ class AsyncPayablesClient:
         due_date_lte : typing.Optional[str]
             Return payables that are due before or on the specified date (YYYY-MM-DD).
 
+        issued_at : typing.Optional[str]
+            Return payables that are issued at the specified date (YYYY-MM-DD)
+
+        issued_at_gt : typing.Optional[str]
+            Return payables that are issued after the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_lt : typing.Optional[str]
+            Return payables that are issued before the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_gte : typing.Optional[str]
+            Return payables that are issued on or after the specified date (YYYY-MM-DD).
+
+        issued_at_lte : typing.Optional[str]
+            Return payables that are issued before or on the specified date (YYYY-MM-DD).
+
         document_id : typing.Optional[str]
             Return a payable with the exact specified document number (case-sensitive).
 
@@ -3370,8 +3484,20 @@ class AsyncPayablesClient:
 
             Valid but nonexistent project IDs do not raise errors but return no results.
 
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+
         tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+
+        tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
+
+        origin : typing.Optional[PayableOriginEnum]
+            Return only payables from a given origin ['einvoice', 'upload', 'email']
+
+        has_file : typing.Optional[bool]
+            Return only payables with or without attachments (files)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3435,6 +3561,11 @@ class AsyncPayablesClient:
                 "due_date__lt": due_date_lt,
                 "due_date__gte": due_date_gte,
                 "due_date__lte": due_date_lte,
+                "issued_at": issued_at,
+                "issued_at__gt": issued_at_gt,
+                "issued_at__lt": issued_at_lt,
+                "issued_at__gte": issued_at_gte,
+                "issued_at__lte": issued_at_lte,
                 "document_id": document_id,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
@@ -3445,7 +3576,11 @@ class AsyncPayablesClient:
                 "line_item_id": line_item_id,
                 "purchase_order_id": purchase_order_id,
                 "project_id": project_id,
+                "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
+                "tag_ids__not_in": tag_ids_not_in,
+                "origin": origin,
+                "has_file": has_file,
             },
             request_options=request_options,
         )
@@ -3501,9 +3636,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3740,9 +3875,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3792,6 +3927,11 @@ class AsyncPayablesClient:
         due_date_lt: typing.Optional[str] = None,
         due_date_gte: typing.Optional[str] = None,
         due_date_lte: typing.Optional[str] = None,
+        issued_at: typing.Optional[str] = None,
+        issued_at_gt: typing.Optional[str] = None,
+        issued_at_lt: typing.Optional[str] = None,
+        issued_at_gte: typing.Optional[str] = None,
+        issued_at_lte: typing.Optional[str] = None,
         document_id: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
         document_id_icontains: typing.Optional[str] = None,
@@ -3802,7 +3942,11 @@ class AsyncPayablesClient:
         line_item_id: typing.Optional[str] = None,
         purchase_order_id: typing.Optional[str] = None,
         project_id: typing.Optional[str] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        origin: typing.Optional[PayableOriginEnum] = None,
+        has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PayableAggregatedDataResponse:
         """
@@ -3901,6 +4045,21 @@ class AsyncPayablesClient:
         due_date_lte : typing.Optional[str]
             Return payables that are due before or on the specified date (YYYY-MM-DD).
 
+        issued_at : typing.Optional[str]
+            Return payables that are issued at the specified date (YYYY-MM-DD)
+
+        issued_at_gt : typing.Optional[str]
+            Return payables that are issued after the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_lt : typing.Optional[str]
+            Return payables that are issued before the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_gte : typing.Optional[str]
+            Return payables that are issued on or after the specified date (YYYY-MM-DD).
+
+        issued_at_lte : typing.Optional[str]
+            Return payables that are issued before or on the specified date (YYYY-MM-DD).
+
         document_id : typing.Optional[str]
             Return a payable with the exact specified document number (case-sensitive).
 
@@ -3939,8 +4098,20 @@ class AsyncPayablesClient:
 
             Valid but nonexistent project IDs do not raise errors but return no results.
 
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+
         tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+
+        tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
+
+        origin : typing.Optional[PayableOriginEnum]
+            Return only payables from a given origin ['einvoice', 'upload', 'email']
+
+        has_file : typing.Optional[bool]
+            Return only payables with or without attachments (files)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4000,6 +4171,11 @@ class AsyncPayablesClient:
                 "due_date__lt": due_date_lt,
                 "due_date__gte": due_date_gte,
                 "due_date__lte": due_date_lte,
+                "issued_at": issued_at,
+                "issued_at__gt": issued_at_gt,
+                "issued_at__lt": issued_at_lt,
+                "issued_at__gte": issued_at_gte,
+                "issued_at__lte": issued_at_lte,
                 "document_id": document_id,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
@@ -4010,7 +4186,11 @@ class AsyncPayablesClient:
                 "line_item_id": line_item_id,
                 "purchase_order_id": purchase_order_id,
                 "project_id": project_id,
+                "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
+                "tag_ids__not_in": tag_ids_not_in,
+                "origin": origin,
+                "has_file": has_file,
             },
             request_options=request_options,
         )
@@ -4046,9 +4226,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4168,9 +4348,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4272,9 +4452,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4390,9 +4570,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4494,9 +4674,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4578,9 +4758,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4696,9 +4876,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4805,9 +4985,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5048,9 +5228,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5176,9 +5356,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5302,9 +5482,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5430,9 +5610,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5558,9 +5738,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5721,9 +5901,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5883,9 +6063,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6011,9 +6191,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6139,9 +6319,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6267,9 +6447,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6385,9 +6565,9 @@ class AsyncPayablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

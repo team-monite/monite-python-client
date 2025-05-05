@@ -16,6 +16,11 @@ class LineItemProduct(UniversalBaseModel):
     Unique ID of the product.
     """
 
+    accounting_tax_rate_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unique identifier of the accounting tax rate object.
+    """
+
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
     Description of the product.

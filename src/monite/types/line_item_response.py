@@ -28,6 +28,11 @@ class LineItemResponse(UniversalBaseModel):
     Name of the product.
     """
 
+    ocr_set_quantity_to_one: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Indicates whether the item's `unit_price` and `quantity` were adjusted by OCR.
+    """
+
     payable_id: str
     quantity: typing.Optional[float] = pydantic.Field(default=None)
     """

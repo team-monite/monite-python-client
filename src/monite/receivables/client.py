@@ -17,7 +17,6 @@ from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_acceptable_error import NotAcceptableError
 from ..errors.conflict_error import ConflictError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
@@ -26,6 +25,9 @@ from ..types.receivable_response import ReceivableResponse
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.not_found_error import NotFoundError
+from ..types.allowed_countries import AllowedCountries
+from ..types.counterpart_type import CounterpartType
+from ..types.receivable_required_fields import ReceivableRequiredFields
 from ..types.receivable_templates_variables_object_list import ReceivableTemplatesVariablesObjectList
 from ..core.jsonable_encoder import jsonable_encoder
 from ..types.receivable_update_payload import ReceivableUpdatePayload
@@ -74,6 +76,9 @@ class ReceivablesClient:
         sort: typing.Optional[ReceivableCursorFields] = None,
         tag_ids_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        product_ids_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         type: typing.Optional[ReceivableType] = None,
         document_id: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
@@ -179,7 +184,7 @@ class ReceivablesClient:
             Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page.
 
             When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
 
@@ -238,6 +243,41 @@ class ReceivablesClient:
 
 
             `tag_ids=<tagA>&tag_ids=<tagB>` will return receivables 3 and 5.
+
+        product_ids_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose line items include at least one of the product IDs with the specified IDs.
+
+            To specify multiple product IDs, repeat this parameter for each ID:
+            `product_ids__in=<product1>&product_ids__in=<product2>`
+
+            For example, given receivables with the following product IDs:
+            1. productA
+            2. productB
+            3. productA, productB
+            4. productC
+            5. productB, productC
+
+
+            `product_ids__in=<productA>&product_ids__in=<productB>` will return receivables 1, 2, 3, and 5.Valid but nonexistent product IDs do not raise errors but produce no results.
+
+        product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose line items include all of the product IDs with the specified IDs and optionally other products that are not specified.
+
+            To specify multiple product IDs, repeat this parameter for each ID:
+            `product_ids=<product1>&product_ids=<product2>`
+
+            For example, given receivables with the following product IDs:
+            1. productA
+            2. productB
+            3. productA, productB
+            4. productC
+            5. productA, productB, productC
+
+
+            `product_ids=<productA>&product_ids=<productB>` will return receivables 3 and 5.
+
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
 
         type : typing.Optional[ReceivableType]
 
@@ -329,6 +369,9 @@ class ReceivablesClient:
                 "sort": sort,
                 "tag_ids__in": tag_ids_in,
                 "tag_ids": tag_ids,
+                "product_ids__in": product_ids_in,
+                "product_ids": product_ids,
+                "project_id__in": project_id_in,
                 "type": type,
                 "document_id": document_id,
                 "document_id__contains": document_id_contains,
@@ -413,9 +456,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -544,9 +587,103 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def get_receivables_required_fields(
+        self,
+        *,
+        counterpart_id: typing.Optional[str] = None,
+        counterpart_billing_address_id: typing.Optional[str] = None,
+        counterpart_country: typing.Optional[AllowedCountries] = None,
+        counterpart_type: typing.Optional[CounterpartType] = None,
+        entity_vat_id_id: typing.Optional[str] = None,
+        counterpart_vat_id_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ReceivableRequiredFields:
+        """
+        Get field requirements for invoice creation given the entity and counterpart details.
+
+        Parameters
+        ----------
+        counterpart_id : typing.Optional[str]
+
+        counterpart_billing_address_id : typing.Optional[str]
+
+        counterpart_country : typing.Optional[AllowedCountries]
+
+        counterpart_type : typing.Optional[CounterpartType]
+
+        entity_vat_id_id : typing.Optional[str]
+
+        counterpart_vat_id_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReceivableRequiredFields
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.receivables.get_receivables_required_fields()
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "receivables/required_fields",
+            method="GET",
+            params={
+                "counterpart_id": counterpart_id,
+                "counterpart_billing_address_id": counterpart_billing_address_id,
+                "counterpart_country": counterpart_country,
+                "counterpart_type": counterpart_type,
+                "entity_vat_id_id": entity_vat_id_id,
+                "counterpart_vat_id_id": counterpart_vat_id_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    ReceivableRequiredFields,
+                    parse_obj_as(
+                        type_=ReceivableRequiredFields,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -630,9 +767,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -738,9 +875,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -847,9 +984,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -978,9 +1115,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1112,9 +1249,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1221,9 +1358,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1339,9 +1476,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1471,9 +1608,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1522,16 +1659,18 @@ class ReceivablesClient:
             ID of the accounts receivable document whose history you want to get.
 
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[ReceivableHistoryCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         event_type_in : typing.Optional[typing.Union[ReceivableHistoryEventTypeEnum, typing.Sequence[ReceivableHistoryEventTypeEnum]]]
             Return only the specified [event types](https://docs.monite.com/accounts-receivable/document-history#event-types). To include multiple types, repeat this parameter for each value:
@@ -1643,9 +1782,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1758,9 +1897,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1876,9 +2015,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2016,9 +2155,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2062,16 +2201,18 @@ class ReceivablesClient:
         receivable_id : str
 
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[ReceivableMailCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         status : typing.Optional[ReceivableMailStatusEnum]
 
@@ -2175,9 +2316,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2286,9 +2427,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2423,9 +2564,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2563,9 +2704,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2695,9 +2836,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2803,9 +2944,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2942,9 +3083,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3087,9 +3228,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3226,9 +3367,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3334,9 +3475,9 @@ class ReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3375,6 +3516,9 @@ class AsyncReceivablesClient:
         sort: typing.Optional[ReceivableCursorFields] = None,
         tag_ids_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        product_ids_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         type: typing.Optional[ReceivableType] = None,
         document_id: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
@@ -3480,7 +3624,7 @@ class AsyncReceivablesClient:
             Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page.
 
             When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
 
@@ -3539,6 +3683,41 @@ class AsyncReceivablesClient:
 
 
             `tag_ids=<tagA>&tag_ids=<tagB>` will return receivables 3 and 5.
+
+        product_ids_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose line items include at least one of the product IDs with the specified IDs.
+
+            To specify multiple product IDs, repeat this parameter for each ID:
+            `product_ids__in=<product1>&product_ids__in=<product2>`
+
+            For example, given receivables with the following product IDs:
+            1. productA
+            2. productB
+            3. productA, productB
+            4. productC
+            5. productB, productC
+
+
+            `product_ids__in=<productA>&product_ids__in=<productB>` will return receivables 1, 2, 3, and 5.Valid but nonexistent product IDs do not raise errors but produce no results.
+
+        product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose line items include all of the product IDs with the specified IDs and optionally other products that are not specified.
+
+            To specify multiple product IDs, repeat this parameter for each ID:
+            `product_ids=<product1>&product_ids=<product2>`
+
+            For example, given receivables with the following product IDs:
+            1. productA
+            2. productB
+            3. productA, productB
+            4. productC
+            5. productA, productB, productC
+
+
+            `product_ids=<productA>&product_ids=<productB>` will return receivables 3 and 5.
+
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
 
         type : typing.Optional[ReceivableType]
 
@@ -3638,6 +3817,9 @@ class AsyncReceivablesClient:
                 "sort": sort,
                 "tag_ids__in": tag_ids_in,
                 "tag_ids": tag_ids,
+                "product_ids__in": product_ids_in,
+                "product_ids": product_ids,
+                "project_id__in": project_id_in,
                 "type": type,
                 "document_id": document_id,
                 "document_id__contains": document_id_contains,
@@ -3722,9 +3904,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3861,9 +4043,111 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def get_receivables_required_fields(
+        self,
+        *,
+        counterpart_id: typing.Optional[str] = None,
+        counterpart_billing_address_id: typing.Optional[str] = None,
+        counterpart_country: typing.Optional[AllowedCountries] = None,
+        counterpart_type: typing.Optional[CounterpartType] = None,
+        entity_vat_id_id: typing.Optional[str] = None,
+        counterpart_vat_id_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ReceivableRequiredFields:
+        """
+        Get field requirements for invoice creation given the entity and counterpart details.
+
+        Parameters
+        ----------
+        counterpart_id : typing.Optional[str]
+
+        counterpart_billing_address_id : typing.Optional[str]
+
+        counterpart_country : typing.Optional[AllowedCountries]
+
+        counterpart_type : typing.Optional[CounterpartType]
+
+        entity_vat_id_id : typing.Optional[str]
+
+        counterpart_vat_id_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReceivableRequiredFields
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.receivables.get_receivables_required_fields()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "receivables/required_fields",
+            method="GET",
+            params={
+                "counterpart_id": counterpart_id,
+                "counterpart_billing_address_id": counterpart_billing_address_id,
+                "counterpart_country": counterpart_country,
+                "counterpart_type": counterpart_type,
+                "entity_vat_id_id": entity_vat_id_id,
+                "counterpart_vat_id_id": counterpart_vat_id_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    ReceivableRequiredFields,
+                    parse_obj_as(
+                        type_=ReceivableRequiredFields,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3955,9 +4239,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4071,9 +4355,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4190,9 +4474,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4329,9 +4613,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4471,9 +4755,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4590,9 +4874,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4716,9 +5000,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4856,9 +5140,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4907,16 +5191,18 @@ class AsyncReceivablesClient:
             ID of the accounts receivable document whose history you want to get.
 
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[ReceivableHistoryCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         event_type_in : typing.Optional[typing.Union[ReceivableHistoryEventTypeEnum, typing.Sequence[ReceivableHistoryEventTypeEnum]]]
             Return only the specified [event types](https://docs.monite.com/accounts-receivable/document-history#event-types). To include multiple types, repeat this parameter for each value:
@@ -5036,9 +5322,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5159,9 +5445,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5285,9 +5571,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5433,9 +5719,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5479,16 +5765,18 @@ class AsyncReceivablesClient:
         receivable_id : str
 
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[ReceivableMailCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         status : typing.Optional[ReceivableMailStatusEnum]
 
@@ -5600,9 +5888,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5719,9 +6007,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -5864,9 +6152,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6012,9 +6300,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6152,9 +6440,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6268,9 +6556,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6415,9 +6703,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6568,9 +6856,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6715,9 +7003,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -6831,9 +7119,9 @@ class AsyncReceivablesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

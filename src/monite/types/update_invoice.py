@@ -21,6 +21,11 @@ class UpdateInvoice(UniversalBaseModel):
     Address of invoicing, need to state as a separate fields for some countries if it differs from address of a company.
     """
 
+    counterpart_einvoicing_credentials_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    E-invoicing credentials ID of the counterpart
+    """
+
     counterpart_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Unique ID of the counterpart.
@@ -63,17 +68,34 @@ class UpdateInvoice(UniversalBaseModel):
     Entity VAT ID id
     """
 
+    footer: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Optional text displayed below the line items table in the PDF.
+    """
+
     fulfillment_date: typing.Optional[str] = pydantic.Field(default=None)
     """
     The date when the goods are shipped or the service is provided. Can be a current, past, or future date.
     
-    If omitted or `null`, defaults to the invoice issue date and the value is automatically set when the invoice is moved to the `issued` status.
+    Some countries require the fulfillment date in invoices for regulatory compliance. In this case, if the fulfillment date was not provided by the user, it is automatically set to the invoice issue date once the invoice gets issued.
+    
+    In countries where the fulfillment date is optional, Monite does not auto-assign it if it was omitted by the user.
+    """
+
+    is_einvoice: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Is this Invoice will be sent through E-invoice system
     """
 
     line_items: typing.Optional[typing.List[LineItemUpdate]] = None
     memo: typing.Optional[str] = pydantic.Field(default=None)
     """
     A note with additional information for a receivable
+    """
+
+    network_credentials_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    E-invoicing network credentials ID of the entity
     """
 
     overdue_reminder_id: typing.Optional[str] = None

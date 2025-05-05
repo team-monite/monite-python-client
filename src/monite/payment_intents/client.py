@@ -8,7 +8,6 @@ from ..core.request_options import RequestOptions
 from ..types.payment_intents_list_response import PaymentIntentsListResponse
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
@@ -33,6 +32,7 @@ class PaymentIntentsClient:
         pagination_token: typing.Optional[str] = None,
         sort: typing.Optional[PaymentIntentCursorFields] = None,
         object_id: typing.Optional[str] = None,
+        object_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentIntentsListResponse:
         """
@@ -52,6 +52,9 @@ class PaymentIntentsClient:
 
         object_id : typing.Optional[str]
             ID of a payable or receivable invoice. If provided, returns only payment intents associated with the specified invoice.
+
+        object_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            A list of payable IDs and/or receivable IDs. If provided, returns only payment intents associated with the specified payable and receivable invoices. Valid but nonexistent IDs do not raise errors but produce no results.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -81,6 +84,7 @@ class PaymentIntentsClient:
                 "pagination_token": pagination_token,
                 "sort": sort,
                 "object_id": object_id,
+                "object_id__in": object_id_in,
             },
             request_options=request_options,
         )
@@ -96,9 +100,9 @@ class PaymentIntentsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -164,9 +168,9 @@ class PaymentIntentsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -242,9 +246,9 @@ class PaymentIntentsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -310,9 +314,9 @@ class PaymentIntentsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -345,6 +349,7 @@ class AsyncPaymentIntentsClient:
         pagination_token: typing.Optional[str] = None,
         sort: typing.Optional[PaymentIntentCursorFields] = None,
         object_id: typing.Optional[str] = None,
+        object_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentIntentsListResponse:
         """
@@ -364,6 +369,9 @@ class AsyncPaymentIntentsClient:
 
         object_id : typing.Optional[str]
             ID of a payable or receivable invoice. If provided, returns only payment intents associated with the specified invoice.
+
+        object_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            A list of payable IDs and/or receivable IDs. If provided, returns only payment intents associated with the specified payable and receivable invoices. Valid but nonexistent IDs do not raise errors but produce no results.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -401,6 +409,7 @@ class AsyncPaymentIntentsClient:
                 "pagination_token": pagination_token,
                 "sort": sort,
                 "object_id": object_id,
+                "object_id__in": object_id_in,
             },
             request_options=request_options,
         )
@@ -416,9 +425,9 @@ class AsyncPaymentIntentsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -492,9 +501,9 @@ class AsyncPaymentIntentsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -578,9 +587,9 @@ class AsyncPaymentIntentsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -654,9 +663,9 @@ class AsyncPaymentIntentsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

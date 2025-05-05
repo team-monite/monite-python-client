@@ -39,6 +39,16 @@ class UpdateEntityRequest(UniversalBaseModel):
     The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
     """
 
+    registration_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+    """
+
+    registration_authority: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+    """
+
     organization: typing.Optional[OptionalOrganizationSchema] = pydantic.Field(default=None)
     """
     A set of meta data describing the organization

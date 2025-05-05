@@ -18,6 +18,7 @@ class CounterpartCreatePayload_Organization(UniversalBaseModel):
     """
 
     type: typing.Literal["organization"] = "organization"
+    external_reference: typing.Optional[str] = None
     language: typing.Optional[LanguageCodeEnum] = None
     organization: CounterpartOrganizationCreatePayload
     reminders_enabled: typing.Optional[bool] = None
@@ -41,6 +42,7 @@ class CounterpartCreatePayload_Individual(UniversalBaseModel):
     """
 
     type: typing.Literal["individual"] = "individual"
+    external_reference: typing.Optional[str] = None
     individual: CounterpartIndividualCreatePayload
     language: typing.Optional[LanguageCodeEnum] = None
     reminders_enabled: typing.Optional[bool] = None

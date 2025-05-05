@@ -13,6 +13,8 @@ class InvoiceResponsePayloadEntity_Organization(UniversalBaseModel):
     logo: typing.Optional[str] = None
     name: str
     phone: typing.Optional[str] = None
+    registration_authority: typing.Optional[str] = None
+    registration_number: typing.Optional[str] = None
     tax_id: typing.Optional[str] = None
     vat_id: typing.Optional[str] = None
     website: typing.Optional[str] = None
@@ -34,6 +36,8 @@ class InvoiceResponsePayloadEntity_Individual(UniversalBaseModel):
     last_name: str
     logo: typing.Optional[str] = None
     phone: typing.Optional[str] = None
+    registration_authority: typing.Optional[str] = None
+    registration_number: typing.Optional[str] = None
     tax_id: typing.Optional[str] = None
     website: typing.Optional[str] = None
 

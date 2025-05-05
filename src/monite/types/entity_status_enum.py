@@ -2,4 +2,4 @@
 
 import typing
 
-EntityStatusEnum = typing.Union[typing.Literal["active", "inactive", "deleted"], typing.Any]
+EntityStatusEnum = typing.Union[typing.Literal["active", "inactive"], typing.Any]

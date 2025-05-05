@@ -76,6 +76,41 @@ class FinancingInvoice(UniversalBaseModel):
     Payer last name. Only applicable for INDIVIDUAL payer type.
     """
 
+    requested_amount: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Amount the business requests to be financed in minor units.
+    """
+
+    principal_amount: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Principal amount of the loan in minor units.
+    """
+
+    repayment_amount: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Amount the business will repay in minor units.
+    """
+
+    advance_amount: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Amount after fees the business will receive in minor units.
+    """
+
+    advance_rate_percentage: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Advance rate percentage. 10000 means 100%
+    """
+
+    fee_amount: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Fee amount in minor units.
+    """
+
+    fee_percentage: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Fee percentage. 300 means 3%
+    """
+
     repayment_schedule: typing.Optional[RepaymentSchedule] = pydantic.Field(default=None)
     """
     Repayment schedule of the invoice.

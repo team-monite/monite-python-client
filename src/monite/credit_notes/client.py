@@ -5,7 +5,8 @@ from ..core.client_wrapper import SyncClientWrapper
 from ..types.order_enum import OrderEnum
 from ..types.credit_note_cursor_fields import CreditNoteCursorFields
 import datetime as dt
-from ..types.credit_note_state_enum import CreditNoteStateEnum
+from ..types.payable_credit_note_state_enum import PayableCreditNoteStateEnum
+from ..types.origin_enum import OriginEnum
 from ..types.currency_enum import CurrencyEnum
 from ..core.request_options import RequestOptions
 from ..types.credit_note_pagination_response import CreditNotePaginationResponse
@@ -16,13 +17,14 @@ from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_acceptable_error import NotAcceptableError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..types.credit_note_response import CreditNoteResponse
 from .. import core
 from ..errors.conflict_error import ConflictError
+from ..types.credit_note_validations_resource import CreditNoteValidationsResource
+from ..types.credit_note_fields_allowed_for_validate import CreditNoteFieldsAllowedForValidate
 from ..core.jsonable_encoder import jsonable_encoder
 from ..errors.not_found_error import NotFoundError
 from ..types.credit_note_line_item_cursor_fields import CreditNoteLineItemCursorFields
@@ -30,6 +32,7 @@ from ..types.credit_note_line_item_pagination_response import CreditNoteLineItem
 from ..types.credit_note_line_item_response import CreditNoteLineItemResponse
 from ..types.credit_note_line_item_create_request import CreditNoteLineItemCreateRequest
 from ..core.serialization import convert_and_respect_annotation_metadata
+from ..types.credit_note_validation_response import CreditNoteValidationResponse
 from ..core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -60,6 +63,7 @@ class CreditNotesClient:
         document_id_iexact: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
         document_id_icontains: typing.Optional[str] = None,
+        has_file: typing.Optional[bool] = None,
         total_amount_gt: typing.Optional[int] = None,
         total_amount_lt: typing.Optional[int] = None,
         total_amount_gte: typing.Optional[int] = None,
@@ -71,10 +75,17 @@ class CreditNotesClient:
         based_on: typing.Optional[str] = None,
         counterpart_id: typing.Optional[str] = None,
         created_by_entity_user_id: typing.Optional[str] = None,
-        status: typing.Optional[CreditNoteStateEnum] = None,
-        status_in: typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]] = None,
-        status_not_in: typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]] = None,
+        status: typing.Optional[PayableCreditNoteStateEnum] = None,
+        status_in: typing.Optional[
+            typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]
+        ] = None,
+        status_not_in: typing.Optional[
+            typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]
+        ] = None,
+        origin: typing.Optional[OriginEnum] = None,
         currency: typing.Optional[CurrencyEnum] = None,
+        project_id: typing.Optional[str] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreditNotePaginationResponse:
         """
@@ -120,6 +131,8 @@ class CreditNotesClient:
 
         document_id_icontains : typing.Optional[str]
 
+        has_file : typing.Optional[bool]
+
         total_amount_gt : typing.Optional[int]
 
         total_amount_lt : typing.Optional[int]
@@ -142,13 +155,19 @@ class CreditNotesClient:
 
         created_by_entity_user_id : typing.Optional[str]
 
-        status : typing.Optional[CreditNoteStateEnum]
+        status : typing.Optional[PayableCreditNoteStateEnum]
 
-        status_in : typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]]
+        status_in : typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]
 
-        status_not_in : typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]]
+        status_not_in : typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]
+
+        origin : typing.Optional[OriginEnum]
 
         currency : typing.Optional[CurrencyEnum]
+
+        project_id : typing.Optional[str]
+
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -190,6 +209,7 @@ class CreditNotesClient:
                 "document_id__iexact": document_id_iexact,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
+                "has_file": has_file,
                 "total_amount__gt": total_amount_gt,
                 "total_amount__lt": total_amount_lt,
                 "total_amount__gte": total_amount_gte,
@@ -204,7 +224,10 @@ class CreditNotesClient:
                 "status": status,
                 "status__in": status_in,
                 "status__not_in": status_not_in,
+                "origin": origin,
                 "currency": currency,
+                "project_id": project_id,
+                "project_id__in": project_id_in,
             },
             request_options=request_options,
         )
@@ -260,9 +283,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -450,9 +473,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -564,9 +587,308 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def get_payable_credit_notes_validations(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> CreditNoteValidationsResource:
+        """
+        Get credit notes validations.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreditNoteValidationsResource
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.get_payable_credit_notes_validations()
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "payable_credit_notes/validations",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    CreditNoteValidationsResource,
+                    parse_obj_as(
+                        type_=CreditNoteValidationsResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def put_payable_credit_notes_validations(
+        self,
+        *,
+        required_fields: typing.Sequence[CreditNoteFieldsAllowedForValidate],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreditNoteValidationsResource:
+        """
+        Update credit notes validations.
+
+        Parameters
+        ----------
+        required_fields : typing.Sequence[CreditNoteFieldsAllowedForValidate]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreditNoteValidationsResource
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.put_payable_credit_notes_validations(
+            required_fields=["currency"],
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "payable_credit_notes/validations",
+            method="PUT",
+            json={
+                "required_fields": required_fields,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    CreditNoteValidationsResource,
+                    parse_obj_as(
+                        type_=CreditNoteValidationsResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def post_payable_credit_notes_validations_reset(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> CreditNoteValidationsResource:
+        """
+        Reset credit notes validations.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreditNoteValidationsResource
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.post_payable_credit_notes_validations_reset()
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "payable_credit_notes/validations/reset",
+            method="POST",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    CreditNoteValidationsResource,
+                    parse_obj_as(
+                        type_=CreditNoteValidationsResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -662,9 +984,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -763,9 +1085,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -955,9 +1277,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1065,9 +1387,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1175,9 +1497,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1295,9 +1617,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1580,9 +1902,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1714,9 +2036,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1829,9 +2151,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1930,9 +2252,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2031,9 +2353,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2172,9 +2494,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2282,9 +2604,9 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2392,9 +2714,107 @@ class CreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def get_payable_credit_notes_id_validate(
+        self, credit_note_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> CreditNoteValidationResponse:
+        """
+        Parameters
+        ----------
+        credit_note_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreditNoteValidationResponse
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.get_payable_credit_notes_id_validate(
+            credit_note_id="credit_note_id",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"payable_credit_notes/{jsonable_encoder(credit_note_id)}/validate",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    CreditNoteValidationResponse,
+                    parse_obj_as(
+                        type_=CreditNoteValidationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2439,6 +2859,7 @@ class AsyncCreditNotesClient:
         document_id_iexact: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
         document_id_icontains: typing.Optional[str] = None,
+        has_file: typing.Optional[bool] = None,
         total_amount_gt: typing.Optional[int] = None,
         total_amount_lt: typing.Optional[int] = None,
         total_amount_gte: typing.Optional[int] = None,
@@ -2450,10 +2871,17 @@ class AsyncCreditNotesClient:
         based_on: typing.Optional[str] = None,
         counterpart_id: typing.Optional[str] = None,
         created_by_entity_user_id: typing.Optional[str] = None,
-        status: typing.Optional[CreditNoteStateEnum] = None,
-        status_in: typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]] = None,
-        status_not_in: typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]] = None,
+        status: typing.Optional[PayableCreditNoteStateEnum] = None,
+        status_in: typing.Optional[
+            typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]
+        ] = None,
+        status_not_in: typing.Optional[
+            typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]
+        ] = None,
+        origin: typing.Optional[OriginEnum] = None,
         currency: typing.Optional[CurrencyEnum] = None,
+        project_id: typing.Optional[str] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreditNotePaginationResponse:
         """
@@ -2499,6 +2927,8 @@ class AsyncCreditNotesClient:
 
         document_id_icontains : typing.Optional[str]
 
+        has_file : typing.Optional[bool]
+
         total_amount_gt : typing.Optional[int]
 
         total_amount_lt : typing.Optional[int]
@@ -2521,13 +2951,19 @@ class AsyncCreditNotesClient:
 
         created_by_entity_user_id : typing.Optional[str]
 
-        status : typing.Optional[CreditNoteStateEnum]
+        status : typing.Optional[PayableCreditNoteStateEnum]
 
-        status_in : typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]]
+        status_in : typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]
 
-        status_not_in : typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]]
+        status_not_in : typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]
+
+        origin : typing.Optional[OriginEnum]
 
         currency : typing.Optional[CurrencyEnum]
+
+        project_id : typing.Optional[str]
+
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2577,6 +3013,7 @@ class AsyncCreditNotesClient:
                 "document_id__iexact": document_id_iexact,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
+                "has_file": has_file,
                 "total_amount__gt": total_amount_gt,
                 "total_amount__lt": total_amount_lt,
                 "total_amount__gte": total_amount_gte,
@@ -2591,7 +3028,10 @@ class AsyncCreditNotesClient:
                 "status": status,
                 "status__in": status_in,
                 "status__not_in": status_not_in,
+                "origin": origin,
                 "currency": currency,
+                "project_id": project_id,
+                "project_id__in": project_id_in,
             },
             request_options=request_options,
         )
@@ -2647,9 +3087,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2845,9 +3285,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2967,9 +3407,332 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def get_payable_credit_notes_validations(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> CreditNoteValidationsResource:
+        """
+        Get credit notes validations.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreditNoteValidationsResource
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.credit_notes.get_payable_credit_notes_validations()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "payable_credit_notes/validations",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    CreditNoteValidationsResource,
+                    parse_obj_as(
+                        type_=CreditNoteValidationsResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def put_payable_credit_notes_validations(
+        self,
+        *,
+        required_fields: typing.Sequence[CreditNoteFieldsAllowedForValidate],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreditNoteValidationsResource:
+        """
+        Update credit notes validations.
+
+        Parameters
+        ----------
+        required_fields : typing.Sequence[CreditNoteFieldsAllowedForValidate]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreditNoteValidationsResource
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.credit_notes.put_payable_credit_notes_validations(
+                required_fields=["currency"],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "payable_credit_notes/validations",
+            method="PUT",
+            json={
+                "required_fields": required_fields,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    CreditNoteValidationsResource,
+                    parse_obj_as(
+                        type_=CreditNoteValidationsResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def post_payable_credit_notes_validations_reset(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> CreditNoteValidationsResource:
+        """
+        Reset credit notes validations.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreditNoteValidationsResource
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.credit_notes.post_payable_credit_notes_validations_reset()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "payable_credit_notes/validations/reset",
+            method="POST",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    CreditNoteValidationsResource,
+                    parse_obj_as(
+                        type_=CreditNoteValidationsResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3073,9 +3836,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3182,9 +3945,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3382,9 +4145,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3500,9 +4263,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3618,9 +4381,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3746,9 +4509,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4039,9 +4802,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4181,9 +4944,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4304,9 +5067,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4413,9 +5176,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4522,9 +5285,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4671,9 +5434,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4789,9 +5552,9 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -4907,9 +5670,115 @@ class AsyncCreditNotesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def get_payable_credit_notes_id_validate(
+        self, credit_note_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> CreditNoteValidationResponse:
+        """
+        Parameters
+        ----------
+        credit_note_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreditNoteValidationResponse
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.credit_notes.get_payable_credit_notes_id_validate(
+                credit_note_id="credit_note_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"payable_credit_notes/{jsonable_encoder(credit_note_id)}/validate",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    CreditNoteValidationResponse,
+                    parse_obj_as(
+                        type_=CreditNoteValidationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

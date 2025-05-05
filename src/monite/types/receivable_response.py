@@ -22,6 +22,7 @@ from .total_vat_amount_item import TotalVatAmountItem
 from .vat_mode_enum import VatModeEnum
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
+from .einvoicing_credentials import EinvoicingCredentials
 from .invoice_response_payload_entity import InvoiceResponsePayloadEntity
 from .payment_terms import PaymentTerms
 from .related_documents import RelatedDocuments
@@ -42,6 +43,7 @@ class ReceivableResponse_Quote(UniversalBaseModel):
     counterpart_billing_address: typing.Optional[ReceivablesRepresentationOfCounterpartAddress] = None
     counterpart_business_type: typing.Optional[str] = None
     counterpart_contact: typing.Optional[ReceivableCounterpartContact] = None
+    counterpart_external_reference: typing.Optional[str] = None
     counterpart_id: str
     counterpart_name: typing.Optional[str] = None
     counterpart_shipping_address: typing.Optional[ReceivablesRepresentationOfCounterpartAddress] = None
@@ -55,6 +57,7 @@ class ReceivableResponse_Quote(UniversalBaseModel):
     discounted_subtotal: typing.Optional[int] = None
     document_id: typing.Optional[str] = None
     due_date: typing.Optional[str] = None
+    einvoice_file_url: typing.Optional[str] = None
     entity: QuoteResponsePayloadEntity
     entity_address: ReceivableEntityAddressSchema
     entity_bank_account: typing.Optional[ReceivablesRepresentationOfEntityBankAccount] = None
@@ -63,6 +66,7 @@ class ReceivableResponse_Quote(UniversalBaseModel):
     expiry_date: typing.Optional[str] = None
     file_language: LanguageCodeEnum
     file_url: typing.Optional[str] = None
+    footer: typing.Optional[str] = None
     issue_date: typing.Optional[dt.datetime] = None
     line_items: typing.List[ResponseItem]
     memo: typing.Optional[str] = None
@@ -74,6 +78,7 @@ class ReceivableResponse_Quote(UniversalBaseModel):
     signature_required: typing.Optional[bool] = None
     status: QuoteStateEnum
     subtotal: typing.Optional[int] = None
+    subtotal_after_vat: typing.Optional[int] = None
     tags: typing.Optional[typing.List[TagReadSchema]] = None
     total_amount: typing.Optional[int] = None
     total_vat_amount: int
@@ -82,6 +87,7 @@ class ReceivableResponse_Quote(UniversalBaseModel):
     trade_name: typing.Optional[str] = None
     vat_exempt: typing.Optional[bool] = None
     vat_exemption_rationale: typing.Optional[str] = None
+    vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = None
     vat_mode: typing.Optional[VatModeEnum] = None
     withholding_tax_rate: typing.Optional[int] = None
 
@@ -110,6 +116,8 @@ class ReceivableResponse_Invoice(UniversalBaseModel):
     counterpart_billing_address: typing.Optional[ReceivablesRepresentationOfCounterpartAddress] = None
     counterpart_business_type: typing.Optional[str] = None
     counterpart_contact: typing.Optional[ReceivableCounterpartContact] = None
+    counterpart_einvoicing_credentials: typing.Optional[EinvoicingCredentials] = None
+    counterpart_external_reference: typing.Optional[str] = None
     counterpart_id: str
     counterpart_name: typing.Optional[str] = None
     counterpart_shipping_address: typing.Optional[ReceivablesRepresentationOfCounterpartAddress] = None
@@ -123,6 +131,8 @@ class ReceivableResponse_Invoice(UniversalBaseModel):
     discounted_subtotal: typing.Optional[int] = None
     document_id: typing.Optional[str] = None
     due_date: typing.Optional[str] = None
+    einvoice_error_comment: typing.Optional[str] = None
+    einvoice_file_url: typing.Optional[str] = None
     entity: InvoiceResponsePayloadEntity
     entity_address: ReceivableEntityAddressSchema
     entity_bank_account: typing.Optional[ReceivablesRepresentationOfEntityBankAccount] = None
@@ -130,10 +140,13 @@ class ReceivableResponse_Invoice(UniversalBaseModel):
     entity_vat_id: typing.Optional[ReceivableEntityVatIdResponse] = None
     file_language: LanguageCodeEnum
     file_url: typing.Optional[str] = None
+    footer: typing.Optional[str] = None
     fulfillment_date: typing.Optional[str] = None
+    is_einvoice: typing.Optional[bool] = None
     issue_date: typing.Optional[dt.datetime] = None
     line_items: typing.List[ResponseItem]
     memo: typing.Optional[str] = None
+    network_credentials: typing.Optional[EinvoicingCredentials] = None
     original_file_language: LanguageCodeEnum
     original_file_url: typing.Optional[str] = None
     overdue_reminder_id: typing.Optional[str] = None
@@ -148,6 +161,7 @@ class ReceivableResponse_Invoice(UniversalBaseModel):
     related_documents: RelatedDocuments
     status: ReceivablesStatusEnum
     subtotal: typing.Optional[int] = None
+    subtotal_after_vat: typing.Optional[int] = None
     tags: typing.Optional[typing.List[TagReadSchema]] = None
     total_amount: typing.Optional[int] = None
     total_amount_with_credit_notes: int
@@ -157,6 +171,7 @@ class ReceivableResponse_Invoice(UniversalBaseModel):
     trade_name: typing.Optional[str] = None
     vat_exempt: typing.Optional[bool] = None
     vat_exemption_rationale: typing.Optional[str] = None
+    vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = None
     vat_mode: typing.Optional[VatModeEnum] = None
     withholding_tax_rate: typing.Optional[int] = None
 
@@ -181,6 +196,8 @@ class ReceivableResponse_CreditNote(UniversalBaseModel):
     counterpart_billing_address: typing.Optional[ReceivablesRepresentationOfCounterpartAddress] = None
     counterpart_business_type: typing.Optional[str] = None
     counterpart_contact: typing.Optional[ReceivableCounterpartContact] = None
+    counterpart_einvoicing_credentials: typing.Optional[EinvoicingCredentials] = None
+    counterpart_external_reference: typing.Optional[str] = None
     counterpart_id: str
     counterpart_name: typing.Optional[str] = None
     counterpart_shipping_address: typing.Optional[ReceivablesRepresentationOfCounterpartAddress] = None
@@ -194,6 +211,8 @@ class ReceivableResponse_CreditNote(UniversalBaseModel):
     discounted_subtotal: typing.Optional[int] = None
     document_id: typing.Optional[str] = None
     due_date: typing.Optional[str] = None
+    einvoice_error_comment: typing.Optional[str] = None
+    einvoice_file_url: typing.Optional[str] = None
     entity: CreditNoteResponsePayloadEntity
     entity_address: ReceivableEntityAddressSchema
     entity_bank_account: typing.Optional[ReceivablesRepresentationOfEntityBankAccount] = None
@@ -201,9 +220,11 @@ class ReceivableResponse_CreditNote(UniversalBaseModel):
     entity_vat_id: typing.Optional[ReceivableEntityVatIdResponse] = None
     file_language: LanguageCodeEnum
     file_url: typing.Optional[str] = None
+    footer: typing.Optional[str] = None
     issue_date: typing.Optional[dt.datetime] = None
     line_items: typing.List[ResponseItem]
     memo: typing.Optional[str] = None
+    network_credentials: typing.Optional[EinvoicingCredentials] = None
     original_file_language: LanguageCodeEnum
     original_file_url: typing.Optional[str] = None
     partner_metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
@@ -211,6 +232,7 @@ class ReceivableResponse_CreditNote(UniversalBaseModel):
     purchase_order: typing.Optional[str] = None
     status: CreditNoteStateEnum
     subtotal: typing.Optional[int] = None
+    subtotal_after_vat: typing.Optional[int] = None
     tags: typing.Optional[typing.List[TagReadSchema]] = None
     total_amount: typing.Optional[int] = None
     total_vat_amount: int
@@ -219,6 +241,7 @@ class ReceivableResponse_CreditNote(UniversalBaseModel):
     trade_name: typing.Optional[str] = None
     vat_exempt: typing.Optional[bool] = None
     vat_exemption_rationale: typing.Optional[str] = None
+    vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = None
     vat_mode: typing.Optional[VatModeEnum] = None
     withholding_tax_rate: typing.Optional[int] = None
 

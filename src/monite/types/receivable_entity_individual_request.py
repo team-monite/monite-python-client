@@ -36,6 +36,16 @@ class ReceivableEntityIndividualRequest(UniversalBaseModel):
     A phone number of the entity
     """
 
+    registration_authority: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The registration authority of the entity
+    """
+
+    registration_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The registration number of the entity
+    """
+
     tax_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     The Tax ID of the entity issuing the receivable

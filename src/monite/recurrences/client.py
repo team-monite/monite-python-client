@@ -10,11 +10,11 @@ from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..types.day_of_month import DayOfMonth
+from ..types.automation_level import AutomationLevel
 from ..types.recipients import Recipients
 from ..types.recurrence import Recurrence
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -110,9 +110,9 @@ class RecurrencesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -141,6 +141,7 @@ class RecurrencesClient:
         invoice_id: str,
         start_month: int,
         start_year: int,
+        automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
         recipients: typing.Optional[Recipients] = OMIT,
         subject_text: typing.Optional[str] = OMIT,
@@ -160,6 +161,16 @@ class RecurrencesClient:
         start_month : int
 
         start_year : int
+
+        automation_level : typing.Optional[AutomationLevel]
+            Controls how invoices are processed when generated:
+            - "draft": Creates invoices in draft status, requiring manual review, issuing, and sending
+            - "issue": Automatically issues invoices but requires manual sending
+            - "issue_and_send": Fully automates the process (creates, issues, and sends invoices)
+
+            Default: "issue" (or "issue_and_send" if subject_text and body_text are provided)
+
+            Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
 
@@ -197,6 +208,7 @@ class RecurrencesClient:
             "recurrences",
             method="POST",
             json={
+                "automation_level": automation_level,
                 "body_text": body_text,
                 "day_of_month": day_of_month,
                 "end_month": end_month,
@@ -267,9 +279,9 @@ class RecurrencesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -373,9 +385,9 @@ class RecurrencesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -399,6 +411,7 @@ class RecurrencesClient:
         self,
         recurrence_id: str,
         *,
+        automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
         day_of_month: typing.Optional[DayOfMonth] = OMIT,
         end_month: typing.Optional[int] = OMIT,
@@ -411,6 +424,16 @@ class RecurrencesClient:
         Parameters
         ----------
         recurrence_id : str
+
+        automation_level : typing.Optional[AutomationLevel]
+            Controls how invoices are processed when generated:
+            - "draft": Creates invoices in draft status, requiring manual review, issuing, and sending
+            - "issue": Automatically issues invoices but requires manual sending
+            - "issue_and_send": Fully automates the process (creates, issues, and sends invoices)
+
+            Default: "issue" (or "issue_and_send" if subject_text and body_text are provided)
+
+            Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
 
@@ -449,6 +472,7 @@ class RecurrencesClient:
             f"recurrences/{jsonable_encoder(recurrence_id)}",
             method="PATCH",
             json={
+                "automation_level": automation_level,
                 "body_text": body_text,
                 "day_of_month": day_of_month,
                 "end_month": end_month,
@@ -516,9 +540,9 @@ class RecurrencesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -625,9 +649,9 @@ class RecurrencesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -740,9 +764,9 @@ class AsyncRecurrencesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -771,6 +795,7 @@ class AsyncRecurrencesClient:
         invoice_id: str,
         start_month: int,
         start_year: int,
+        automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
         recipients: typing.Optional[Recipients] = OMIT,
         subject_text: typing.Optional[str] = OMIT,
@@ -790,6 +815,16 @@ class AsyncRecurrencesClient:
         start_month : int
 
         start_year : int
+
+        automation_level : typing.Optional[AutomationLevel]
+            Controls how invoices are processed when generated:
+            - "draft": Creates invoices in draft status, requiring manual review, issuing, and sending
+            - "issue": Automatically issues invoices but requires manual sending
+            - "issue_and_send": Fully automates the process (creates, issues, and sends invoices)
+
+            Default: "issue" (or "issue_and_send" if subject_text and body_text are provided)
+
+            Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
 
@@ -835,6 +870,7 @@ class AsyncRecurrencesClient:
             "recurrences",
             method="POST",
             json={
+                "automation_level": automation_level,
                 "body_text": body_text,
                 "day_of_month": day_of_month,
                 "end_month": end_month,
@@ -905,9 +941,9 @@ class AsyncRecurrencesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1021,9 +1057,9 @@ class AsyncRecurrencesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1047,6 +1083,7 @@ class AsyncRecurrencesClient:
         self,
         recurrence_id: str,
         *,
+        automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
         day_of_month: typing.Optional[DayOfMonth] = OMIT,
         end_month: typing.Optional[int] = OMIT,
@@ -1059,6 +1096,16 @@ class AsyncRecurrencesClient:
         Parameters
         ----------
         recurrence_id : str
+
+        automation_level : typing.Optional[AutomationLevel]
+            Controls how invoices are processed when generated:
+            - "draft": Creates invoices in draft status, requiring manual review, issuing, and sending
+            - "issue": Automatically issues invoices but requires manual sending
+            - "issue_and_send": Fully automates the process (creates, issues, and sends invoices)
+
+            Default: "issue" (or "issue_and_send" if subject_text and body_text are provided)
+
+            Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
 
@@ -1105,6 +1152,7 @@ class AsyncRecurrencesClient:
             f"recurrences/{jsonable_encoder(recurrence_id)}",
             method="PATCH",
             json={
+                "automation_level": automation_level,
                 "body_text": body_text,
                 "day_of_month": day_of_month,
                 "end_month": end_month,
@@ -1172,9 +1220,9 @@ class AsyncRecurrencesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1291,9 +1339,9 @@ class AsyncRecurrencesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

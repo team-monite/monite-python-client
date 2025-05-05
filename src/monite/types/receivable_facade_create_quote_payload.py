@@ -71,6 +71,11 @@ class ReceivableFacadeCreateQuotePayload(UniversalBaseModel):
     The date (in ISO 8601 format) until which the quote is valid.
     """
 
+    footer: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Optional text displayed below the line items table in the PDF.
+    """
+
     line_items: typing.List[LineItem]
     memo: typing.Optional[str] = pydantic.Field(default=None)
     """

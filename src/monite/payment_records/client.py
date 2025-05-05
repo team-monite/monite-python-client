@@ -4,17 +4,20 @@ import typing
 from ..core.client_wrapper import SyncClientWrapper
 from ..types.order_enum import OrderEnum
 from ..types.payment_record_cursor_fields import PaymentRecordCursorFields
+from ..types.object_type_enum import ObjectTypeEnum
+import datetime as dt
+from ..types.payment_record_status_enum import PaymentRecordStatusEnum
 from ..core.request_options import RequestOptions
 from ..types.payment_record_response_list import PaymentRecordResponseList
+from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..types.currency_enum import CurrencyEnum
 from ..types.payment_record_object_request import PaymentRecordObjectRequest
-import datetime as dt
+from .types.payment_record_request_status import PaymentRecordRequestStatus
 from ..types.payment_record_response import PaymentRecordResponse
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..core.jsonable_encoder import jsonable_encoder
@@ -37,6 +40,21 @@ class PaymentRecordsClient:
         sort: typing.Optional[PaymentRecordCursorFields] = None,
         is_external: typing.Optional[bool] = None,
         object_id: typing.Optional[str] = None,
+        object_type: typing.Optional[ObjectTypeEnum] = None,
+        created_at_gt: typing.Optional[dt.datetime] = None,
+        created_at_lt: typing.Optional[dt.datetime] = None,
+        updated_at_gt: typing.Optional[dt.datetime] = None,
+        updated_at_lt: typing.Optional[dt.datetime] = None,
+        paid_at_gt: typing.Optional[dt.datetime] = None,
+        paid_at_lt: typing.Optional[dt.datetime] = None,
+        planned_payment_date: typing.Optional[str] = None,
+        planned_payment_date_gt: typing.Optional[str] = None,
+        planned_payment_date_lt: typing.Optional[str] = None,
+        planned_payment_date_gte: typing.Optional[str] = None,
+        planned_payment_date_lte: typing.Optional[str] = None,
+        status: typing.Optional[PaymentRecordStatusEnum] = None,
+        payment_intent_status: typing.Optional[str] = None,
+        payment_method: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentRecordResponseList:
         """
@@ -55,8 +73,55 @@ class PaymentRecordsClient:
             Allowed sort fields
 
         is_external : typing.Optional[bool]
+            Identifies whether payment is from our rails or external system
 
         object_id : typing.Optional[str]
+            ID of the object, that is connected to payment
+
+        object_type : typing.Optional[ObjectTypeEnum]
+            Type of an object, which is connected with payment
+
+        created_at_gt : typing.Optional[dt.datetime]
+            Created after this datetime (exclusive)
+
+        created_at_lt : typing.Optional[dt.datetime]
+            Created before this datetime (exclusive)
+
+        updated_at_gt : typing.Optional[dt.datetime]
+            Updated after this datetime (exclusive)
+
+        updated_at_lt : typing.Optional[dt.datetime]
+            Updated before this datetime (exclusive)
+
+        paid_at_gt : typing.Optional[dt.datetime]
+            Paid after this datetime (exclusive)
+
+        paid_at_lt : typing.Optional[dt.datetime]
+            Paid before this datetime (exclusive)
+
+        planned_payment_date : typing.Optional[str]
+            Optional date of the upcoming payment (equality)
+
+        planned_payment_date_gt : typing.Optional[str]
+            Planned after this date (exclusive)
+
+        planned_payment_date_lt : typing.Optional[str]
+            Planned before this date (exclusive)
+
+        planned_payment_date_gte : typing.Optional[str]
+            Planned at or after this date (inclusive)
+
+        planned_payment_date_lte : typing.Optional[str]
+            Planned at or before this date (inclusive)
+
+        status : typing.Optional[PaymentRecordStatusEnum]
+            One of the payment record statuses
+
+        payment_intent_status : typing.Optional[str]
+            Payment intent status as a raw string
+
+        payment_method : typing.Optional[str]
+            Payment method used for the transaction
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -87,6 +152,21 @@ class PaymentRecordsClient:
                 "sort": sort,
                 "is_external": is_external,
                 "object_id": object_id,
+                "object_type": object_type,
+                "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
+                "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
+                "updated_at__gt": serialize_datetime(updated_at_gt) if updated_at_gt is not None else None,
+                "updated_at__lt": serialize_datetime(updated_at_lt) if updated_at_lt is not None else None,
+                "paid_at__gt": serialize_datetime(paid_at_gt) if paid_at_gt is not None else None,
+                "paid_at__lt": serialize_datetime(paid_at_lt) if paid_at_lt is not None else None,
+                "planned_payment_date": planned_payment_date,
+                "planned_payment_date__gt": planned_payment_date_gt,
+                "planned_payment_date__lt": planned_payment_date_lt,
+                "planned_payment_date__gte": planned_payment_date_gte,
+                "planned_payment_date__lte": planned_payment_date_lte,
+                "status": status,
+                "payment_intent_status": payment_intent_status,
+                "payment_method": payment_method,
             },
             request_options=request_options,
         )
@@ -102,9 +182,9 @@ class PaymentRecordsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -130,25 +210,47 @@ class PaymentRecordsClient:
         amount: int,
         currency: CurrencyEnum,
         object: PaymentRecordObjectRequest,
-        paid_at: dt.datetime,
         payment_intent_id: str,
         entity_user_id: typing.Optional[str] = OMIT,
+        paid_at: typing.Optional[dt.datetime] = OMIT,
+        payment_intent_status: typing.Optional[str] = OMIT,
+        payment_method: typing.Optional[str] = OMIT,
+        planned_payment_date: typing.Optional[str] = OMIT,
+        status: typing.Optional[PaymentRecordRequestStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentRecordResponse:
         """
         Parameters
         ----------
         amount : int
+            Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents).
 
         currency : CurrencyEnum
+            Currency code (ISO 4217) indicating the currency in which the payment was made.
 
         object : PaymentRecordObjectRequest
-
-        paid_at : dt.datetime
+            Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier.
 
         payment_intent_id : str
+            Identifier for an payment intent.
 
         entity_user_id : typing.Optional[str]
+            ID of the user associated with the payment, if applicable.
+
+        paid_at : typing.Optional[dt.datetime]
+            Timestamp marking when the payment was executed. Null if payment hasn't occurred yet.
+
+        payment_intent_status : typing.Optional[str]
+            Raw status string of the external payment intent.
+
+        payment_method : typing.Optional[str]
+            Payment method used or planned for the transaction.
+
+        planned_payment_date : typing.Optional[str]
+            Scheduled date for future payments, required when the payment is planned but not yet executed.
+
+        status : typing.Optional[PaymentRecordRequestStatus]
+            Status of the payment record indicating its current stage (e.g., created, processing, succeeded).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -160,8 +262,6 @@ class PaymentRecordsClient:
 
         Examples
         --------
-        import datetime
-
         from monite import Monite, PaymentRecordObjectRequest
 
         client = Monite(
@@ -175,9 +275,6 @@ class PaymentRecordsClient:
             object=PaymentRecordObjectRequest(
                 id="id",
                 type="receivable",
-            ),
-            paid_at=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
             ),
             payment_intent_id="payment_intent_id",
         )
@@ -194,6 +291,10 @@ class PaymentRecordsClient:
                 ),
                 "paid_at": paid_at,
                 "payment_intent_id": payment_intent_id,
+                "payment_intent_status": payment_intent_status,
+                "payment_method": payment_method,
+                "planned_payment_date": planned_payment_date,
+                "status": status,
             },
             headers={
                 "content-type": "application/json",
@@ -213,9 +314,9 @@ class PaymentRecordsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -281,9 +382,383 @@ class PaymentRecordsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def patch_payment_records_id(
+        self,
+        payment_record_id: str,
+        *,
+        amount: typing.Optional[int] = OMIT,
+        currency: typing.Optional[CurrencyEnum] = OMIT,
+        entity_user_id: typing.Optional[str] = OMIT,
+        object: typing.Optional[PaymentRecordObjectRequest] = OMIT,
+        paid_at: typing.Optional[dt.datetime] = OMIT,
+        payment_intent_id: typing.Optional[str] = OMIT,
+        payment_intent_status: typing.Optional[str] = OMIT,
+        payment_method: typing.Optional[str] = OMIT,
+        planned_payment_date: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentRecordResponse:
+        """
+        Parameters
+        ----------
+        payment_record_id : str
+
+        amount : typing.Optional[int]
+            Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents).
+
+        currency : typing.Optional[CurrencyEnum]
+            Currency code (ISO 4217) indicating the currency in which the payment was made.
+
+        entity_user_id : typing.Optional[str]
+            ID of the user associated with the payment, if applicable.
+
+        object : typing.Optional[PaymentRecordObjectRequest]
+            Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier.
+
+        paid_at : typing.Optional[dt.datetime]
+            Timestamp marking when the payment was executed. Null if payment hasn't occurred yet.
+
+        payment_intent_id : typing.Optional[str]
+            Identifier for an payment intent.
+
+        payment_intent_status : typing.Optional[str]
+            Raw status string of the external payment intent.
+
+        payment_method : typing.Optional[str]
+            Payment method used or planned for the transaction.
+
+        planned_payment_date : typing.Optional[str]
+            Scheduled date for future payments, required when the payment is planned but not yet executed.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentRecordResponse
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_records.patch_payment_records_id(
+            payment_record_id="payment_record_id",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"payment_records/{jsonable_encoder(payment_record_id)}",
+            method="PATCH",
+            json={
+                "amount": amount,
+                "currency": currency,
+                "entity_user_id": entity_user_id,
+                "object": convert_and_respect_annotation_metadata(
+                    object_=object, annotation=PaymentRecordObjectRequest, direction="write"
+                ),
+                "paid_at": paid_at,
+                "payment_intent_id": payment_intent_id,
+                "payment_intent_status": payment_intent_status,
+                "payment_method": payment_method,
+                "planned_payment_date": planned_payment_date,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    PaymentRecordResponse,
+                    parse_obj_as(
+                        type_=PaymentRecordResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def post_payment_records_id_cancel(
+        self,
+        payment_record_id: str,
+        *,
+        payment_intent_status: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentRecordResponse:
+        """
+        Parameters
+        ----------
+        payment_record_id : str
+
+        payment_intent_status : typing.Optional[str]
+            Raw status string of the external payment intent.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentRecordResponse
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_records.post_payment_records_id_cancel(
+            payment_record_id="payment_record_id",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"payment_records/{jsonable_encoder(payment_record_id)}/cancel",
+            method="POST",
+            json={
+                "payment_intent_status": payment_intent_status,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    PaymentRecordResponse,
+                    parse_obj_as(
+                        type_=PaymentRecordResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def post_payment_records_id_mark_as_succeeded(
+        self,
+        payment_record_id: str,
+        *,
+        paid_at: dt.datetime,
+        payment_intent_status: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentRecordResponse:
+        """
+        Parameters
+        ----------
+        payment_record_id : str
+
+        paid_at : dt.datetime
+            Timestamp marking when the payment was executed.
+
+        payment_intent_status : typing.Optional[str]
+            Raw status string of the external payment intent.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentRecordResponse
+            Successful Response
+
+        Examples
+        --------
+        import datetime
+
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_records.post_payment_records_id_mark_as_succeeded(
+            payment_record_id="payment_record_id",
+            paid_at=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"payment_records/{jsonable_encoder(payment_record_id)}/mark_as_succeeded",
+            method="POST",
+            json={
+                "paid_at": paid_at,
+                "payment_intent_status": payment_intent_status,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    PaymentRecordResponse,
+                    parse_obj_as(
+                        type_=PaymentRecordResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def post_payment_records_id_start_processing(
+        self,
+        payment_record_id: str,
+        *,
+        payment_intent_status: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentRecordResponse:
+        """
+        Parameters
+        ----------
+        payment_record_id : str
+
+        payment_intent_status : typing.Optional[str]
+            Raw status string of the external payment intent.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentRecordResponse
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_records.post_payment_records_id_start_processing(
+            payment_record_id="payment_record_id",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"payment_records/{jsonable_encoder(payment_record_id)}/start_processing",
+            method="POST",
+            json={
+                "payment_intent_status": payment_intent_status,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    PaymentRecordResponse,
+                    parse_obj_as(
+                        type_=PaymentRecordResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -317,6 +792,21 @@ class AsyncPaymentRecordsClient:
         sort: typing.Optional[PaymentRecordCursorFields] = None,
         is_external: typing.Optional[bool] = None,
         object_id: typing.Optional[str] = None,
+        object_type: typing.Optional[ObjectTypeEnum] = None,
+        created_at_gt: typing.Optional[dt.datetime] = None,
+        created_at_lt: typing.Optional[dt.datetime] = None,
+        updated_at_gt: typing.Optional[dt.datetime] = None,
+        updated_at_lt: typing.Optional[dt.datetime] = None,
+        paid_at_gt: typing.Optional[dt.datetime] = None,
+        paid_at_lt: typing.Optional[dt.datetime] = None,
+        planned_payment_date: typing.Optional[str] = None,
+        planned_payment_date_gt: typing.Optional[str] = None,
+        planned_payment_date_lt: typing.Optional[str] = None,
+        planned_payment_date_gte: typing.Optional[str] = None,
+        planned_payment_date_lte: typing.Optional[str] = None,
+        status: typing.Optional[PaymentRecordStatusEnum] = None,
+        payment_intent_status: typing.Optional[str] = None,
+        payment_method: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentRecordResponseList:
         """
@@ -335,8 +825,55 @@ class AsyncPaymentRecordsClient:
             Allowed sort fields
 
         is_external : typing.Optional[bool]
+            Identifies whether payment is from our rails or external system
 
         object_id : typing.Optional[str]
+            ID of the object, that is connected to payment
+
+        object_type : typing.Optional[ObjectTypeEnum]
+            Type of an object, which is connected with payment
+
+        created_at_gt : typing.Optional[dt.datetime]
+            Created after this datetime (exclusive)
+
+        created_at_lt : typing.Optional[dt.datetime]
+            Created before this datetime (exclusive)
+
+        updated_at_gt : typing.Optional[dt.datetime]
+            Updated after this datetime (exclusive)
+
+        updated_at_lt : typing.Optional[dt.datetime]
+            Updated before this datetime (exclusive)
+
+        paid_at_gt : typing.Optional[dt.datetime]
+            Paid after this datetime (exclusive)
+
+        paid_at_lt : typing.Optional[dt.datetime]
+            Paid before this datetime (exclusive)
+
+        planned_payment_date : typing.Optional[str]
+            Optional date of the upcoming payment (equality)
+
+        planned_payment_date_gt : typing.Optional[str]
+            Planned after this date (exclusive)
+
+        planned_payment_date_lt : typing.Optional[str]
+            Planned before this date (exclusive)
+
+        planned_payment_date_gte : typing.Optional[str]
+            Planned at or after this date (inclusive)
+
+        planned_payment_date_lte : typing.Optional[str]
+            Planned at or before this date (inclusive)
+
+        status : typing.Optional[PaymentRecordStatusEnum]
+            One of the payment record statuses
+
+        payment_intent_status : typing.Optional[str]
+            Payment intent status as a raw string
+
+        payment_method : typing.Optional[str]
+            Payment method used for the transaction
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -375,6 +912,21 @@ class AsyncPaymentRecordsClient:
                 "sort": sort,
                 "is_external": is_external,
                 "object_id": object_id,
+                "object_type": object_type,
+                "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
+                "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
+                "updated_at__gt": serialize_datetime(updated_at_gt) if updated_at_gt is not None else None,
+                "updated_at__lt": serialize_datetime(updated_at_lt) if updated_at_lt is not None else None,
+                "paid_at__gt": serialize_datetime(paid_at_gt) if paid_at_gt is not None else None,
+                "paid_at__lt": serialize_datetime(paid_at_lt) if paid_at_lt is not None else None,
+                "planned_payment_date": planned_payment_date,
+                "planned_payment_date__gt": planned_payment_date_gt,
+                "planned_payment_date__lt": planned_payment_date_lt,
+                "planned_payment_date__gte": planned_payment_date_gte,
+                "planned_payment_date__lte": planned_payment_date_lte,
+                "status": status,
+                "payment_intent_status": payment_intent_status,
+                "payment_method": payment_method,
             },
             request_options=request_options,
         )
@@ -390,9 +942,9 @@ class AsyncPaymentRecordsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -418,25 +970,47 @@ class AsyncPaymentRecordsClient:
         amount: int,
         currency: CurrencyEnum,
         object: PaymentRecordObjectRequest,
-        paid_at: dt.datetime,
         payment_intent_id: str,
         entity_user_id: typing.Optional[str] = OMIT,
+        paid_at: typing.Optional[dt.datetime] = OMIT,
+        payment_intent_status: typing.Optional[str] = OMIT,
+        payment_method: typing.Optional[str] = OMIT,
+        planned_payment_date: typing.Optional[str] = OMIT,
+        status: typing.Optional[PaymentRecordRequestStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentRecordResponse:
         """
         Parameters
         ----------
         amount : int
+            Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents).
 
         currency : CurrencyEnum
+            Currency code (ISO 4217) indicating the currency in which the payment was made.
 
         object : PaymentRecordObjectRequest
-
-        paid_at : dt.datetime
+            Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier.
 
         payment_intent_id : str
+            Identifier for an payment intent.
 
         entity_user_id : typing.Optional[str]
+            ID of the user associated with the payment, if applicable.
+
+        paid_at : typing.Optional[dt.datetime]
+            Timestamp marking when the payment was executed. Null if payment hasn't occurred yet.
+
+        payment_intent_status : typing.Optional[str]
+            Raw status string of the external payment intent.
+
+        payment_method : typing.Optional[str]
+            Payment method used or planned for the transaction.
+
+        planned_payment_date : typing.Optional[str]
+            Scheduled date for future payments, required when the payment is planned but not yet executed.
+
+        status : typing.Optional[PaymentRecordRequestStatus]
+            Status of the payment record indicating its current stage (e.g., created, processing, succeeded).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -449,7 +1023,6 @@ class AsyncPaymentRecordsClient:
         Examples
         --------
         import asyncio
-        import datetime
 
         from monite import AsyncMonite, PaymentRecordObjectRequest
 
@@ -467,9 +1040,6 @@ class AsyncPaymentRecordsClient:
                 object=PaymentRecordObjectRequest(
                     id="id",
                     type="receivable",
-                ),
-                paid_at=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
                 ),
                 payment_intent_id="payment_intent_id",
             )
@@ -489,6 +1059,10 @@ class AsyncPaymentRecordsClient:
                 ),
                 "paid_at": paid_at,
                 "payment_intent_id": payment_intent_id,
+                "payment_intent_status": payment_intent_status,
+                "payment_method": payment_method,
+                "planned_payment_date": planned_payment_date,
+                "status": status,
             },
             headers={
                 "content-type": "application/json",
@@ -508,9 +1082,9 @@ class AsyncPaymentRecordsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -584,9 +1158,414 @@ class AsyncPaymentRecordsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def patch_payment_records_id(
+        self,
+        payment_record_id: str,
+        *,
+        amount: typing.Optional[int] = OMIT,
+        currency: typing.Optional[CurrencyEnum] = OMIT,
+        entity_user_id: typing.Optional[str] = OMIT,
+        object: typing.Optional[PaymentRecordObjectRequest] = OMIT,
+        paid_at: typing.Optional[dt.datetime] = OMIT,
+        payment_intent_id: typing.Optional[str] = OMIT,
+        payment_intent_status: typing.Optional[str] = OMIT,
+        payment_method: typing.Optional[str] = OMIT,
+        planned_payment_date: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentRecordResponse:
+        """
+        Parameters
+        ----------
+        payment_record_id : str
+
+        amount : typing.Optional[int]
+            Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents).
+
+        currency : typing.Optional[CurrencyEnum]
+            Currency code (ISO 4217) indicating the currency in which the payment was made.
+
+        entity_user_id : typing.Optional[str]
+            ID of the user associated with the payment, if applicable.
+
+        object : typing.Optional[PaymentRecordObjectRequest]
+            Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier.
+
+        paid_at : typing.Optional[dt.datetime]
+            Timestamp marking when the payment was executed. Null if payment hasn't occurred yet.
+
+        payment_intent_id : typing.Optional[str]
+            Identifier for an payment intent.
+
+        payment_intent_status : typing.Optional[str]
+            Raw status string of the external payment intent.
+
+        payment_method : typing.Optional[str]
+            Payment method used or planned for the transaction.
+
+        planned_payment_date : typing.Optional[str]
+            Scheduled date for future payments, required when the payment is planned but not yet executed.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentRecordResponse
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.payment_records.patch_payment_records_id(
+                payment_record_id="payment_record_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"payment_records/{jsonable_encoder(payment_record_id)}",
+            method="PATCH",
+            json={
+                "amount": amount,
+                "currency": currency,
+                "entity_user_id": entity_user_id,
+                "object": convert_and_respect_annotation_metadata(
+                    object_=object, annotation=PaymentRecordObjectRequest, direction="write"
+                ),
+                "paid_at": paid_at,
+                "payment_intent_id": payment_intent_id,
+                "payment_intent_status": payment_intent_status,
+                "payment_method": payment_method,
+                "planned_payment_date": planned_payment_date,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    PaymentRecordResponse,
+                    parse_obj_as(
+                        type_=PaymentRecordResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def post_payment_records_id_cancel(
+        self,
+        payment_record_id: str,
+        *,
+        payment_intent_status: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentRecordResponse:
+        """
+        Parameters
+        ----------
+        payment_record_id : str
+
+        payment_intent_status : typing.Optional[str]
+            Raw status string of the external payment intent.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentRecordResponse
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.payment_records.post_payment_records_id_cancel(
+                payment_record_id="payment_record_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"payment_records/{jsonable_encoder(payment_record_id)}/cancel",
+            method="POST",
+            json={
+                "payment_intent_status": payment_intent_status,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    PaymentRecordResponse,
+                    parse_obj_as(
+                        type_=PaymentRecordResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def post_payment_records_id_mark_as_succeeded(
+        self,
+        payment_record_id: str,
+        *,
+        paid_at: dt.datetime,
+        payment_intent_status: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentRecordResponse:
+        """
+        Parameters
+        ----------
+        payment_record_id : str
+
+        paid_at : dt.datetime
+            Timestamp marking when the payment was executed.
+
+        payment_intent_status : typing.Optional[str]
+            Raw status string of the external payment intent.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentRecordResponse
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.payment_records.post_payment_records_id_mark_as_succeeded(
+                payment_record_id="payment_record_id",
+                paid_at=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"payment_records/{jsonable_encoder(payment_record_id)}/mark_as_succeeded",
+            method="POST",
+            json={
+                "paid_at": paid_at,
+                "payment_intent_status": payment_intent_status,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    PaymentRecordResponse,
+                    parse_obj_as(
+                        type_=PaymentRecordResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def post_payment_records_id_start_processing(
+        self,
+        payment_record_id: str,
+        *,
+        payment_intent_status: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentRecordResponse:
+        """
+        Parameters
+        ----------
+        payment_record_id : str
+
+        payment_intent_status : typing.Optional[str]
+            Raw status string of the external payment intent.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentRecordResponse
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.payment_records.post_payment_records_id_start_processing(
+                payment_record_id="payment_record_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"payment_records/{jsonable_encoder(payment_record_id)}/start_processing",
+            method="POST",
+            json={
+                "payment_intent_status": payment_intent_status,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    PaymentRecordResponse,
+                    parse_obj_as(
+                        type_=PaymentRecordResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

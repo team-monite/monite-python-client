@@ -8,6 +8,7 @@ import pydantic
 
 class DocumentIDsSettingsNextNumber(UniversalBaseModel):
     credit_note: typing.Optional[int] = None
+    delivery_note: typing.Optional[int] = None
     invoice: typing.Optional[int] = None
     purchase_order: typing.Optional[int] = None
     quote: typing.Optional[int] = None

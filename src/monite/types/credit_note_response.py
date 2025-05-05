@@ -4,6 +4,7 @@ from ..core.pydantic_utilities import UniversalBaseModel
 import pydantic
 import datetime as dt
 import typing
+from .counterpart_raw_data import CounterpartRawData
 from .currency_exchange_schema import CurrencyExchangeSchema
 from .tag_read_schema import TagReadSchema
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
@@ -39,6 +40,11 @@ class CreditNoteResponse(UniversalBaseModel):
     The document ID of the original payable that this credit note refers to
     """
 
+    counterpart: typing.Optional[CounterpartRawData] = pydantic.Field(default=None)
+    """
+    Object representing de-normalized counterpart data
+    """
+
     counterpart_address_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     ID of the counterpart's address
@@ -52,6 +58,11 @@ class CreditNoteResponse(UniversalBaseModel):
     counterpart_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     ID of the counterpart
+    """
+
+    counterpart_raw: typing.Optional[CounterpartRawData] = pydantic.Field(default=None)
+    """
+    Object representing counterpart data which was extracted by OCR. Used for informational purposes.
     """
 
     counterpart_vat_id_id: typing.Optional[str] = pydantic.Field(default=None)

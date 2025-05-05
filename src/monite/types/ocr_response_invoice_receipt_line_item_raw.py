@@ -17,9 +17,14 @@ class OcrResponseInvoiceReceiptLineItemRaw(UniversalBaseModel):
     Human-readable line item description
     """
 
+    item_adjusted: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Item Quantity/Unit Price adjusted
+    """
+
     quantity: typing.Optional[float] = pydantic.Field(default=None)
     """
-    Quanity
+    Quantity
     """
 
     unit_price: typing.Optional[float] = pydantic.Field(default=None)

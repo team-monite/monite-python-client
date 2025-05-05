@@ -2,8 +2,8 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .language_code_enum import LanguageCodeEnum
 import pydantic
+from .language_code_enum import LanguageCodeEnum
 from .counterpart_organization_create_payload import CounterpartOrganizationCreatePayload
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -11,6 +11,11 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 class CounterpartOrganizationRootCreatePayload(UniversalBaseModel):
     """
     This schema is used to create counterparts that are organizations (juridical persons).
+    """
+
+    external_reference: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    A user-defined identifier of the counterpart. For example, the customer or vendor reference number in the entity's CRM system. If specified, it will be displayed in PDF invoices and other accounts receivable documents created by the entity.
     """
 
     language: typing.Optional[LanguageCodeEnum] = pydantic.Field(default=None)

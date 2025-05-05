@@ -92,6 +92,11 @@ class PurchaseOrderResponseSchema(UniversalBaseModel):
     Msg which will be send to counterpart for who the purchase order is issued.
     """
 
+    project_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Project ID of a purchase order
+    """
+
     status: str = pydantic.Field()
     """
     Purchase order can be in 'draft' state before sending it to counterpart. After that state is 'issued'

@@ -3,10 +3,10 @@
 from ..core.pydantic_utilities import UniversalBaseModel
 import datetime as dt
 import typing
-from .object_match_types import ObjectMatchTypes
 from .platform import Platform
 from .service_providers_enum import ServiceProvidersEnum
 from .sync_status import SyncStatus
+from .object_match_types import ObjectMatchTypes
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
@@ -17,16 +17,16 @@ class SyncRecordResource(UniversalBaseModel):
     updated_at: dt.datetime
     errors: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
     last_pulled_at: dt.datetime
-    object_id: typing.Optional[str] = None
-    object_type: ObjectMatchTypes
     object_updated_at: typing.Optional[dt.datetime] = None
+    object_id: typing.Optional[str] = None
     platform: typing.Optional[Platform] = None
-    platform_object_id: typing.Optional[str] = None
     platform_updated_at: typing.Optional[dt.datetime] = None
+    platform_object_id: typing.Optional[str] = None
     provider: typing.Optional[ServiceProvidersEnum] = None
-    provider_object_id: typing.Optional[str] = None
     provider_updated_at: typing.Optional[dt.datetime] = None
+    provider_object_id: typing.Optional[str] = None
     sync_status: SyncStatus
+    object_type: ObjectMatchTypes
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -5,6 +5,7 @@ import typing
 import pydantic
 from .update_issued_invoice_entity import UpdateIssuedInvoiceEntity
 from .receivable_entity_address_schema import ReceivableEntityAddressSchema
+import datetime as dt
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -24,6 +25,11 @@ class UpdateIssuedInvoice(UniversalBaseModel):
     Counterpart VAT ID id
     """
 
+    due_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The date by which the invoice must be paid.
+    """
+
     entity: typing.Optional[UpdateIssuedInvoiceEntity] = None
     entity_address: typing.Optional[ReceivableEntityAddressSchema] = None
     entity_vat_id_id: typing.Optional[str] = pydantic.Field(default=None)
@@ -31,9 +37,23 @@ class UpdateIssuedInvoice(UniversalBaseModel):
     Entity VAT ID id
     """
 
+    footer: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Optional text displayed below the line items table in the PDF.
+    """
+
     fulfillment_date: typing.Optional[str] = pydantic.Field(default=None)
     """
     The date when the goods are shipped or the service is provided. Can be a current, past, or future date.
+    
+    Some countries require the fulfillment date in invoices for regulatory compliance. In this case, if the fulfillment date was not provided by the user, it is automatically set to the invoice issue date once the invoice gets issued.
+    
+    In countries where the fulfillment date is optional, Monite does not auto-assign it if it was omitted by the user.
+    """
+
+    issue_date: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    The datetime when the invoice was issued
     """
 
     memo: typing.Optional[str] = pydantic.Field(default=None)

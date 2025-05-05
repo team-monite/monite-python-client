@@ -26,6 +26,11 @@ class UpdateCreditNote(UniversalBaseModel):
     """
 
     entity: typing.Optional[ReceivableEntityBase] = None
+    footer: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Optional text displayed below the line items table in the PDF.
+    """
+
     line_items: typing.Optional[UpdateLineItemForCreditNote] = None
     memo: typing.Optional[str] = pydantic.Field(default=None)
     """

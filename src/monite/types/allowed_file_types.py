@@ -8,6 +8,7 @@ AllowedFileTypes = typing.Union[
         "ocr_files",
         "payables",
         "receivables",
+        "delivery_notes",
         "receipts",
         "userpics",
         "entity_logo",
@@ -16,6 +17,7 @@ AllowedFileTypes = typing.Union[
         "identity_documents",
         "additional_identity_documents",
         "receivable_signatures",
+        "einvoices_xml",
     ],
     typing.Any,
 ]

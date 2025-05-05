@@ -2,7 +2,7 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import datetime as dt
-from .document_type_enum import DocumentTypeEnum
+from .text_template_document_type_enum import TextTemplateDocumentTypeEnum
 from .text_template_type import TextTemplateType
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
@@ -13,7 +13,7 @@ class TextTemplateResponse(UniversalBaseModel):
     id: str
     created_at: dt.datetime
     updated_at: dt.datetime
-    document_type: DocumentTypeEnum
+    document_type: TextTemplateDocumentTypeEnum
     is_default: bool
     name: str
     template: str

@@ -7,7 +7,8 @@ import typing
 from ..types.credit_note_dimension_enum import CreditNoteDimensionEnum
 from ..types.date_dimension_breakdown_enum import DateDimensionBreakdownEnum
 import datetime as dt
-from ..types.credit_note_state_enum import CreditNoteStateEnum
+from ..types.payable_credit_note_state_enum import PayableCreditNoteStateEnum
+from ..types.origin_enum import OriginEnum
 from ..types.currency_enum import CurrencyEnum
 from ..core.request_options import RequestOptions
 from ..types.payable_analytics_response import PayableAnalyticsResponse
@@ -16,7 +17,6 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
@@ -25,6 +25,16 @@ from ..types.payable_dimension_enum import PayableDimensionEnum
 from ..types.payable_state_enum import PayableStateEnum
 from ..types.source_of_payable_data_enum import SourceOfPayableDataEnum
 from ..types.ocr_status_enum import OcrStatusEnum
+from ..types.payable_origin_enum import PayableOriginEnum
+from ..types.receivable_metric_enum import ReceivableMetricEnum
+from ..types.receivable_dimension_enum import ReceivableDimensionEnum
+from ..types.order_enum import OrderEnum
+from .types.get_analytics_receivables_request_status_in_item import GetAnalyticsReceivablesRequestStatusInItem
+from ..types.receivable_cursor_fields import ReceivableCursorFields
+from ..types.receivable_type import ReceivableType
+from .types.get_analytics_receivables_request_status import GetAnalyticsReceivablesRequestStatus
+from ..types.receivables_analytics_response import ReceivablesAnalyticsResponse
+from ..errors.bad_request_error import BadRequestError
 from ..core.client_wrapper import AsyncClientWrapper
 
 
@@ -39,6 +49,7 @@ class AnalyticsClient:
         aggregation_function: AggregationFunctionEnum,
         dimension: typing.Optional[CreditNoteDimensionEnum] = None,
         date_dimension_breakdown: typing.Optional[DateDimensionBreakdownEnum] = None,
+        limit: typing.Optional[int] = None,
         created_at_gt: typing.Optional[dt.datetime] = None,
         created_at_lt: typing.Optional[dt.datetime] = None,
         created_at_gte: typing.Optional[dt.datetime] = None,
@@ -52,6 +63,7 @@ class AnalyticsClient:
         document_id_iexact: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
         document_id_icontains: typing.Optional[str] = None,
+        has_file: typing.Optional[bool] = None,
         total_amount_gt: typing.Optional[int] = None,
         total_amount_lt: typing.Optional[int] = None,
         total_amount_gte: typing.Optional[int] = None,
@@ -63,10 +75,17 @@ class AnalyticsClient:
         based_on: typing.Optional[str] = None,
         counterpart_id: typing.Optional[str] = None,
         created_by_entity_user_id: typing.Optional[str] = None,
-        status: typing.Optional[CreditNoteStateEnum] = None,
-        status_in: typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]] = None,
-        status_not_in: typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]] = None,
+        status: typing.Optional[PayableCreditNoteStateEnum] = None,
+        status_in: typing.Optional[
+            typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]
+        ] = None,
+        status_not_in: typing.Optional[
+            typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]
+        ] = None,
+        origin: typing.Optional[OriginEnum] = None,
         currency: typing.Optional[CurrencyEnum] = None,
+        project_id: typing.Optional[str] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PayableAnalyticsResponse:
         """
@@ -81,6 +100,9 @@ class AnalyticsClient:
         dimension : typing.Optional[CreditNoteDimensionEnum]
 
         date_dimension_breakdown : typing.Optional[DateDimensionBreakdownEnum]
+
+        limit : typing.Optional[int]
+            The number of items (0 .. 400) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         created_at_gt : typing.Optional[dt.datetime]
 
@@ -108,6 +130,8 @@ class AnalyticsClient:
 
         document_id_icontains : typing.Optional[str]
 
+        has_file : typing.Optional[bool]
+
         total_amount_gt : typing.Optional[int]
 
         total_amount_lt : typing.Optional[int]
@@ -130,13 +154,19 @@ class AnalyticsClient:
 
         created_by_entity_user_id : typing.Optional[str]
 
-        status : typing.Optional[CreditNoteStateEnum]
+        status : typing.Optional[PayableCreditNoteStateEnum]
 
-        status_in : typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]]
+        status_in : typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]
 
-        status_not_in : typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]]
+        status_not_in : typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]
+
+        origin : typing.Optional[OriginEnum]
 
         currency : typing.Optional[CurrencyEnum]
+
+        project_id : typing.Optional[str]
+
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -168,6 +198,7 @@ class AnalyticsClient:
                 "metric": metric,
                 "aggregation_function": aggregation_function,
                 "date_dimension_breakdown": date_dimension_breakdown,
+                "limit": limit,
                 "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
                 "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
                 "created_at__gte": serialize_datetime(created_at_gte) if created_at_gte is not None else None,
@@ -181,6 +212,7 @@ class AnalyticsClient:
                 "document_id__iexact": document_id_iexact,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
+                "has_file": has_file,
                 "total_amount__gt": total_amount_gt,
                 "total_amount__lt": total_amount_lt,
                 "total_amount__gte": total_amount_gte,
@@ -195,7 +227,10 @@ class AnalyticsClient:
                 "status": status,
                 "status__in": status_in,
                 "status__not_in": status_not_in,
+                "origin": origin,
                 "currency": currency,
+                "project_id": project_id,
+                "project_id__in": project_id_in,
             },
             request_options=request_options,
         )
@@ -231,9 +266,9 @@ class AnalyticsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -260,6 +295,7 @@ class AnalyticsClient:
         aggregation_function: AggregationFunctionEnum,
         dimension: typing.Optional[PayableDimensionEnum] = None,
         date_dimension_breakdown: typing.Optional[DateDimensionBreakdownEnum] = None,
+        limit: typing.Optional[int] = None,
         created_at_gt: typing.Optional[dt.datetime] = None,
         created_at_lt: typing.Optional[dt.datetime] = None,
         created_at_gte: typing.Optional[dt.datetime] = None,
@@ -287,6 +323,11 @@ class AnalyticsClient:
         due_date_lt: typing.Optional[str] = None,
         due_date_gte: typing.Optional[str] = None,
         due_date_lte: typing.Optional[str] = None,
+        issued_at: typing.Optional[str] = None,
+        issued_at_gt: typing.Optional[str] = None,
+        issued_at_lt: typing.Optional[str] = None,
+        issued_at_gte: typing.Optional[str] = None,
+        issued_at_lte: typing.Optional[str] = None,
         document_id: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
         document_id_icontains: typing.Optional[str] = None,
@@ -297,7 +338,11 @@ class AnalyticsClient:
         line_item_id: typing.Optional[str] = None,
         purchase_order_id: typing.Optional[str] = None,
         project_id: typing.Optional[str] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        origin: typing.Optional[PayableOriginEnum] = None,
+        has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PayableAnalyticsResponse:
         """
@@ -312,6 +357,9 @@ class AnalyticsClient:
         dimension : typing.Optional[PayableDimensionEnum]
 
         date_dimension_breakdown : typing.Optional[DateDimensionBreakdownEnum]
+
+        limit : typing.Optional[int]
+            The number of items (0 .. 400) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         created_at_gt : typing.Optional[dt.datetime]
             Return only payables created in Monite after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm].
@@ -402,6 +450,21 @@ class AnalyticsClient:
         due_date_lte : typing.Optional[str]
             Return payables that are due before or on the specified date (YYYY-MM-DD).
 
+        issued_at : typing.Optional[str]
+            Return payables that are issued at the specified date (YYYY-MM-DD)
+
+        issued_at_gt : typing.Optional[str]
+            Return payables that are issued after the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_lt : typing.Optional[str]
+            Return payables that are issued before the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_gte : typing.Optional[str]
+            Return payables that are issued on or after the specified date (YYYY-MM-DD).
+
+        issued_at_lte : typing.Optional[str]
+            Return payables that are issued before or on the specified date (YYYY-MM-DD).
+
         document_id : typing.Optional[str]
             Return a payable with the exact specified document number (case-sensitive).
 
@@ -440,8 +503,20 @@ class AnalyticsClient:
 
             Valid but nonexistent project IDs do not raise errors but return no results.
 
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+
         tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+
+        tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
+
+        origin : typing.Optional[PayableOriginEnum]
+            Return only payables from a given origin ['einvoice', 'upload', 'email']
+
+        has_file : typing.Optional[bool]
+            Return only payables with or without attachments (files)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -473,6 +548,7 @@ class AnalyticsClient:
                 "metric": metric,
                 "aggregation_function": aggregation_function,
                 "date_dimension_breakdown": date_dimension_breakdown,
+                "limit": limit,
                 "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
                 "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
                 "created_at__gte": serialize_datetime(created_at_gte) if created_at_gte is not None else None,
@@ -500,6 +576,11 @@ class AnalyticsClient:
                 "due_date__lt": due_date_lt,
                 "due_date__gte": due_date_gte,
                 "due_date__lte": due_date_lte,
+                "issued_at": issued_at,
+                "issued_at__gt": issued_at_gt,
+                "issued_at__lt": issued_at_lt,
+                "issued_at__gte": issued_at_gte,
+                "issued_at__lte": issued_at_lte,
                 "document_id": document_id,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
@@ -510,7 +591,11 @@ class AnalyticsClient:
                 "line_item_id": line_item_id,
                 "purchase_order_id": purchase_order_id,
                 "project_id": project_id,
+                "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
+                "tag_ids__not_in": tag_ids_not_in,
+                "origin": origin,
+                "has_file": has_file,
             },
             request_options=request_options,
         )
@@ -546,9 +631,371 @@ class AnalyticsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def get_analytics_receivables(
+        self,
+        *,
+        metric: ReceivableMetricEnum,
+        aggregation_function: AggregationFunctionEnum,
+        dimension: typing.Optional[ReceivableDimensionEnum] = None,
+        date_dimension_breakdown: typing.Optional[DateDimensionBreakdownEnum] = None,
+        order: typing.Optional[OrderEnum] = None,
+        limit: typing.Optional[int] = None,
+        pagination_token: typing.Optional[str] = None,
+        id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        status_in: typing.Optional[
+            typing.Union[
+                GetAnalyticsReceivablesRequestStatusInItem, typing.Sequence[GetAnalyticsReceivablesRequestStatusInItem]
+            ]
+        ] = None,
+        entity_user_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        sort: typing.Optional[ReceivableCursorFields] = None,
+        tag_ids_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        product_ids_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        type: typing.Optional[ReceivableType] = None,
+        document_id: typing.Optional[str] = None,
+        document_id_contains: typing.Optional[str] = None,
+        document_id_icontains: typing.Optional[str] = None,
+        issue_date_gt: typing.Optional[dt.datetime] = None,
+        issue_date_lt: typing.Optional[dt.datetime] = None,
+        issue_date_gte: typing.Optional[dt.datetime] = None,
+        issue_date_lte: typing.Optional[dt.datetime] = None,
+        created_at_gt: typing.Optional[dt.datetime] = None,
+        created_at_lt: typing.Optional[dt.datetime] = None,
+        created_at_gte: typing.Optional[dt.datetime] = None,
+        created_at_lte: typing.Optional[dt.datetime] = None,
+        counterpart_id: typing.Optional[str] = None,
+        counterpart_name: typing.Optional[str] = None,
+        counterpart_name_contains: typing.Optional[str] = None,
+        counterpart_name_icontains: typing.Optional[str] = None,
+        total_amount: typing.Optional[int] = None,
+        total_amount_gt: typing.Optional[int] = None,
+        total_amount_lt: typing.Optional[int] = None,
+        total_amount_gte: typing.Optional[int] = None,
+        total_amount_lte: typing.Optional[int] = None,
+        status: typing.Optional[GetAnalyticsReceivablesRequestStatus] = None,
+        entity_user_id: typing.Optional[str] = None,
+        based_on: typing.Optional[str] = None,
+        due_date_gt: typing.Optional[str] = None,
+        due_date_lt: typing.Optional[str] = None,
+        due_date_gte: typing.Optional[str] = None,
+        due_date_lte: typing.Optional[str] = None,
+        project_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ReceivablesAnalyticsResponse:
+        """
+        Retrieve aggregated statistics for receivables with different breakdowns.
+
+        Parameters
+        ----------
+        metric : ReceivableMetricEnum
+
+        aggregation_function : AggregationFunctionEnum
+
+        dimension : typing.Optional[ReceivableDimensionEnum]
+
+        date_dimension_breakdown : typing.Optional[DateDimensionBreakdownEnum]
+
+        order : typing.Optional[OrderEnum]
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
+
+        limit : typing.Optional[int]
+            The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page.
+
+            When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
+
+        pagination_token : typing.Optional[str]
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
+
+        id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables with the specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
+
+            To specify multiple IDs, repeat this parameter for each value:
+            `id__in=<id1>&id__in=<id2>`
+
+        status_in : typing.Optional[typing.Union[GetAnalyticsReceivablesRequestStatusInItem, typing.Sequence[GetAnalyticsReceivablesRequestStatusInItem]]]
+            Return only receivables that have the specified statuses. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
+
+            To specify multiple statuses, repeat this parameter for each value:
+            `status__in=draft&status__in=issued`
+
+        entity_user_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables created by the entity users with the specified IDs.To specify multiple user IDs, repeat this parameter for each ID:
+            `entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+
+            If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+            IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
+
+        sort : typing.Optional[ReceivableCursorFields]
+            The field to sort the results by. Typically used together with the `order` parameter.
+
+        tag_ids_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose [tags](https://docs.monite.com/common/tags) include at least one of the tags with the specified IDs.
+
+            For example, given receivables with the following tags:
+            1. tagA
+            2. tagB
+            3. tagA, tagB
+            4. tagC
+            5. tagB, tagC
+
+
+            `tag_ids__in=<tagA>&tag_ids__in=<tagB>` will return receivables 1, 2, 3, and 5.
+
+            Valid but nonexistent tag IDs do not raise errors but produce no results.
+
+        tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose [tags](https://docs.monite.com/common/tags) include all of the tags with the specified IDs and optionally other tags that are not specified.
+
+            For example, given receivables with the following tags:
+            1. tagA
+            2. tagB
+            3. tagA, tagB
+            4. tagC
+            5. tagA, tagB, tagC
+
+
+            `tag_ids=<tagA>&tag_ids=<tagB>` will return receivables 3 and 5.
+
+        product_ids_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose line items include at least one of the product IDs with the specified IDs.
+
+            To specify multiple product IDs, repeat this parameter for each ID:
+            `product_ids__in=<product1>&product_ids__in=<product2>`
+
+            For example, given receivables with the following product IDs:
+            1. productA
+            2. productB
+            3. productA, productB
+            4. productC
+            5. productB, productC
+
+
+            `product_ids__in=<productA>&product_ids__in=<productB>` will return receivables 1, 2, 3, and 5.Valid but nonexistent product IDs do not raise errors but produce no results.
+
+        product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose line items include all of the product IDs with the specified IDs and optionally other products that are not specified.
+
+            To specify multiple product IDs, repeat this parameter for each ID:
+            `product_ids=<product1>&product_ids=<product2>`
+
+            For example, given receivables with the following product IDs:
+            1. productA
+            2. productB
+            3. productA, productB
+            4. productC
+            5. productA, productB, productC
+
+
+            `product_ids=<productA>&product_ids=<productB>` will return receivables 3 and 5.
+
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+
+        type : typing.Optional[ReceivableType]
+
+        document_id : typing.Optional[str]
+
+        document_id_contains : typing.Optional[str]
+
+        document_id_icontains : typing.Optional[str]
+
+        issue_date_gt : typing.Optional[dt.datetime]
+
+        issue_date_lt : typing.Optional[dt.datetime]
+
+        issue_date_gte : typing.Optional[dt.datetime]
+
+        issue_date_lte : typing.Optional[dt.datetime]
+
+        created_at_gt : typing.Optional[dt.datetime]
+
+        created_at_lt : typing.Optional[dt.datetime]
+
+        created_at_gte : typing.Optional[dt.datetime]
+
+        created_at_lte : typing.Optional[dt.datetime]
+
+        counterpart_id : typing.Optional[str]
+
+        counterpart_name : typing.Optional[str]
+
+        counterpart_name_contains : typing.Optional[str]
+
+        counterpart_name_icontains : typing.Optional[str]
+
+        total_amount : typing.Optional[int]
+
+        total_amount_gt : typing.Optional[int]
+
+        total_amount_lt : typing.Optional[int]
+
+        total_amount_gte : typing.Optional[int]
+
+        total_amount_lte : typing.Optional[int]
+
+        status : typing.Optional[GetAnalyticsReceivablesRequestStatus]
+
+        entity_user_id : typing.Optional[str]
+
+        based_on : typing.Optional[str]
+
+        due_date_gt : typing.Optional[str]
+
+        due_date_lt : typing.Optional[str]
+
+        due_date_gte : typing.Optional[str]
+
+        due_date_lte : typing.Optional[str]
+
+        project_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReceivablesAnalyticsResponse
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.analytics.get_analytics_receivables(
+            metric="id",
+            aggregation_function="count",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "analytics/receivables",
+            method="GET",
+            params={
+                "dimension": dimension,
+                "metric": metric,
+                "aggregation_function": aggregation_function,
+                "date_dimension_breakdown": date_dimension_breakdown,
+                "order": order,
+                "limit": limit,
+                "pagination_token": pagination_token,
+                "id__in": id_in,
+                "status__in": status_in,
+                "entity_user_id__in": entity_user_id_in,
+                "sort": sort,
+                "tag_ids__in": tag_ids_in,
+                "tag_ids": tag_ids,
+                "product_ids__in": product_ids_in,
+                "product_ids": product_ids,
+                "project_id__in": project_id_in,
+                "type": type,
+                "document_id": document_id,
+                "document_id__contains": document_id_contains,
+                "document_id__icontains": document_id_icontains,
+                "issue_date__gt": serialize_datetime(issue_date_gt) if issue_date_gt is not None else None,
+                "issue_date__lt": serialize_datetime(issue_date_lt) if issue_date_lt is not None else None,
+                "issue_date__gte": serialize_datetime(issue_date_gte) if issue_date_gte is not None else None,
+                "issue_date__lte": serialize_datetime(issue_date_lte) if issue_date_lte is not None else None,
+                "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
+                "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
+                "created_at__gte": serialize_datetime(created_at_gte) if created_at_gte is not None else None,
+                "created_at__lte": serialize_datetime(created_at_lte) if created_at_lte is not None else None,
+                "counterpart_id": counterpart_id,
+                "counterpart_name": counterpart_name,
+                "counterpart_name__contains": counterpart_name_contains,
+                "counterpart_name__icontains": counterpart_name_icontains,
+                "total_amount": total_amount,
+                "total_amount__gt": total_amount_gt,
+                "total_amount__lt": total_amount_lt,
+                "total_amount__gte": total_amount_gte,
+                "total_amount__lte": total_amount_lte,
+                "status": status,
+                "entity_user_id": entity_user_id,
+                "based_on": based_on,
+                "due_date__gt": due_date_gt,
+                "due_date__lt": due_date_lt,
+                "due_date__gte": due_date_gte,
+                "due_date__lte": due_date_lte,
+                "project_id": project_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    ReceivablesAnalyticsResponse,
+                    parse_obj_as(
+                        type_=ReceivablesAnalyticsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -580,6 +1027,7 @@ class AsyncAnalyticsClient:
         aggregation_function: AggregationFunctionEnum,
         dimension: typing.Optional[CreditNoteDimensionEnum] = None,
         date_dimension_breakdown: typing.Optional[DateDimensionBreakdownEnum] = None,
+        limit: typing.Optional[int] = None,
         created_at_gt: typing.Optional[dt.datetime] = None,
         created_at_lt: typing.Optional[dt.datetime] = None,
         created_at_gte: typing.Optional[dt.datetime] = None,
@@ -593,6 +1041,7 @@ class AsyncAnalyticsClient:
         document_id_iexact: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
         document_id_icontains: typing.Optional[str] = None,
+        has_file: typing.Optional[bool] = None,
         total_amount_gt: typing.Optional[int] = None,
         total_amount_lt: typing.Optional[int] = None,
         total_amount_gte: typing.Optional[int] = None,
@@ -604,10 +1053,17 @@ class AsyncAnalyticsClient:
         based_on: typing.Optional[str] = None,
         counterpart_id: typing.Optional[str] = None,
         created_by_entity_user_id: typing.Optional[str] = None,
-        status: typing.Optional[CreditNoteStateEnum] = None,
-        status_in: typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]] = None,
-        status_not_in: typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]] = None,
+        status: typing.Optional[PayableCreditNoteStateEnum] = None,
+        status_in: typing.Optional[
+            typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]
+        ] = None,
+        status_not_in: typing.Optional[
+            typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]
+        ] = None,
+        origin: typing.Optional[OriginEnum] = None,
         currency: typing.Optional[CurrencyEnum] = None,
+        project_id: typing.Optional[str] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PayableAnalyticsResponse:
         """
@@ -622,6 +1078,9 @@ class AsyncAnalyticsClient:
         dimension : typing.Optional[CreditNoteDimensionEnum]
 
         date_dimension_breakdown : typing.Optional[DateDimensionBreakdownEnum]
+
+        limit : typing.Optional[int]
+            The number of items (0 .. 400) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         created_at_gt : typing.Optional[dt.datetime]
 
@@ -649,6 +1108,8 @@ class AsyncAnalyticsClient:
 
         document_id_icontains : typing.Optional[str]
 
+        has_file : typing.Optional[bool]
+
         total_amount_gt : typing.Optional[int]
 
         total_amount_lt : typing.Optional[int]
@@ -671,13 +1132,19 @@ class AsyncAnalyticsClient:
 
         created_by_entity_user_id : typing.Optional[str]
 
-        status : typing.Optional[CreditNoteStateEnum]
+        status : typing.Optional[PayableCreditNoteStateEnum]
 
-        status_in : typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]]
+        status_in : typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]
 
-        status_not_in : typing.Optional[typing.Union[CreditNoteStateEnum, typing.Sequence[CreditNoteStateEnum]]]
+        status_not_in : typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]
+
+        origin : typing.Optional[OriginEnum]
 
         currency : typing.Optional[CurrencyEnum]
+
+        project_id : typing.Optional[str]
+
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -717,6 +1184,7 @@ class AsyncAnalyticsClient:
                 "metric": metric,
                 "aggregation_function": aggregation_function,
                 "date_dimension_breakdown": date_dimension_breakdown,
+                "limit": limit,
                 "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
                 "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
                 "created_at__gte": serialize_datetime(created_at_gte) if created_at_gte is not None else None,
@@ -730,6 +1198,7 @@ class AsyncAnalyticsClient:
                 "document_id__iexact": document_id_iexact,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
+                "has_file": has_file,
                 "total_amount__gt": total_amount_gt,
                 "total_amount__lt": total_amount_lt,
                 "total_amount__gte": total_amount_gte,
@@ -744,7 +1213,10 @@ class AsyncAnalyticsClient:
                 "status": status,
                 "status__in": status_in,
                 "status__not_in": status_not_in,
+                "origin": origin,
                 "currency": currency,
+                "project_id": project_id,
+                "project_id__in": project_id_in,
             },
             request_options=request_options,
         )
@@ -780,9 +1252,9 @@ class AsyncAnalyticsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -809,6 +1281,7 @@ class AsyncAnalyticsClient:
         aggregation_function: AggregationFunctionEnum,
         dimension: typing.Optional[PayableDimensionEnum] = None,
         date_dimension_breakdown: typing.Optional[DateDimensionBreakdownEnum] = None,
+        limit: typing.Optional[int] = None,
         created_at_gt: typing.Optional[dt.datetime] = None,
         created_at_lt: typing.Optional[dt.datetime] = None,
         created_at_gte: typing.Optional[dt.datetime] = None,
@@ -836,6 +1309,11 @@ class AsyncAnalyticsClient:
         due_date_lt: typing.Optional[str] = None,
         due_date_gte: typing.Optional[str] = None,
         due_date_lte: typing.Optional[str] = None,
+        issued_at: typing.Optional[str] = None,
+        issued_at_gt: typing.Optional[str] = None,
+        issued_at_lt: typing.Optional[str] = None,
+        issued_at_gte: typing.Optional[str] = None,
+        issued_at_lte: typing.Optional[str] = None,
         document_id: typing.Optional[str] = None,
         document_id_contains: typing.Optional[str] = None,
         document_id_icontains: typing.Optional[str] = None,
@@ -846,7 +1324,11 @@ class AsyncAnalyticsClient:
         line_item_id: typing.Optional[str] = None,
         purchase_order_id: typing.Optional[str] = None,
         project_id: typing.Optional[str] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        origin: typing.Optional[PayableOriginEnum] = None,
+        has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PayableAnalyticsResponse:
         """
@@ -861,6 +1343,9 @@ class AsyncAnalyticsClient:
         dimension : typing.Optional[PayableDimensionEnum]
 
         date_dimension_breakdown : typing.Optional[DateDimensionBreakdownEnum]
+
+        limit : typing.Optional[int]
+            The number of items (0 .. 400) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         created_at_gt : typing.Optional[dt.datetime]
             Return only payables created in Monite after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm].
@@ -951,6 +1436,21 @@ class AsyncAnalyticsClient:
         due_date_lte : typing.Optional[str]
             Return payables that are due before or on the specified date (YYYY-MM-DD).
 
+        issued_at : typing.Optional[str]
+            Return payables that are issued at the specified date (YYYY-MM-DD)
+
+        issued_at_gt : typing.Optional[str]
+            Return payables that are issued after the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_lt : typing.Optional[str]
+            Return payables that are issued before the specified date (exclusive, YYYY-MM-DD).
+
+        issued_at_gte : typing.Optional[str]
+            Return payables that are issued on or after the specified date (YYYY-MM-DD).
+
+        issued_at_lte : typing.Optional[str]
+            Return payables that are issued before or on the specified date (YYYY-MM-DD).
+
         document_id : typing.Optional[str]
             Return a payable with the exact specified document number (case-sensitive).
 
@@ -989,8 +1489,20 @@ class AsyncAnalyticsClient:
 
             Valid but nonexistent project IDs do not raise errors but return no results.
 
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+
         tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+
+        tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
+
+        origin : typing.Optional[PayableOriginEnum]
+            Return only payables from a given origin ['einvoice', 'upload', 'email']
+
+        has_file : typing.Optional[bool]
+            Return only payables with or without attachments (files)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1030,6 +1542,7 @@ class AsyncAnalyticsClient:
                 "metric": metric,
                 "aggregation_function": aggregation_function,
                 "date_dimension_breakdown": date_dimension_breakdown,
+                "limit": limit,
                 "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
                 "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
                 "created_at__gte": serialize_datetime(created_at_gte) if created_at_gte is not None else None,
@@ -1057,6 +1570,11 @@ class AsyncAnalyticsClient:
                 "due_date__lt": due_date_lt,
                 "due_date__gte": due_date_gte,
                 "due_date__lte": due_date_lte,
+                "issued_at": issued_at,
+                "issued_at__gt": issued_at_gt,
+                "issued_at__lt": issued_at_lt,
+                "issued_at__gte": issued_at_gte,
+                "issued_at__lte": issued_at_lte,
                 "document_id": document_id,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
@@ -1067,7 +1585,11 @@ class AsyncAnalyticsClient:
                 "line_item_id": line_item_id,
                 "purchase_order_id": purchase_order_id,
                 "project_id": project_id,
+                "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
+                "tag_ids__not_in": tag_ids_not_in,
+                "origin": origin,
+                "has_file": has_file,
             },
             request_options=request_options,
         )
@@ -1103,9 +1625,379 @@ class AsyncAnalyticsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def get_analytics_receivables(
+        self,
+        *,
+        metric: ReceivableMetricEnum,
+        aggregation_function: AggregationFunctionEnum,
+        dimension: typing.Optional[ReceivableDimensionEnum] = None,
+        date_dimension_breakdown: typing.Optional[DateDimensionBreakdownEnum] = None,
+        order: typing.Optional[OrderEnum] = None,
+        limit: typing.Optional[int] = None,
+        pagination_token: typing.Optional[str] = None,
+        id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        status_in: typing.Optional[
+            typing.Union[
+                GetAnalyticsReceivablesRequestStatusInItem, typing.Sequence[GetAnalyticsReceivablesRequestStatusInItem]
+            ]
+        ] = None,
+        entity_user_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        sort: typing.Optional[ReceivableCursorFields] = None,
+        tag_ids_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        product_ids_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        type: typing.Optional[ReceivableType] = None,
+        document_id: typing.Optional[str] = None,
+        document_id_contains: typing.Optional[str] = None,
+        document_id_icontains: typing.Optional[str] = None,
+        issue_date_gt: typing.Optional[dt.datetime] = None,
+        issue_date_lt: typing.Optional[dt.datetime] = None,
+        issue_date_gte: typing.Optional[dt.datetime] = None,
+        issue_date_lte: typing.Optional[dt.datetime] = None,
+        created_at_gt: typing.Optional[dt.datetime] = None,
+        created_at_lt: typing.Optional[dt.datetime] = None,
+        created_at_gte: typing.Optional[dt.datetime] = None,
+        created_at_lte: typing.Optional[dt.datetime] = None,
+        counterpart_id: typing.Optional[str] = None,
+        counterpart_name: typing.Optional[str] = None,
+        counterpart_name_contains: typing.Optional[str] = None,
+        counterpart_name_icontains: typing.Optional[str] = None,
+        total_amount: typing.Optional[int] = None,
+        total_amount_gt: typing.Optional[int] = None,
+        total_amount_lt: typing.Optional[int] = None,
+        total_amount_gte: typing.Optional[int] = None,
+        total_amount_lte: typing.Optional[int] = None,
+        status: typing.Optional[GetAnalyticsReceivablesRequestStatus] = None,
+        entity_user_id: typing.Optional[str] = None,
+        based_on: typing.Optional[str] = None,
+        due_date_gt: typing.Optional[str] = None,
+        due_date_lt: typing.Optional[str] = None,
+        due_date_gte: typing.Optional[str] = None,
+        due_date_lte: typing.Optional[str] = None,
+        project_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ReceivablesAnalyticsResponse:
+        """
+        Retrieve aggregated statistics for receivables with different breakdowns.
+
+        Parameters
+        ----------
+        metric : ReceivableMetricEnum
+
+        aggregation_function : AggregationFunctionEnum
+
+        dimension : typing.Optional[ReceivableDimensionEnum]
+
+        date_dimension_breakdown : typing.Optional[DateDimensionBreakdownEnum]
+
+        order : typing.Optional[OrderEnum]
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
+
+        limit : typing.Optional[int]
+            The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page.
+
+            When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
+
+        pagination_token : typing.Optional[str]
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
+
+        id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables with the specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
+
+            To specify multiple IDs, repeat this parameter for each value:
+            `id__in=<id1>&id__in=<id2>`
+
+        status_in : typing.Optional[typing.Union[GetAnalyticsReceivablesRequestStatusInItem, typing.Sequence[GetAnalyticsReceivablesRequestStatusInItem]]]
+            Return only receivables that have the specified statuses. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
+
+            To specify multiple statuses, repeat this parameter for each value:
+            `status__in=draft&status__in=issued`
+
+        entity_user_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables created by the entity users with the specified IDs.To specify multiple user IDs, repeat this parameter for each ID:
+            `entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+
+            If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+            IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
+
+        sort : typing.Optional[ReceivableCursorFields]
+            The field to sort the results by. Typically used together with the `order` parameter.
+
+        tag_ids_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose [tags](https://docs.monite.com/common/tags) include at least one of the tags with the specified IDs.
+
+            For example, given receivables with the following tags:
+            1. tagA
+            2. tagB
+            3. tagA, tagB
+            4. tagC
+            5. tagB, tagC
+
+
+            `tag_ids__in=<tagA>&tag_ids__in=<tagB>` will return receivables 1, 2, 3, and 5.
+
+            Valid but nonexistent tag IDs do not raise errors but produce no results.
+
+        tag_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose [tags](https://docs.monite.com/common/tags) include all of the tags with the specified IDs and optionally other tags that are not specified.
+
+            For example, given receivables with the following tags:
+            1. tagA
+            2. tagB
+            3. tagA, tagB
+            4. tagC
+            5. tagA, tagB, tagC
+
+
+            `tag_ids=<tagA>&tag_ids=<tagB>` will return receivables 3 and 5.
+
+        product_ids_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose line items include at least one of the product IDs with the specified IDs.
+
+            To specify multiple product IDs, repeat this parameter for each ID:
+            `product_ids__in=<product1>&product_ids__in=<product2>`
+
+            For example, given receivables with the following product IDs:
+            1. productA
+            2. productB
+            3. productA, productB
+            4. productC
+            5. productB, productC
+
+
+            `product_ids__in=<productA>&product_ids__in=<productB>` will return receivables 1, 2, 3, and 5.Valid but nonexistent product IDs do not raise errors but produce no results.
+
+        product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose line items include all of the product IDs with the specified IDs and optionally other products that are not specified.
+
+            To specify multiple product IDs, repeat this parameter for each ID:
+            `product_ids=<product1>&product_ids=<product2>`
+
+            For example, given receivables with the following product IDs:
+            1. productA
+            2. productB
+            3. productA, productB
+            4. productC
+            5. productA, productB, productC
+
+
+            `product_ids=<productA>&product_ids=<productB>` will return receivables 3 and 5.
+
+        project_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only receivables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+
+        type : typing.Optional[ReceivableType]
+
+        document_id : typing.Optional[str]
+
+        document_id_contains : typing.Optional[str]
+
+        document_id_icontains : typing.Optional[str]
+
+        issue_date_gt : typing.Optional[dt.datetime]
+
+        issue_date_lt : typing.Optional[dt.datetime]
+
+        issue_date_gte : typing.Optional[dt.datetime]
+
+        issue_date_lte : typing.Optional[dt.datetime]
+
+        created_at_gt : typing.Optional[dt.datetime]
+
+        created_at_lt : typing.Optional[dt.datetime]
+
+        created_at_gte : typing.Optional[dt.datetime]
+
+        created_at_lte : typing.Optional[dt.datetime]
+
+        counterpart_id : typing.Optional[str]
+
+        counterpart_name : typing.Optional[str]
+
+        counterpart_name_contains : typing.Optional[str]
+
+        counterpart_name_icontains : typing.Optional[str]
+
+        total_amount : typing.Optional[int]
+
+        total_amount_gt : typing.Optional[int]
+
+        total_amount_lt : typing.Optional[int]
+
+        total_amount_gte : typing.Optional[int]
+
+        total_amount_lte : typing.Optional[int]
+
+        status : typing.Optional[GetAnalyticsReceivablesRequestStatus]
+
+        entity_user_id : typing.Optional[str]
+
+        based_on : typing.Optional[str]
+
+        due_date_gt : typing.Optional[str]
+
+        due_date_lt : typing.Optional[str]
+
+        due_date_gte : typing.Optional[str]
+
+        due_date_lte : typing.Optional[str]
+
+        project_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReceivablesAnalyticsResponse
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.analytics.get_analytics_receivables(
+                metric="id",
+                aggregation_function="count",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "analytics/receivables",
+            method="GET",
+            params={
+                "dimension": dimension,
+                "metric": metric,
+                "aggregation_function": aggregation_function,
+                "date_dimension_breakdown": date_dimension_breakdown,
+                "order": order,
+                "limit": limit,
+                "pagination_token": pagination_token,
+                "id__in": id_in,
+                "status__in": status_in,
+                "entity_user_id__in": entity_user_id_in,
+                "sort": sort,
+                "tag_ids__in": tag_ids_in,
+                "tag_ids": tag_ids,
+                "product_ids__in": product_ids_in,
+                "product_ids": product_ids,
+                "project_id__in": project_id_in,
+                "type": type,
+                "document_id": document_id,
+                "document_id__contains": document_id_contains,
+                "document_id__icontains": document_id_icontains,
+                "issue_date__gt": serialize_datetime(issue_date_gt) if issue_date_gt is not None else None,
+                "issue_date__lt": serialize_datetime(issue_date_lt) if issue_date_lt is not None else None,
+                "issue_date__gte": serialize_datetime(issue_date_gte) if issue_date_gte is not None else None,
+                "issue_date__lte": serialize_datetime(issue_date_lte) if issue_date_lte is not None else None,
+                "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
+                "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
+                "created_at__gte": serialize_datetime(created_at_gte) if created_at_gte is not None else None,
+                "created_at__lte": serialize_datetime(created_at_lte) if created_at_lte is not None else None,
+                "counterpart_id": counterpart_id,
+                "counterpart_name": counterpart_name,
+                "counterpart_name__contains": counterpart_name_contains,
+                "counterpart_name__icontains": counterpart_name_icontains,
+                "total_amount": total_amount,
+                "total_amount__gt": total_amount_gt,
+                "total_amount__lt": total_amount_lt,
+                "total_amount__gte": total_amount_gte,
+                "total_amount__lte": total_amount_lte,
+                "status": status,
+                "entity_user_id": entity_user_id,
+                "based_on": based_on,
+                "due_date__gt": due_date_gt,
+                "due_date__lt": due_date_lt,
+                "due_date__gte": due_date_gte,
+                "due_date__lte": due_date_lte,
+                "project_id": project_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    ReceivablesAnalyticsResponse,
+                    parse_obj_as(
+                        type_=ReceivablesAnalyticsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

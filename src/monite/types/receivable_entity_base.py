@@ -26,6 +26,16 @@ class ReceivableEntityBase(UniversalBaseModel):
     A phone number of the entity
     """
 
+    registration_authority: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The registration authority of the entity
+    """
+
+    registration_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The registration number of the entity
+    """
+
     website: typing.Optional[str] = pydantic.Field(default=None)
     """
     A website of the entity

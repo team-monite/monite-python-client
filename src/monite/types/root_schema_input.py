@@ -79,6 +79,20 @@ class RootSchemaInput_CounterpartVatId(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class RootSchemaInput_DeliveryNote(UniversalBaseModel):
+    object_type: typing.Literal["delivery_note"] = "delivery_note"
+    actions: typing.Optional[typing.List[ActionSchema]] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 class RootSchemaInput_Entity(UniversalBaseModel):
     object_type: typing.Literal["entity"] = "entity"
     actions: typing.Optional[typing.List[ActionSchema]] = None
@@ -151,6 +165,20 @@ class RootSchemaInput_Export(UniversalBaseModel):
 
 class RootSchemaInput_Mailbox(UniversalBaseModel):
     object_type: typing.Literal["mailbox"] = "mailbox"
+    actions: typing.Optional[typing.List[ActionSchema]] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
+class RootSchemaInput_OcrTask(UniversalBaseModel):
+    object_type: typing.Literal["ocr_task"] = "ocr_task"
     actions: typing.Optional[typing.List[ActionSchema]] = None
 
     if IS_PYDANTIC_V2:
@@ -407,12 +435,14 @@ RootSchemaInput = typing.Union[
     RootSchemaInput_Comment,
     RootSchemaInput_Counterpart,
     RootSchemaInput_CounterpartVatId,
+    RootSchemaInput_DeliveryNote,
     RootSchemaInput_Entity,
     RootSchemaInput_EntityBankAccount,
     RootSchemaInput_EntityUser,
     RootSchemaInput_EntityVatIds,
     RootSchemaInput_Export,
     RootSchemaInput_Mailbox,
+    RootSchemaInput_OcrTask,
     RootSchemaInput_Onboarding,
     RootSchemaInput_OverdueReminder,
     RootSchemaInput_Payable,

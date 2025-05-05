@@ -13,6 +13,11 @@ class TotalVatAmountItem(UniversalBaseModel):
     The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units).
     """
 
+    taxable_amount: int = pydantic.Field()
+    """
+    The amount on which this VAT is calculated, in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    """
+
     value: int = pydantic.Field()
     """
     Percent minor units. Example: 12.5% is 1250.

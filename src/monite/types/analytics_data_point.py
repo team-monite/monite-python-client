@@ -8,7 +8,7 @@ import pydantic
 
 class AnalyticsDataPoint(UniversalBaseModel):
     dimension_value: typing.Optional[str] = None
-    metric_value: int
+    metric_value: float
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

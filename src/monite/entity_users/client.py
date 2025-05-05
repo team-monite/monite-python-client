@@ -14,7 +14,6 @@ from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_acceptable_error import NotAcceptableError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
@@ -194,9 +193,9 @@ class EntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -315,9 +314,9 @@ class EntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -389,9 +388,9 @@ class EntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -498,9 +497,9 @@ class EntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -572,9 +571,9 @@ class EntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -602,6 +601,8 @@ class EntityUsersClient:
         phone: typing.Optional[str] = OMIT,
         website: typing.Optional[str] = OMIT,
         tax_id: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
         organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -625,6 +626,12 @@ class EntityUsersClient:
 
         tax_id : typing.Optional[str]
             The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
@@ -662,6 +669,8 @@ class EntityUsersClient:
                 "phone": phone,
                 "website": website,
                 "tax_id": tax_id,
+                "registration_number": registration_number,
+                "registration_authority": registration_authority,
                 "organization": convert_and_respect_annotation_metadata(
                     object_=organization, annotation=OptionalOrganizationSchema, direction="write"
                 ),
@@ -694,9 +703,9 @@ class EntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -758,9 +767,9 @@ class EntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -838,9 +847,9 @@ class EntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -907,9 +916,9 @@ class EntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1031,9 +1040,9 @@ class EntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1224,9 +1233,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1353,9 +1362,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1435,9 +1444,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1552,9 +1561,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1634,9 +1643,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1664,6 +1673,8 @@ class AsyncEntityUsersClient:
         phone: typing.Optional[str] = OMIT,
         website: typing.Optional[str] = OMIT,
         tax_id: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
         organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1687,6 +1698,12 @@ class AsyncEntityUsersClient:
 
         tax_id : typing.Optional[str]
             The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
@@ -1732,6 +1749,8 @@ class AsyncEntityUsersClient:
                 "phone": phone,
                 "website": website,
                 "tax_id": tax_id,
+                "registration_number": registration_number,
+                "registration_authority": registration_authority,
                 "organization": convert_and_respect_annotation_metadata(
                     object_=organization, annotation=OptionalOrganizationSchema, direction="write"
                 ),
@@ -1764,9 +1783,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1836,9 +1855,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1924,9 +1943,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2003,9 +2022,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2135,9 +2154,9 @@ class AsyncEntityUsersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

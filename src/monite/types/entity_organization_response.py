@@ -5,7 +5,7 @@ import pydantic
 import datetime as dt
 from .entity_address_response_schema import EntityAddressResponseSchema
 import typing
-from .file_schema3 import FileSchema3
+from .file_schema2 import FileSchema2
 from .organization_response_schema import OrganizationResponseSchema
 from .entity_status_enum import EntityStatusEnum
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
@@ -37,7 +37,7 @@ class EntityOrganizationResponse(UniversalBaseModel):
     An official email address of the entity
     """
 
-    logo: typing.Optional[FileSchema3] = pydantic.Field(default=None)
+    logo: typing.Optional[FileSchema2] = pydantic.Field(default=None)
     """
     A logo image of the entity
     """
@@ -50,6 +50,16 @@ class EntityOrganizationResponse(UniversalBaseModel):
     phone: typing.Optional[str] = pydantic.Field(default=None)
     """
     A phone number of the entity
+    """
+
+    registration_authority: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+    """
+
+    registration_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
     """
 
     status: EntityStatusEnum = pydantic.Field()

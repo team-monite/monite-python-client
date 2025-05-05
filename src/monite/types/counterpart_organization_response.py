@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class CounterpartOrganizationResponse(UniversalBaseModel):
-    """
-    Represents counterparts that are organizations (juridical persons).
-    """
-
     email: typing.Optional[str] = pydantic.Field(default=None)
     """
     The email address of the organization

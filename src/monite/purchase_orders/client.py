@@ -14,7 +14,6 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..errors.bad_request_error import BadRequestError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
@@ -66,6 +65,7 @@ class PurchaseOrdersClient:
         counterpart_name: typing.Optional[str] = None,
         currency: typing.Optional[CurrencyEnum] = None,
         currency_in: typing.Optional[typing.Union[CurrencyEnum, typing.Sequence[CurrencyEnum]]] = None,
+        project_id: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PurchaseOrderPaginationResponse:
         """
@@ -127,6 +127,8 @@ class PurchaseOrdersClient:
 
         currency_in : typing.Optional[typing.Union[CurrencyEnum, typing.Sequence[CurrencyEnum]]]
 
+        project_id : typing.Optional[str]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -175,6 +177,7 @@ class PurchaseOrdersClient:
                 "counterpart.name": counterpart_name,
                 "currency": currency,
                 "currency__in": currency_in,
+                "project_id": project_id,
             },
             request_options=request_options,
         )
@@ -210,9 +213,9 @@ class PurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -242,6 +245,7 @@ class PurchaseOrdersClient:
         valid_for_days: int,
         counterpart_address_id: typing.Optional[str] = OMIT,
         entity_vat_id_id: typing.Optional[str] = OMIT,
+        project_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PurchaseOrderResponseSchema:
         """
@@ -267,6 +271,9 @@ class PurchaseOrdersClient:
 
         entity_vat_id_id : typing.Optional[str]
             Entity VAT ID identifier that applied to purchase order
+
+        project_id : typing.Optional[str]
+            Project ID of a purchase order
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -314,6 +321,7 @@ class PurchaseOrdersClient:
                     object_=items, annotation=typing.Sequence[PurchaseOrderItem], direction="write"
                 ),
                 "message": message,
+                "project_id": project_id,
                 "valid_for_days": valid_for_days,
             },
             headers={
@@ -354,9 +362,9 @@ class PurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -428,9 +436,9 @@ class PurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -516,9 +524,9 @@ class PurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -595,9 +603,9 @@ class PurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -626,6 +634,7 @@ class PurchaseOrdersClient:
         entity_vat_id_id: typing.Optional[str] = OMIT,
         items: typing.Optional[typing.Sequence[PurchaseOrderItem]] = OMIT,
         message: typing.Optional[str] = OMIT,
+        project_id: typing.Optional[str] = OMIT,
         valid_for_days: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PurchaseOrderResponseSchema:
@@ -648,6 +657,9 @@ class PurchaseOrdersClient:
 
         message : typing.Optional[str]
             Msg which will be send to counterpart for who the purchase order is issued.
+
+        project_id : typing.Optional[str]
+            Project ID of a purchase order
 
         valid_for_days : typing.Optional[int]
             Number of days for which purchase order is valid
@@ -684,6 +696,7 @@ class PurchaseOrdersClient:
                     object_=items, annotation=typing.Sequence[PurchaseOrderItem], direction="write"
                 ),
                 "message": message,
+                "project_id": project_id,
                 "valid_for_days": valid_for_days,
             },
             headers={
@@ -724,9 +737,9 @@ class PurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -851,9 +864,9 @@ class PurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -988,9 +1001,9 @@ class PurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1043,6 +1056,7 @@ class AsyncPurchaseOrdersClient:
         counterpart_name: typing.Optional[str] = None,
         currency: typing.Optional[CurrencyEnum] = None,
         currency_in: typing.Optional[typing.Union[CurrencyEnum, typing.Sequence[CurrencyEnum]]] = None,
+        project_id: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PurchaseOrderPaginationResponse:
         """
@@ -1104,6 +1118,8 @@ class AsyncPurchaseOrdersClient:
 
         currency_in : typing.Optional[typing.Union[CurrencyEnum, typing.Sequence[CurrencyEnum]]]
 
+        project_id : typing.Optional[str]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1160,6 +1176,7 @@ class AsyncPurchaseOrdersClient:
                 "counterpart.name": counterpart_name,
                 "currency": currency,
                 "currency__in": currency_in,
+                "project_id": project_id,
             },
             request_options=request_options,
         )
@@ -1195,9 +1212,9 @@ class AsyncPurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1227,6 +1244,7 @@ class AsyncPurchaseOrdersClient:
         valid_for_days: int,
         counterpart_address_id: typing.Optional[str] = OMIT,
         entity_vat_id_id: typing.Optional[str] = OMIT,
+        project_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PurchaseOrderResponseSchema:
         """
@@ -1252,6 +1270,9 @@ class AsyncPurchaseOrdersClient:
 
         entity_vat_id_id : typing.Optional[str]
             Entity VAT ID identifier that applied to purchase order
+
+        project_id : typing.Optional[str]
+            Project ID of a purchase order
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1307,6 +1328,7 @@ class AsyncPurchaseOrdersClient:
                     object_=items, annotation=typing.Sequence[PurchaseOrderItem], direction="write"
                 ),
                 "message": message,
+                "project_id": project_id,
                 "valid_for_days": valid_for_days,
             },
             headers={
@@ -1347,9 +1369,9 @@ class AsyncPurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1429,9 +1451,9 @@ class AsyncPurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1525,9 +1547,9 @@ class AsyncPurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1614,9 +1636,9 @@ class AsyncPurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1645,6 +1667,7 @@ class AsyncPurchaseOrdersClient:
         entity_vat_id_id: typing.Optional[str] = OMIT,
         items: typing.Optional[typing.Sequence[PurchaseOrderItem]] = OMIT,
         message: typing.Optional[str] = OMIT,
+        project_id: typing.Optional[str] = OMIT,
         valid_for_days: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PurchaseOrderResponseSchema:
@@ -1667,6 +1690,9 @@ class AsyncPurchaseOrdersClient:
 
         message : typing.Optional[str]
             Msg which will be send to counterpart for who the purchase order is issued.
+
+        project_id : typing.Optional[str]
+            Project ID of a purchase order
 
         valid_for_days : typing.Optional[int]
             Number of days for which purchase order is valid
@@ -1711,6 +1737,7 @@ class AsyncPurchaseOrdersClient:
                     object_=items, annotation=typing.Sequence[PurchaseOrderItem], direction="write"
                 ),
                 "message": message,
+                "project_id": project_id,
                 "valid_for_days": valid_for_days,
             },
             headers={
@@ -1751,9 +1778,9 @@ class AsyncPurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1886,9 +1913,9 @@ class AsyncPurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2031,9 +2058,9 @@ class AsyncPurchaseOrdersClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

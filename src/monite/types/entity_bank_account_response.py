@@ -20,7 +20,9 @@ class EntityBankAccountResponse(UniversalBaseModel):
 
     account_holder_name: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The name of the person or business that owns this bank account. Required if the account currency is GBP or USD.
+    The name of the person or business that owns this bank account. Required in the following cases:
+    * the account currency is GBP or USD,
+    * the account currency is EUR and the entity wishes to receive SEPA Credit transfers to this account.
     """
 
     account_number: typing.Optional[str] = pydantic.Field(default=None)
@@ -35,7 +37,9 @@ class EntityBankAccountResponse(UniversalBaseModel):
 
     bic: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The SWIFT/BIC code of the bank.
+    The SWIFT/BIC code of the bank. Can be either 8 or 11 characters long. Monite verifies the BIC length, country code, and whether the structure conforms to ISO 9362.
+    
+    If `bic` is specified, `iban` must also be specified.
     """
 
     country: typing.Optional[AllowedCountries] = pydantic.Field(default=None)
@@ -55,7 +59,7 @@ class EntityBankAccountResponse(UniversalBaseModel):
 
     iban: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The IBAN of the bank account. Required if the account currency is EUR.
+    The IBAN of the bank account, up to 34 characters. Required if the account currency is EUR. Monite verifies the IBAN length, checksum digits, and country-specific format according to ISO 13616.
     """
 
     is_default_for_currency: typing.Optional[bool] = pydantic.Field(default=None)

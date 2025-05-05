@@ -72,6 +72,11 @@ class QuoteResponsePayload(UniversalBaseModel):
     Additional information about counterpart contacts.
     """
 
+    counterpart_external_reference: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The external reference of the counterpart.
+    """
+
     counterpart_id: str = pydantic.Field()
     """
     Unique ID of the counterpart.
@@ -135,6 +140,11 @@ class QuoteResponsePayload(UniversalBaseModel):
     Optional field representing date until which invoice should be paid
     """
 
+    einvoice_file_url: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    E-invoice XML file that was sent to the counterpart via an e-invoicing network. Available only if `is_einvoice` is `true`.
+    """
+
     entity: QuoteResponsePayloadEntity
     entity_address: ReceivableEntityAddressSchema
     entity_bank_account: typing.Optional[ReceivablesRepresentationOfEntityBankAccount] = None
@@ -157,6 +167,11 @@ class QuoteResponsePayload(UniversalBaseModel):
     file_url: typing.Optional[str] = pydantic.Field(default=None)
     """
     The receivable's PDF URL in the counterpart's default language.
+    """
+
+    footer: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Optional text displayed below the line items table in the PDF.
     """
 
     issue_date: typing.Optional[dt.datetime] = pydantic.Field(default=None)
@@ -210,6 +225,11 @@ class QuoteResponsePayload(UniversalBaseModel):
     The subtotal (excluding VAT), in [minor units](https://docs.monite.com/references/currencies#minor-units).
     """
 
+    subtotal_after_vat: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    The subtotal including VAT but without invoice discount, in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    """
+
     tags: typing.Optional[typing.List[TagReadSchema]] = pydantic.Field(default=None)
     """
     The list of tags for this receivable.
@@ -248,6 +268,11 @@ class QuoteResponsePayload(UniversalBaseModel):
     vat_exemption_rationale: typing.Optional[str] = pydantic.Field(default=None)
     """
     The reason for the VAT exemption, if applicable.
+    """
+
+    vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = pydantic.Field(default=None)
+    """
+    Indicates whether the discount is applied to the VAT-inclusive or VAT-exclusive amount.
     """
 
     vat_mode: typing.Optional[VatModeEnum] = pydantic.Field(default=None)

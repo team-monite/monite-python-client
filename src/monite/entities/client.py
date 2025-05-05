@@ -11,6 +11,7 @@ from ..types.order_enum import OrderEnum
 from ..types.entity_cursor_fields import EntityCursorFields
 from ..types.entity_type_enum import EntityTypeEnum
 import datetime as dt
+from ..types.entity_status_enum import EntityStatusEnum
 from ..core.request_options import RequestOptions
 from ..types.entity_pagination_response import EntityPaginationResponse
 from ..core.datetime_utils import serialize_datetime
@@ -20,7 +21,6 @@ from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_acceptable_error import NotAcceptableError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
@@ -34,7 +34,7 @@ from ..types.optional_organization_schema import OptionalOrganizationSchema
 from ..types.optional_individual_schema import OptionalIndividualSchema
 from ..core.jsonable_encoder import jsonable_encoder
 from .. import core
-from ..types.file_schema3 import FileSchema3
+from ..types.file_schema2 import FileSchema2
 from ..errors.not_found_error import NotFoundError
 from ..types.partner_metadata_response import PartnerMetadataResponse
 from ..types.settings_response import SettingsResponse
@@ -47,6 +47,7 @@ from ..types.receivable_edit_flow import ReceivableEditFlow
 from ..types.document_i_ds_settings_request import DocumentIDsSettingsRequest
 from ..types.ocr_auto_tagging_settings_request import OcrAutoTaggingSettingsRequest
 from ..types.accounting_settings import AccountingSettings
+from ..types.document_rendering_settings import DocumentRenderingSettings
 from ..types.get_onboarding_requirements_response import GetOnboardingRequirementsResponse
 from ..core.client_wrapper import AsyncClientWrapper
 from .bank_accounts.client import AsyncBankAccountsClient
@@ -85,6 +86,7 @@ class EntitiesClient:
         email: typing.Optional[str] = None,
         email_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         email_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        status: typing.Optional[EntityStatusEnum] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityPaginationResponse:
         """
@@ -126,6 +128,8 @@ class EntitiesClient:
 
         email_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
+        status : typing.Optional[EntityStatusEnum]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -163,6 +167,7 @@ class EntitiesClient:
                 "email": email,
                 "email__in": email_in,
                 "email__not_in": email_not_in,
+                "status": status,
             },
             request_options=request_options,
         )
@@ -218,9 +223,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -251,6 +256,8 @@ class EntitiesClient:
         organization: typing.Optional[OrganizationSchema] = OMIT,
         individual: typing.Optional[IndividualSchema] = OMIT,
         tax_id: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -281,6 +288,12 @@ class EntitiesClient:
 
         tax_id : typing.Optional[str]
             The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -327,6 +340,8 @@ class EntitiesClient:
                     object_=individual, annotation=IndividualSchema, direction="write"
                 ),
                 "tax_id": tax_id,
+                "registration_number": registration_number,
+                "registration_authority": registration_authority,
                 "type": type,
             },
             headers={
@@ -357,9 +372,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -431,9 +446,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -461,6 +476,8 @@ class EntitiesClient:
         phone: typing.Optional[str] = OMIT,
         website: typing.Optional[str] = OMIT,
         tax_id: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
         organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -484,6 +501,12 @@ class EntitiesClient:
 
         tax_id : typing.Optional[str]
             The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
@@ -521,6 +544,8 @@ class EntitiesClient:
                 "phone": phone,
                 "website": website,
                 "tax_id": tax_id,
+                "registration_number": registration_number,
+                "registration_authority": registration_authority,
                 "organization": convert_and_respect_annotation_metadata(
                     object_=organization, annotation=OptionalOrganizationSchema, direction="write"
                 ),
@@ -553,9 +578,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -632,9 +657,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -663,6 +688,8 @@ class EntitiesClient:
         phone: typing.Optional[str] = OMIT,
         website: typing.Optional[str] = OMIT,
         tax_id: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
         organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -689,6 +716,12 @@ class EntitiesClient:
 
         tax_id : typing.Optional[str]
             The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
@@ -728,6 +761,8 @@ class EntitiesClient:
                 "phone": phone,
                 "website": website,
                 "tax_id": tax_id,
+                "registration_number": registration_number,
+                "registration_authority": registration_authority,
                 "organization": convert_and_respect_annotation_metadata(
                     object_=organization, annotation=OptionalOrganizationSchema, direction="write"
                 ),
@@ -760,9 +795,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -841,9 +876,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -922,9 +957,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -946,7 +981,7 @@ class EntitiesClient:
 
     def upload_logo_by_id(
         self, entity_id: str, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
-    ) -> FileSchema3:
+    ) -> FileSchema2:
         """
         Entity logo can be PNG, JPG, or GIF, up to 10 MB in size. The logo is used, for example, in PDF documents created by this entity.
 
@@ -963,7 +998,7 @@ class EntitiesClient:
 
         Returns
         -------
-        FileSchema3
+        FileSchema2
             Successful Response
 
         Examples
@@ -992,9 +1027,9 @@ class EntitiesClient:
         try:
             if 200 <= _response.status_code < 300:
                 return typing.cast(
-                    FileSchema3,
+                    FileSchema2,
                     parse_obj_as(
-                        type_=FileSchema3,  # type: ignore
+                        type_=FileSchema2,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1011,9 +1046,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1081,9 +1116,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1151,9 +1186,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1233,9 +1268,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1314,9 +1349,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1344,6 +1379,7 @@ class EntitiesClient:
         currency: typing.Optional[CurrencySettingsInput] = OMIT,
         reminder: typing.Optional[RemindersSettings] = OMIT,
         vat_mode: typing.Optional[VatModeEnum] = OMIT,
+        vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = OMIT,
         payment_priority: typing.Optional[PaymentPriorityEnum] = OMIT,
         allow_purchase_order_autolinking: typing.Optional[bool] = OMIT,
         receivable_edit_flow: typing.Optional[ReceivableEditFlow] = OMIT,
@@ -1352,6 +1388,8 @@ class EntitiesClient:
         quote_signature_required: typing.Optional[bool] = OMIT,
         generate_paid_invoice_pdf: typing.Optional[bool] = OMIT,
         accounting: typing.Optional[AccountingSettings] = OMIT,
+        payables_skip_approval_flow: typing.Optional[bool] = OMIT,
+        document_rendering: typing.Optional[DocumentRenderingSettings] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SettingsResponse:
         """
@@ -1371,6 +1409,9 @@ class EntitiesClient:
         vat_mode : typing.Optional[VatModeEnum]
             Defines whether the prices of products in receivables will already include VAT or not.
 
+        vat_inclusive_discount_mode : typing.Optional[VatModeEnum]
+            Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
+
         payment_priority : typing.Optional[PaymentPriorityEnum]
             Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
 
@@ -1388,9 +1429,19 @@ class EntitiesClient:
             Sets the default behavior of whether a signature is required to accept quotes.
 
         generate_paid_invoice_pdf : typing.Optional[bool]
-            If enabled, the paid invoice's PDF will be in a new layout set by the user.
+            This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.
+
+            The PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.
+
+            This field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.
 
         accounting : typing.Optional[AccountingSettings]
+
+        payables_skip_approval_flow : typing.Optional[bool]
+            If enabled, the approval policy will be skipped and the payable will be moved to `waiting_to_be_paid` status.
+
+        document_rendering : typing.Optional[DocumentRenderingSettings]
+            Settings for rendering documents in PDF format.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1425,6 +1476,7 @@ class EntitiesClient:
                     object_=reminder, annotation=RemindersSettings, direction="write"
                 ),
                 "vat_mode": vat_mode,
+                "vat_inclusive_discount_mode": vat_inclusive_discount_mode,
                 "payment_priority": payment_priority,
                 "allow_purchase_order_autolinking": allow_purchase_order_autolinking,
                 "receivable_edit_flow": receivable_edit_flow,
@@ -1440,6 +1492,10 @@ class EntitiesClient:
                 "generate_paid_invoice_pdf": generate_paid_invoice_pdf,
                 "accounting": convert_and_respect_annotation_metadata(
                     object_=accounting, annotation=AccountingSettings, direction="write"
+                ),
+                "payables_skip_approval_flow": payables_skip_approval_flow,
+                "document_rendering": convert_and_respect_annotation_metadata(
+                    object_=document_rendering, annotation=DocumentRenderingSettings, direction="write"
                 ),
             },
             headers={
@@ -1470,9 +1526,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1581,9 +1637,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1647,9 +1703,9 @@ class EntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1696,6 +1752,7 @@ class AsyncEntitiesClient:
         email: typing.Optional[str] = None,
         email_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         email_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        status: typing.Optional[EntityStatusEnum] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityPaginationResponse:
         """
@@ -1736,6 +1793,8 @@ class AsyncEntitiesClient:
         email_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         email_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        status : typing.Optional[EntityStatusEnum]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1782,6 +1841,7 @@ class AsyncEntitiesClient:
                 "email": email,
                 "email__in": email_in,
                 "email__not_in": email_not_in,
+                "status": status,
             },
             request_options=request_options,
         )
@@ -1837,9 +1897,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1870,6 +1930,8 @@ class AsyncEntitiesClient:
         organization: typing.Optional[OrganizationSchema] = OMIT,
         individual: typing.Optional[IndividualSchema] = OMIT,
         tax_id: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -1900,6 +1962,12 @@ class AsyncEntitiesClient:
 
         tax_id : typing.Optional[str]
             The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1954,6 +2022,8 @@ class AsyncEntitiesClient:
                     object_=individual, annotation=IndividualSchema, direction="write"
                 ),
                 "tax_id": tax_id,
+                "registration_number": registration_number,
+                "registration_authority": registration_authority,
                 "type": type,
             },
             headers={
@@ -1984,9 +2054,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2066,9 +2136,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2096,6 +2166,8 @@ class AsyncEntitiesClient:
         phone: typing.Optional[str] = OMIT,
         website: typing.Optional[str] = OMIT,
         tax_id: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
         organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2119,6 +2191,12 @@ class AsyncEntitiesClient:
 
         tax_id : typing.Optional[str]
             The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
@@ -2164,6 +2242,8 @@ class AsyncEntitiesClient:
                 "phone": phone,
                 "website": website,
                 "tax_id": tax_id,
+                "registration_number": registration_number,
+                "registration_authority": registration_authority,
                 "organization": convert_and_respect_annotation_metadata(
                     object_=organization, annotation=OptionalOrganizationSchema, direction="write"
                 ),
@@ -2196,9 +2276,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2285,9 +2365,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2316,6 +2396,8 @@ class AsyncEntitiesClient:
         phone: typing.Optional[str] = OMIT,
         website: typing.Optional[str] = OMIT,
         tax_id: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
         organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2342,6 +2424,12 @@ class AsyncEntitiesClient:
 
         tax_id : typing.Optional[str]
             The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
@@ -2389,6 +2477,8 @@ class AsyncEntitiesClient:
                 "phone": phone,
                 "website": website,
                 "tax_id": tax_id,
+                "registration_number": registration_number,
+                "registration_authority": registration_authority,
                 "organization": convert_and_respect_annotation_metadata(
                     object_=organization, annotation=OptionalOrganizationSchema, direction="write"
                 ),
@@ -2421,9 +2511,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2510,9 +2600,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2599,9 +2689,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2623,7 +2713,7 @@ class AsyncEntitiesClient:
 
     async def upload_logo_by_id(
         self, entity_id: str, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
-    ) -> FileSchema3:
+    ) -> FileSchema2:
         """
         Entity logo can be PNG, JPG, or GIF, up to 10 MB in size. The logo is used, for example, in PDF documents created by this entity.
 
@@ -2640,7 +2730,7 @@ class AsyncEntitiesClient:
 
         Returns
         -------
-        FileSchema3
+        FileSchema2
             Successful Response
 
         Examples
@@ -2677,9 +2767,9 @@ class AsyncEntitiesClient:
         try:
             if 200 <= _response.status_code < 300:
                 return typing.cast(
-                    FileSchema3,
+                    FileSchema2,
                     parse_obj_as(
-                        type_=FileSchema3,  # type: ignore
+                        type_=FileSchema2,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2696,9 +2786,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2776,9 +2866,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2854,9 +2944,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -2944,9 +3034,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3033,9 +3123,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3063,6 +3153,7 @@ class AsyncEntitiesClient:
         currency: typing.Optional[CurrencySettingsInput] = OMIT,
         reminder: typing.Optional[RemindersSettings] = OMIT,
         vat_mode: typing.Optional[VatModeEnum] = OMIT,
+        vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = OMIT,
         payment_priority: typing.Optional[PaymentPriorityEnum] = OMIT,
         allow_purchase_order_autolinking: typing.Optional[bool] = OMIT,
         receivable_edit_flow: typing.Optional[ReceivableEditFlow] = OMIT,
@@ -3071,6 +3162,8 @@ class AsyncEntitiesClient:
         quote_signature_required: typing.Optional[bool] = OMIT,
         generate_paid_invoice_pdf: typing.Optional[bool] = OMIT,
         accounting: typing.Optional[AccountingSettings] = OMIT,
+        payables_skip_approval_flow: typing.Optional[bool] = OMIT,
+        document_rendering: typing.Optional[DocumentRenderingSettings] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SettingsResponse:
         """
@@ -3090,6 +3183,9 @@ class AsyncEntitiesClient:
         vat_mode : typing.Optional[VatModeEnum]
             Defines whether the prices of products in receivables will already include VAT or not.
 
+        vat_inclusive_discount_mode : typing.Optional[VatModeEnum]
+            Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
+
         payment_priority : typing.Optional[PaymentPriorityEnum]
             Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
 
@@ -3107,9 +3203,19 @@ class AsyncEntitiesClient:
             Sets the default behavior of whether a signature is required to accept quotes.
 
         generate_paid_invoice_pdf : typing.Optional[bool]
-            If enabled, the paid invoice's PDF will be in a new layout set by the user.
+            This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.
+
+            The PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.
+
+            This field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.
 
         accounting : typing.Optional[AccountingSettings]
+
+        payables_skip_approval_flow : typing.Optional[bool]
+            If enabled, the approval policy will be skipped and the payable will be moved to `waiting_to_be_paid` status.
+
+        document_rendering : typing.Optional[DocumentRenderingSettings]
+            Settings for rendering documents in PDF format.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3152,6 +3258,7 @@ class AsyncEntitiesClient:
                     object_=reminder, annotation=RemindersSettings, direction="write"
                 ),
                 "vat_mode": vat_mode,
+                "vat_inclusive_discount_mode": vat_inclusive_discount_mode,
                 "payment_priority": payment_priority,
                 "allow_purchase_order_autolinking": allow_purchase_order_autolinking,
                 "receivable_edit_flow": receivable_edit_flow,
@@ -3167,6 +3274,10 @@ class AsyncEntitiesClient:
                 "generate_paid_invoice_pdf": generate_paid_invoice_pdf,
                 "accounting": convert_and_respect_annotation_metadata(
                     object_=accounting, annotation=AccountingSettings, direction="write"
+                ),
+                "payables_skip_approval_flow": payables_skip_approval_flow,
+                "document_rendering": convert_and_respect_annotation_metadata(
+                    object_=document_rendering, annotation=DocumentRenderingSettings, direction="write"
                 ),
             },
             headers={
@@ -3197,9 +3308,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3316,9 +3427,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -3390,9 +3501,9 @@ class AsyncEntitiesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

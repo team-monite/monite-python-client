@@ -6,7 +6,6 @@ from ...core.request_options import RequestOptions
 from ...types.persons_response import PersonsResponse
 from ...core.pydantic_utilities import parse_obj_as
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
-from ...types.http_validation_error import HttpValidationError
 from ...errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
@@ -70,9 +69,9 @@ class PersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -95,29 +94,29 @@ class PersonsClient:
     def create(
         self,
         *,
+        email: str,
         first_name: str,
         last_name: str,
-        email: str,
         relationship: PersonRelationshipRequest,
         address: typing.Optional[PersonAddressRequest] = OMIT,
-        date_of_birth: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        id_number: typing.Optional[str] = OMIT,
-        ssn_last4: typing.Optional[str] = OMIT,
         citizenship: typing.Optional[AllowedCountries] = OMIT,
+        date_of_birth: typing.Optional[str] = OMIT,
+        id_number: typing.Optional[str] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        ssn_last4: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PersonResponse:
         """
         Parameters
         ----------
+        email : str
+            The person's email address
+
         first_name : str
             The person's first name
 
         last_name : str
             The person's last name
-
-        email : str
-            The person's email address
 
         relationship : PersonRelationshipRequest
             Describes the person's relationship to the entity
@@ -125,20 +124,20 @@ class PersonsClient:
         address : typing.Optional[PersonAddressRequest]
             The person's address
 
+        citizenship : typing.Optional[AllowedCountries]
+            Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
+
         date_of_birth : typing.Optional[str]
             The person's date of birth
-
-        phone : typing.Optional[str]
-            The person's phone number
 
         id_number : typing.Optional[str]
             The person's ID number, as appropriate for their country
 
+        phone : typing.Optional[str]
+            The person's phone number
+
         ssn_last4 : typing.Optional[str]
             The last four digits of the person's Social Security number
-
-        citizenship : typing.Optional[AllowedCountries]
-            Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -158,9 +157,9 @@ class PersonsClient:
             token="YOUR_TOKEN",
         )
         client.entities.persons.create(
+            email="email",
             first_name="first_name",
             last_name="last_name",
-            email="email",
             relationship=PersonRelationshipRequest(),
         )
         """
@@ -171,17 +170,17 @@ class PersonsClient:
                 "address": convert_and_respect_annotation_metadata(
                     object_=address, annotation=PersonAddressRequest, direction="write"
                 ),
+                "citizenship": citizenship,
                 "date_of_birth": date_of_birth,
-                "first_name": first_name,
-                "last_name": last_name,
                 "email": email,
+                "first_name": first_name,
+                "id_number": id_number,
+                "last_name": last_name,
                 "phone": phone,
                 "relationship": convert_and_respect_annotation_metadata(
                     object_=relationship, annotation=PersonRelationshipRequest, direction="write"
                 ),
-                "id_number": id_number,
                 "ssn_last_4": ssn_last4,
-                "citizenship": citizenship,
             },
             headers={
                 "content-type": "application/json",
@@ -211,9 +210,9 @@ class PersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -287,9 +286,9 @@ class PersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -366,9 +365,9 @@ class PersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -393,15 +392,15 @@ class PersonsClient:
         person_id: str,
         *,
         address: typing.Optional[OptionalPersonAddressRequest] = OMIT,
+        citizenship: typing.Optional[AllowedCountries] = OMIT,
         date_of_birth: typing.Optional[str] = OMIT,
-        first_name: typing.Optional[str] = OMIT,
-        last_name: typing.Optional[str] = OMIT,
         email: typing.Optional[str] = OMIT,
+        first_name: typing.Optional[str] = OMIT,
+        id_number: typing.Optional[str] = OMIT,
+        last_name: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
         relationship: typing.Optional[OptionalPersonRelationship] = OMIT,
-        id_number: typing.Optional[str] = OMIT,
         ssn_last4: typing.Optional[str] = OMIT,
-        citizenship: typing.Optional[AllowedCountries] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PersonResponse:
         """
@@ -412,17 +411,23 @@ class PersonsClient:
         address : typing.Optional[OptionalPersonAddressRequest]
             The person's address
 
+        citizenship : typing.Optional[AllowedCountries]
+            Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
+
         date_of_birth : typing.Optional[str]
             The person's date of birth
+
+        email : typing.Optional[str]
+            The person's email address
 
         first_name : typing.Optional[str]
             The person's first name
 
+        id_number : typing.Optional[str]
+            The person's ID number, as appropriate for their country
+
         last_name : typing.Optional[str]
             The person's last name
-
-        email : typing.Optional[str]
-            The person's email address
 
         phone : typing.Optional[str]
             The person's phone number
@@ -430,14 +435,8 @@ class PersonsClient:
         relationship : typing.Optional[OptionalPersonRelationship]
             Describes the person's relationship to the entity
 
-        id_number : typing.Optional[str]
-            The person's ID number, as appropriate for their country
-
         ssn_last4 : typing.Optional[str]
             The last four digits of the person's Social Security number
-
-        citizenship : typing.Optional[AllowedCountries]
-            Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -467,17 +466,17 @@ class PersonsClient:
                 "address": convert_and_respect_annotation_metadata(
                     object_=address, annotation=OptionalPersonAddressRequest, direction="write"
                 ),
+                "citizenship": citizenship,
                 "date_of_birth": date_of_birth,
-                "first_name": first_name,
-                "last_name": last_name,
                 "email": email,
+                "first_name": first_name,
+                "id_number": id_number,
+                "last_name": last_name,
                 "phone": phone,
                 "relationship": convert_and_respect_annotation_metadata(
                     object_=relationship, annotation=OptionalPersonRelationship, direction="write"
                 ),
-                "id_number": id_number,
                 "ssn_last_4": ssn_last4,
-                "citizenship": citizenship,
             },
             headers={
                 "content-type": "application/json",
@@ -517,9 +516,9 @@ class PersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -605,9 +604,9 @@ class PersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -680,9 +679,9 @@ class AsyncPersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -705,29 +704,29 @@ class AsyncPersonsClient:
     async def create(
         self,
         *,
+        email: str,
         first_name: str,
         last_name: str,
-        email: str,
         relationship: PersonRelationshipRequest,
         address: typing.Optional[PersonAddressRequest] = OMIT,
-        date_of_birth: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        id_number: typing.Optional[str] = OMIT,
-        ssn_last4: typing.Optional[str] = OMIT,
         citizenship: typing.Optional[AllowedCountries] = OMIT,
+        date_of_birth: typing.Optional[str] = OMIT,
+        id_number: typing.Optional[str] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        ssn_last4: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PersonResponse:
         """
         Parameters
         ----------
+        email : str
+            The person's email address
+
         first_name : str
             The person's first name
 
         last_name : str
             The person's last name
-
-        email : str
-            The person's email address
 
         relationship : PersonRelationshipRequest
             Describes the person's relationship to the entity
@@ -735,20 +734,20 @@ class AsyncPersonsClient:
         address : typing.Optional[PersonAddressRequest]
             The person's address
 
+        citizenship : typing.Optional[AllowedCountries]
+            Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
+
         date_of_birth : typing.Optional[str]
             The person's date of birth
-
-        phone : typing.Optional[str]
-            The person's phone number
 
         id_number : typing.Optional[str]
             The person's ID number, as appropriate for their country
 
+        phone : typing.Optional[str]
+            The person's phone number
+
         ssn_last4 : typing.Optional[str]
             The last four digits of the person's Social Security number
-
-        citizenship : typing.Optional[AllowedCountries]
-            Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -773,9 +772,9 @@ class AsyncPersonsClient:
 
         async def main() -> None:
             await client.entities.persons.create(
+                email="email",
                 first_name="first_name",
                 last_name="last_name",
-                email="email",
                 relationship=PersonRelationshipRequest(),
             )
 
@@ -789,17 +788,17 @@ class AsyncPersonsClient:
                 "address": convert_and_respect_annotation_metadata(
                     object_=address, annotation=PersonAddressRequest, direction="write"
                 ),
+                "citizenship": citizenship,
                 "date_of_birth": date_of_birth,
-                "first_name": first_name,
-                "last_name": last_name,
                 "email": email,
+                "first_name": first_name,
+                "id_number": id_number,
+                "last_name": last_name,
                 "phone": phone,
                 "relationship": convert_and_respect_annotation_metadata(
                     object_=relationship, annotation=PersonRelationshipRequest, direction="write"
                 ),
-                "id_number": id_number,
                 "ssn_last_4": ssn_last4,
-                "citizenship": citizenship,
             },
             headers={
                 "content-type": "application/json",
@@ -829,9 +828,9 @@ class AsyncPersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -915,9 +914,9 @@ class AsyncPersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1002,9 +1001,9 @@ class AsyncPersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1029,15 +1028,15 @@ class AsyncPersonsClient:
         person_id: str,
         *,
         address: typing.Optional[OptionalPersonAddressRequest] = OMIT,
+        citizenship: typing.Optional[AllowedCountries] = OMIT,
         date_of_birth: typing.Optional[str] = OMIT,
-        first_name: typing.Optional[str] = OMIT,
-        last_name: typing.Optional[str] = OMIT,
         email: typing.Optional[str] = OMIT,
+        first_name: typing.Optional[str] = OMIT,
+        id_number: typing.Optional[str] = OMIT,
+        last_name: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
         relationship: typing.Optional[OptionalPersonRelationship] = OMIT,
-        id_number: typing.Optional[str] = OMIT,
         ssn_last4: typing.Optional[str] = OMIT,
-        citizenship: typing.Optional[AllowedCountries] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PersonResponse:
         """
@@ -1048,17 +1047,23 @@ class AsyncPersonsClient:
         address : typing.Optional[OptionalPersonAddressRequest]
             The person's address
 
+        citizenship : typing.Optional[AllowedCountries]
+            Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
+
         date_of_birth : typing.Optional[str]
             The person's date of birth
+
+        email : typing.Optional[str]
+            The person's email address
 
         first_name : typing.Optional[str]
             The person's first name
 
+        id_number : typing.Optional[str]
+            The person's ID number, as appropriate for their country
+
         last_name : typing.Optional[str]
             The person's last name
-
-        email : typing.Optional[str]
-            The person's email address
 
         phone : typing.Optional[str]
             The person's phone number
@@ -1066,14 +1071,8 @@ class AsyncPersonsClient:
         relationship : typing.Optional[OptionalPersonRelationship]
             Describes the person's relationship to the entity
 
-        id_number : typing.Optional[str]
-            The person's ID number, as appropriate for their country
-
         ssn_last4 : typing.Optional[str]
             The last four digits of the person's Social Security number
-
-        citizenship : typing.Optional[AllowedCountries]
-            Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1111,17 +1110,17 @@ class AsyncPersonsClient:
                 "address": convert_and_respect_annotation_metadata(
                     object_=address, annotation=OptionalPersonAddressRequest, direction="write"
                 ),
+                "citizenship": citizenship,
                 "date_of_birth": date_of_birth,
-                "first_name": first_name,
-                "last_name": last_name,
                 "email": email,
+                "first_name": first_name,
+                "id_number": id_number,
+                "last_name": last_name,
                 "phone": phone,
                 "relationship": convert_and_respect_annotation_metadata(
                     object_=relationship, annotation=OptionalPersonRelationship, direction="write"
                 ),
-                "id_number": id_number,
                 "ssn_last_4": ssn_last4,
-                "citizenship": citizenship,
             },
             headers={
                 "content-type": "application/json",
@@ -1161,9 +1160,9 @@ class AsyncPersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1257,9 +1256,9 @@ class AsyncPersonsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

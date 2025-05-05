@@ -15,7 +15,6 @@ from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_acceptable_error import NotAcceptableError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
@@ -166,9 +165,9 @@ class DataExportsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -220,7 +219,7 @@ class DataExportsClient:
 
         Examples
         --------
-        from monite import ExportObjectSchema_Receivable, Monite
+        from monite import ExportObjectSchema_Payable, Monite
 
         client = Monite(
             monite_version="YOUR_MONITE_VERSION",
@@ -232,7 +231,7 @@ class DataExportsClient:
             date_to="date_to",
             format="csv",
             objects=[
-                ExportObjectSchema_Receivable(
+                ExportObjectSchema_Payable(
                     statuses=["draft"],
                 )
             ],
@@ -317,9 +316,9 @@ class DataExportsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -381,9 +380,9 @@ class DataExportsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -489,9 +488,9 @@ class DataExportsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -651,9 +650,9 @@ class AsyncDataExportsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -707,7 +706,7 @@ class AsyncDataExportsClient:
         --------
         import asyncio
 
-        from monite import AsyncMonite, ExportObjectSchema_Receivable
+        from monite import AsyncMonite, ExportObjectSchema_Payable
 
         client = AsyncMonite(
             monite_version="YOUR_MONITE_VERSION",
@@ -722,7 +721,7 @@ class AsyncDataExportsClient:
                 date_to="date_to",
                 format="csv",
                 objects=[
-                    ExportObjectSchema_Receivable(
+                    ExportObjectSchema_Payable(
                         statuses=["draft"],
                     )
                 ],
@@ -810,9 +809,9 @@ class AsyncDataExportsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -882,9 +881,9 @@ class AsyncDataExportsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -998,9 +997,9 @@ class AsyncDataExportsClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

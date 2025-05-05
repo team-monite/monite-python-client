@@ -50,6 +50,11 @@ class CounterpartIndividualRootResponse(UniversalBaseModel):
     Entity user ID of counterpart creator.
     """
 
+    external_reference: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    A user-defined identifier of the counterpart. For example, the customer or vendor reference number in the entity's CRM system. If specified, it will be displayed in PDF invoices and other accounts receivable documents created by the entity.
+    """
+
     individual: CounterpartIndividualResponse
     language: typing.Optional[LanguageCodeEnum] = pydantic.Field(default=None)
     """

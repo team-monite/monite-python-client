@@ -5,7 +5,9 @@ import typing
 ReceivablesStatusEnum = typing.Union[
     typing.Literal[
         "draft",
+        "issuing",
         "issued",
+        "failed",
         "accepted",
         "expired",
         "declined",
@@ -15,7 +17,6 @@ ReceivablesStatusEnum = typing.Union[
         "overdue",
         "uncollectible",
         "canceled",
-        "deleted",
     ],
     typing.Any,
 ]

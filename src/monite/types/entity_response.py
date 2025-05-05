@@ -6,7 +6,7 @@ import typing
 import datetime as dt
 from .entity_address_response_schema import EntityAddressResponseSchema
 from .individual_response_schema import IndividualResponseSchema
-from .file_schema3 import FileSchema3
+from .file_schema2 import FileSchema2
 from .entity_status_enum import EntityStatusEnum
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
@@ -25,8 +25,10 @@ class EntityResponse_Individual(UniversalBaseModel):
     address: EntityAddressResponseSchema
     email: typing.Optional[str] = None
     individual: IndividualResponseSchema
-    logo: typing.Optional[FileSchema3] = None
+    logo: typing.Optional[FileSchema2] = None
     phone: typing.Optional[str] = None
+    registration_authority: typing.Optional[str] = None
+    registration_number: typing.Optional[str] = None
     status: EntityStatusEnum
     tax_id: typing.Optional[str] = None
     website: typing.Optional[str] = None
@@ -52,9 +54,11 @@ class EntityResponse_Organization(UniversalBaseModel):
     updated_at: dt.datetime
     address: EntityAddressResponseSchema
     email: typing.Optional[str] = None
-    logo: typing.Optional[FileSchema3] = None
+    logo: typing.Optional[FileSchema2] = None
     organization: OrganizationResponseSchema
     phone: typing.Optional[str] = None
+    registration_authority: typing.Optional[str] = None
+    registration_number: typing.Optional[str] = None
     status: EntityStatusEnum
     tax_id: typing.Optional[str] = None
     website: typing.Optional[str] = None

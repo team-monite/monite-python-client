@@ -2,13 +2,18 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .discount import Discount
 import pydantic
+from .discount import Discount
 from .line_item_product_create import LineItemProductCreate
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class LineItem(UniversalBaseModel):
+    accounting_tax_rate_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ID of the tax rate in the connected accounting system, to be used when pushing the invoice to that accounting system. Use `GET /accounting_tax_rates` to get these IDs. If omitted, Monite will attempt to match the tax rates based on their numeric value.
+    """
+
     discount: typing.Optional[Discount] = pydantic.Field(default=None)
     """
     The discount for a product.

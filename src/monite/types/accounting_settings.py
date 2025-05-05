@@ -4,6 +4,7 @@ from ..core.pydantic_utilities import UniversalBaseModel
 import typing
 from .default_ledger_account_i_ds import DefaultLedgerAccountIDs
 import pydantic
+from .default_accounting_tax_i_ds import DefaultAccountingTaxIDs
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -11,6 +12,11 @@ class AccountingSettings(UniversalBaseModel):
     ledger_account_ids: typing.Optional[DefaultLedgerAccountIDs] = pydantic.Field(default=None)
     """
     Default ledger accounts that will be used for various objects pushed into an accounting system. Use `GET /ledger_accounts` to get the IDs of these ledger accounts.
+    """
+
+    tax_ids: typing.Optional[DefaultAccountingTaxIDs] = pydantic.Field(default=None)
+    """
+    Default accounting tax IDs that will be used for various objects pushed into an accounting system. Use `GET /accounting_tax_rates` to get the IDs of these taxes.
     """
 
     if IS_PYDANTIC_V2:

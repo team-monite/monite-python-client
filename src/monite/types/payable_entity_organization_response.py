@@ -5,7 +5,7 @@ import pydantic
 import datetime as dt
 from .payable_entity_address_schema import PayableEntityAddressSchema
 import typing
-from .file_schema4 import FileSchema4
+from .file_schema3 import FileSchema3
 from .payable_organization_schema import PayableOrganizationSchema
 from .status_enum import StatusEnum
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
@@ -37,7 +37,7 @@ class PayableEntityOrganizationResponse(UniversalBaseModel):
     An official email address of the entity
     """
 
-    logo: typing.Optional[FileSchema4] = pydantic.Field(default=None)
+    logo: typing.Optional[FileSchema3] = pydantic.Field(default=None)
     """
     A logo image of the entity
     """

@@ -8,6 +8,7 @@ import pydantic
 
 class DocumentTypePrefix(UniversalBaseModel):
     credit_note: typing.Optional[str] = None
+    delivery_note: typing.Optional[str] = None
     invoice: typing.Optional[str] = None
     purchase_order: typing.Optional[str] = None
     quote: typing.Optional[str] = None

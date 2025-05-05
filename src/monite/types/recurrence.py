@@ -3,6 +3,7 @@
 from ..core.pydantic_utilities import UniversalBaseModel
 import datetime as dt
 import pydantic
+from .automation_level import AutomationLevel
 import typing
 from .day_of_month import DayOfMonth
 from .recurrence_iteration import RecurrenceIteration
@@ -21,6 +22,18 @@ class Recurrence(UniversalBaseModel):
     updated_at: dt.datetime = pydantic.Field()
     """
     Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard.
+    """
+
+    automation_level: AutomationLevel = pydantic.Field()
+    """
+    Controls how invoices are processed when generated:
+    - "draft": Creates invoices in draft status, requiring manual review, issuing, and sending
+    - "issue": Automatically issues invoices but requires manual sending
+    - "issue_and_send": Fully automates the process (creates, issues, and sends invoices)
+    
+    Default: "issue" (or "issue_and_send" if subject_text and body_text are provided)
+    
+    Note: When using "issue_and_send", both subject_text and body_text must be provided.
     """
 
     body_text: typing.Optional[str] = None

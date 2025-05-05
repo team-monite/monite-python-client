@@ -8,7 +8,7 @@ from .counterpart_raw_data import CounterpartRawData
 from .payable_credit_note_data import PayableCreditNoteData
 from .currency_enum import CurrencyEnum
 from .currency_exchange_schema2 import CurrencyExchangeSchema2
-from .file_schema2 import FileSchema2
+from .file_schema import FileSchema
 from .ocr_status_enum import OcrStatusEnum
 from .payable_response_schema_other_extracted_data import PayableResponseSchemaOtherExtractedData
 from .payable_origin_enum import PayableOriginEnum
@@ -131,7 +131,7 @@ class PayableResponseSchema(UniversalBaseModel):
     The ID of the entity to which the payable was issued.
     """
 
-    file: typing.Optional[FileSchema2] = pydantic.Field(default=None)
+    file: typing.Optional[FileSchema] = pydantic.Field(default=None)
     """
     The original file from which this payable was created.
     """

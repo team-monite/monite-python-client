@@ -15,7 +15,6 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.conflict_error import ConflictError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.http_validation_error import HttpValidationError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
@@ -27,8 +26,8 @@ from ..errors.bad_request_error import BadRequestError
 from ..core.jsonable_encoder import jsonable_encoder
 from ..errors.not_found_error import NotFoundError
 from .types.approval_policy_update_script_item import ApprovalPolicyUpdateScriptItem
-from .types.approval_policy_update_trigger import ApprovalPolicyUpdateTrigger
 from ..types.approval_policy_status import ApprovalPolicyStatus
+from .types.approval_policy_update_trigger import ApprovalPolicyUpdateTrigger
 from ..core.client_wrapper import AsyncClientWrapper
 from .processes.client import AsyncProcessesClient
 
@@ -78,16 +77,18 @@ class ApprovalPoliciesClient:
         process_id : typing.Optional[str]
 
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[ApprovalPolicyCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -197,9 +198,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -223,10 +224,10 @@ class ApprovalPoliciesClient:
         self,
         *,
         name: str,
-        description: str,
         script: typing.Sequence[ApprovalPolicyCreateScriptItem],
-        starts_at: typing.Optional[dt.datetime] = OMIT,
+        description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
+        starts_at: typing.Optional[dt.datetime] = OMIT,
         trigger: typing.Optional[ApprovalPolicyCreateTrigger] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ApprovalPolicyResource:
@@ -238,17 +239,17 @@ class ApprovalPoliciesClient:
         name : str
             The name of the approval policy.
 
-        description : str
-            A brief description of the approval policy.
-
         script : typing.Sequence[ApprovalPolicyCreateScriptItem]
             A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
 
-        starts_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
+        description : typing.Optional[str]
+            A brief description of the approval policy.
 
         ends_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
+
+        starts_at : typing.Optional[dt.datetime]
+            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
 
         trigger : typing.Optional[ApprovalPolicyCreateTrigger]
             A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.
@@ -272,7 +273,6 @@ class ApprovalPoliciesClient:
         )
         client.approval_policies.create(
             name="name",
-            description="description",
             script=[True],
         )
         """
@@ -280,13 +280,13 @@ class ApprovalPoliciesClient:
             "approval_policies",
             method="POST",
             json={
-                "starts_at": starts_at,
+                "description": description,
                 "ends_at": ends_at,
                 "name": name,
-                "description": description,
                 "script": convert_and_respect_annotation_metadata(
                     object_=script, annotation=typing.Sequence[ApprovalPolicyCreateScriptItem], direction="write"
                 ),
+                "starts_at": starts_at,
                 "trigger": convert_and_respect_annotation_metadata(
                     object_=trigger, annotation=ApprovalPolicyCreateTrigger, direction="write"
                 ),
@@ -339,9 +339,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -439,9 +439,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -530,9 +530,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -556,13 +556,13 @@ class ApprovalPoliciesClient:
         self,
         approval_policy_id: str,
         *,
-        starts_at: typing.Optional[dt.datetime] = OMIT,
+        description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
-        description: typing.Optional[str] = OMIT,
         script: typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]] = OMIT,
-        trigger: typing.Optional[ApprovalPolicyUpdateTrigger] = OMIT,
+        starts_at: typing.Optional[dt.datetime] = OMIT,
         status: typing.Optional[ApprovalPolicyStatus] = OMIT,
+        trigger: typing.Optional[ApprovalPolicyUpdateTrigger] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ApprovalPolicyResource:
         """
@@ -572,8 +572,8 @@ class ApprovalPoliciesClient:
         ----------
         approval_policy_id : str
 
-        starts_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
+        description : typing.Optional[str]
+            A brief description of the approval policy.
 
         ends_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
@@ -581,17 +581,17 @@ class ApprovalPoliciesClient:
         name : typing.Optional[str]
             The name of the approval policy.
 
-        description : typing.Optional[str]
-            A brief description of the approval policy.
-
         script : typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]]
             A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
 
-        trigger : typing.Optional[ApprovalPolicyUpdateTrigger]
-            A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.
+        starts_at : typing.Optional[dt.datetime]
+            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
 
         status : typing.Optional[ApprovalPolicyStatus]
             A string that represents the current status of the approval policy.
+
+        trigger : typing.Optional[ApprovalPolicyUpdateTrigger]
+            A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -618,17 +618,17 @@ class ApprovalPoliciesClient:
             f"approval_policies/{jsonable_encoder(approval_policy_id)}",
             method="PATCH",
             json={
-                "starts_at": starts_at,
+                "description": description,
                 "ends_at": ends_at,
                 "name": name,
-                "description": description,
                 "script": convert_and_respect_annotation_metadata(
                     object_=script, annotation=typing.Sequence[ApprovalPolicyUpdateScriptItem], direction="write"
                 ),
+                "starts_at": starts_at,
+                "status": status,
                 "trigger": convert_and_respect_annotation_metadata(
                     object_=trigger, annotation=ApprovalPolicyUpdateTrigger, direction="write"
                 ),
-                "status": status,
             },
             headers={
                 "content-type": "application/json",
@@ -688,9 +688,9 @@ class ApprovalPoliciesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -753,16 +753,18 @@ class AsyncApprovalPoliciesClient:
         process_id : typing.Optional[str]
 
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[ApprovalPolicyCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -880,9 +882,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -906,10 +908,10 @@ class AsyncApprovalPoliciesClient:
         self,
         *,
         name: str,
-        description: str,
         script: typing.Sequence[ApprovalPolicyCreateScriptItem],
-        starts_at: typing.Optional[dt.datetime] = OMIT,
+        description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
+        starts_at: typing.Optional[dt.datetime] = OMIT,
         trigger: typing.Optional[ApprovalPolicyCreateTrigger] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ApprovalPolicyResource:
@@ -921,17 +923,17 @@ class AsyncApprovalPoliciesClient:
         name : str
             The name of the approval policy.
 
-        description : str
-            A brief description of the approval policy.
-
         script : typing.Sequence[ApprovalPolicyCreateScriptItem]
             A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
 
-        starts_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
+        description : typing.Optional[str]
+            A brief description of the approval policy.
 
         ends_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
+
+        starts_at : typing.Optional[dt.datetime]
+            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
 
         trigger : typing.Optional[ApprovalPolicyCreateTrigger]
             A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.
@@ -960,7 +962,6 @@ class AsyncApprovalPoliciesClient:
         async def main() -> None:
             await client.approval_policies.create(
                 name="name",
-                description="description",
                 script=[True],
             )
 
@@ -971,13 +972,13 @@ class AsyncApprovalPoliciesClient:
             "approval_policies",
             method="POST",
             json={
-                "starts_at": starts_at,
+                "description": description,
                 "ends_at": ends_at,
                 "name": name,
-                "description": description,
                 "script": convert_and_respect_annotation_metadata(
                     object_=script, annotation=typing.Sequence[ApprovalPolicyCreateScriptItem], direction="write"
                 ),
+                "starts_at": starts_at,
                 "trigger": convert_and_respect_annotation_metadata(
                     object_=trigger, annotation=ApprovalPolicyCreateTrigger, direction="write"
                 ),
@@ -1030,9 +1031,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1138,9 +1139,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1239,9 +1240,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )
@@ -1265,13 +1266,13 @@ class AsyncApprovalPoliciesClient:
         self,
         approval_policy_id: str,
         *,
-        starts_at: typing.Optional[dt.datetime] = OMIT,
+        description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
-        description: typing.Optional[str] = OMIT,
         script: typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]] = OMIT,
-        trigger: typing.Optional[ApprovalPolicyUpdateTrigger] = OMIT,
+        starts_at: typing.Optional[dt.datetime] = OMIT,
         status: typing.Optional[ApprovalPolicyStatus] = OMIT,
+        trigger: typing.Optional[ApprovalPolicyUpdateTrigger] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ApprovalPolicyResource:
         """
@@ -1281,8 +1282,8 @@ class AsyncApprovalPoliciesClient:
         ----------
         approval_policy_id : str
 
-        starts_at : typing.Optional[dt.datetime]
-            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
+        description : typing.Optional[str]
+            A brief description of the approval policy.
 
         ends_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
@@ -1290,17 +1291,17 @@ class AsyncApprovalPoliciesClient:
         name : typing.Optional[str]
             The name of the approval policy.
 
-        description : typing.Optional[str]
-            A brief description of the approval policy.
-
         script : typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]]
             A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
 
-        trigger : typing.Optional[ApprovalPolicyUpdateTrigger]
-            A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.
+        starts_at : typing.Optional[dt.datetime]
+            The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
 
         status : typing.Optional[ApprovalPolicyStatus]
             A string that represents the current status of the approval policy.
+
+        trigger : typing.Optional[ApprovalPolicyUpdateTrigger]
+            A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1335,17 +1336,17 @@ class AsyncApprovalPoliciesClient:
             f"approval_policies/{jsonable_encoder(approval_policy_id)}",
             method="PATCH",
             json={
-                "starts_at": starts_at,
+                "description": description,
                 "ends_at": ends_at,
                 "name": name,
-                "description": description,
                 "script": convert_and_respect_annotation_metadata(
                     object_=script, annotation=typing.Sequence[ApprovalPolicyUpdateScriptItem], direction="write"
                 ),
+                "starts_at": starts_at,
+                "status": status,
                 "trigger": convert_and_respect_annotation_metadata(
                     object_=trigger, annotation=ApprovalPolicyUpdateTrigger, direction="write"
                 ),
-                "status": status,
             },
             headers={
                 "content-type": "application/json",
@@ -1405,9 +1406,9 @@ class AsyncApprovalPoliciesClient:
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     typing.cast(
-                        HttpValidationError,
+                        typing.Optional[typing.Any],
                         parse_obj_as(
-                            type_=HttpValidationError,  # type: ignore
+                            type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
                     )

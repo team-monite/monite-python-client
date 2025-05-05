@@ -3,6 +3,7 @@
 from ..core.pydantic_utilities import UniversalBaseModel
 import datetime as dt
 import typing
+from .business_info_schema import BusinessInfoSchema
 from .error_schema import ErrorSchema
 from .connection_status import ConnectionStatus
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
@@ -13,6 +14,7 @@ class AccountingConnectionResponse(UniversalBaseModel):
     id: str
     created_at: dt.datetime
     updated_at: dt.datetime
+    business_info: typing.Optional[BusinessInfoSchema] = None
     connection_url: str
     errors: typing.Optional[typing.List[ErrorSchema]] = None
     last_pull: typing.Optional[dt.datetime] = None
