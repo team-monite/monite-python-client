@@ -24,10 +24,10 @@ class BaseClientWrapper:
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "monite/0.2.0",
+            "User-Agent": "monite/0.5.1",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "monite",
-            "X-Fern-SDK-Version": "0.2.0",
+            "X-Fern-SDK-Version": "0.5.1",
         }
         headers["x-monite-version"] = self._monite_version
         if self._monite_entity_id is not None:
