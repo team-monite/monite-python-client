@@ -2,4 +2,6 @@
 
 import typing
 
-WcInvoiceStatus = typing.Union[typing.Literal["NEW", "FUNDED", "PAID", "LATE", "REJECTED", "DEFAULTED"], typing.Any]
+WcInvoiceStatus = typing.Union[
+    typing.Literal["DRAFT", "NEW", "FUNDED", "PAID", "LATE", "REJECTED", "DEFAULTED"], typing.Any
+]

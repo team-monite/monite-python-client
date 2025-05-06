@@ -2,15 +2,4 @@
 
 import typing
 
-DocumentTypeEnum = typing.Union[
-    typing.Literal[
-        "quote",
-        "invoice",
-        "credit_note",
-        "discount_reminder",
-        "final_reminder",
-        "payables_purchase_order",
-        "overdue_reminder",
-    ],
-    typing.Any,
-]
+DocumentTypeEnum = typing.Union[typing.Literal["receivable", "delivery_note", "purchase_order", "payable"], typing.Any]

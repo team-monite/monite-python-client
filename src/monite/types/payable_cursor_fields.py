@@ -2,4 +2,4 @@
 
 import typing
 
-PayableCursorFields = typing.Union[typing.Literal["id", "created_at"], typing.Any]
+PayableCursorFields = typing.Union[typing.Literal["id", "created_at", "issued_at"], typing.Any]

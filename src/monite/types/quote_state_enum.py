@@ -2,6 +2,4 @@
 
 import typing
 
-QuoteStateEnum = typing.Union[
-    typing.Literal["draft", "issued", "accepted", "expired", "declined", "deleted"], typing.Any
-]
+QuoteStateEnum = typing.Union[typing.Literal["draft", "issued", "accepted", "expired", "declined"], typing.Any]
