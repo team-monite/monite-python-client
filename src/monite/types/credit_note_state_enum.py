@@ -2,4 +2,4 @@
 
 import typing
 
-CreditNoteStateEnum = typing.Union[typing.Literal["draft", "issued", "deleted"], typing.Any]
+CreditNoteStateEnum = typing.Union[typing.Literal["draft", "issuing", "issued", "failed"], typing.Any]

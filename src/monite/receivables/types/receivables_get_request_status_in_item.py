@@ -5,7 +5,9 @@ import typing
 ReceivablesGetRequestStatusInItem = typing.Union[
     typing.Literal[
         "draft",
+        "issuing",
         "issued",
+        "failed",
         "accepted",
         "expired",
         "declined",
