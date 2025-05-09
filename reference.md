@@ -5159,6 +5159,22 @@ client.e_invoicing_connections.post_einvoicing_connections(address=EinvoicingAdd
 <dl>
 <dd>
 
+**is_receiver:** `typing.Optional[bool]` — Set to `true` if the entity needs to receive e-invoices.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_sender:** `typing.Optional[bool]` — Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -5254,6 +5270,81 @@ client.e_invoicing_connections.delete_einvoicing_connections_id(einvoicing_conne
 <dd>
 
 **einvoicing_connection_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.e_invoicing_connections.<a href="src/monite/e_invoicing_connections/client.py">patch_einvoicing_connections_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+client.e_invoicing_connections.patch_einvoicing_connections_id(einvoicing_connection_id='einvoicing_connection_id', )
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**einvoicing_connection_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**address:** `typing.Optional[UpdateEinvoicingAddress]` — Integration Address
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_receiver:** `typing.Optional[bool]` — Set to `true` if the entity needs to receive e-invoices.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_sender:** `typing.Optional[bool]` — Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
     
 </dd>
 </dl>
@@ -24901,7 +24992,11 @@ client.accounting.synced_records.get(object_type="product", )
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+**limit:** `typing.Optional[int]` 
+
+The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page. 
+
+When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
     
 </dd>
 </dl>
@@ -24911,7 +25006,7 @@ client.accounting.synced_records.get(object_type="product", )
 
 **pagination_token:** `typing.Optional[str]` 
 
-A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
 
 If not specified, the first page of results will be returned.
     
@@ -25205,7 +25300,11 @@ client.accounting.tax_rates.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+**limit:** `typing.Optional[int]` 
+
+The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page. 
+
+When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
     
 </dd>
 </dl>
@@ -25215,7 +25314,7 @@ client.accounting.tax_rates.get()
 
 **pagination_token:** `typing.Optional[str]` 
 
-A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
 
 If not specified, the first page of results will be returned.
     
@@ -25364,7 +25463,11 @@ client.accounting.ledger_accounts.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+**limit:** `typing.Optional[int]` 
+
+The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page. 
+
+When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
     
 </dd>
 </dl>
@@ -25374,7 +25477,7 @@ client.accounting.ledger_accounts.get()
 
 **pagination_token:** `typing.Optional[str]` 
 
-A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
 
 If not specified, the first page of results will be returned.
     

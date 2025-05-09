@@ -22,6 +22,7 @@ from ..types.einvoice_schema_type_enum import EinvoiceSchemaTypeEnum
 from ..types.einvoicing_address import EinvoicingAddress
 from ..types.einvoicing_connection_response import EinvoicingConnectionResponse
 from ..types.einvoicing_network_credentials_response import EinvoicingNetworkCredentialsResponse
+from ..types.update_einvoicing_address import UpdateEinvoicingAddress
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -125,6 +126,8 @@ class RawEInvoicingConnectionsClient:
         *,
         address: EinvoicingAddress,
         entity_vat_id_id: typing.Optional[str] = OMIT,
+        is_receiver: typing.Optional[bool] = OMIT,
+        is_sender: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[EinvoicingConnectionResponse]:
         """
@@ -135,6 +138,12 @@ class RawEInvoicingConnectionsClient:
 
         entity_vat_id_id : typing.Optional[str]
             Entity VAT ID identifier for the integration
+
+        is_receiver : typing.Optional[bool]
+            Set to `true` if the entity needs to receive e-invoices.
+
+        is_sender : typing.Optional[bool]
+            Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -152,6 +161,8 @@ class RawEInvoicingConnectionsClient:
                     object_=address, annotation=EinvoicingAddress, direction="write"
                 ),
                 "entity_vat_id_id": entity_vat_id_id,
+                "is_receiver": is_receiver,
+                "is_sender": is_sender,
             },
             headers={
                 "content-type": "application/json",
@@ -436,6 +447,145 @@ class RawEInvoicingConnectionsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def patch_einvoicing_connections_id(
+        self,
+        einvoicing_connection_id: str,
+        *,
+        address: typing.Optional[UpdateEinvoicingAddress] = OMIT,
+        is_receiver: typing.Optional[bool] = OMIT,
+        is_sender: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[EinvoicingConnectionResponse]:
+        """
+        Parameters
+        ----------
+        einvoicing_connection_id : str
+
+        address : typing.Optional[UpdateEinvoicingAddress]
+            Integration Address
+
+        is_receiver : typing.Optional[bool]
+            Set to `true` if the entity needs to receive e-invoices.
+
+        is_sender : typing.Optional[bool]
+            Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[EinvoicingConnectionResponse]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"einvoicing_connections/{jsonable_encoder(einvoicing_connection_id)}",
+            method="PATCH",
+            json={
+                "address": convert_and_respect_annotation_metadata(
+                    object_=address, annotation=UpdateEinvoicingAddress, direction="write"
+                ),
+                "is_receiver": is_receiver,
+                "is_sender": is_sender,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    EinvoicingConnectionResponse,
+                    parse_obj_as(
+                        type_=EinvoicingConnectionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
     def post_einvoicing_connections_id_network_credentials(
         self,
         einvoicing_connection_id: str,
@@ -667,6 +817,8 @@ class AsyncRawEInvoicingConnectionsClient:
         *,
         address: EinvoicingAddress,
         entity_vat_id_id: typing.Optional[str] = OMIT,
+        is_receiver: typing.Optional[bool] = OMIT,
+        is_sender: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[EinvoicingConnectionResponse]:
         """
@@ -677,6 +829,12 @@ class AsyncRawEInvoicingConnectionsClient:
 
         entity_vat_id_id : typing.Optional[str]
             Entity VAT ID identifier for the integration
+
+        is_receiver : typing.Optional[bool]
+            Set to `true` if the entity needs to receive e-invoices.
+
+        is_sender : typing.Optional[bool]
+            Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -694,6 +852,8 @@ class AsyncRawEInvoicingConnectionsClient:
                     object_=address, annotation=EinvoicingAddress, direction="write"
                 ),
                 "entity_vat_id_id": entity_vat_id_id,
+                "is_receiver": is_receiver,
+                "is_sender": is_sender,
             },
             headers={
                 "content-type": "application/json",
@@ -942,6 +1102,145 @@ class AsyncRawEInvoicingConnectionsClient:
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def patch_einvoicing_connections_id(
+        self,
+        einvoicing_connection_id: str,
+        *,
+        address: typing.Optional[UpdateEinvoicingAddress] = OMIT,
+        is_receiver: typing.Optional[bool] = OMIT,
+        is_sender: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[EinvoicingConnectionResponse]:
+        """
+        Parameters
+        ----------
+        einvoicing_connection_id : str
+
+        address : typing.Optional[UpdateEinvoicingAddress]
+            Integration Address
+
+        is_receiver : typing.Optional[bool]
+            Set to `true` if the entity needs to receive e-invoices.
+
+        is_sender : typing.Optional[bool]
+            Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[EinvoicingConnectionResponse]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"einvoicing_connections/{jsonable_encoder(einvoicing_connection_id)}",
+            method="PATCH",
+            json={
+                "address": convert_and_respect_annotation_metadata(
+                    object_=address, annotation=UpdateEinvoicingAddress, direction="write"
+                ),
+                "is_receiver": is_receiver,
+                "is_sender": is_sender,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    EinvoicingConnectionResponse,
+                    parse_obj_as(
+                        type_=EinvoicingConnectionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

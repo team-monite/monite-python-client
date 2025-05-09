@@ -667,6 +667,7 @@ from .unit_request import UnitRequest
 from .unit_response import UnitResponse
 from .update_credit_note import UpdateCreditNote
 from .update_credit_note_payload import UpdateCreditNotePayload
+from .update_einvoicing_address import UpdateEinvoicingAddress
 from .update_entity_address_schema import UpdateEntityAddressSchema
 from .update_entity_request import UpdateEntityRequest
 from .update_invoice import UpdateInvoice
@@ -1365,6 +1366,7 @@ __all__ = [
     "UnitResponse",
     "UpdateCreditNote",
     "UpdateCreditNotePayload",
+    "UpdateEinvoicingAddress",
     "UpdateEntityAddressSchema",
     "UpdateEntityRequest",
     "UpdateInvoice",
