@@ -9,6 +9,7 @@ from ..types.einvoice_schema_type_enum import EinvoiceSchemaTypeEnum
 from ..types.einvoicing_address import EinvoicingAddress
 from ..types.einvoicing_connection_response import EinvoicingConnectionResponse
 from ..types.einvoicing_network_credentials_response import EinvoicingNetworkCredentialsResponse
+from ..types.update_einvoicing_address import UpdateEinvoicingAddress
 from .raw_client import AsyncRawEInvoicingConnectionsClient, RawEInvoicingConnectionsClient
 
 # this is used as the default value for optional parameters
@@ -58,6 +59,8 @@ class EInvoicingConnectionsClient:
         *,
         address: EinvoicingAddress,
         entity_vat_id_id: typing.Optional[str] = OMIT,
+        is_receiver: typing.Optional[bool] = OMIT,
+        is_sender: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EinvoicingConnectionResponse:
         """
@@ -68,6 +71,12 @@ class EInvoicingConnectionsClient:
 
         entity_vat_id_id : typing.Optional[str]
             Entity VAT ID identifier for the integration
+
+        is_receiver : typing.Optional[bool]
+            Set to `true` if the entity needs to receive e-invoices.
+
+        is_sender : typing.Optional[bool]
+            Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -85,7 +94,11 @@ class EInvoicingConnectionsClient:
         client.e_invoicing_connections.post_einvoicing_connections(address=EinvoicingAddress(address_line1='address_line1', city='city', country="DE", postal_code='postal_code', ), )
         """
         _response = self._raw_client.post_einvoicing_connections(
-            address=address, entity_vat_id_id=entity_vat_id_id, request_options=request_options
+            address=address,
+            entity_vat_id_id=entity_vat_id_id,
+            is_receiver=is_receiver,
+            is_sender=is_sender,
+            request_options=request_options,
         )
         return _response.data
 
@@ -139,6 +152,52 @@ class EInvoicingConnectionsClient:
         """
         _response = self._raw_client.delete_einvoicing_connections_id(
             einvoicing_connection_id, request_options=request_options
+        )
+        return _response.data
+
+    def patch_einvoicing_connections_id(
+        self,
+        einvoicing_connection_id: str,
+        *,
+        address: typing.Optional[UpdateEinvoicingAddress] = OMIT,
+        is_receiver: typing.Optional[bool] = OMIT,
+        is_sender: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EinvoicingConnectionResponse:
+        """
+        Parameters
+        ----------
+        einvoicing_connection_id : str
+
+        address : typing.Optional[UpdateEinvoicingAddress]
+            Integration Address
+
+        is_receiver : typing.Optional[bool]
+            Set to `true` if the entity needs to receive e-invoices.
+
+        is_sender : typing.Optional[bool]
+            Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EinvoicingConnectionResponse
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+        client.e_invoicing_connections.patch_einvoicing_connections_id(einvoicing_connection_id='einvoicing_connection_id', )
+        """
+        _response = self._raw_client.patch_einvoicing_connections_id(
+            einvoicing_connection_id,
+            address=address,
+            is_receiver=is_receiver,
+            is_sender=is_sender,
+            request_options=request_options,
         )
         return _response.data
 
@@ -230,6 +289,8 @@ class AsyncEInvoicingConnectionsClient:
         *,
         address: EinvoicingAddress,
         entity_vat_id_id: typing.Optional[str] = OMIT,
+        is_receiver: typing.Optional[bool] = OMIT,
+        is_sender: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EinvoicingConnectionResponse:
         """
@@ -240,6 +301,12 @@ class AsyncEInvoicingConnectionsClient:
 
         entity_vat_id_id : typing.Optional[str]
             Entity VAT ID identifier for the integration
+
+        is_receiver : typing.Optional[bool]
+            Set to `true` if the entity needs to receive e-invoices.
+
+        is_sender : typing.Optional[bool]
+            Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -260,7 +327,11 @@ class AsyncEInvoicingConnectionsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.post_einvoicing_connections(
-            address=address, entity_vat_id_id=entity_vat_id_id, request_options=request_options
+            address=address,
+            entity_vat_id_id=entity_vat_id_id,
+            is_receiver=is_receiver,
+            is_sender=is_sender,
+            request_options=request_options,
         )
         return _response.data
 
@@ -320,6 +391,55 @@ class AsyncEInvoicingConnectionsClient:
         """
         _response = await self._raw_client.delete_einvoicing_connections_id(
             einvoicing_connection_id, request_options=request_options
+        )
+        return _response.data
+
+    async def patch_einvoicing_connections_id(
+        self,
+        einvoicing_connection_id: str,
+        *,
+        address: typing.Optional[UpdateEinvoicingAddress] = OMIT,
+        is_receiver: typing.Optional[bool] = OMIT,
+        is_sender: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EinvoicingConnectionResponse:
+        """
+        Parameters
+        ----------
+        einvoicing_connection_id : str
+
+        address : typing.Optional[UpdateEinvoicingAddress]
+            Integration Address
+
+        is_receiver : typing.Optional[bool]
+            Set to `true` if the entity needs to receive e-invoices.
+
+        is_sender : typing.Optional[bool]
+            Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EinvoicingConnectionResponse
+            Successful Response
+
+        Examples
+        --------
+        from monite import AsyncMonite
+        import asyncio
+        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+        async def main() -> None:
+            await client.e_invoicing_connections.patch_einvoicing_connections_id(einvoicing_connection_id='einvoicing_connection_id', )
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.patch_einvoicing_connections_id(
+            einvoicing_connection_id,
+            address=address,
+            is_receiver=is_receiver,
+            is_sender=is_sender,
+            request_options=request_options,
         )
         return _response.data
 
