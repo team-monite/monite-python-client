@@ -39,7 +39,8 @@ import asyncio
 client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
 async def main() -> None:
     await client.products.create(name='name', )
-asyncio.run(main())```
+asyncio.run(main())
+```
 
 ## Exception Handling
 
