@@ -45,16 +45,18 @@ class PaymentIntentsClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[PaymentIntentCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         object_id : typing.Optional[str]
             ID of a payable or receivable invoice. If provided, returns only payment intents associated with the specified invoice.
@@ -73,7 +75,12 @@ class PaymentIntentsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payment_intents.get()
         """
         _response = self._raw_client.get(
@@ -106,8 +113,15 @@ class PaymentIntentsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_intents.get_by_id(payment_intent_id='payment_intent_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_intents.get_by_id(
+            payment_intent_id="payment_intent_id",
+        )
         """
         _response = self._raw_client.get_by_id(payment_intent_id, request_options=request_options)
         return _response.data
@@ -133,8 +147,16 @@ class PaymentIntentsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_intents.update_by_id(payment_intent_id='payment_intent_id', amount=1, )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_intents.update_by_id(
+            payment_intent_id="payment_intent_id",
+            amount=1,
+        )
         """
         _response = self._raw_client.update_by_id(payment_intent_id, amount=amount, request_options=request_options)
         return _response.data
@@ -158,8 +180,15 @@ class PaymentIntentsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_intents.get_history_by_id(payment_intent_id='payment_intent_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_intents.get_history_by_id(
+            payment_intent_id="payment_intent_id",
+        )
         """
         _response = self._raw_client.get_history_by_id(payment_intent_id, request_options=request_options)
         return _response.data
@@ -195,16 +224,18 @@ class AsyncPaymentIntentsClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[PaymentIntentCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         object_id : typing.Optional[str]
             ID of a payable or receivable invoice. If provided, returns only payment intents associated with the specified invoice.
@@ -222,11 +253,21 @@ class AsyncPaymentIntentsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payment_intents.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -258,11 +299,23 @@ class AsyncPaymentIntentsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_intents.get_by_id(payment_intent_id='payment_intent_id', )
+            await client.payment_intents.get_by_id(
+                payment_intent_id="payment_intent_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(payment_intent_id, request_options=request_options)
@@ -288,11 +341,24 @@ class AsyncPaymentIntentsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_intents.update_by_id(payment_intent_id='payment_intent_id', amount=1, )
+            await client.payment_intents.update_by_id(
+                payment_intent_id="payment_intent_id",
+                amount=1,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -318,11 +384,23 @@ class AsyncPaymentIntentsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_intents.get_history_by_id(payment_intent_id='payment_intent_id', )
+            await client.payment_intents.get_history_by_id(
+                payment_intent_id="payment_intent_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_history_by_id(payment_intent_id, request_options=request_options)

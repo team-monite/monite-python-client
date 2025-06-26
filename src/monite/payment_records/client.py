@@ -44,6 +44,7 @@ class PaymentRecordsClient:
         sort: typing.Optional[PaymentRecordCursorFields] = None,
         is_external: typing.Optional[bool] = None,
         object_id: typing.Optional[str] = None,
+        object_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         object_type: typing.Optional[ObjectTypeEnum] = None,
         created_at_gt: typing.Optional[dt.datetime] = None,
         created_at_lt: typing.Optional[dt.datetime] = None,
@@ -81,6 +82,9 @@ class PaymentRecordsClient:
 
         object_id : typing.Optional[str]
             ID of the object, that is connected to payment
+
+        object_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            List of IDs of the objects, that are connected to payments
 
         object_type : typing.Optional[ObjectTypeEnum]
             Type of an object, which is connected with payment
@@ -138,7 +142,12 @@ class PaymentRecordsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payment_records.get()
         """
         _response = self._raw_client.get(
@@ -148,6 +157,7 @@ class PaymentRecordsClient:
             sort=sort,
             is_external=is_external,
             object_id=object_id,
+            object_id_in=object_id_in,
             object_type=object_type,
             created_at_gt=created_at_gt,
             created_at_lt=created_at_lt,
@@ -225,10 +235,22 @@ class PaymentRecordsClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import PaymentRecordObjectRequest
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_records.create(amount=1, currency="AED", object=PaymentRecordObjectRequest(id='id', type="receivable", ), payment_intent_id='payment_intent_id', )
+        from monite import Monite, PaymentRecordObjectRequest
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_records.create(
+            amount=1,
+            currency="AED",
+            object=PaymentRecordObjectRequest(
+                id="id",
+                type="receivable",
+            ),
+            payment_intent_id="payment_intent_id",
+        )
         """
         _response = self._raw_client.create(
             amount=amount,
@@ -264,8 +286,15 @@ class PaymentRecordsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_records.get_by_id(payment_record_id='payment_record_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_records.get_by_id(
+            payment_record_id="payment_record_id",
+        )
         """
         _response = self._raw_client.get_by_id(payment_record_id, request_options=request_options)
         return _response.data
@@ -328,8 +357,15 @@ class PaymentRecordsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_records.patch_payment_records_id(payment_record_id='payment_record_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_records.patch_payment_records_id(
+            payment_record_id="payment_record_id",
+        )
         """
         _response = self._raw_client.patch_payment_records_id(
             payment_record_id,
@@ -372,8 +408,15 @@ class PaymentRecordsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_records.post_payment_records_id_cancel(payment_record_id='payment_record_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_records.post_payment_records_id_cancel(
+            payment_record_id="payment_record_id",
+        )
         """
         _response = self._raw_client.post_payment_records_id_cancel(
             payment_record_id, payment_intent_status=payment_intent_status, request_options=request_options
@@ -409,10 +452,21 @@ class PaymentRecordsClient:
 
         Examples
         --------
-        from monite import Monite
         import datetime
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_records.post_payment_records_id_mark_as_succeeded(payment_record_id='payment_record_id', paid_at=datetime.datetime.fromisoformat("2024-01-15 09:30:00+00:00", ), )
+
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_records.post_payment_records_id_mark_as_succeeded(
+            payment_record_id="payment_record_id",
+            paid_at=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+        )
         """
         _response = self._raw_client.post_payment_records_id_mark_as_succeeded(
             payment_record_id,
@@ -448,8 +502,15 @@ class PaymentRecordsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_records.post_payment_records_id_start_processing(payment_record_id='payment_record_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_records.post_payment_records_id_start_processing(
+            payment_record_id="payment_record_id",
+        )
         """
         _response = self._raw_client.post_payment_records_id_start_processing(
             payment_record_id, payment_intent_status=payment_intent_status, request_options=request_options
@@ -481,6 +542,7 @@ class AsyncPaymentRecordsClient:
         sort: typing.Optional[PaymentRecordCursorFields] = None,
         is_external: typing.Optional[bool] = None,
         object_id: typing.Optional[str] = None,
+        object_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         object_type: typing.Optional[ObjectTypeEnum] = None,
         created_at_gt: typing.Optional[dt.datetime] = None,
         created_at_lt: typing.Optional[dt.datetime] = None,
@@ -518,6 +580,9 @@ class AsyncPaymentRecordsClient:
 
         object_id : typing.Optional[str]
             ID of the object, that is connected to payment
+
+        object_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            List of IDs of the objects, that are connected to payments
 
         object_type : typing.Optional[ObjectTypeEnum]
             Type of an object, which is connected with payment
@@ -574,11 +639,21 @@ class AsyncPaymentRecordsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payment_records.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -588,6 +663,7 @@ class AsyncPaymentRecordsClient:
             sort=sort,
             is_external=is_external,
             object_id=object_id,
+            object_id_in=object_id_in,
             object_type=object_type,
             created_at_gt=created_at_gt,
             created_at_lt=created_at_lt,
@@ -665,12 +741,29 @@ class AsyncPaymentRecordsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import PaymentRecordObjectRequest
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, PaymentRecordObjectRequest
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_records.create(amount=1, currency="AED", object=PaymentRecordObjectRequest(id='id', type="receivable", ), payment_intent_id='payment_intent_id', )
+            await client.payment_records.create(
+                amount=1,
+                currency="AED",
+                object=PaymentRecordObjectRequest(
+                    id="id",
+                    type="receivable",
+                ),
+                payment_intent_id="payment_intent_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -706,11 +799,23 @@ class AsyncPaymentRecordsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_records.get_by_id(payment_record_id='payment_record_id', )
+            await client.payment_records.get_by_id(
+                payment_record_id="payment_record_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(payment_record_id, request_options=request_options)
@@ -773,11 +878,23 @@ class AsyncPaymentRecordsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_records.patch_payment_records_id(payment_record_id='payment_record_id', )
+            await client.payment_records.patch_payment_records_id(
+                payment_record_id="payment_record_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.patch_payment_records_id(
@@ -820,11 +937,23 @@ class AsyncPaymentRecordsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_records.post_payment_records_id_cancel(payment_record_id='payment_record_id', )
+            await client.payment_records.post_payment_records_id_cancel(
+                payment_record_id="payment_record_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payment_records_id_cancel(
@@ -861,12 +990,27 @@ class AsyncPaymentRecordsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        import datetime
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+        import datetime
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_records.post_payment_records_id_mark_as_succeeded(payment_record_id='payment_record_id', paid_at=datetime.datetime.fromisoformat("2024-01-15 09:30:00+00:00", ), )
+            await client.payment_records.post_payment_records_id_mark_as_succeeded(
+                payment_record_id="payment_record_id",
+                paid_at=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payment_records_id_mark_as_succeeded(
@@ -902,11 +1046,23 @@ class AsyncPaymentRecordsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_records.post_payment_records_id_start_processing(payment_record_id='payment_record_id', )
+            await client.payment_records.post_payment_records_id_start_processing(
+                payment_record_id="payment_record_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payment_records_id_start_processing(

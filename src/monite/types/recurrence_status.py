@@ -2,4 +2,4 @@
 
 import typing
 
-RecurrenceStatus = typing.Union[typing.Literal["active", "canceled", "completed"], typing.Any]
+RecurrenceStatus = typing.Union[typing.Literal["active", "paused", "canceled", "completed"], typing.Any]

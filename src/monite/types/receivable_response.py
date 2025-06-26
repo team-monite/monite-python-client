@@ -7,10 +7,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .counterpart_type import CounterpartType
 from .credit_note_response_payload_entity import CreditNoteResponsePayloadEntity
 from .credit_note_state_enum import CreditNoteStateEnum
 from .currency_enum import CurrencyEnum
-from .discount import Discount
+from .discount_response import DiscountResponse
 from .einvoicing_credentials import EinvoicingCredentials
 from .invoice_response_payload_entity import InvoiceResponsePayloadEntity
 from .language_code_enum import LanguageCodeEnum
@@ -18,7 +19,6 @@ from .payment_terms import PaymentTerms
 from .quote_response_payload_entity import QuoteResponsePayloadEntity
 from .quote_state_enum import QuoteStateEnum
 from .receivable_counterpart_contact import ReceivableCounterpartContact
-from .receivable_counterpart_type import ReceivableCounterpartType
 from .receivable_counterpart_vat_id_response import ReceivableCounterpartVatIdResponse
 from .receivable_entity_address_schema import ReceivableEntityAddressSchema
 from .receivable_entity_vat_id_response import ReceivableEntityVatIdResponse
@@ -49,12 +49,12 @@ class ReceivableResponse_Quote(UniversalBaseModel):
     counterpart_name: typing.Optional[str] = None
     counterpart_shipping_address: typing.Optional[ReceivablesRepresentationOfCounterpartAddress] = None
     counterpart_tax_id: typing.Optional[str] = None
-    counterpart_type: ReceivableCounterpartType
+    counterpart_type: CounterpartType
     counterpart_vat_id: typing.Optional[ReceivableCounterpartVatIdResponse] = None
     currency: CurrencyEnum
     deduction_amount: typing.Optional[int] = None
     deduction_memo: typing.Optional[str] = None
-    discount: typing.Optional[Discount] = None
+    discount: typing.Optional[DiscountResponse] = None
     discounted_subtotal: typing.Optional[int] = None
     document_id: typing.Optional[str] = None
     due_date: typing.Optional[str] = None
@@ -123,12 +123,12 @@ class ReceivableResponse_Invoice(UniversalBaseModel):
     counterpart_name: typing.Optional[str] = None
     counterpart_shipping_address: typing.Optional[ReceivablesRepresentationOfCounterpartAddress] = None
     counterpart_tax_id: typing.Optional[str] = None
-    counterpart_type: ReceivableCounterpartType
+    counterpart_type: CounterpartType
     counterpart_vat_id: typing.Optional[ReceivableCounterpartVatIdResponse] = None
     currency: CurrencyEnum
     deduction_amount: typing.Optional[int] = None
     deduction_memo: typing.Optional[str] = None
-    discount: typing.Optional[Discount] = None
+    discount: typing.Optional[DiscountResponse] = None
     discounted_subtotal: typing.Optional[int] = None
     document_id: typing.Optional[str] = None
     due_date: typing.Optional[str] = None
@@ -203,12 +203,12 @@ class ReceivableResponse_CreditNote(UniversalBaseModel):
     counterpart_name: typing.Optional[str] = None
     counterpart_shipping_address: typing.Optional[ReceivablesRepresentationOfCounterpartAddress] = None
     counterpart_tax_id: typing.Optional[str] = None
-    counterpart_type: ReceivableCounterpartType
+    counterpart_type: CounterpartType
     counterpart_vat_id: typing.Optional[ReceivableCounterpartVatIdResponse] = None
     currency: CurrencyEnum
     deduction_amount: typing.Optional[int] = None
     deduction_memo: typing.Optional[str] = None
-    discount: typing.Optional[Discount] = None
+    discount: typing.Optional[DiscountResponse] = None
     discounted_subtotal: typing.Optional[int] = None
     document_id: typing.Optional[str] = None
     due_date: typing.Optional[str] = None

@@ -46,8 +46,15 @@ class ProcessesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.approval_policies.processes.get(approval_policy_id='approval_policy_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.approval_policies.processes.get(
+            approval_policy_id="approval_policy_id",
+        )
         """
         _response = self._raw_client.get(approval_policy_id, request_options=request_options)
         return _response.data
@@ -75,8 +82,16 @@ class ProcessesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.approval_policies.processes.get_by_id(approval_policy_id='approval_policy_id', process_id='process_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.approval_policies.processes.get_by_id(
+            approval_policy_id="approval_policy_id",
+            process_id="process_id",
+        )
         """
         _response = self._raw_client.get_by_id(approval_policy_id, process_id, request_options=request_options)
         return _response.data
@@ -104,8 +119,16 @@ class ProcessesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.approval_policies.processes.cancel_by_id(approval_policy_id='approval_policy_id', process_id='process_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.approval_policies.processes.cancel_by_id(
+            approval_policy_id="approval_policy_id",
+            process_id="process_id",
+        )
         """
         _response = self._raw_client.cancel_by_id(approval_policy_id, process_id, request_options=request_options)
         return _response.data
@@ -133,8 +156,16 @@ class ProcessesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.approval_policies.processes.get_steps(approval_policy_id='approval_policy_id', process_id='process_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.approval_policies.processes.get_steps(
+            approval_policy_id="approval_policy_id",
+            process_id="process_id",
+        )
         """
         _response = self._raw_client.get_steps(approval_policy_id, process_id, request_options=request_options)
         return _response.data
@@ -175,11 +206,23 @@ class AsyncProcessesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.approval_policies.processes.get(approval_policy_id='approval_policy_id', )
+            await client.approval_policies.processes.get(
+                approval_policy_id="approval_policy_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(approval_policy_id, request_options=request_options)
@@ -207,11 +250,24 @@ class AsyncProcessesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.approval_policies.processes.get_by_id(approval_policy_id='approval_policy_id', process_id='process_id', )
+            await client.approval_policies.processes.get_by_id(
+                approval_policy_id="approval_policy_id",
+                process_id="process_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(approval_policy_id, process_id, request_options=request_options)
@@ -239,11 +295,24 @@ class AsyncProcessesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.approval_policies.processes.cancel_by_id(approval_policy_id='approval_policy_id', process_id='process_id', )
+            await client.approval_policies.processes.cancel_by_id(
+                approval_policy_id="approval_policy_id",
+                process_id="process_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.cancel_by_id(approval_policy_id, process_id, request_options=request_options)
@@ -271,11 +340,24 @@ class AsyncProcessesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.approval_policies.processes.get_steps(approval_policy_id='approval_policy_id', process_id='process_id', )
+            await client.approval_policies.processes.get_steps(
+                approval_policy_id="approval_policy_id",
+                process_id="process_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_steps(approval_policy_id, process_id, request_options=request_options)

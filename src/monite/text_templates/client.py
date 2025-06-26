@@ -59,7 +59,12 @@ class TextTemplatesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.text_templates.get()
         """
         _response = self._raw_client.get(
@@ -100,8 +105,18 @@ class TextTemplatesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.text_templates.create(document_type="quote", name='name', template='template', type="email_header", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.text_templates.create(
+            document_type="quote",
+            name="name",
+            template="template",
+            type="email_header",
+        )
         """
         _response = self._raw_client.create(
             document_type=document_type, name=name, template=template, type=type, request_options=request_options
@@ -129,8 +144,15 @@ class TextTemplatesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.text_templates.get_by_id(text_template_id='text_template_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.text_templates.get_by_id(
+            text_template_id="text_template_id",
+        )
         """
         _response = self._raw_client.get_by_id(text_template_id, request_options=request_options)
         return _response.data
@@ -154,8 +176,15 @@ class TextTemplatesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.text_templates.delete_by_id(text_template_id='text_template_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.text_templates.delete_by_id(
+            text_template_id="text_template_id",
+        )
         """
         _response = self._raw_client.delete_by_id(text_template_id, request_options=request_options)
         return _response.data
@@ -191,8 +220,15 @@ class TextTemplatesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.text_templates.update_by_id(text_template_id='text_template_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.text_templates.update_by_id(
+            text_template_id="text_template_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             text_template_id, name=name, template=template, request_options=request_options
@@ -221,8 +257,15 @@ class TextTemplatesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.text_templates.make_default_by_id(text_template_id='text_template_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.text_templates.make_default_by_id(
+            text_template_id="text_template_id",
+        )
         """
         _response = self._raw_client.make_default_by_id(text_template_id, request_options=request_options)
         return _response.data
@@ -272,11 +315,21 @@ class AsyncTextTemplatesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.text_templates.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -316,11 +369,26 @@ class AsyncTextTemplatesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.text_templates.create(document_type="quote", name='name', template='template', type="email_header", )
+            await client.text_templates.create(
+                document_type="quote",
+                name="name",
+                template="template",
+                type="email_header",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -348,11 +416,23 @@ class AsyncTextTemplatesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.text_templates.get_by_id(text_template_id='text_template_id', )
+            await client.text_templates.get_by_id(
+                text_template_id="text_template_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(text_template_id, request_options=request_options)
@@ -378,11 +458,23 @@ class AsyncTextTemplatesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.text_templates.delete_by_id(text_template_id='text_template_id', )
+            await client.text_templates.delete_by_id(
+                text_template_id="text_template_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(text_template_id, request_options=request_options)
@@ -418,11 +510,23 @@ class AsyncTextTemplatesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.text_templates.update_by_id(text_template_id='text_template_id', )
+            await client.text_templates.update_by_id(
+                text_template_id="text_template_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -451,11 +555,23 @@ class AsyncTextTemplatesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.text_templates.make_default_by_id(text_template_id='text_template_id', )
+            await client.text_templates.make_default_by_id(
+                text_template_id="text_template_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.make_default_by_id(text_template_id, request_options=request_options)

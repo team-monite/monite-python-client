@@ -488,7 +488,7 @@ class RawCreditNotesClient:
         self, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[CreditNoteResponse]:
         """
-        Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+        Upload an incoming credit note (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
         Parameters
         ----------
@@ -510,11 +510,9 @@ class RawCreditNotesClient:
             files={
                 "file": file,
             },
-            headers={
-                "content-type": "multipart/form-data",
-            },
             request_options=request_options,
             omit=OMIT,
+            force_multipart=True,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -3157,7 +3155,7 @@ class AsyncRawCreditNotesClient:
         self, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[CreditNoteResponse]:
         """
-        Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+        Upload an incoming credit note (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
         Parameters
         ----------
@@ -3179,11 +3177,9 @@ class AsyncRawCreditNotesClient:
             files={
                 "file": file,
             },
-            headers={
-                "content-type": "multipart/form-data",
-            },
             request_options=request_options,
             omit=OMIT,
+            force_multipart=True,
         )
         try:
             if 200 <= _response.status_code < 300:

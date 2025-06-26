@@ -86,7 +86,12 @@ class DataExportsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.data_exports.get()
         """
         _response = self._raw_client.get(
@@ -135,10 +140,23 @@ class DataExportsClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import ExportObjectSchema_Payable
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.data_exports.create(date_from='date_from', date_to='date_to', format="csv", objects=[ExportObjectSchema_Payable(statuses=["draft"], )], )
+        from monite import ExportObjectSchema_Payable, Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.data_exports.create(
+            date_from="date_from",
+            date_to="date_to",
+            format="csv",
+            objects=[
+                ExportObjectSchema_Payable(
+                    statuses=["draft"],
+                )
+            ],
+        )
         """
         _response = self._raw_client.create(
             date_from=date_from, date_to=date_to, format=format, objects=objects, request_options=request_options
@@ -162,7 +180,12 @@ class DataExportsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.data_exports.get_supported_formats()
         """
         _response = self._raw_client.get_supported_formats(request_options=request_options)
@@ -187,8 +210,15 @@ class DataExportsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.data_exports.get_by_id(document_export_id='document_export_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.data_exports.get_by_id(
+            document_export_id="document_export_id",
+        )
         """
         _response = self._raw_client.get_by_id(document_export_id, request_options=request_options)
         return _response.data
@@ -259,11 +289,21 @@ class AsyncDataExportsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.data_exports.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -312,12 +352,30 @@ class AsyncDataExportsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import ExportObjectSchema_Payable
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, ExportObjectSchema_Payable
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.data_exports.create(date_from='date_from', date_to='date_to', format="csv", objects=[ExportObjectSchema_Payable(statuses=["draft"], )], )
+            await client.data_exports.create(
+                date_from="date_from",
+                date_to="date_to",
+                format="csv",
+                objects=[
+                    ExportObjectSchema_Payable(
+                        statuses=["draft"],
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -341,11 +399,21 @@ class AsyncDataExportsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.data_exports.get_supported_formats()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_supported_formats(request_options=request_options)
@@ -369,11 +437,23 @@ class AsyncDataExportsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.data_exports.get_by_id(document_export_id='document_export_id', )
+            await client.data_exports.get_by_id(
+                document_export_id="document_export_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(document_export_id, request_options=request_options)

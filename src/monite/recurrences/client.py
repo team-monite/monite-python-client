@@ -6,9 +6,10 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.automation_level import AutomationLevel
 from ..types.day_of_month import DayOfMonth
-from ..types.get_all_recurrences import GetAllRecurrences
 from ..types.recipients import Recipients
-from ..types.recurrence import Recurrence
+from ..types.recurrence_frequency import RecurrenceFrequency
+from ..types.recurrence_response import RecurrenceResponse
+from ..types.recurrence_response_list import RecurrenceResponseList
 from .raw_client import AsyncRawRecurrencesClient, RawRecurrencesClient
 
 # this is used as the default value for optional parameters
@@ -30,7 +31,7 @@ class RecurrencesClient:
         """
         return self._raw_client
 
-    def get(self, *, request_options: typing.Optional[RequestOptions] = None) -> GetAllRecurrences:
+    def get(self, *, request_options: typing.Optional[RequestOptions] = None) -> RecurrenceResponseList:
         """
         Parameters
         ----------
@@ -39,13 +40,18 @@ class RecurrencesClient:
 
         Returns
         -------
-        GetAllRecurrences
+        RecurrenceResponseList
             Successful Response
 
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.recurrences.get()
         """
         _response = self._raw_client.get(request_options=request_options)
@@ -54,32 +60,28 @@ class RecurrencesClient:
     def create(
         self,
         *,
-        day_of_month: DayOfMonth,
-        end_month: int,
-        end_year: int,
         invoice_id: str,
-        start_month: int,
-        start_year: int,
         automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
+        day_of_month: typing.Optional[DayOfMonth] = OMIT,
+        end_date: typing.Optional[str] = OMIT,
+        end_month: typing.Optional[int] = OMIT,
+        end_year: typing.Optional[int] = OMIT,
+        frequency: typing.Optional[RecurrenceFrequency] = OMIT,
+        interval: typing.Optional[int] = OMIT,
+        max_occurrences: typing.Optional[int] = OMIT,
         recipients: typing.Optional[Recipients] = OMIT,
+        start_date: typing.Optional[str] = OMIT,
+        start_month: typing.Optional[int] = OMIT,
+        start_year: typing.Optional[int] = OMIT,
         subject_text: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> Recurrence:
+    ) -> RecurrenceResponse:
         """
         Parameters
         ----------
-        day_of_month : DayOfMonth
-
-        end_month : int
-
-        end_year : int
-
         invoice_id : str
-
-        start_month : int
-
-        start_year : int
+            ID of the base invoice that will be used as a template for creating recurring invoices.
 
         automation_level : typing.Optional[AutomationLevel]
             Controls how invoices are processed when generated:
@@ -92,41 +94,88 @@ class RecurrencesClient:
             Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
+            The body text for the email that will be sent with the recurring invoice.
+
+        day_of_month : typing.Optional[DayOfMonth]
+            Deprecated, use `start_date` instead
+
+        end_date : typing.Optional[str]
+            The end date of the recurring invoice, in the `yyyy-mm-dd` format. The end date is inclusive, that is, the last invoice will be created on this date if the last occurrence falls on this date. `end_date` is mutually exclusive with `max_occurrences`. Either `end_date` or `max_occurrences` must be specified.
+
+        end_month : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        end_year : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        frequency : typing.Optional[RecurrenceFrequency]
+            How often the invoice will be created.
+
+        interval : typing.Optional[int]
+            The interval between each occurrence of the invoice. For example, when using monthly frequency, an interval of 1 means invoices will be created every month, an interval of 2 means invoices will be created every 2 months.
+
+        max_occurrences : typing.Optional[int]
+            How many times the recurring invoice will be created. The recurrence will stop after this number is reached. `max_occurrences` is mutually exclusive with `end_date`. Either `max_occurrences` or `end_date` must be specified.
 
         recipients : typing.Optional[Recipients]
+            An object containing the recipients (To, CC, BCC) of the recurring invoices. Can be omitted if the base invoice has the counterpart contact email specified in the `counterpart_contact.email` field.
+
+        start_date : typing.Optional[str]
+            The date when the first invoice will be created, in the `yyyy-mm-dd` format. Cannot be a past date. Subsequent invoice dates will be calculated based on `start_date`, `frequency`, and `interval`.
+
+        start_month : typing.Optional[int]
+            Deprecated, use `start_date` instead
+
+        start_year : typing.Optional[int]
+            Deprecated, use `start_date` instead
 
         subject_text : typing.Optional[str]
+            The subject for the email that will be sent with the recurring invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        Recurrence
+        RecurrenceResponse
             Successful Response
 
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.recurrences.create(day_of_month="first_day", end_month=1, end_year=1, invoice_id='invoice_id', start_month=1, start_year=1, )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.recurrences.create(
+            invoice_id="invoice_id",
+        )
         """
         _response = self._raw_client.create(
-            day_of_month=day_of_month,
-            end_month=end_month,
-            end_year=end_year,
             invoice_id=invoice_id,
-            start_month=start_month,
-            start_year=start_year,
             automation_level=automation_level,
             body_text=body_text,
+            day_of_month=day_of_month,
+            end_date=end_date,
+            end_month=end_month,
+            end_year=end_year,
+            frequency=frequency,
+            interval=interval,
+            max_occurrences=max_occurrences,
             recipients=recipients,
+            start_date=start_date,
+            start_month=start_month,
+            start_year=start_year,
             subject_text=subject_text,
             request_options=request_options,
         )
         return _response.data
 
-    def get_by_id(self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> Recurrence:
+    def get_by_id(
+        self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> RecurrenceResponse:
         """
         Parameters
         ----------
@@ -137,14 +186,21 @@ class RecurrencesClient:
 
         Returns
         -------
-        Recurrence
+        RecurrenceResponse
             Successful Response
 
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.recurrences.get_by_id(recurrence_id='recurrence_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.recurrences.get_by_id(
+            recurrence_id="recurrence_id",
+        )
         """
         _response = self._raw_client.get_by_id(recurrence_id, request_options=request_options)
         return _response.data
@@ -156,12 +212,17 @@ class RecurrencesClient:
         automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
         day_of_month: typing.Optional[DayOfMonth] = OMIT,
+        end_date: typing.Optional[str] = OMIT,
         end_month: typing.Optional[int] = OMIT,
         end_year: typing.Optional[int] = OMIT,
+        frequency: typing.Optional[RecurrenceFrequency] = OMIT,
+        interval: typing.Optional[int] = OMIT,
+        max_occurrences: typing.Optional[int] = OMIT,
         recipients: typing.Optional[Recipients] = OMIT,
+        start_date: typing.Optional[str] = OMIT,
         subject_text: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> Recurrence:
+    ) -> RecurrenceResponse:
         """
         Parameters
         ----------
@@ -178,39 +239,72 @@ class RecurrencesClient:
             Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
+            The body text for the email that will be sent with the recurring invoice.
 
         day_of_month : typing.Optional[DayOfMonth]
+            Deprecated, use `start_date` instead
+
+        end_date : typing.Optional[str]
+            The end date of the recurring invoice, in the `yyyy-mm-dd` format. The end date is inclusive, that is, the last invoice will be created on this date if the last occurrence falls on this date. `end_date` is mutually exclusive with `max_occurrences`. Either `end_date` or `max_occurrences` must be specified.
 
         end_month : typing.Optional[int]
+            Deprecated, use `end_date` instead
 
         end_year : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        frequency : typing.Optional[RecurrenceFrequency]
+            How often the invoice will be created.
+
+        interval : typing.Optional[int]
+            The interval between each occurrence of the invoice. For example, when using monthly frequency, an interval of 1 means invoices will be created every month, an interval of 2 means invoices will be created every 2 months.
+
+        max_occurrences : typing.Optional[int]
+            How many times the recurring invoice will be created. The recurrence will stop after this number is reached. `max_occurrences` is mutually exclusive with `end_date`. Either `max_occurrences` or `end_date` must be specified.
 
         recipients : typing.Optional[Recipients]
+            An object containing the recipients (To, CC, BCC) of the recurring invoices. Can be omitted if the base invoice has the counterpart contact email specified in the `counterpart_contact.email` field.
+
+        start_date : typing.Optional[str]
+            The date when the first invoice will be created, in the `yyyy-mm-dd` format. Cannot be a past date. Subsequent invoice dates will be calculated based on `start_date`, `frequency`, and `interval`.
 
         subject_text : typing.Optional[str]
+            The subject for the email that will be sent with the recurring invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        Recurrence
+        RecurrenceResponse
             Successful Response
 
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.recurrences.update_by_id(recurrence_id='recurrence_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.recurrences.update_by_id(
+            recurrence_id="recurrence_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             recurrence_id,
             automation_level=automation_level,
             body_text=body_text,
             day_of_month=day_of_month,
+            end_date=end_date,
             end_month=end_month,
             end_year=end_year,
+            frequency=frequency,
+            interval=interval,
+            max_occurrences=max_occurrences,
             recipients=recipients,
+            start_date=start_date,
             subject_text=subject_text,
             request_options=request_options,
         )
@@ -232,10 +326,81 @@ class RecurrencesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.recurrences.cancel_by_id(recurrence_id='recurrence_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.recurrences.cancel_by_id(
+            recurrence_id="recurrence_id",
+        )
         """
         _response = self._raw_client.cancel_by_id(recurrence_id, request_options=request_options)
+        return _response.data
+
+    def post_recurrences_id_pause(
+        self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        recurrence_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.recurrences.post_recurrences_id_pause(
+            recurrence_id="recurrence_id",
+        )
+        """
+        _response = self._raw_client.post_recurrences_id_pause(recurrence_id, request_options=request_options)
+        return _response.data
+
+    def post_recurrences_id_resume(
+        self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        recurrence_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.recurrences.post_recurrences_id_resume(
+            recurrence_id="recurrence_id",
+        )
+        """
+        _response = self._raw_client.post_recurrences_id_resume(recurrence_id, request_options=request_options)
         return _response.data
 
 
@@ -254,7 +419,7 @@ class AsyncRecurrencesClient:
         """
         return self._raw_client
 
-    async def get(self, *, request_options: typing.Optional[RequestOptions] = None) -> GetAllRecurrences:
+    async def get(self, *, request_options: typing.Optional[RequestOptions] = None) -> RecurrenceResponseList:
         """
         Parameters
         ----------
@@ -263,16 +428,26 @@ class AsyncRecurrencesClient:
 
         Returns
         -------
-        GetAllRecurrences
+        RecurrenceResponseList
             Successful Response
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.recurrences.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(request_options=request_options)
@@ -281,32 +456,28 @@ class AsyncRecurrencesClient:
     async def create(
         self,
         *,
-        day_of_month: DayOfMonth,
-        end_month: int,
-        end_year: int,
         invoice_id: str,
-        start_month: int,
-        start_year: int,
         automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
+        day_of_month: typing.Optional[DayOfMonth] = OMIT,
+        end_date: typing.Optional[str] = OMIT,
+        end_month: typing.Optional[int] = OMIT,
+        end_year: typing.Optional[int] = OMIT,
+        frequency: typing.Optional[RecurrenceFrequency] = OMIT,
+        interval: typing.Optional[int] = OMIT,
+        max_occurrences: typing.Optional[int] = OMIT,
         recipients: typing.Optional[Recipients] = OMIT,
+        start_date: typing.Optional[str] = OMIT,
+        start_month: typing.Optional[int] = OMIT,
+        start_year: typing.Optional[int] = OMIT,
         subject_text: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> Recurrence:
+    ) -> RecurrenceResponse:
         """
         Parameters
         ----------
-        day_of_month : DayOfMonth
-
-        end_month : int
-
-        end_year : int
-
         invoice_id : str
-
-        start_month : int
-
-        start_year : int
+            ID of the base invoice that will be used as a template for creating recurring invoices.
 
         automation_level : typing.Optional[AutomationLevel]
             Controls how invoices are processed when generated:
@@ -319,38 +490,88 @@ class AsyncRecurrencesClient:
             Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
+            The body text for the email that will be sent with the recurring invoice.
+
+        day_of_month : typing.Optional[DayOfMonth]
+            Deprecated, use `start_date` instead
+
+        end_date : typing.Optional[str]
+            The end date of the recurring invoice, in the `yyyy-mm-dd` format. The end date is inclusive, that is, the last invoice will be created on this date if the last occurrence falls on this date. `end_date` is mutually exclusive with `max_occurrences`. Either `end_date` or `max_occurrences` must be specified.
+
+        end_month : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        end_year : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        frequency : typing.Optional[RecurrenceFrequency]
+            How often the invoice will be created.
+
+        interval : typing.Optional[int]
+            The interval between each occurrence of the invoice. For example, when using monthly frequency, an interval of 1 means invoices will be created every month, an interval of 2 means invoices will be created every 2 months.
+
+        max_occurrences : typing.Optional[int]
+            How many times the recurring invoice will be created. The recurrence will stop after this number is reached. `max_occurrences` is mutually exclusive with `end_date`. Either `max_occurrences` or `end_date` must be specified.
 
         recipients : typing.Optional[Recipients]
+            An object containing the recipients (To, CC, BCC) of the recurring invoices. Can be omitted if the base invoice has the counterpart contact email specified in the `counterpart_contact.email` field.
+
+        start_date : typing.Optional[str]
+            The date when the first invoice will be created, in the `yyyy-mm-dd` format. Cannot be a past date. Subsequent invoice dates will be calculated based on `start_date`, `frequency`, and `interval`.
+
+        start_month : typing.Optional[int]
+            Deprecated, use `start_date` instead
+
+        start_year : typing.Optional[int]
+            Deprecated, use `start_date` instead
 
         subject_text : typing.Optional[str]
+            The subject for the email that will be sent with the recurring invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        Recurrence
+        RecurrenceResponse
             Successful Response
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.recurrences.create(day_of_month="first_day", end_month=1, end_year=1, invoice_id='invoice_id', start_month=1, start_year=1, )
+            await client.recurrences.create(
+                invoice_id="invoice_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
-            day_of_month=day_of_month,
-            end_month=end_month,
-            end_year=end_year,
             invoice_id=invoice_id,
-            start_month=start_month,
-            start_year=start_year,
             automation_level=automation_level,
             body_text=body_text,
+            day_of_month=day_of_month,
+            end_date=end_date,
+            end_month=end_month,
+            end_year=end_year,
+            frequency=frequency,
+            interval=interval,
+            max_occurrences=max_occurrences,
             recipients=recipients,
+            start_date=start_date,
+            start_month=start_month,
+            start_year=start_year,
             subject_text=subject_text,
             request_options=request_options,
         )
@@ -358,7 +579,7 @@ class AsyncRecurrencesClient:
 
     async def get_by_id(
         self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> Recurrence:
+    ) -> RecurrenceResponse:
         """
         Parameters
         ----------
@@ -369,16 +590,28 @@ class AsyncRecurrencesClient:
 
         Returns
         -------
-        Recurrence
+        RecurrenceResponse
             Successful Response
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.recurrences.get_by_id(recurrence_id='recurrence_id', )
+            await client.recurrences.get_by_id(
+                recurrence_id="recurrence_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(recurrence_id, request_options=request_options)
@@ -391,12 +624,17 @@ class AsyncRecurrencesClient:
         automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
         day_of_month: typing.Optional[DayOfMonth] = OMIT,
+        end_date: typing.Optional[str] = OMIT,
         end_month: typing.Optional[int] = OMIT,
         end_year: typing.Optional[int] = OMIT,
+        frequency: typing.Optional[RecurrenceFrequency] = OMIT,
+        interval: typing.Optional[int] = OMIT,
+        max_occurrences: typing.Optional[int] = OMIT,
         recipients: typing.Optional[Recipients] = OMIT,
+        start_date: typing.Optional[str] = OMIT,
         subject_text: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> Recurrence:
+    ) -> RecurrenceResponse:
         """
         Parameters
         ----------
@@ -413,32 +651,65 @@ class AsyncRecurrencesClient:
             Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
+            The body text for the email that will be sent with the recurring invoice.
 
         day_of_month : typing.Optional[DayOfMonth]
+            Deprecated, use `start_date` instead
+
+        end_date : typing.Optional[str]
+            The end date of the recurring invoice, in the `yyyy-mm-dd` format. The end date is inclusive, that is, the last invoice will be created on this date if the last occurrence falls on this date. `end_date` is mutually exclusive with `max_occurrences`. Either `end_date` or `max_occurrences` must be specified.
 
         end_month : typing.Optional[int]
+            Deprecated, use `end_date` instead
 
         end_year : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        frequency : typing.Optional[RecurrenceFrequency]
+            How often the invoice will be created.
+
+        interval : typing.Optional[int]
+            The interval between each occurrence of the invoice. For example, when using monthly frequency, an interval of 1 means invoices will be created every month, an interval of 2 means invoices will be created every 2 months.
+
+        max_occurrences : typing.Optional[int]
+            How many times the recurring invoice will be created. The recurrence will stop after this number is reached. `max_occurrences` is mutually exclusive with `end_date`. Either `max_occurrences` or `end_date` must be specified.
 
         recipients : typing.Optional[Recipients]
+            An object containing the recipients (To, CC, BCC) of the recurring invoices. Can be omitted if the base invoice has the counterpart contact email specified in the `counterpart_contact.email` field.
+
+        start_date : typing.Optional[str]
+            The date when the first invoice will be created, in the `yyyy-mm-dd` format. Cannot be a past date. Subsequent invoice dates will be calculated based on `start_date`, `frequency`, and `interval`.
 
         subject_text : typing.Optional[str]
+            The subject for the email that will be sent with the recurring invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        Recurrence
+        RecurrenceResponse
             Successful Response
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.recurrences.update_by_id(recurrence_id='recurrence_id', )
+            await client.recurrences.update_by_id(
+                recurrence_id="recurrence_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -446,9 +717,14 @@ class AsyncRecurrencesClient:
             automation_level=automation_level,
             body_text=body_text,
             day_of_month=day_of_month,
+            end_date=end_date,
             end_month=end_month,
             end_year=end_year,
+            frequency=frequency,
+            interval=interval,
+            max_occurrences=max_occurrences,
             recipients=recipients,
+            start_date=start_date,
             subject_text=subject_text,
             request_options=request_options,
         )
@@ -471,12 +747,104 @@ class AsyncRecurrencesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.recurrences.cancel_by_id(recurrence_id='recurrence_id', )
+            await client.recurrences.cancel_by_id(
+                recurrence_id="recurrence_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.cancel_by_id(recurrence_id, request_options=request_options)
+        return _response.data
+
+    async def post_recurrences_id_pause(
+        self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        recurrence_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.recurrences.post_recurrences_id_pause(
+                recurrence_id="recurrence_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.post_recurrences_id_pause(recurrence_id, request_options=request_options)
+        return _response.data
+
+    async def post_recurrences_id_resume(
+        self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        recurrence_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.recurrences.post_recurrences_id_resume(
+                recurrence_id="recurrence_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.post_recurrences_id_resume(recurrence_id, request_options=request_options)
         return _response.data

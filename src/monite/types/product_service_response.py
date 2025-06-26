@@ -32,6 +32,11 @@ class ProductServiceResponse(UniversalBaseModel):
 
     entity_id: str
     entity_user_id: typing.Optional[str] = None
+    external_reference: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
+    """
+
     ledger_account_id: typing.Optional[str] = None
     measure_unit_id: typing.Optional[str] = pydantic.Field(default=None)
     """

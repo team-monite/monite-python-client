@@ -83,10 +83,20 @@ class PaymentLinksClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import PaymentAccountObject
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_links.create(payment_methods=["sepa_credit"], recipient=PaymentAccountObject(id='id', type="entity", ), )
+        from monite import Monite, PaymentAccountObject
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_links.create(
+            payment_methods=["sepa_credit"],
+            recipient=PaymentAccountObject(
+                id="id",
+                type="entity",
+            ),
+        )
         """
         _response = self._raw_client.create(
             payment_methods=payment_methods,
@@ -121,8 +131,15 @@ class PaymentLinksClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_links.get_by_id(payment_link_id='payment_link_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_links.get_by_id(
+            payment_link_id="payment_link_id",
+        )
         """
         _response = self._raw_client.get_by_id(payment_link_id, request_options=request_options)
         return _response.data
@@ -146,8 +163,15 @@ class PaymentLinksClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_links.expire_by_id(payment_link_id='payment_link_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_links.expire_by_id(
+            payment_link_id="payment_link_id",
+        )
         """
         _response = self._raw_client.expire_by_id(payment_link_id, request_options=request_options)
         return _response.data
@@ -219,12 +243,27 @@ class AsyncPaymentLinksClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import PaymentAccountObject
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, PaymentAccountObject
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_links.create(payment_methods=["sepa_credit"], recipient=PaymentAccountObject(id='id', type="entity", ), )
+            await client.payment_links.create(
+                payment_methods=["sepa_credit"],
+                recipient=PaymentAccountObject(
+                    id="id",
+                    type="entity",
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -259,11 +298,23 @@ class AsyncPaymentLinksClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_links.get_by_id(payment_link_id='payment_link_id', )
+            await client.payment_links.get_by_id(
+                payment_link_id="payment_link_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(payment_link_id, request_options=request_options)
@@ -287,11 +338,23 @@ class AsyncPaymentLinksClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_links.expire_by_id(payment_link_id='payment_link_id', )
+            await client.payment_links.expire_by_id(
+                payment_link_id="payment_link_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.expire_by_id(payment_link_id, request_options=request_options)

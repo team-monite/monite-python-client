@@ -44,7 +44,12 @@ class MailboxesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.mailboxes.get()
         """
         _response = self._raw_client.get(request_options=request_options)
@@ -73,8 +78,16 @@ class MailboxesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.mailboxes.create(mailbox_domain_id='mailbox_domain_id', mailbox_name='mailbox_name', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.mailboxes.create(
+            mailbox_domain_id="mailbox_domain_id",
+            mailbox_name="mailbox_name",
+        )
         """
         _response = self._raw_client.create(
             mailbox_domain_id=mailbox_domain_id, mailbox_name=mailbox_name, request_options=request_options
@@ -102,8 +115,15 @@ class MailboxesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.mailboxes.search(entity_ids=['entity_ids'], )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.mailboxes.search(
+            entity_ids=["entity_ids"],
+        )
         """
         _response = self._raw_client.search(entity_ids=entity_ids, request_options=request_options)
         return _response.data
@@ -126,8 +146,15 @@ class MailboxesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.mailboxes.delete_by_id(mailbox_id='mailbox_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.mailboxes.delete_by_id(
+            mailbox_id="mailbox_id",
+        )
         """
         _response = self._raw_client.delete_by_id(mailbox_id, request_options=request_options)
         return _response.data
@@ -164,11 +191,21 @@ class AsyncMailboxesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.mailboxes.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(request_options=request_options)
@@ -196,11 +233,24 @@ class AsyncMailboxesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.mailboxes.create(mailbox_domain_id='mailbox_domain_id', mailbox_name='mailbox_name', )
+            await client.mailboxes.create(
+                mailbox_domain_id="mailbox_domain_id",
+                mailbox_name="mailbox_name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -228,11 +278,23 @@ class AsyncMailboxesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.mailboxes.search(entity_ids=['entity_ids'], )
+            await client.mailboxes.search(
+                entity_ids=["entity_ids"],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.search(entity_ids=entity_ids, request_options=request_options)
@@ -255,11 +317,23 @@ class AsyncMailboxesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.mailboxes.delete_by_id(mailbox_id='mailbox_id', )
+            await client.mailboxes.delete_by_id(
+                mailbox_id="mailbox_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(mailbox_id, request_options=request_options)

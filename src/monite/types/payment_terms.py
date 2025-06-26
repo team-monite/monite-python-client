@@ -6,28 +6,33 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
-from .payment_term_discount_with_date import PaymentTermDiscountWithDate
-from .term_final_with_date import TermFinalWithDate
+from .inline_term_discount import InlineTermDiscount
+from .inline_term_final import InlineTermFinal
 
 
 class PaymentTerms(UniversalBaseModel):
-    id: str
+    id: typing.Optional[str] = None
+    description: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Description of the payment term.
+    """
+
     name: typing.Optional[str] = None
-    term1: typing_extensions.Annotated[typing.Optional[PaymentTermDiscountWithDate], FieldMetadata(alias="term_1")] = (
+    term1: typing_extensions.Annotated[typing.Optional[InlineTermDiscount], FieldMetadata(alias="term_1")] = (
         pydantic.Field(default=None)
     )
     """
     The first tier of the payment term. Represents the terms of the first early discount.
     """
 
-    term2: typing_extensions.Annotated[typing.Optional[PaymentTermDiscountWithDate], FieldMetadata(alias="term_2")] = (
+    term2: typing_extensions.Annotated[typing.Optional[InlineTermDiscount], FieldMetadata(alias="term_2")] = (
         pydantic.Field(default=None)
     )
     """
     The second tier of the payment term. Defines the terms of the second early discount.
     """
 
-    term_final: TermFinalWithDate = pydantic.Field()
+    term_final: InlineTermFinal = pydantic.Field()
     """
     The final tier of the payment term. Defines the invoice due date.
     """

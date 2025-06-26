@@ -16,10 +16,10 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
-from ..types.payment_term import PaymentTerm
-from ..types.payment_term_discount import PaymentTermDiscount
 from ..types.payment_terms_list_response import PaymentTermsListResponse
 from ..types.payment_terms_response import PaymentTermsResponse
+from ..types.term_discount_days import TermDiscountDays
+from ..types.term_final_days import TermFinalDays
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -109,10 +109,10 @@ class RawPaymentTermsClient:
         self,
         *,
         name: str,
-        term_final: PaymentTerm,
+        term_final: TermFinalDays,
         description: typing.Optional[str] = OMIT,
-        term1: typing.Optional[PaymentTermDiscount] = OMIT,
-        term2: typing.Optional[PaymentTermDiscount] = OMIT,
+        term1: typing.Optional[TermDiscountDays] = OMIT,
+        term2: typing.Optional[TermDiscountDays] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[PaymentTermsResponse]:
         """
@@ -120,15 +120,15 @@ class RawPaymentTermsClient:
         ----------
         name : str
 
-        term_final : PaymentTerm
+        term_final : TermFinalDays
             The final tier of the payment term. Defines the invoice due date.
 
         description : typing.Optional[str]
 
-        term1 : typing.Optional[PaymentTermDiscount]
+        term1 : typing.Optional[TermDiscountDays]
             The first tier of the payment term. Represents the terms of the first early discount.
 
-        term2 : typing.Optional[PaymentTermDiscount]
+        term2 : typing.Optional[TermDiscountDays]
             The second tier of the payment term. Defines the terms of the second early discount.
 
         request_options : typing.Optional[RequestOptions]
@@ -146,13 +146,13 @@ class RawPaymentTermsClient:
                 "description": description,
                 "name": name,
                 "term_1": convert_and_respect_annotation_metadata(
-                    object_=term1, annotation=PaymentTermDiscount, direction="write"
+                    object_=term1, annotation=TermDiscountDays, direction="write"
                 ),
                 "term_2": convert_and_respect_annotation_metadata(
-                    object_=term2, annotation=PaymentTermDiscount, direction="write"
+                    object_=term2, annotation=TermDiscountDays, direction="write"
                 ),
                 "term_final": convert_and_respect_annotation_metadata(
-                    object_=term_final, annotation=PaymentTerm, direction="write"
+                    object_=term_final, annotation=TermFinalDays, direction="write"
                 ),
             },
             headers={
@@ -422,9 +422,9 @@ class RawPaymentTermsClient:
         *,
         description: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
-        term1: typing.Optional[PaymentTermDiscount] = OMIT,
-        term2: typing.Optional[PaymentTermDiscount] = OMIT,
-        term_final: typing.Optional[PaymentTerm] = OMIT,
+        term1: typing.Optional[TermDiscountDays] = OMIT,
+        term2: typing.Optional[TermDiscountDays] = OMIT,
+        term_final: typing.Optional[TermFinalDays] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[PaymentTermsResponse]:
         """
@@ -436,13 +436,13 @@ class RawPaymentTermsClient:
 
         name : typing.Optional[str]
 
-        term1 : typing.Optional[PaymentTermDiscount]
+        term1 : typing.Optional[TermDiscountDays]
             The first tier of the payment term. Represents the terms of the first early discount.
 
-        term2 : typing.Optional[PaymentTermDiscount]
+        term2 : typing.Optional[TermDiscountDays]
             The second tier of the payment term. Defines the terms of the second early discount.
 
-        term_final : typing.Optional[PaymentTerm]
+        term_final : typing.Optional[TermFinalDays]
             The final tier of the payment term. Defines the invoice due date.
 
         request_options : typing.Optional[RequestOptions]
@@ -460,13 +460,13 @@ class RawPaymentTermsClient:
                 "description": description,
                 "name": name,
                 "term_1": convert_and_respect_annotation_metadata(
-                    object_=term1, annotation=PaymentTermDiscount, direction="write"
+                    object_=term1, annotation=TermDiscountDays, direction="write"
                 ),
                 "term_2": convert_and_respect_annotation_metadata(
-                    object_=term2, annotation=PaymentTermDiscount, direction="write"
+                    object_=term2, annotation=TermDiscountDays, direction="write"
                 ),
                 "term_final": convert_and_respect_annotation_metadata(
-                    object_=term_final, annotation=PaymentTerm, direction="write"
+                    object_=term_final, annotation=TermFinalDays, direction="write"
                 ),
             },
             headers={
@@ -643,10 +643,10 @@ class AsyncRawPaymentTermsClient:
         self,
         *,
         name: str,
-        term_final: PaymentTerm,
+        term_final: TermFinalDays,
         description: typing.Optional[str] = OMIT,
-        term1: typing.Optional[PaymentTermDiscount] = OMIT,
-        term2: typing.Optional[PaymentTermDiscount] = OMIT,
+        term1: typing.Optional[TermDiscountDays] = OMIT,
+        term2: typing.Optional[TermDiscountDays] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[PaymentTermsResponse]:
         """
@@ -654,15 +654,15 @@ class AsyncRawPaymentTermsClient:
         ----------
         name : str
 
-        term_final : PaymentTerm
+        term_final : TermFinalDays
             The final tier of the payment term. Defines the invoice due date.
 
         description : typing.Optional[str]
 
-        term1 : typing.Optional[PaymentTermDiscount]
+        term1 : typing.Optional[TermDiscountDays]
             The first tier of the payment term. Represents the terms of the first early discount.
 
-        term2 : typing.Optional[PaymentTermDiscount]
+        term2 : typing.Optional[TermDiscountDays]
             The second tier of the payment term. Defines the terms of the second early discount.
 
         request_options : typing.Optional[RequestOptions]
@@ -680,13 +680,13 @@ class AsyncRawPaymentTermsClient:
                 "description": description,
                 "name": name,
                 "term_1": convert_and_respect_annotation_metadata(
-                    object_=term1, annotation=PaymentTermDiscount, direction="write"
+                    object_=term1, annotation=TermDiscountDays, direction="write"
                 ),
                 "term_2": convert_and_respect_annotation_metadata(
-                    object_=term2, annotation=PaymentTermDiscount, direction="write"
+                    object_=term2, annotation=TermDiscountDays, direction="write"
                 ),
                 "term_final": convert_and_respect_annotation_metadata(
-                    object_=term_final, annotation=PaymentTerm, direction="write"
+                    object_=term_final, annotation=TermFinalDays, direction="write"
                 ),
             },
             headers={
@@ -956,9 +956,9 @@ class AsyncRawPaymentTermsClient:
         *,
         description: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
-        term1: typing.Optional[PaymentTermDiscount] = OMIT,
-        term2: typing.Optional[PaymentTermDiscount] = OMIT,
-        term_final: typing.Optional[PaymentTerm] = OMIT,
+        term1: typing.Optional[TermDiscountDays] = OMIT,
+        term2: typing.Optional[TermDiscountDays] = OMIT,
+        term_final: typing.Optional[TermFinalDays] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[PaymentTermsResponse]:
         """
@@ -970,13 +970,13 @@ class AsyncRawPaymentTermsClient:
 
         name : typing.Optional[str]
 
-        term1 : typing.Optional[PaymentTermDiscount]
+        term1 : typing.Optional[TermDiscountDays]
             The first tier of the payment term. Represents the terms of the first early discount.
 
-        term2 : typing.Optional[PaymentTermDiscount]
+        term2 : typing.Optional[TermDiscountDays]
             The second tier of the payment term. Defines the terms of the second early discount.
 
-        term_final : typing.Optional[PaymentTerm]
+        term_final : typing.Optional[TermFinalDays]
             The final tier of the payment term. Defines the invoice due date.
 
         request_options : typing.Optional[RequestOptions]
@@ -994,13 +994,13 @@ class AsyncRawPaymentTermsClient:
                 "description": description,
                 "name": name,
                 "term_1": convert_and_respect_annotation_metadata(
-                    object_=term1, annotation=PaymentTermDiscount, direction="write"
+                    object_=term1, annotation=TermDiscountDays, direction="write"
                 ),
                 "term_2": convert_and_respect_annotation_metadata(
-                    object_=term2, annotation=PaymentTermDiscount, direction="write"
+                    object_=term2, annotation=TermDiscountDays, direction="write"
                 ),
                 "term_final": convert_and_respect_annotation_metadata(
-                    object_=term_final, annotation=PaymentTerm, direction="write"
+                    object_=term_final, annotation=TermFinalDays, direction="write"
                 ),
             },
             headers={

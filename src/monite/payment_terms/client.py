@@ -4,10 +4,10 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.payment_term import PaymentTerm
-from ..types.payment_term_discount import PaymentTermDiscount
 from ..types.payment_terms_list_response import PaymentTermsListResponse
 from ..types.payment_terms_response import PaymentTermsResponse
+from ..types.term_discount_days import TermDiscountDays
+from ..types.term_final_days import TermFinalDays
 from .raw_client import AsyncRawPaymentTermsClient, RawPaymentTermsClient
 
 # this is used as the default value for optional parameters
@@ -44,7 +44,12 @@ class PaymentTermsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payment_terms.get()
         """
         _response = self._raw_client.get(request_options=request_options)
@@ -54,10 +59,10 @@ class PaymentTermsClient:
         self,
         *,
         name: str,
-        term_final: PaymentTerm,
+        term_final: TermFinalDays,
         description: typing.Optional[str] = OMIT,
-        term1: typing.Optional[PaymentTermDiscount] = OMIT,
-        term2: typing.Optional[PaymentTermDiscount] = OMIT,
+        term1: typing.Optional[TermDiscountDays] = OMIT,
+        term2: typing.Optional[TermDiscountDays] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentTermsResponse:
         """
@@ -65,15 +70,15 @@ class PaymentTermsClient:
         ----------
         name : str
 
-        term_final : PaymentTerm
+        term_final : TermFinalDays
             The final tier of the payment term. Defines the invoice due date.
 
         description : typing.Optional[str]
 
-        term1 : typing.Optional[PaymentTermDiscount]
+        term1 : typing.Optional[TermDiscountDays]
             The first tier of the payment term. Represents the terms of the first early discount.
 
-        term2 : typing.Optional[PaymentTermDiscount]
+        term2 : typing.Optional[TermDiscountDays]
             The second tier of the payment term. Defines the terms of the second early discount.
 
         request_options : typing.Optional[RequestOptions]
@@ -86,10 +91,19 @@ class PaymentTermsClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import PaymentTerm
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_terms.create(name='name', term_final=PaymentTerm(number_of_days=1, ), )
+        from monite import Monite, TermFinalDays
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_terms.create(
+            name="name",
+            term_final=TermFinalDays(
+                number_of_days=1,
+            ),
+        )
         """
         _response = self._raw_client.create(
             name=name,
@@ -120,8 +134,15 @@ class PaymentTermsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_terms.get_by_id(payment_terms_id='payment_terms_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_terms.get_by_id(
+            payment_terms_id="payment_terms_id",
+        )
         """
         _response = self._raw_client.get_by_id(payment_terms_id, request_options=request_options)
         return _response.data
@@ -142,8 +163,15 @@ class PaymentTermsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_terms.delete_by_id(payment_terms_id='payment_terms_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_terms.delete_by_id(
+            payment_terms_id="payment_terms_id",
+        )
         """
         _response = self._raw_client.delete_by_id(payment_terms_id, request_options=request_options)
         return _response.data
@@ -154,9 +182,9 @@ class PaymentTermsClient:
         *,
         description: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
-        term1: typing.Optional[PaymentTermDiscount] = OMIT,
-        term2: typing.Optional[PaymentTermDiscount] = OMIT,
-        term_final: typing.Optional[PaymentTerm] = OMIT,
+        term1: typing.Optional[TermDiscountDays] = OMIT,
+        term2: typing.Optional[TermDiscountDays] = OMIT,
+        term_final: typing.Optional[TermFinalDays] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentTermsResponse:
         """
@@ -168,13 +196,13 @@ class PaymentTermsClient:
 
         name : typing.Optional[str]
 
-        term1 : typing.Optional[PaymentTermDiscount]
+        term1 : typing.Optional[TermDiscountDays]
             The first tier of the payment term. Represents the terms of the first early discount.
 
-        term2 : typing.Optional[PaymentTermDiscount]
+        term2 : typing.Optional[TermDiscountDays]
             The second tier of the payment term. Defines the terms of the second early discount.
 
-        term_final : typing.Optional[PaymentTerm]
+        term_final : typing.Optional[TermFinalDays]
             The final tier of the payment term. Defines the invoice due date.
 
         request_options : typing.Optional[RequestOptions]
@@ -188,8 +216,15 @@ class PaymentTermsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_terms.update_by_id(payment_terms_id='payment_terms_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_terms.update_by_id(
+            payment_terms_id="payment_terms_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             payment_terms_id,
@@ -232,11 +267,21 @@ class AsyncPaymentTermsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payment_terms.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(request_options=request_options)
@@ -246,10 +291,10 @@ class AsyncPaymentTermsClient:
         self,
         *,
         name: str,
-        term_final: PaymentTerm,
+        term_final: TermFinalDays,
         description: typing.Optional[str] = OMIT,
-        term1: typing.Optional[PaymentTermDiscount] = OMIT,
-        term2: typing.Optional[PaymentTermDiscount] = OMIT,
+        term1: typing.Optional[TermDiscountDays] = OMIT,
+        term2: typing.Optional[TermDiscountDays] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentTermsResponse:
         """
@@ -257,15 +302,15 @@ class AsyncPaymentTermsClient:
         ----------
         name : str
 
-        term_final : PaymentTerm
+        term_final : TermFinalDays
             The final tier of the payment term. Defines the invoice due date.
 
         description : typing.Optional[str]
 
-        term1 : typing.Optional[PaymentTermDiscount]
+        term1 : typing.Optional[TermDiscountDays]
             The first tier of the payment term. Represents the terms of the first early discount.
 
-        term2 : typing.Optional[PaymentTermDiscount]
+        term2 : typing.Optional[TermDiscountDays]
             The second tier of the payment term. Defines the terms of the second early discount.
 
         request_options : typing.Optional[RequestOptions]
@@ -278,12 +323,26 @@ class AsyncPaymentTermsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import PaymentTerm
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, TermFinalDays
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_terms.create(name='name', term_final=PaymentTerm(number_of_days=1, ), )
+            await client.payment_terms.create(
+                name="name",
+                term_final=TermFinalDays(
+                    number_of_days=1,
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -314,11 +373,23 @@ class AsyncPaymentTermsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_terms.get_by_id(payment_terms_id='payment_terms_id', )
+            await client.payment_terms.get_by_id(
+                payment_terms_id="payment_terms_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(payment_terms_id, request_options=request_options)
@@ -341,11 +412,23 @@ class AsyncPaymentTermsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_terms.delete_by_id(payment_terms_id='payment_terms_id', )
+            await client.payment_terms.delete_by_id(
+                payment_terms_id="payment_terms_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(payment_terms_id, request_options=request_options)
@@ -357,9 +440,9 @@ class AsyncPaymentTermsClient:
         *,
         description: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
-        term1: typing.Optional[PaymentTermDiscount] = OMIT,
-        term2: typing.Optional[PaymentTermDiscount] = OMIT,
-        term_final: typing.Optional[PaymentTerm] = OMIT,
+        term1: typing.Optional[TermDiscountDays] = OMIT,
+        term2: typing.Optional[TermDiscountDays] = OMIT,
+        term_final: typing.Optional[TermFinalDays] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentTermsResponse:
         """
@@ -371,13 +454,13 @@ class AsyncPaymentTermsClient:
 
         name : typing.Optional[str]
 
-        term1 : typing.Optional[PaymentTermDiscount]
+        term1 : typing.Optional[TermDiscountDays]
             The first tier of the payment term. Represents the terms of the first early discount.
 
-        term2 : typing.Optional[PaymentTermDiscount]
+        term2 : typing.Optional[TermDiscountDays]
             The second tier of the payment term. Defines the terms of the second early discount.
 
-        term_final : typing.Optional[PaymentTerm]
+        term_final : typing.Optional[TermFinalDays]
             The final tier of the payment term. Defines the invoice due date.
 
         request_options : typing.Optional[RequestOptions]
@@ -390,11 +473,23 @@ class AsyncPaymentTermsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_terms.update_by_id(payment_terms_id='payment_terms_id', )
+            await client.payment_terms.update_by_id(
+                payment_terms_id="payment_terms_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(

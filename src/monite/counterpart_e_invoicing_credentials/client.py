@@ -48,8 +48,15 @@ class CounterpartEInvoicingCredentialsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials(counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials(
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get_counterparts_id_einvoicing_credentials(
             counterpart_id, request_options=request_options
@@ -80,10 +87,19 @@ class CounterpartEInvoicingCredentialsClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import CreateCounterpartEinvoicingCredentialCounterpartVatId
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_credentials(counterpart_id='counterpart_id', request=CreateCounterpartEinvoicingCredentialCounterpartVatId(counterpart_vat_id_id='counterpart_vat_id_id', ), )
+        from monite import CreateCounterpartEinvoicingCredentialCounterpartVatId, Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_credentials(
+            counterpart_id="counterpart_id",
+            request=CreateCounterpartEinvoicingCredentialCounterpartVatId(
+                counterpart_vat_id_id="counterpart_vat_id_id",
+            ),
+        )
         """
         _response = self._raw_client.post_counterparts_id_einvoicing_credentials(
             counterpart_id, request=request, request_options=request_options
@@ -111,8 +127,16 @@ class CounterpartEInvoicingCredentialsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials_id(credential_id='credential_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials_id(
+            credential_id="credential_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get_counterparts_id_einvoicing_credentials_id(
             credential_id, counterpart_id, request_options=request_options
@@ -139,8 +163,16 @@ class CounterpartEInvoicingCredentialsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterpart_e_invoicing_credentials.delete_counterparts_id_einvoicing_credentials_id(credential_id='credential_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterpart_e_invoicing_credentials.delete_counterparts_id_einvoicing_credentials_id(
+            credential_id="credential_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.delete_counterparts_id_einvoicing_credentials_id(
             credential_id, counterpart_id, request_options=request_options
@@ -178,8 +210,16 @@ class CounterpartEInvoicingCredentialsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterpart_e_invoicing_credentials.patch_counterparts_id_einvoicing_credentials_id(credential_id='credential_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterpart_e_invoicing_credentials.patch_counterparts_id_einvoicing_credentials_id(
+            credential_id="credential_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.patch_counterparts_id_einvoicing_credentials_id(
             credential_id,
@@ -224,11 +264,23 @@ class AsyncCounterpartEInvoicingCredentialsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials(counterpart_id='counterpart_id', )
+            await client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials(
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_counterparts_id_einvoicing_credentials(
@@ -260,12 +312,29 @@ class AsyncCounterpartEInvoicingCredentialsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import CreateCounterpartEinvoicingCredentialCounterpartVatId
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import (
+            AsyncMonite,
+            CreateCounterpartEinvoicingCredentialCounterpartVatId,
+        )
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_credentials(counterpart_id='counterpart_id', request=CreateCounterpartEinvoicingCredentialCounterpartVatId(counterpart_vat_id_id='counterpart_vat_id_id', ), )
+            await client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_credentials(
+                counterpart_id="counterpart_id",
+                request=CreateCounterpartEinvoicingCredentialCounterpartVatId(
+                    counterpart_vat_id_id="counterpart_vat_id_id",
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_counterparts_id_einvoicing_credentials(
@@ -293,11 +362,24 @@ class AsyncCounterpartEInvoicingCredentialsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials_id(credential_id='credential_id', counterpart_id='counterpart_id', )
+            await client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials_id(
+                credential_id="credential_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_counterparts_id_einvoicing_credentials_id(
@@ -324,11 +406,24 @@ class AsyncCounterpartEInvoicingCredentialsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterpart_e_invoicing_credentials.delete_counterparts_id_einvoicing_credentials_id(credential_id='credential_id', counterpart_id='counterpart_id', )
+            await client.counterpart_e_invoicing_credentials.delete_counterparts_id_einvoicing_credentials_id(
+                credential_id="credential_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_counterparts_id_einvoicing_credentials_id(
@@ -366,11 +461,24 @@ class AsyncCounterpartEInvoicingCredentialsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterpart_e_invoicing_credentials.patch_counterparts_id_einvoicing_credentials_id(credential_id='credential_id', counterpart_id='counterpart_id', )
+            await client.counterpart_e_invoicing_credentials.patch_counterparts_id_einvoicing_credentials_id(
+                credential_id="credential_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.patch_counterparts_id_einvoicing_credentials_id(

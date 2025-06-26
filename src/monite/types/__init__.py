@@ -119,7 +119,6 @@ from .counterpart_raw_data_update_request import CounterpartRawDataUpdateRequest
 from .counterpart_raw_vat_id import CounterpartRawVatId
 from .counterpart_raw_vat_id_update_request import CounterpartRawVatIdUpdateRequest
 from .counterpart_response import CounterpartResponse
-from .counterpart_tag_category import CounterpartTagCategory
 from .counterpart_tag_schema import CounterpartTagSchema
 from .counterpart_type import CounterpartType
 from .counterpart_update_payload import CounterpartUpdatePayload
@@ -160,6 +159,8 @@ from .cursor_fields import CursorFields
 from .custom_template_data_schema import CustomTemplateDataSchema
 from .custom_templates_cursor_fields import CustomTemplatesCursorFields
 from .custom_templates_pagination_response import CustomTemplatesPaginationResponse
+from .custom_vat_rate_response import CustomVatRateResponse
+from .custom_vat_rate_response_list import CustomVatRateResponseList
 from .data_export_cursor_fields import DataExportCursorFields
 from .date_dimension_breakdown_enum import DateDimensionBreakdownEnum
 from .day_of_month import DayOfMonth
@@ -181,6 +182,7 @@ from .delivery_note_resource_entity import (
 from .delivery_note_resource_list import DeliveryNoteResourceList
 from .delivery_note_status_enum import DeliveryNoteStatusEnum
 from .discount import Discount
+from .discount_response import DiscountResponse
 from .discount_type import DiscountType
 from .dns_record import DnsRecord
 from .dns_record_purpose import DnsRecordPurpose
@@ -242,6 +244,7 @@ from .export_setting_cursor_fields import ExportSettingCursorFields
 from .extra_data_resource import ExtraDataResource
 from .extra_data_resource_list import ExtraDataResourceList
 from .field_schema import FieldSchema
+from .file_attached_event_data import FileAttachedEventData
 from .file_response import FileResponse
 from .file_schema import FileSchema
 from .file_schema2 import FileSchema2
@@ -257,12 +260,14 @@ from .financing_push_invoices_request_invoice import FinancingPushInvoicesReques
 from .financing_push_invoices_response import FinancingPushInvoicesResponse
 from .financing_token_response import FinancingTokenResponse
 from .get_all_payment_reminders import GetAllPaymentReminders
-from .get_all_recurrences import GetAllRecurrences
 from .get_onboarding_requirements_response import GetOnboardingRequirementsResponse
 from .grant_type import GrantType
 from .http_validation_error import HttpValidationError
 from .individual_response_schema import IndividualResponseSchema
 from .individual_schema import IndividualSchema
+from .inline_payment_terms_request_payload import InlinePaymentTermsRequestPayload
+from .inline_term_discount import InlineTermDiscount
+from .inline_term_final import InlineTermFinal
 from .invoice import Invoice
 from .invoice_file import InvoiceFile
 from .invoice_rendering_settings import InvoiceRenderingSettings
@@ -362,13 +367,21 @@ from .payable_action_schema import PayableActionSchema
 from .payable_aggregated_data_response import PayableAggregatedDataResponse
 from .payable_aggregated_item import PayableAggregatedItem
 from .payable_analytics_response import PayableAnalyticsResponse
+from .payable_created_event_data import PayableCreatedEventData
 from .payable_credit_note_data import PayableCreditNoteData
+from .payable_credit_note_linked_event_data import PayableCreditNoteLinkedEventData
 from .payable_credit_note_state_enum import PayableCreditNoteStateEnum
+from .payable_credit_note_unlinked_event_data import PayableCreditNoteUnlinkedEventData
 from .payable_cursor_fields import PayableCursorFields
 from .payable_dimension_enum import PayableDimensionEnum
 from .payable_entity_address_schema import PayableEntityAddressSchema
 from .payable_entity_individual_response import PayableEntityIndividualResponse
 from .payable_entity_organization_response import PayableEntityOrganizationResponse
+from .payable_history_cursor_fields import PayableHistoryCursorFields
+from .payable_history_event_type_enum import PayableHistoryEventTypeEnum
+from .payable_history_pagination_response import PayableHistoryPaginationResponse
+from .payable_history_response import PayableHistoryResponse
+from .payable_history_response_event_data import PayableHistoryResponseEventData
 from .payable_individual_schema import PayableIndividualSchema
 from .payable_metric_enum import PayableMetricEnum
 from .payable_organization_schema import PayableOrganizationSchema
@@ -383,9 +396,11 @@ from .payable_schema_input import PayableSchemaInput
 from .payable_schema_output import PayableSchemaOutput
 from .payable_settings import PayableSettings
 from .payable_state_enum import PayableStateEnum
+from .payable_status_changed_event_data import PayableStatusChangedEventData
 from .payable_templates_variable import PayableTemplatesVariable
 from .payable_templates_variables_object import PayableTemplatesVariablesObject
 from .payable_templates_variables_object_list import PayableTemplatesVariablesObjectList
+from .payable_updated_event_data import PayableUpdatedEventData
 from .payable_validation_response import PayableValidationResponse
 from .payable_validations_resource import PayableValidationsResource
 from .payables_fields_allowed_for_validate import PayablesFieldsAllowedForValidate
@@ -412,6 +427,7 @@ from .payment_page_theme import PaymentPageTheme
 from .payment_priority_enum import PaymentPriorityEnum
 from .payment_received_event_data import PaymentReceivedEventData
 from .payment_record_cursor_fields import PaymentRecordCursorFields
+from .payment_record_history_response import PaymentRecordHistoryResponse
 from .payment_record_object_request import PaymentRecordObjectRequest
 from .payment_record_object_response import PaymentRecordObjectResponse
 from .payment_record_response import PaymentRecordResponse
@@ -420,9 +436,6 @@ from .payment_record_status_enum import PaymentRecordStatusEnum
 from .payment_record_status_update_request import PaymentRecordStatusUpdateRequest
 from .payment_reminder_response import PaymentReminderResponse
 from .payment_requirements import PaymentRequirements
-from .payment_term import PaymentTerm
-from .payment_term_discount import PaymentTermDiscount
-from .payment_term_discount_with_date import PaymentTermDiscountWithDate
 from .payment_terms import PaymentTerms
 from .payment_terms_list_response import PaymentTermsListResponse
 from .payment_terms_response import PaymentTermsResponse
@@ -481,11 +494,11 @@ from .quote_response_payload_entity import (
 )
 from .quote_state_enum import QuoteStateEnum
 from .receivable_counterpart_contact import ReceivableCounterpartContact
-from .receivable_counterpart_type import ReceivableCounterpartType
 from .receivable_counterpart_vat_id_response import ReceivableCounterpartVatIdResponse
 from .receivable_create_based_on_payload import ReceivableCreateBasedOnPayload
 from .receivable_created_event_data import ReceivableCreatedEventData
 from .receivable_cursor_fields import ReceivableCursorFields
+from .receivable_cursor_fields2 import ReceivableCursorFields2
 from .receivable_dimension_enum import ReceivableDimensionEnum
 from .receivable_edit_flow import ReceivableEditFlow
 from .receivable_entity_address_schema import ReceivableEntityAddressSchema
@@ -522,7 +535,6 @@ from .receivable_response import (
 )
 from .receivable_send_response import ReceivableSendResponse
 from .receivable_settings import ReceivableSettings
-from .receivable_tag_category import ReceivableTagCategory
 from .receivable_templates_variable import ReceivableTemplatesVariable
 from .receivable_templates_variables_object import ReceivableTemplatesVariablesObject
 from .receivable_templates_variables_object_list import ReceivableTemplatesVariablesObjectList
@@ -543,8 +555,10 @@ from .recipient import Recipient
 from .recipient_account_response import RecipientAccountResponse
 from .recipient_type import RecipientType
 from .recipients import Recipients
-from .recurrence import Recurrence
+from .recurrence_frequency import RecurrenceFrequency
 from .recurrence_iteration import RecurrenceIteration
+from .recurrence_response import RecurrenceResponse
+from .recurrence_response_list import RecurrenceResponseList
 from .recurrence_status import RecurrenceStatus
 from .related_documents import RelatedDocuments
 from .reminder import Reminder
@@ -653,7 +667,8 @@ from .template_data_schema import TemplateDataSchema
 from .template_list_response import TemplateListResponse
 from .template_receivable_response import TemplateReceivableResponse
 from .template_type_enum import TemplateTypeEnum
-from .term_final_with_date import TermFinalWithDate
+from .term_discount_days import TermDiscountDays
+from .term_final_days import TermFinalDays
 from .terms_of_service_acceptance_input import TermsOfServiceAcceptanceInput
 from .terms_of_service_acceptance_output import TermsOfServiceAcceptanceOutput
 from .text_template_document_type_enum import TextTemplateDocumentTypeEnum
@@ -661,12 +676,14 @@ from .text_template_response import TextTemplateResponse
 from .text_template_response_list import TextTemplateResponseList
 from .text_template_type import TextTemplateType
 from .total_vat_amount_item import TotalVatAmountItem
+from .total_vat_amount_item_component import TotalVatAmountItemComponent
 from .unit import Unit
 from .unit_list_response import UnitListResponse
 from .unit_request import UnitRequest
 from .unit_response import UnitResponse
 from .update_credit_note import UpdateCreditNote
 from .update_credit_note_payload import UpdateCreditNotePayload
+from .update_einvoicing_address import UpdateEinvoicingAddress
 from .update_entity_address_schema import UpdateEntityAddressSchema
 from .update_entity_request import UpdateEntityRequest
 from .update_invoice import UpdateInvoice
@@ -690,6 +707,7 @@ from .variables_object_list import VariablesObjectList
 from .variables_type import VariablesType
 from .vat_id_type_enum import VatIdTypeEnum
 from .vat_mode_enum import VatModeEnum
+from .vat_rate_component import VatRateComponent
 from .vat_rate_creator import VatRateCreator
 from .vat_rate_list_response import VatRateListResponse
 from .vat_rate_response import VatRateResponse
@@ -831,7 +849,6 @@ __all__ = [
     "CounterpartRawVatId",
     "CounterpartRawVatIdUpdateRequest",
     "CounterpartResponse",
-    "CounterpartTagCategory",
     "CounterpartTagSchema",
     "CounterpartType",
     "CounterpartUpdatePayload",
@@ -868,6 +885,8 @@ __all__ = [
     "CustomTemplateDataSchema",
     "CustomTemplatesCursorFields",
     "CustomTemplatesPaginationResponse",
+    "CustomVatRateResponse",
+    "CustomVatRateResponseList",
     "DataExportCursorFields",
     "DateDimensionBreakdownEnum",
     "DayOfMonth",
@@ -887,6 +906,7 @@ __all__ = [
     "DeliveryNoteResourceList",
     "DeliveryNoteStatusEnum",
     "Discount",
+    "DiscountResponse",
     "DiscountType",
     "DnsRecord",
     "DnsRecordPurpose",
@@ -952,6 +972,7 @@ __all__ = [
     "ExtraDataResource",
     "ExtraDataResourceList",
     "FieldSchema",
+    "FileAttachedEventData",
     "FileResponse",
     "FileSchema",
     "FileSchema2",
@@ -967,12 +988,14 @@ __all__ = [
     "FinancingPushInvoicesResponse",
     "FinancingTokenResponse",
     "GetAllPaymentReminders",
-    "GetAllRecurrences",
     "GetOnboardingRequirementsResponse",
     "GrantType",
     "HttpValidationError",
     "IndividualResponseSchema",
     "IndividualSchema",
+    "InlinePaymentTermsRequestPayload",
+    "InlineTermDiscount",
+    "InlineTermFinal",
     "Invoice",
     "InvoiceFile",
     "InvoiceRenderingSettings",
@@ -1068,13 +1091,21 @@ __all__ = [
     "PayableAggregatedDataResponse",
     "PayableAggregatedItem",
     "PayableAnalyticsResponse",
+    "PayableCreatedEventData",
     "PayableCreditNoteData",
+    "PayableCreditNoteLinkedEventData",
     "PayableCreditNoteStateEnum",
+    "PayableCreditNoteUnlinkedEventData",
     "PayableCursorFields",
     "PayableDimensionEnum",
     "PayableEntityAddressSchema",
     "PayableEntityIndividualResponse",
     "PayableEntityOrganizationResponse",
+    "PayableHistoryCursorFields",
+    "PayableHistoryEventTypeEnum",
+    "PayableHistoryPaginationResponse",
+    "PayableHistoryResponse",
+    "PayableHistoryResponseEventData",
     "PayableIndividualSchema",
     "PayableMetricEnum",
     "PayableOrganizationSchema",
@@ -1089,9 +1120,11 @@ __all__ = [
     "PayableSchemaOutput",
     "PayableSettings",
     "PayableStateEnum",
+    "PayableStatusChangedEventData",
     "PayableTemplatesVariable",
     "PayableTemplatesVariablesObject",
     "PayableTemplatesVariablesObjectList",
+    "PayableUpdatedEventData",
     "PayableValidationResponse",
     "PayableValidationsResource",
     "PayablesFieldsAllowedForValidate",
@@ -1118,6 +1151,7 @@ __all__ = [
     "PaymentPriorityEnum",
     "PaymentReceivedEventData",
     "PaymentRecordCursorFields",
+    "PaymentRecordHistoryResponse",
     "PaymentRecordObjectRequest",
     "PaymentRecordObjectResponse",
     "PaymentRecordResponse",
@@ -1126,9 +1160,6 @@ __all__ = [
     "PaymentRecordStatusUpdateRequest",
     "PaymentReminderResponse",
     "PaymentRequirements",
-    "PaymentTerm",
-    "PaymentTermDiscount",
-    "PaymentTermDiscountWithDate",
     "PaymentTerms",
     "PaymentTermsListResponse",
     "PaymentTermsResponse",
@@ -1185,11 +1216,11 @@ __all__ = [
     "QuoteResponsePayloadEntity_Organization",
     "QuoteStateEnum",
     "ReceivableCounterpartContact",
-    "ReceivableCounterpartType",
     "ReceivableCounterpartVatIdResponse",
     "ReceivableCreateBasedOnPayload",
     "ReceivableCreatedEventData",
     "ReceivableCursorFields",
+    "ReceivableCursorFields2",
     "ReceivableDimensionEnum",
     "ReceivableEditFlow",
     "ReceivableEntityAddressSchema",
@@ -1224,7 +1255,6 @@ __all__ = [
     "ReceivableResponse_Quote",
     "ReceivableSendResponse",
     "ReceivableSettings",
-    "ReceivableTagCategory",
     "ReceivableTemplatesVariable",
     "ReceivableTemplatesVariablesObject",
     "ReceivableTemplatesVariablesObjectList",
@@ -1245,8 +1275,10 @@ __all__ = [
     "RecipientAccountResponse",
     "RecipientType",
     "Recipients",
-    "Recurrence",
+    "RecurrenceFrequency",
     "RecurrenceIteration",
+    "RecurrenceResponse",
+    "RecurrenceResponseList",
     "RecurrenceStatus",
     "RelatedDocuments",
     "Reminder",
@@ -1351,7 +1383,8 @@ __all__ = [
     "TemplateListResponse",
     "TemplateReceivableResponse",
     "TemplateTypeEnum",
-    "TermFinalWithDate",
+    "TermDiscountDays",
+    "TermFinalDays",
     "TermsOfServiceAcceptanceInput",
     "TermsOfServiceAcceptanceOutput",
     "TextTemplateDocumentTypeEnum",
@@ -1359,12 +1392,14 @@ __all__ = [
     "TextTemplateResponseList",
     "TextTemplateType",
     "TotalVatAmountItem",
+    "TotalVatAmountItemComponent",
     "Unit",
     "UnitListResponse",
     "UnitRequest",
     "UnitResponse",
     "UpdateCreditNote",
     "UpdateCreditNotePayload",
+    "UpdateEinvoicingAddress",
     "UpdateEntityAddressSchema",
     "UpdateEntityRequest",
     "UpdateInvoice",
@@ -1386,6 +1421,7 @@ __all__ = [
     "VariablesType",
     "VatIdTypeEnum",
     "VatModeEnum",
+    "VatRateComponent",
     "VatRateCreator",
     "VatRateListResponse",
     "VatRateResponse",

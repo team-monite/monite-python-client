@@ -4,11 +4,18 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .recurrence import Recurrence
 
 
-class GetAllRecurrences(UniversalBaseModel):
-    data: typing.List[Recurrence]
+class VatRateComponent(UniversalBaseModel):
+    name: str = pydantic.Field()
+    """
+    Display name of the Tax.
+    """
+
+    value: float = pydantic.Field()
+    """
+    Percent multiplied by a 100. Example: 12.125% is 1212.5. Will be rounded to 2 decimal places
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

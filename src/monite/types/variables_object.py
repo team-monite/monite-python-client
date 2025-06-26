@@ -4,12 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .ocr_document_type_enum import OcrDocumentTypeEnum
+from .document_type_enum import DocumentTypeEnum
 from .variable import Variable
 
 
 class VariablesObject(UniversalBaseModel):
-    object_subtype: OcrDocumentTypeEnum
+    object_subtype: DocumentTypeEnum
     object_type: str
     variables: typing.List[Variable]
 

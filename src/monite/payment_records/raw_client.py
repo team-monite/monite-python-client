@@ -41,6 +41,7 @@ class RawPaymentRecordsClient:
         sort: typing.Optional[PaymentRecordCursorFields] = None,
         is_external: typing.Optional[bool] = None,
         object_id: typing.Optional[str] = None,
+        object_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         object_type: typing.Optional[ObjectTypeEnum] = None,
         created_at_gt: typing.Optional[dt.datetime] = None,
         created_at_lt: typing.Optional[dt.datetime] = None,
@@ -78,6 +79,9 @@ class RawPaymentRecordsClient:
 
         object_id : typing.Optional[str]
             ID of the object, that is connected to payment
+
+        object_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            List of IDs of the objects, that are connected to payments
 
         object_type : typing.Optional[ObjectTypeEnum]
             Type of an object, which is connected with payment
@@ -142,6 +146,7 @@ class RawPaymentRecordsClient:
                 "sort": sort,
                 "is_external": is_external,
                 "object_id": object_id,
+                "object_id__in": object_id_in,
                 "object_type": object_type,
                 "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
                 "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,
@@ -720,6 +725,7 @@ class AsyncRawPaymentRecordsClient:
         sort: typing.Optional[PaymentRecordCursorFields] = None,
         is_external: typing.Optional[bool] = None,
         object_id: typing.Optional[str] = None,
+        object_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         object_type: typing.Optional[ObjectTypeEnum] = None,
         created_at_gt: typing.Optional[dt.datetime] = None,
         created_at_lt: typing.Optional[dt.datetime] = None,
@@ -757,6 +763,9 @@ class AsyncRawPaymentRecordsClient:
 
         object_id : typing.Optional[str]
             ID of the object, that is connected to payment
+
+        object_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            List of IDs of the objects, that are connected to payments
 
         object_type : typing.Optional[ObjectTypeEnum]
             Type of an object, which is connected with payment
@@ -821,6 +830,7 @@ class AsyncRawPaymentRecordsClient:
                 "sort": sort,
                 "is_external": is_external,
                 "object_id": object_id,
+                "object_id__in": object_id_in,
                 "object_type": object_type,
                 "created_at__gt": serialize_datetime(created_at_gt) if created_at_gt is not None else None,
                 "created_at__lt": serialize_datetime(created_at_lt) if created_at_lt is not None else None,

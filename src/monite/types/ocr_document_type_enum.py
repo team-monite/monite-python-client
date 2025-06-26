@@ -2,15 +2,4 @@
 
 import typing
 
-OcrDocumentTypeEnum = typing.Union[
-    typing.Literal[
-        "quote",
-        "invoice",
-        "credit_note",
-        "discount_reminder",
-        "final_reminder",
-        "payables_purchase_order",
-        "overdue_reminder",
-    ],
-    typing.Any,
-]
+OcrDocumentTypeEnum = typing.Union[typing.Literal["invoice", "credit_note", "receipt"], typing.Any]

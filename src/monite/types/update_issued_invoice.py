@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .inline_payment_terms_request_payload import InlinePaymentTermsRequestPayload
 from .receivable_entity_address_schema import ReceivableEntityAddressSchema
 from .update_issued_invoice_entity import UpdateIssuedInvoiceEntity
 
@@ -68,6 +69,7 @@ class UpdateIssuedInvoice(UniversalBaseModel):
     """
 
     payment_reminder_id: typing.Optional[str] = None
+    payment_terms: typing.Optional[InlinePaymentTermsRequestPayload] = None
     payment_terms_id: typing.Optional[str] = None
     project_id: typing.Optional[str] = pydantic.Field(default=None)
     """

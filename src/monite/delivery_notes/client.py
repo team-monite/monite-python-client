@@ -134,7 +134,12 @@ class DeliveryNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.delivery_notes.get_delivery_notes()
         """
         _response = self._raw_client.get_delivery_notes(
@@ -184,13 +189,46 @@ class DeliveryNotesClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import DeliveryNoteCreateRequest
-        from monite import DeliveryNoteCreateLineItem
-        from monite import DeliveryNoteLineItemProduct
-        from monite import UnitRequest
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.delivery_notes.post_delivery_notes(request=DeliveryNoteCreateRequest(counterpart_address_id='a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6', counterpart_id='a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6', delivery_date='2025-01-01', delivery_number='102-2025-0987', display_signature_placeholder=True, line_items=[DeliveryNoteCreateLineItem(product_id='a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6', quantity=10.0, ), DeliveryNoteCreateLineItem(product=DeliveryNoteLineItemProduct(description='Description of product 2', measure_unit=UnitRequest(description='pieces', name='pcs', ), name='Product 2', ), quantity=20.0, )], memo='This is a memo', ), )
+        from monite import (
+            DeliveryNoteCreateLineItem,
+            DeliveryNoteCreateRequest,
+            DeliveryNoteLineItemProduct,
+            Monite,
+            UnitRequest,
+        )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.delivery_notes.post_delivery_notes(
+            request=DeliveryNoteCreateRequest(
+                counterpart_address_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+                counterpart_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+                delivery_date="2025-01-01",
+                delivery_number="102-2025-0987",
+                display_signature_placeholder=True,
+                line_items=[
+                    DeliveryNoteCreateLineItem(
+                        product_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+                        quantity=10.0,
+                    ),
+                    DeliveryNoteCreateLineItem(
+                        product=DeliveryNoteLineItemProduct(
+                            description="Description of product 2",
+                            measure_unit=UnitRequest(
+                                description="pieces",
+                                name="pcs",
+                            ),
+                            name="Product 2",
+                        ),
+                        quantity=20.0,
+                    ),
+                ],
+                memo="This is a memo",
+            ),
+        )
         """
         _response = self._raw_client.post_delivery_notes(request=request, request_options=request_options)
         return _response.data
@@ -214,8 +252,15 @@ class DeliveryNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.delivery_notes.get_delivery_notes_id(delivery_note_id='delivery_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.delivery_notes.get_delivery_notes_id(
+            delivery_note_id="delivery_note_id",
+        )
         """
         _response = self._raw_client.get_delivery_notes_id(delivery_note_id, request_options=request_options)
         return _response.data
@@ -238,8 +283,15 @@ class DeliveryNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.delivery_notes.delete_delivery_notes_id(delivery_note_id='delivery_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.delivery_notes.delete_delivery_notes_id(
+            delivery_note_id="delivery_note_id",
+        )
         """
         _response = self._raw_client.delete_delivery_notes_id(delivery_note_id, request_options=request_options)
         return _response.data
@@ -294,8 +346,15 @@ class DeliveryNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.delivery_notes.patch_delivery_notes_id(delivery_note_id='delivery_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.delivery_notes.patch_delivery_notes_id(
+            delivery_note_id="delivery_note_id",
+        )
         """
         _response = self._raw_client.patch_delivery_notes_id(
             delivery_note_id,
@@ -329,8 +388,15 @@ class DeliveryNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.delivery_notes.post_delivery_notes_id_cancel(delivery_note_id='delivery_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.delivery_notes.post_delivery_notes_id_cancel(
+            delivery_note_id="delivery_note_id",
+        )
         """
         _response = self._raw_client.post_delivery_notes_id_cancel(delivery_note_id, request_options=request_options)
         return _response.data
@@ -354,8 +420,15 @@ class DeliveryNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.delivery_notes.post_delivery_notes_id_mark_as_delivered(delivery_note_id='delivery_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.delivery_notes.post_delivery_notes_id_mark_as_delivered(
+            delivery_note_id="delivery_note_id",
+        )
         """
         _response = self._raw_client.post_delivery_notes_id_mark_as_delivered(
             delivery_note_id, request_options=request_options
@@ -478,11 +551,21 @@ class AsyncDeliveryNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.delivery_notes.get_delivery_notes()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_delivery_notes(
@@ -532,15 +615,53 @@ class AsyncDeliveryNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import DeliveryNoteCreateRequest
-        from monite import DeliveryNoteCreateLineItem
-        from monite import DeliveryNoteLineItemProduct
-        from monite import UnitRequest
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import (
+            AsyncMonite,
+            DeliveryNoteCreateLineItem,
+            DeliveryNoteCreateRequest,
+            DeliveryNoteLineItemProduct,
+            UnitRequest,
+        )
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.delivery_notes.post_delivery_notes(request=DeliveryNoteCreateRequest(counterpart_address_id='a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6', counterpart_id='a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6', delivery_date='2025-01-01', delivery_number='102-2025-0987', display_signature_placeholder=True, line_items=[DeliveryNoteCreateLineItem(product_id='a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6', quantity=10.0, ), DeliveryNoteCreateLineItem(product=DeliveryNoteLineItemProduct(description='Description of product 2', measure_unit=UnitRequest(description='pieces', name='pcs', ), name='Product 2', ), quantity=20.0, )], memo='This is a memo', ), )
+            await client.delivery_notes.post_delivery_notes(
+                request=DeliveryNoteCreateRequest(
+                    counterpart_address_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+                    counterpart_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+                    delivery_date="2025-01-01",
+                    delivery_number="102-2025-0987",
+                    display_signature_placeholder=True,
+                    line_items=[
+                        DeliveryNoteCreateLineItem(
+                            product_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+                            quantity=10.0,
+                        ),
+                        DeliveryNoteCreateLineItem(
+                            product=DeliveryNoteLineItemProduct(
+                                description="Description of product 2",
+                                measure_unit=UnitRequest(
+                                    description="pieces",
+                                    name="pcs",
+                                ),
+                                name="Product 2",
+                            ),
+                            quantity=20.0,
+                        ),
+                    ],
+                    memo="This is a memo",
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_delivery_notes(request=request, request_options=request_options)
@@ -564,11 +685,23 @@ class AsyncDeliveryNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.delivery_notes.get_delivery_notes_id(delivery_note_id='delivery_note_id', )
+            await client.delivery_notes.get_delivery_notes_id(
+                delivery_note_id="delivery_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_delivery_notes_id(delivery_note_id, request_options=request_options)
@@ -591,11 +724,23 @@ class AsyncDeliveryNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.delivery_notes.delete_delivery_notes_id(delivery_note_id='delivery_note_id', )
+            await client.delivery_notes.delete_delivery_notes_id(
+                delivery_note_id="delivery_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_delivery_notes_id(delivery_note_id, request_options=request_options)
@@ -650,11 +795,23 @@ class AsyncDeliveryNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.delivery_notes.patch_delivery_notes_id(delivery_note_id='delivery_note_id', )
+            await client.delivery_notes.patch_delivery_notes_id(
+                delivery_note_id="delivery_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.patch_delivery_notes_id(
@@ -688,11 +845,23 @@ class AsyncDeliveryNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.delivery_notes.post_delivery_notes_id_cancel(delivery_note_id='delivery_note_id', )
+            await client.delivery_notes.post_delivery_notes_id_cancel(
+                delivery_note_id="delivery_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_delivery_notes_id_cancel(
@@ -718,11 +887,23 @@ class AsyncDeliveryNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.delivery_notes.post_delivery_notes_id_mark_as_delivered(delivery_note_id='delivery_note_id', )
+            await client.delivery_notes.post_delivery_notes_id_mark_as_delivered(
+                delivery_note_id="delivery_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_delivery_notes_id_mark_as_delivered(

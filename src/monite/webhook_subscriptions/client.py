@@ -84,7 +84,12 @@ class WebhookSubscriptionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.webhook_subscriptions.get()
         """
         _response = self._raw_client.get(
@@ -129,8 +134,16 @@ class WebhookSubscriptionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.webhook_subscriptions.create(object_type="account", url='url', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.webhook_subscriptions.create(
+            object_type="account",
+            url="url",
+        )
         """
         _response = self._raw_client.create(
             object_type=object_type, url=url, event_types=event_types, request_options=request_options
@@ -156,8 +169,15 @@ class WebhookSubscriptionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.webhook_subscriptions.get_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.webhook_subscriptions.get_by_id(
+            webhook_subscription_id="webhook_subscription_id",
+        )
         """
         _response = self._raw_client.get_by_id(webhook_subscription_id, request_options=request_options)
         return _response.data
@@ -180,8 +200,15 @@ class WebhookSubscriptionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.webhook_subscriptions.delete_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.webhook_subscriptions.delete_by_id(
+            webhook_subscription_id="webhook_subscription_id",
+        )
         """
         _response = self._raw_client.delete_by_id(webhook_subscription_id, request_options=request_options)
         return _response.data
@@ -217,8 +244,15 @@ class WebhookSubscriptionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.webhook_subscriptions.update_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.webhook_subscriptions.update_by_id(
+            webhook_subscription_id="webhook_subscription_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             webhook_subscription_id,
@@ -248,8 +282,15 @@ class WebhookSubscriptionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.webhook_subscriptions.disable_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.webhook_subscriptions.disable_by_id(
+            webhook_subscription_id="webhook_subscription_id",
+        )
         """
         _response = self._raw_client.disable_by_id(webhook_subscription_id, request_options=request_options)
         return _response.data
@@ -273,8 +314,15 @@ class WebhookSubscriptionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.webhook_subscriptions.enable_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.webhook_subscriptions.enable_by_id(
+            webhook_subscription_id="webhook_subscription_id",
+        )
         """
         _response = self._raw_client.enable_by_id(webhook_subscription_id, request_options=request_options)
         return _response.data
@@ -298,8 +346,15 @@ class WebhookSubscriptionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.webhook_subscriptions.regenerate_secret_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.webhook_subscriptions.regenerate_secret_by_id(
+            webhook_subscription_id="webhook_subscription_id",
+        )
         """
         _response = self._raw_client.regenerate_secret_by_id(webhook_subscription_id, request_options=request_options)
         return _response.data
@@ -371,11 +426,21 @@ class AsyncWebhookSubscriptionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.webhook_subscriptions.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -419,11 +484,24 @@ class AsyncWebhookSubscriptionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.webhook_subscriptions.create(object_type="account", url='url', )
+            await client.webhook_subscriptions.create(
+                object_type="account",
+                url="url",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -449,11 +527,23 @@ class AsyncWebhookSubscriptionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.webhook_subscriptions.get_by_id(webhook_subscription_id='webhook_subscription_id', )
+            await client.webhook_subscriptions.get_by_id(
+                webhook_subscription_id="webhook_subscription_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(webhook_subscription_id, request_options=request_options)
@@ -476,11 +566,23 @@ class AsyncWebhookSubscriptionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.webhook_subscriptions.delete_by_id(webhook_subscription_id='webhook_subscription_id', )
+            await client.webhook_subscriptions.delete_by_id(
+                webhook_subscription_id="webhook_subscription_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(webhook_subscription_id, request_options=request_options)
@@ -516,11 +618,23 @@ class AsyncWebhookSubscriptionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.webhook_subscriptions.update_by_id(webhook_subscription_id='webhook_subscription_id', )
+            await client.webhook_subscriptions.update_by_id(
+                webhook_subscription_id="webhook_subscription_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -550,11 +664,23 @@ class AsyncWebhookSubscriptionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.webhook_subscriptions.disable_by_id(webhook_subscription_id='webhook_subscription_id', )
+            await client.webhook_subscriptions.disable_by_id(
+                webhook_subscription_id="webhook_subscription_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.disable_by_id(webhook_subscription_id, request_options=request_options)
@@ -578,11 +704,23 @@ class AsyncWebhookSubscriptionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.webhook_subscriptions.enable_by_id(webhook_subscription_id='webhook_subscription_id', )
+            await client.webhook_subscriptions.enable_by_id(
+                webhook_subscription_id="webhook_subscription_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.enable_by_id(webhook_subscription_id, request_options=request_options)
@@ -606,11 +744,23 @@ class AsyncWebhookSubscriptionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.webhook_subscriptions.regenerate_secret_by_id(webhook_subscription_id='webhook_subscription_id', )
+            await client.webhook_subscriptions.regenerate_secret_by_id(
+                webhook_subscription_id="webhook_subscription_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.regenerate_secret_by_id(

@@ -47,8 +47,15 @@ class AddressesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.addresses.get(counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.addresses.get(
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get(counterpart_id, request_options=request_options)
         return _response.data
@@ -99,8 +106,19 @@ class AddressesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.addresses.create(counterpart_id='counterpart_id', city='Berlin', country="AF", line1='Flughafenstrasse 52', postal_code='10115', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.addresses.create(
+            counterpart_id="counterpart_id",
+            city="Berlin",
+            country="AF",
+            line1="Flughafenstrasse 52",
+            postal_code="10115",
+        )
         """
         _response = self._raw_client.create(
             counterpart_id,
@@ -135,8 +153,16 @@ class AddressesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.addresses.get_by_id(address_id='address_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.addresses.get_by_id(
+            address_id="address_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get_by_id(address_id, counterpart_id, request_options=request_options)
         return _response.data
@@ -161,8 +187,16 @@ class AddressesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.addresses.delete_by_id(address_id='address_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.addresses.delete_by_id(
+            address_id="address_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.delete_by_id(address_id, counterpart_id, request_options=request_options)
         return _response.data
@@ -216,8 +250,16 @@ class AddressesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.addresses.update_by_id(address_id='address_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.addresses.update_by_id(
+            address_id="address_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             address_id,
@@ -266,11 +308,23 @@ class AsyncAddressesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.addresses.get(counterpart_id='counterpart_id', )
+            await client.counterparts.addresses.get(
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(counterpart_id, request_options=request_options)
@@ -321,11 +375,27 @@ class AsyncAddressesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.addresses.create(counterpart_id='counterpart_id', city='Berlin', country="AF", line1='Flughafenstrasse 52', postal_code='10115', )
+            await client.counterparts.addresses.create(
+                counterpart_id="counterpart_id",
+                city="Berlin",
+                country="AF",
+                line1="Flughafenstrasse 52",
+                postal_code="10115",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -360,11 +430,24 @@ class AsyncAddressesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.addresses.get_by_id(address_id='address_id', counterpart_id='counterpart_id', )
+            await client.counterparts.addresses.get_by_id(
+                address_id="address_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(address_id, counterpart_id, request_options=request_options)
@@ -389,11 +472,24 @@ class AsyncAddressesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.addresses.delete_by_id(address_id='address_id', counterpart_id='counterpart_id', )
+            await client.counterparts.addresses.delete_by_id(
+                address_id="address_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(address_id, counterpart_id, request_options=request_options)
@@ -447,11 +543,24 @@ class AsyncAddressesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.addresses.update_by_id(address_id='address_id', counterpart_id='counterpart_id', )
+            await client.counterparts.addresses.update_by_id(
+                address_id="address_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(

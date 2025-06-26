@@ -14,6 +14,11 @@ class LineItem(UniversalBaseModel):
     ID of the tax rate in the connected accounting system, to be used when pushing the invoice to that accounting system. Use `GET /accounting_tax_rates` to get these IDs. If omitted, Monite will attempt to match the tax rates based on their numeric value.
     """
 
+    custom_vat_rate_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unique identifier of the user-defined vat rate object.
+    """
+
     discount: typing.Optional[Discount] = pydantic.Field(default=None)
     """
     The discount for a product.
@@ -32,6 +37,11 @@ class LineItem(UniversalBaseModel):
     quantity: float = pydantic.Field()
     """
     The quantity of each of the goods, materials, or services listed in the receivable.
+    """
+
+    tax_rate_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Specifies the display name of the tax rate. This field is applicable only when tax_rate_value is also provided.
     """
 
     tax_rate_value: typing.Optional[int] = pydantic.Field(default=None)

@@ -53,8 +53,17 @@ class AccessTokensClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.access_tokens.revoke(client_id='client_id', client_secret='client_secret', token='token', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.access_tokens.revoke(
+            client_id="client_id",
+            client_secret="client_secret",
+            token="token",
+        )
         """
         _response = self._raw_client.revoke(
             client_id=client_id, client_secret=client_secret, token=token, request_options=request_options
@@ -94,8 +103,17 @@ class AccessTokensClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.access_tokens.create(client_id='client_id', client_secret='client_secret', grant_type="client_credentials", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.access_tokens.create(
+            client_id="client_id",
+            client_secret="client_secret",
+            grant_type="client_credentials",
+        )
         """
         _response = self._raw_client.create(
             client_id=client_id,
@@ -146,11 +164,25 @@ class AsyncAccessTokensClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.access_tokens.revoke(client_id='client_id', client_secret='client_secret', token='token', )
+            await client.access_tokens.revoke(
+                client_id="client_id",
+                client_secret="client_secret",
+                token="token",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.revoke(
@@ -190,11 +222,25 @@ class AsyncAccessTokensClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.access_tokens.create(client_id='client_id', client_secret='client_secret', grant_type="client_credentials", )
+            await client.access_tokens.create(
+                client_id="client_id",
+                client_secret="client_secret",
+                grant_type="client_credentials",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(

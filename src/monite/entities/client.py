@@ -139,7 +139,12 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.entities.get()
         """
         _response = self._raw_client.get(
@@ -222,10 +227,23 @@ class EntitiesClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import EntityAddressSchema
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.create(address=EntityAddressSchema(city='city', country="AF", line1='line1', postal_code='postal_code', ), email='email', type="individual", )
+        from monite import EntityAddressSchema, Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.create(
+            address=EntityAddressSchema(
+                city="city",
+                country="AF",
+                line1="line1",
+                postal_code="postal_code",
+            ),
+            email="email",
+            type="individual",
+        )
         """
         _response = self._raw_client.create(
             address=address,
@@ -259,7 +277,12 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.entities.get_entities_me()
         """
         _response = self._raw_client.get_entities_me(request_options=request_options)
@@ -322,7 +345,12 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.entities.patch_entities_me()
         """
         _response = self._raw_client.patch_entities_me(
@@ -359,8 +387,15 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.get_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.get_by_id(
+            entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+        )
         """
         _response = self._raw_client.get_by_id(entity_id, request_options=request_options)
         return _response.data
@@ -426,8 +461,15 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.update_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.update_by_id(
+            entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+        )
         """
         _response = self._raw_client.update_by_id(
             entity_id,
@@ -466,8 +508,15 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.post_entities_id_activate(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.post_entities_id_activate(
+            entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+        )
         """
         _response = self._raw_client.post_entities_id_activate(entity_id, request_options=request_options)
         return _response.data
@@ -494,8 +543,15 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.post_entities_id_deactivate(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.post_entities_id_deactivate(
+            entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+        )
         """
         _response = self._raw_client.post_entities_id_deactivate(entity_id, request_options=request_options)
         return _response.data
@@ -525,8 +581,15 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.upload_logo_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.upload_logo_by_id(
+            entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+        )
         """
         _response = self._raw_client.upload_logo_by_id(entity_id, file=file, request_options=request_options)
         return _response.data
@@ -548,8 +611,15 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.delete_logo_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.delete_logo_by_id(
+            entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+        )
         """
         _response = self._raw_client.delete_logo_by_id(entity_id, request_options=request_options)
         return _response.data
@@ -575,8 +645,15 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.get_partner_metadata_by_id(entity_id='entity_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.get_partner_metadata_by_id(
+            entity_id="entity_id",
+        )
         """
         _response = self._raw_client.get_partner_metadata_by_id(entity_id, request_options=request_options)
         return _response.data
@@ -609,9 +686,16 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.update_partner_metadata_by_id(entity_id='entity_id', metadata={'key': 'value'
-        }, )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.update_partner_metadata_by_id(
+            entity_id="entity_id",
+            metadata={"key": "value"},
+        )
         """
         _response = self._raw_client.update_partner_metadata_by_id(
             entity_id, metadata=metadata, request_options=request_options
@@ -640,8 +724,15 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.get_settings_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.get_settings_by_id(
+            entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+        )
         """
         _response = self._raw_client.get_settings_by_id(entity_id, request_options=request_options)
         return _response.data
@@ -729,8 +820,15 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.update_settings_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.update_settings_by_id(
+            entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+        )
         """
         _response = self._raw_client.update_settings_by_id(
             entity_id,
@@ -806,7 +904,12 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.entities.upload_onboarding_documents()
         """
         _response = self._raw_client.upload_onboarding_documents(
@@ -844,7 +947,12 @@ class EntitiesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.entities.get_onboarding_requirements()
         """
         _response = self._raw_client.get_onboarding_requirements(request_options=request_options)
@@ -946,11 +1054,21 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.entities.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -1033,12 +1151,30 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import EntityAddressSchema
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, EntityAddressSchema
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.create(address=EntityAddressSchema(city='city', country="AF", line1='line1', postal_code='postal_code', ), email='email', type="individual", )
+            await client.entities.create(
+                address=EntityAddressSchema(
+                    city="city",
+                    country="AF",
+                    line1="line1",
+                    postal_code="postal_code",
+                ),
+                email="email",
+                type="individual",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -1072,11 +1208,21 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.entities.get_entities_me()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_entities_me(request_options=request_options)
@@ -1138,11 +1284,21 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.entities.patch_entities_me()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.patch_entities_me(
@@ -1180,11 +1336,23 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.get_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+            await client.entities.get_by_id(
+                entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(entity_id, request_options=request_options)
@@ -1250,11 +1418,23 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.update_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+            await client.entities.update_by_id(
+                entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -1293,11 +1473,23 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.post_entities_id_activate(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+            await client.entities.post_entities_id_activate(
+                entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_entities_id_activate(entity_id, request_options=request_options)
@@ -1324,11 +1516,23 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.post_entities_id_deactivate(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+            await client.entities.post_entities_id_deactivate(
+                entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_entities_id_deactivate(entity_id, request_options=request_options)
@@ -1358,11 +1562,23 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.upload_logo_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+            await client.entities.upload_logo_by_id(
+                entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upload_logo_by_id(entity_id, file=file, request_options=request_options)
@@ -1386,11 +1602,23 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.delete_logo_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+            await client.entities.delete_logo_by_id(
+                entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_logo_by_id(entity_id, request_options=request_options)
@@ -1416,11 +1644,23 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.get_partner_metadata_by_id(entity_id='entity_id', )
+            await client.entities.get_partner_metadata_by_id(
+                entity_id="entity_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_partner_metadata_by_id(entity_id, request_options=request_options)
@@ -1453,12 +1693,24 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.update_partner_metadata_by_id(entity_id='entity_id', metadata={'key': 'value'
-            }, )
+            await client.entities.update_partner_metadata_by_id(
+                entity_id="entity_id",
+                metadata={"key": "value"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_partner_metadata_by_id(
@@ -1487,11 +1739,23 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.get_settings_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+            await client.entities.get_settings_by_id(
+                entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_settings_by_id(entity_id, request_options=request_options)
@@ -1579,11 +1843,23 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.update_settings_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+            await client.entities.update_settings_by_id(
+                entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_settings_by_id(
@@ -1659,11 +1935,21 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.entities.upload_onboarding_documents()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upload_onboarding_documents(
@@ -1700,11 +1986,21 @@ class AsyncEntitiesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.entities.get_onboarding_requirements()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_onboarding_requirements(request_options=request_options)

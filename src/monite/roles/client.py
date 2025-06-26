@@ -91,7 +91,12 @@ class RolesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.roles.get()
         """
         _response = self._raw_client.get(
@@ -134,10 +139,17 @@ class RolesClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import BizObjectsSchemaInput
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.roles.create(name='name', permissions=BizObjectsSchemaInput(), )
+        from monite import BizObjectsSchemaInput, Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.roles.create(
+            name="name",
+            permissions=BizObjectsSchemaInput(),
+        )
         """
         _response = self._raw_client.create(name=name, permissions=permissions, request_options=request_options)
         return _response.data
@@ -159,8 +171,15 @@ class RolesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.roles.get_by_id(role_id='role_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.roles.get_by_id(
+            role_id="role_id",
+        )
         """
         _response = self._raw_client.get_by_id(role_id, request_options=request_options)
         return _response.data
@@ -183,8 +202,15 @@ class RolesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.roles.delete_roles_id(role_id='role_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.roles.delete_roles_id(
+            role_id="role_id",
+        )
         """
         _response = self._raw_client.delete_roles_id(role_id, request_options=request_options)
         return _response.data
@@ -221,8 +247,15 @@ class RolesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.roles.update_by_id(role_id='role_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.roles.update_by_id(
+            role_id="role_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             role_id, name=name, permissions=permissions, request_options=request_options
@@ -304,11 +337,21 @@ class AsyncRolesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.roles.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -351,12 +394,24 @@ class AsyncRolesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import BizObjectsSchemaInput
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, BizObjectsSchemaInput
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.roles.create(name='name', permissions=BizObjectsSchemaInput(), )
+            await client.roles.create(
+                name="name",
+                permissions=BizObjectsSchemaInput(),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(name=name, permissions=permissions, request_options=request_options)
@@ -378,11 +433,23 @@ class AsyncRolesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.roles.get_by_id(role_id='role_id', )
+            await client.roles.get_by_id(
+                role_id="role_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(role_id, request_options=request_options)
@@ -405,11 +472,23 @@ class AsyncRolesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.roles.delete_roles_id(role_id='role_id', )
+            await client.roles.delete_roles_id(
+                role_id="role_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_roles_id(role_id, request_options=request_options)
@@ -446,11 +525,23 @@ class AsyncRolesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.roles.update_by_id(role_id='role_id', )
+            await client.roles.update_by_id(
+                role_id="role_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(

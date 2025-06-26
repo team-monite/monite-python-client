@@ -28,8 +28,16 @@ Retrieve aggregated statistics for payables with different breakdowns.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.analytics.get_analytics_credit_notes(metric="id", aggregation_function="count", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.analytics.get_analytics_credit_notes(
+    metric="id",
+    aggregation_function="count",
+)
 
 ```
 </dd>
@@ -293,7 +301,11 @@ client.analytics.get_analytics_credit_notes(metric="id", aggregation_function="c
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[
+        PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]
+    ]
+]` 
     
 </dd>
 </dl>
@@ -301,7 +313,11 @@ client.analytics.get_analytics_credit_notes(metric="id", aggregation_function="c
 <dl>
 <dd>
 
-**status_not_in:** `typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]` 
+**status_not_in:** `typing.Optional[
+    typing.Union[
+        PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]
+    ]
+]` 
     
 </dd>
 </dl>
@@ -381,8 +397,16 @@ Retrieve aggregated statistics for payables with different breakdowns.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.analytics.get_analytics_payables(metric="id", aggregation_function="count", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.analytics.get_analytics_payables(
+    metric="id",
+    aggregation_function="count",
+)
 
 ```
 </dd>
@@ -482,7 +506,9 @@ To query multiple statuses at once, use the `status__in` parameter instead.
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[PayableStateEnum, typing.Sequence[PayableStateEnum]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[PayableStateEnum, typing.Sequence[PayableStateEnum]]
+]` 
 
 Return only payables that have the specified [statuses](https://docs.monite.com/accounts-payable/payables/index).
 
@@ -828,6 +854,14 @@ Valid but nonexistent project IDs do not raise errors but return no results.
 <dl>
 <dd>
 
+**has_tags:** `typing.Optional[bool]` — Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **origin:** `typing.Optional[PayableOriginEnum]` — Return only payables from a given origin ['einvoice', 'upload', 'email']
     
 </dd>
@@ -884,8 +918,16 @@ Retrieve aggregated statistics for receivables with different breakdowns.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.analytics.get_analytics_receivables(metric="id", aggregation_function="count", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.analytics.get_analytics_receivables(
+    metric="id",
+    aggregation_function="count",
+)
 
 ```
 </dd>
@@ -978,7 +1020,12 @@ To specify multiple IDs, repeat this parameter for each value:
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[GetAnalyticsReceivablesRequestStatusInItem, typing.Sequence[GetAnalyticsReceivablesRequestStatusInItem]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[
+        GetAnalyticsReceivablesRequestStatusInItem,
+        typing.Sequence[GetAnalyticsReceivablesRequestStatusInItem],
+    ]
+]` 
 
 Return only receivables that have the specified statuses. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
 
@@ -1278,6 +1325,46 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
+**discounted_subtotal:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_gt:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_lt:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_gte:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_lte:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **status:** `typing.Optional[GetAnalyticsReceivablesRequestStatus]` 
     
 </dd>
@@ -1383,7 +1470,12 @@ Retrieve a list of all approval policies with pagination.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.approval_policies.get()
 
 ```
@@ -1460,7 +1552,12 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[ApprovalPoliciesGetRequestStatusInItem, typing.Sequence[ApprovalPoliciesGetRequestStatusInItem]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[
+        ApprovalPoliciesGetRequestStatusInItem,
+        typing.Sequence[ApprovalPoliciesGetRequestStatusInItem],
+    ]
+]` 
     
 </dd>
 </dl>
@@ -1604,8 +1701,16 @@ Create a new approval policy.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_policies.create(name='name', script=[True], )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_policies.create(
+    name="name",
+    script=[True],
+)
 
 ```
 </dd>
@@ -1709,8 +1814,15 @@ Retrieve a specific approval policy.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_policies.get_by_id(approval_policy_id='approval_policy_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_policies.get_by_id(
+    approval_policy_id="approval_policy_id",
+)
 
 ```
 </dd>
@@ -1774,8 +1886,15 @@ Delete an existing approval policy.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_policies.delete_by_id(approval_policy_id='approval_policy_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_policies.delete_by_id(
+    approval_policy_id="approval_policy_id",
+)
 
 ```
 </dd>
@@ -1839,8 +1958,15 @@ Update an existing approval policy.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_policies.update_by_id(approval_policy_id='approval_policy_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_policies.update_by_id(
+    approval_policy_id="approval_policy_id",
+)
 
 ```
 </dd>
@@ -1947,7 +2073,12 @@ client.approval_policies.update_by_id(approval_policy_id='approval_policy_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.approval_requests.get()
 
 ```
@@ -2084,7 +2215,9 @@ client.approval_requests.get()
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[ApprovalRequestStatus, typing.Sequence[ApprovalRequestStatus]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[ApprovalRequestStatus, typing.Sequence[ApprovalRequestStatus]]
+]` 
     
 </dd>
 </dl>
@@ -2157,10 +2290,21 @@ client.approval_requests.get()
 <dd>
 
 ```python
-from monite import Monite
-from monite import ApprovalRequestCreateByRoleRequest
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_requests.create(request=ApprovalRequestCreateByRoleRequest(object_id='object_id', object_type="account", required_approval_count=1, role_ids=['role_ids'], ), )
+from monite import ApprovalRequestCreateByRoleRequest, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_requests.create(
+    request=ApprovalRequestCreateByRoleRequest(
+        object_id="object_id",
+        object_type="account",
+        required_approval_count=1,
+        role_ids=["role_ids"],
+    ),
+)
 
 ```
 </dd>
@@ -2210,8 +2354,15 @@ client.approval_requests.create(request=ApprovalRequestCreateByRoleRequest(objec
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_requests.get_by_id(approval_request_id='approval_request_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_requests.get_by_id(
+    approval_request_id="approval_request_id",
+)
 
 ```
 </dd>
@@ -2261,8 +2412,15 @@ client.approval_requests.get_by_id(approval_request_id='approval_request_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_requests.approve_by_id(approval_request_id='approval_request_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_requests.approve_by_id(
+    approval_request_id="approval_request_id",
+)
 
 ```
 </dd>
@@ -2312,8 +2470,15 @@ client.approval_requests.approve_by_id(approval_request_id='approval_request_id'
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_requests.cancel_by_id(approval_request_id='approval_request_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_requests.cancel_by_id(
+    approval_request_id="approval_request_id",
+)
 
 ```
 </dd>
@@ -2363,8 +2528,15 @@ client.approval_requests.cancel_by_id(approval_request_id='approval_request_id',
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_requests.reject_by_id(approval_request_id='approval_request_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_requests.reject_by_id(
+    approval_request_id="approval_request_id",
+)
 
 ```
 </dd>
@@ -2429,8 +2601,17 @@ Revoke an existing token immediately.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.access_tokens.revoke(client_id='client_id', client_secret='client_secret', token='token', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.access_tokens.revoke(
+    client_id="client_id",
+    client_secret="client_secret",
+    token="token",
+)
 
 ```
 </dd>
@@ -2510,8 +2691,17 @@ Create a new access token based on client ID and client secret.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.access_tokens.create(client_id='client_id', client_secret='client_secret', grant_type="client_credentials", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.access_tokens.create(
+    client_id="client_id",
+    client_secret="client_secret",
+    grant_type="client_credentials",
+)
 
 ```
 </dd>
@@ -2600,8 +2790,15 @@ Get comments
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.comments.get(object_id='object_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.comments.get(
+    object_id="object_id",
+)
 
 ```
 </dd>
@@ -2729,8 +2926,17 @@ Create new comment
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.comments.create(object_id='object_id', object_type='object_type', text='text', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.comments.create(
+    object_id="object_id",
+    object_type="object_type",
+    text="text",
+)
 
 ```
 </dd>
@@ -2818,8 +3024,15 @@ Get comment
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.comments.get_by_id(comment_id='comment_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.comments.get_by_id(
+    comment_id="comment_id",
+)
 
 ```
 </dd>
@@ -2883,8 +3096,15 @@ Delete comment
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.comments.delete_by_id(comment_id='comment_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.comments.delete_by_id(
+    comment_id="comment_id",
+)
 
 ```
 </dd>
@@ -2948,8 +3168,15 @@ Update comment
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.comments.update_by_id(comment_id='comment_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.comments.update_by_id(
+    comment_id="comment_id",
+)
 
 ```
 </dd>
@@ -3016,8 +3243,15 @@ client.comments.update_by_id(comment_id='comment_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.get(sort_code='123456', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.get(
+    sort_code="123456",
+)
 
 ```
 </dd>
@@ -3310,12 +3544,33 @@ If not specified, the first page of results will be returned.
 <dd>
 
 ```python
-from monite import Monite
-from monite import CounterpartCreatePayload_Organization
-from monite import CounterpartOrganizationCreatePayload
-from monite import CounterpartAddress
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.create(request=CounterpartCreatePayload_Organization(organization=CounterpartOrganizationCreatePayload(address=CounterpartAddress(city='Berlin', country="AF", line1='Flughafenstrasse 52', postal_code='10115', ), is_customer=True, is_vendor=True, legal_name='Acme Inc.', ), ), )
+from monite import (
+    CounterpartAddress,
+    CounterpartCreatePayload_Organization,
+    CounterpartOrganizationCreatePayload,
+    Monite,
+)
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.create(
+    request=CounterpartCreatePayload_Organization(
+        organization=CounterpartOrganizationCreatePayload(
+            address=CounterpartAddress(
+                city="Berlin",
+                country="AF",
+                line1="Flughafenstrasse 52",
+                postal_code="10115",
+            ),
+            is_customer=True,
+            is_vendor=True,
+            legal_name="Acme Inc.",
+        ),
+    ),
+)
 
 ```
 </dd>
@@ -3365,8 +3620,15 @@ client.counterparts.create(request=CounterpartCreatePayload_Organization(organiz
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.get_by_id(counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.get_by_id(
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -3416,8 +3678,15 @@ client.counterparts.get_by_id(counterpart_id='counterpart_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.delete_by_id(counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.delete_by_id(
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -3466,11 +3735,23 @@ client.counterparts.delete_by_id(counterpart_id='counterpart_id', )
 <dd>
 
 ```python
-from monite import Monite
-from monite import CounterpartIndividualRootUpdatePayload
-from monite import CounterpartIndividualUpdatePayload
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.update_by_id(counterpart_id='counterpart_id', request=CounterpartIndividualRootUpdatePayload(individual=CounterpartIndividualUpdatePayload(), ), )
+from monite import (
+    CounterpartIndividualRootUpdatePayload,
+    CounterpartIndividualUpdatePayload,
+    Monite,
+)
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.update_by_id(
+    counterpart_id="counterpart_id",
+    request=CounterpartIndividualRootUpdatePayload(
+        individual=CounterpartIndividualUpdatePayload(),
+    ),
+)
 
 ```
 </dd>
@@ -3528,8 +3809,15 @@ client.counterparts.update_by_id(counterpart_id='counterpart_id', request=Counte
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.get_partner_metadata_by_id(counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.get_partner_metadata_by_id(
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -3579,9 +3867,16 @@ client.counterparts.get_partner_metadata_by_id(counterpart_id='counterpart_id', 
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.update_partner_metadata_by_id(counterpart_id='counterpart_id', metadata={'key': 'value'
-}, )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.update_partner_metadata_by_id(
+    counterpart_id="counterpart_id",
+    metadata={"key": "value"},
+)
 
 ```
 </dd>
@@ -3640,8 +3935,15 @@ client.counterparts.update_partner_metadata_by_id(counterpart_id='counterpart_id
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials(counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials(
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -3690,10 +3992,19 @@ client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_creden
 <dd>
 
 ```python
-from monite import Monite
-from monite import CreateCounterpartEinvoicingCredentialCounterpartVatId
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_credentials(counterpart_id='counterpart_id', request=CreateCounterpartEinvoicingCredentialCounterpartVatId(counterpart_vat_id_id='counterpart_vat_id_id', ), )
+from monite import CreateCounterpartEinvoicingCredentialCounterpartVatId, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_credentials(
+    counterpart_id="counterpart_id",
+    request=CreateCounterpartEinvoicingCredentialCounterpartVatId(
+        counterpart_vat_id_id="counterpart_vat_id_id",
+    ),
+)
 
 ```
 </dd>
@@ -3751,8 +4062,16 @@ client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_crede
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials_id(credential_id='credential_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_credentials_id(
+    credential_id="credential_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -3810,8 +4129,16 @@ client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_creden
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterpart_e_invoicing_credentials.delete_counterparts_id_einvoicing_credentials_id(credential_id='credential_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterpart_e_invoicing_credentials.delete_counterparts_id_einvoicing_credentials_id(
+    credential_id="credential_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -3869,8 +4196,16 @@ client.counterpart_e_invoicing_credentials.delete_counterparts_id_einvoicing_cre
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterpart_e_invoicing_credentials.patch_counterparts_id_einvoicing_credentials_id(credential_id='credential_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterpart_e_invoicing_credentials.patch_counterparts_id_einvoicing_credentials_id(
+    credential_id="credential_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -3930,6 +4265,317 @@ client.counterpart_e_invoicing_credentials.patch_counterparts_id_einvoicing_cred
 </dl>
 </details>
 
+## Custom VAT rates
+<details><summary><code>client.custom_vat_rates.<a href="src/monite/custom_vat_rates/client.py">get_custom_vat_rates</a>()</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.custom_vat_rates.get_custom_vat_rates()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.custom_vat_rates.<a href="src/monite/custom_vat_rates/client.py">post_custom_vat_rates</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite, VatRateComponent
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.custom_vat_rates.post_custom_vat_rates(
+    components=[
+        VatRateComponent(
+            name="name",
+            value=1.1,
+        )
+    ],
+    name="name",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**components:** `typing.Sequence[VatRateComponent]` — Sub-taxes included in the Custom VAT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `str` — Display name of the Custom VAT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.custom_vat_rates.<a href="src/monite/custom_vat_rates/client.py">get_custom_vat_rates_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.custom_vat_rates.get_custom_vat_rates_id(
+    custom_vat_rate_id="custom_vat_rate_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**custom_vat_rate_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.custom_vat_rates.<a href="src/monite/custom_vat_rates/client.py">delete_custom_vat_rates_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.custom_vat_rates.delete_custom_vat_rates_id(
+    custom_vat_rate_id="custom_vat_rate_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**custom_vat_rate_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.custom_vat_rates.<a href="src/monite/custom_vat_rates/client.py">patch_custom_vat_rates_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.custom_vat_rates.patch_custom_vat_rates_id(
+    custom_vat_rate_id="custom_vat_rate_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**custom_vat_rate_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**components:** `typing.Optional[typing.Sequence[VatRateComponent]]` — Sub-taxes included in the Custom VAT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` — Display name of the Custom VAT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## DataExports
 <details><summary><code>client.data_exports.<a href="src/monite/data_exports/client.py">get</a>(...)</code></summary>
 <dl>
@@ -3945,7 +4591,12 @@ client.counterpart_e_invoicing_credentials.patch_counterparts_id_einvoicing_cred
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.data_exports.get()
 
 ```
@@ -4073,10 +4724,23 @@ Request the export of payable and receivable documents with the specified status
 <dd>
 
 ```python
-from monite import Monite
-from monite import ExportObjectSchema_Payable
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.data_exports.create(date_from='date_from', date_to='date_to', format="csv", objects=[ExportObjectSchema_Payable(statuses=["draft"], )], )
+from monite import ExportObjectSchema_Payable, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.data_exports.create(
+    date_from="date_from",
+    date_to="date_to",
+    format="csv",
+    objects=[
+        ExportObjectSchema_Payable(
+            statuses=["draft"],
+        )
+    ],
+)
 
 ```
 </dd>
@@ -4150,7 +4814,12 @@ client.data_exports.create(date_from='date_from', date_to='date_to', format="csv
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.data_exports.get_supported_formats()
 
 ```
@@ -4193,8 +4862,15 @@ client.data_exports.get_supported_formats()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.data_exports.get_by_id(document_export_id='document_export_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.data_exports.get_by_id(
+    document_export_id="document_export_id",
+)
 
 ```
 </dd>
@@ -4259,7 +4935,12 @@ Get all delivery notes with filtering and pagination.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.delivery_notes.get_delivery_notes()
 
 ```
@@ -4328,7 +5009,11 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[DeliveryNoteStatusEnum, typing.Sequence[DeliveryNoteStatusEnum]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[
+        DeliveryNoteStatusEnum, typing.Sequence[DeliveryNoteStatusEnum]
+    ]
+]` 
     
 </dd>
 </dl>
@@ -4497,13 +5182,46 @@ If not specified, the first page of results will be returned.
 <dd>
 
 ```python
-from monite import Monite
-from monite import DeliveryNoteCreateRequest
-from monite import DeliveryNoteCreateLineItem
-from monite import DeliveryNoteLineItemProduct
-from monite import UnitRequest
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.delivery_notes.post_delivery_notes(request=DeliveryNoteCreateRequest(counterpart_address_id='a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6', counterpart_id='a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6', delivery_date='2025-01-01', delivery_number='102-2025-0987', display_signature_placeholder=True, line_items=[DeliveryNoteCreateLineItem(product_id='a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6', quantity=10.0, ), DeliveryNoteCreateLineItem(product=DeliveryNoteLineItemProduct(description='Description of product 2', measure_unit=UnitRequest(description='pieces', name='pcs', ), name='Product 2', ), quantity=20.0, )], memo='This is a memo', ), )
+from monite import (
+    DeliveryNoteCreateLineItem,
+    DeliveryNoteCreateRequest,
+    DeliveryNoteLineItemProduct,
+    Monite,
+    UnitRequest,
+)
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.post_delivery_notes(
+    request=DeliveryNoteCreateRequest(
+        counterpart_address_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+        counterpart_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+        delivery_date="2025-01-01",
+        delivery_number="102-2025-0987",
+        display_signature_placeholder=True,
+        line_items=[
+            DeliveryNoteCreateLineItem(
+                product_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+                quantity=10.0,
+            ),
+            DeliveryNoteCreateLineItem(
+                product=DeliveryNoteLineItemProduct(
+                    description="Description of product 2",
+                    measure_unit=UnitRequest(
+                        description="pieces",
+                        name="pcs",
+                    ),
+                    name="Product 2",
+                ),
+                quantity=20.0,
+            ),
+        ],
+        memo="This is a memo",
+    ),
+)
 
 ```
 </dd>
@@ -4553,8 +5271,15 @@ client.delivery_notes.post_delivery_notes(request=DeliveryNoteCreateRequest(coun
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.delivery_notes.get_delivery_notes_id(delivery_note_id='delivery_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.get_delivery_notes_id(
+    delivery_note_id="delivery_note_id",
+)
 
 ```
 </dd>
@@ -4604,8 +5329,15 @@ client.delivery_notes.get_delivery_notes_id(delivery_note_id='delivery_note_id',
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.delivery_notes.delete_delivery_notes_id(delivery_note_id='delivery_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.delete_delivery_notes_id(
+    delivery_note_id="delivery_note_id",
+)
 
 ```
 </dd>
@@ -4655,8 +5387,15 @@ client.delivery_notes.delete_delivery_notes_id(delivery_note_id='delivery_note_i
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.delivery_notes.patch_delivery_notes_id(delivery_note_id='delivery_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.patch_delivery_notes_id(
+    delivery_note_id="delivery_note_id",
+)
 
 ```
 </dd>
@@ -4762,8 +5501,15 @@ client.delivery_notes.patch_delivery_notes_id(delivery_note_id='delivery_note_id
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.delivery_notes.post_delivery_notes_id_cancel(delivery_note_id='delivery_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.post_delivery_notes_id_cancel(
+    delivery_note_id="delivery_note_id",
+)
 
 ```
 </dd>
@@ -4813,8 +5559,15 @@ client.delivery_notes.post_delivery_notes_id_cancel(delivery_note_id='delivery_n
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.delivery_notes.post_delivery_notes_id_mark_as_delivered(delivery_note_id='delivery_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.delivery_notes.post_delivery_notes_id_mark_as_delivered(
+    delivery_note_id="delivery_note_id",
+)
 
 ```
 </dd>
@@ -4879,7 +5632,12 @@ This API call returns all supported templates with language codes.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.pdf_templates.get()
 
 ```
@@ -4936,7 +5694,12 @@ This API call returns all supported system templates with language codes.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.pdf_templates.get_system()
 
 ```
@@ -4979,8 +5742,15 @@ client.pdf_templates.get_system()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.pdf_templates.get_by_id(document_template_id='document_template_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.pdf_templates.get_by_id(
+    document_template_id="document_template_id",
+)
 
 ```
 </dd>
@@ -5030,8 +5800,15 @@ client.pdf_templates.get_by_id(document_template_id='document_template_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.pdf_templates.make_default_by_id(document_template_id='document_template_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.pdf_templates.make_default_by_id(
+    document_template_id="document_template_id",
+)
 
 ```
 </dd>
@@ -5082,7 +5859,12 @@ client.pdf_templates.make_default_by_id(document_template_id='document_template_
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.e_invoicing_connections.get_einvoicing_connections()
 
 ```
@@ -5124,10 +5906,21 @@ client.e_invoicing_connections.get_einvoicing_connections()
 <dd>
 
 ```python
-from monite import Monite
-from monite import EinvoicingAddress
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.e_invoicing_connections.post_einvoicing_connections(address=EinvoicingAddress(address_line1='address_line1', city='city', country="DE", postal_code='postal_code', ), )
+from monite import EinvoicingAddress, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.e_invoicing_connections.post_einvoicing_connections(
+    address=EinvoicingAddress(
+        address_line1="address_line1",
+        city="city",
+        country="DE",
+        postal_code="postal_code",
+    ),
+)
 
 ```
 </dd>
@@ -5152,6 +5945,22 @@ client.e_invoicing_connections.post_einvoicing_connections(address=EinvoicingAdd
 <dd>
 
 **entity_vat_id_id:** `typing.Optional[str]` — Entity VAT ID identifier for the integration
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_receiver:** `typing.Optional[bool]` — Set to `true` if the entity needs to receive e-invoices.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_sender:** `typing.Optional[bool]` — Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
     
 </dd>
 </dl>
@@ -5185,8 +5994,15 @@ client.e_invoicing_connections.post_einvoicing_connections(address=EinvoicingAdd
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.e_invoicing_connections.get_einvoicing_connections_id(einvoicing_connection_id='einvoicing_connection_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.e_invoicing_connections.get_einvoicing_connections_id(
+    einvoicing_connection_id="einvoicing_connection_id",
+)
 
 ```
 </dd>
@@ -5236,8 +6052,15 @@ client.e_invoicing_connections.get_einvoicing_connections_id(einvoicing_connecti
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.e_invoicing_connections.delete_einvoicing_connections_id(einvoicing_connection_id='einvoicing_connection_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.e_invoicing_connections.delete_einvoicing_connections_id(
+    einvoicing_connection_id="einvoicing_connection_id",
+)
 
 ```
 </dd>
@@ -5273,6 +6096,88 @@ client.e_invoicing_connections.delete_einvoicing_connections_id(einvoicing_conne
 </dl>
 </details>
 
+<details><summary><code>client.e_invoicing_connections.<a href="src/monite/e_invoicing_connections/client.py">patch_einvoicing_connections_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.e_invoicing_connections.patch_einvoicing_connections_id(
+    einvoicing_connection_id="einvoicing_connection_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**einvoicing_connection_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**address:** `typing.Optional[UpdateEinvoicingAddress]` — Integration Address
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_receiver:** `typing.Optional[bool]` — Set to `true` if the entity needs to receive e-invoices.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_sender:** `typing.Optional[bool]` — Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.e_invoicing_connections.<a href="src/monite/e_invoicing_connections/client.py">post_einvoicing_connections_id_network_credentials</a>(...)</code></summary>
 <dl>
 <dd>
@@ -5287,8 +6192,17 @@ client.e_invoicing_connections.delete_einvoicing_connections_id(einvoicing_conne
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.e_invoicing_connections.post_einvoicing_connections_id_network_credentials(einvoicing_connection_id='einvoicing_connection_id', network_credentials_identifier='12345678', network_credentials_schema="DE:VAT", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.e_invoicing_connections.post_einvoicing_connections_id_network_credentials(
+    einvoicing_connection_id="einvoicing_connection_id",
+    network_credentials_identifier="12345678",
+    network_credentials_schema="DE:VAT",
+)
 
 ```
 </dd>
@@ -5369,7 +6283,12 @@ Retrieve a list of all entities.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entities.get()
 
 ```
@@ -5549,10 +6468,23 @@ Create a new entity from the specified values.
 <dd>
 
 ```python
-from monite import Monite
-from monite import EntityAddressSchema
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.create(address=EntityAddressSchema(city='city', country="AF", line1='line1', postal_code='postal_code', ), email='email', type="individual", )
+from monite import EntityAddressSchema, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.create(
+    address=EntityAddressSchema(
+        city="city",
+        country="AF",
+        line1="line1",
+        postal_code="postal_code",
+    ),
+    email="email",
+    type="individual",
+)
 
 ```
 </dd>
@@ -5688,7 +6620,12 @@ Deprecated. Use `GET /entity_users/my_entity` instead.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entities.get_entities_me()
 
 ```
@@ -5745,7 +6682,12 @@ Deprecated. Use `PATCH /entity_users/my_entity` instead.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entities.patch_entities_me()
 
 ```
@@ -5874,8 +6816,15 @@ Retrieve an entity by its ID.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.get_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.get_by_id(
+    entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+)
 
 ```
 </dd>
@@ -5939,8 +6888,15 @@ Change the specified fields with the provided values.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.update_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.update_by_id(
+    entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+)
 
 ```
 </dd>
@@ -6076,8 +7032,15 @@ Activate an entity to allow it to perform any operations.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.post_entities_id_activate(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.post_entities_id_activate(
+    entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+)
 
 ```
 </dd>
@@ -6141,8 +7104,15 @@ Deactivate an entity to stop it from performing any operations.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.post_entities_id_deactivate(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.post_entities_id_deactivate(
+    entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+)
 
 ```
 </dd>
@@ -6206,8 +7176,15 @@ Entity logo can be PNG, JPG, or GIF, up to 10 MB in size. The logo is used, for 
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.upload_logo_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.upload_logo_by_id(
+    entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+)
 
 ```
 </dd>
@@ -6232,6 +7209,7 @@ client.entities.upload_logo_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f
 <dd>
 
 **file:** `from __future__ import annotations
+
 core.File` — See core.File for more documentation
     
 </dd>
@@ -6266,8 +7244,15 @@ core.File` — See core.File for more documentation
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.delete_logo_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.delete_logo_by_id(
+    entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+)
 
 ```
 </dd>
@@ -6331,8 +7316,15 @@ Retrieve a metadata object associated with this entity, usually in a JSON format
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.get_partner_metadata_by_id(entity_id='entity_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.get_partner_metadata_by_id(
+    entity_id="entity_id",
+)
 
 ```
 </dd>
@@ -6396,9 +7388,16 @@ Fully replace the current metadata object with the specified instance.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.update_partner_metadata_by_id(entity_id='entity_id', metadata={'key': 'value'
-}, )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.update_partner_metadata_by_id(
+    entity_id="entity_id",
+    metadata={"key": "value"},
+)
 
 ```
 </dd>
@@ -6470,8 +7469,15 @@ Retrieve all settings for this entity.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.get_settings_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.get_settings_by_id(
+    entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+)
 
 ```
 </dd>
@@ -6535,8 +7541,15 @@ Change the specified fields with the provided values.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.update_settings_by_id(entity_id='ea837e28-509b-4b6a-a600-d54b6aa0b1f5', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.update_settings_by_id(
+    entity_id="ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
+)
 
 ```
 </dd>
@@ -6726,7 +7739,12 @@ Provide files for entity onboarding verification
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entities.upload_onboarding_documents()
 
 ```
@@ -6871,7 +7889,12 @@ Get onboarding requirements for the entity
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entities.get_onboarding_requirements()
 
 ```
@@ -6929,7 +7952,12 @@ Retrieve a list of all entity users.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entity_users.get()
 
 ```
@@ -7118,8 +8146,16 @@ Create a new entity user from the specified values.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entity_users.create(first_name='Casey', login='login', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entity_users.create(
+    first_name="Casey",
+    login="login",
+)
 
 ```
 </dd>
@@ -7231,7 +8267,12 @@ Retrieve an entity user by its ID.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entity_users.get_current()
 
 ```
@@ -7288,7 +8329,12 @@ Change the specified fields with provided values.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entity_users.update_current()
 
 ```
@@ -7385,7 +8431,12 @@ Retrieves information of an entity, which this entity user belongs to.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entity_users.get_current_entity()
 
 ```
@@ -7442,7 +8493,12 @@ Update information of an entity, which this entity user belongs to.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entity_users.update_current_entity()
 
 ```
@@ -7571,7 +8627,12 @@ Retrieves information of a role assigned to this entity user.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entity_users.get_current_role()
 
 ```
@@ -7628,8 +8689,15 @@ Retrieve an entity user by its ID.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entity_users.get_by_id(entity_user_id='entity_user_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entity_users.get_by_id(
+    entity_user_id="entity_user_id",
+)
 
 ```
 </dd>
@@ -7679,8 +8747,15 @@ client.entity_users.get_by_id(entity_user_id='entity_user_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entity_users.delete_by_id(entity_user_id='entity_user_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entity_users.delete_by_id(
+    entity_user_id="entity_user_id",
+)
 
 ```
 </dd>
@@ -7744,8 +8819,15 @@ Change the specified fields with provided values.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entity_users.update_by_id(entity_user_id='entity_user_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entity_users.update_by_id(
+    entity_user_id="entity_user_id",
+)
 
 ```
 </dd>
@@ -7870,7 +8952,12 @@ We guarantee access to event data only from the last three months. Earlier event
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.events.get()
 
 ```
@@ -8003,8 +9090,15 @@ Get a webhook event by its ID. The data is the same as you might have previously
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.events.get_by_id(event_id='event_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.events.get_by_id(
+    event_id="event_id",
+)
 
 ```
 </dd>
@@ -8055,7 +9149,12 @@ client.events.get_by_id(event_id='event_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.files.get()
 
 ```
@@ -8106,8 +9205,15 @@ client.files.get()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.files.upload(file_type="ocr_results", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.files.upload(
+    file_type="ocr_results",
+)
 
 ```
 </dd>
@@ -8124,6 +9230,7 @@ client.files.upload(file_type="ocr_results", )
 <dd>
 
 **file:** `from __future__ import annotations
+
 core.File` — See core.File for more documentation
     
 </dd>
@@ -8166,8 +9273,15 @@ core.File` — See core.File for more documentation
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.files.get_by_id(file_id='file_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.files.get_by_id(
+    file_id="file_id",
+)
 
 ```
 </dd>
@@ -8217,8 +9331,15 @@ client.files.get_by_id(file_id='file_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.files.delete(file_id='file_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.files.delete(
+    file_id="file_id",
+)
 
 ```
 </dd>
@@ -8283,7 +9404,12 @@ Returns a list of invoices requested for financing
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.financing.get_financing_invoices()
 
 ```
@@ -8300,7 +9426,7 @@ client.financing.get_financing_invoices()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -8308,7 +9434,7 @@ client.financing.get_financing_invoices()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -8316,7 +9442,11 @@ client.financing.get_financing_invoices()
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -8324,7 +9454,7 @@ client.financing.get_financing_invoices()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[FinancingInvoiceCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[FinancingInvoiceCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -8372,7 +9502,9 @@ client.financing.get_financing_invoices()
 <dl>
 <dd>
 
-**type_in:** `typing.Optional[typing.Union[FinancingInvoiceType, typing.Sequence[FinancingInvoiceType]]]` — List of invoice types. 
+**type_in:** `typing.Optional[
+    typing.Union[FinancingInvoiceType, typing.Sequence[FinancingInvoiceType]]
+]` — List of invoice types. 
     
 </dd>
 </dl>
@@ -8571,10 +9703,21 @@ Returns a session token and a connect token to open Kanmon SDK for confirming in
 <dd>
 
 ```python
-from monite import Monite
-from monite import FinancingPushInvoicesRequestInvoice
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.financing.post_financing_invoices(invoices=[FinancingPushInvoicesRequestInvoice(id='id', type="payable", )], )
+from monite import FinancingPushInvoicesRequestInvoice, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.financing.post_financing_invoices(
+    invoices=[
+        FinancingPushInvoicesRequestInvoice(
+            id="id",
+            type="payable",
+        )
+    ],
+)
 
 ```
 </dd>
@@ -8638,7 +9781,12 @@ Returns a list of financing offers and the business's onboarding status
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.financing.get_financing_offers()
 
 ```
@@ -8695,7 +9843,12 @@ Returns a token for Kanmon SDK. Creates a business and user on Kanmon if not alr
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.financing.post_financing_tokens()
 
 ```
@@ -8753,7 +9906,12 @@ Get all custom templates
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.mail_templates.get()
 
 ```
@@ -8810,7 +9968,12 @@ client.mail_templates.get()
 <dl>
 <dd>
 
-**type_in:** `typing.Optional[typing.Union[DocumentObjectTypeRequestEnum, typing.Sequence[DocumentObjectTypeRequestEnum]]]` 
+**type_in:** `typing.Optional[
+    typing.Union[
+        DocumentObjectTypeRequestEnum,
+        typing.Sequence[DocumentObjectTypeRequestEnum],
+    ]
+]` 
     
 </dd>
 </dl>
@@ -8818,7 +9981,12 @@ client.mail_templates.get()
 <dl>
 <dd>
 
-**type_not_in:** `typing.Optional[typing.Union[DocumentObjectTypeRequestEnum, typing.Sequence[DocumentObjectTypeRequestEnum]]]` 
+**type_not_in:** `typing.Optional[
+    typing.Union[
+        DocumentObjectTypeRequestEnum,
+        typing.Sequence[DocumentObjectTypeRequestEnum],
+    ]
+]` 
     
 </dd>
 </dl>
@@ -8906,8 +10074,18 @@ Create custom template
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mail_templates.create(body_template='body_template', name='name', subject_template='subject_template', type="receivables_quote", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mail_templates.create(
+    body_template="body_template",
+    name="name",
+    subject_template="subject_template",
+    type="receivables_quote",
+)
 
 ```
 </dd>
@@ -9011,8 +10189,18 @@ Preview rendered template
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mail_templates.preview(body='body', document_type="receivables_quote", language_code="ab", subject='subject', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mail_templates.preview(
+    body="body",
+    document_type="receivables_quote",
+    language_code="ab",
+    subject="subject",
+)
 
 ```
 </dd>
@@ -9100,7 +10288,12 @@ Get all system templates
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.mail_templates.get_system()
 
 ```
@@ -9157,8 +10350,15 @@ Get custom template by ID
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mail_templates.get_by_id(template_id='template_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mail_templates.get_by_id(
+    template_id="template_id",
+)
 
 ```
 </dd>
@@ -9222,8 +10422,15 @@ Delete custom template bt ID
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mail_templates.delete_by_id(template_id='template_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mail_templates.delete_by_id(
+    template_id="template_id",
+)
 
 ```
 </dd>
@@ -9287,8 +10494,15 @@ Update custom template by ID
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mail_templates.update_by_id(template_id='template_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mail_templates.update_by_id(
+    template_id="template_id",
+)
 
 ```
 </dd>
@@ -9384,8 +10598,15 @@ Make template default
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mail_templates.make_default_by_id(template_id='template_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mail_templates.make_default_by_id(
+    template_id="template_id",
+)
 
 ```
 </dd>
@@ -9450,7 +10671,12 @@ Get all domains owned by partner_id
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.mailbox_domains.get()
 
 ```
@@ -9507,8 +10733,15 @@ Create domain for the partner_id
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mailbox_domains.create(domain='domain', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mailbox_domains.create(
+    domain="domain",
+)
 
 ```
 </dd>
@@ -9572,8 +10805,15 @@ Delete domain for the partner_id
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mailbox_domains.delete_by_id(domain_id='domain_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mailbox_domains.delete_by_id(
+    domain_id="domain_id",
+)
 
 ```
 </dd>
@@ -9637,8 +10877,15 @@ Verify domain for the partner_id
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mailbox_domains.verify_by_id(domain_id='domain_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mailbox_domains.verify_by_id(
+    domain_id="domain_id",
+)
 
 ```
 </dd>
@@ -9703,7 +10950,12 @@ Get all mailboxes owned by Entity
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.mailboxes.get()
 
 ```
@@ -9760,8 +11012,16 @@ Create a new mailbox
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mailboxes.create(mailbox_domain_id='mailbox_domain_id', mailbox_name='mailbox_name', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mailboxes.create(
+    mailbox_domain_id="mailbox_domain_id",
+    mailbox_name="mailbox_name",
+)
 
 ```
 </dd>
@@ -9833,8 +11093,15 @@ Get all mailboxes owned by Entity
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mailboxes.search(entity_ids=['entity_ids'], )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mailboxes.search(
+    entity_ids=["entity_ids"],
+)
 
 ```
 </dd>
@@ -9898,8 +11165,15 @@ Delete mailbox
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.mailboxes.delete_by_id(mailbox_id='mailbox_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.mailboxes.delete_by_id(
+    mailbox_id="mailbox_id",
+)
 
 ```
 </dd>
@@ -9950,7 +11224,12 @@ client.mailboxes.delete_by_id(mailbox_id='mailbox_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.measure_units.get()
 
 ```
@@ -9993,8 +11272,15 @@ client.measure_units.get()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.measure_units.create(name='name', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.measure_units.create(
+    name="name",
+)
 
 ```
 </dd>
@@ -10052,8 +11338,15 @@ client.measure_units.create(name='name', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.measure_units.get_by_id(unit_id='unit_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.measure_units.get_by_id(
+    unit_id="unit_id",
+)
 
 ```
 </dd>
@@ -10103,8 +11396,15 @@ client.measure_units.get_by_id(unit_id='unit_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.measure_units.delete_by_id(unit_id='unit_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.measure_units.delete_by_id(
+    unit_id="unit_id",
+)
 
 ```
 </dd>
@@ -10154,8 +11454,15 @@ client.measure_units.delete_by_id(unit_id='unit_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.measure_units.update_by_id(unit_id='unit_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.measure_units.update_by_id(
+    unit_id="unit_id",
+)
 
 ```
 </dd>
@@ -10222,7 +11529,12 @@ client.measure_units.update_by_id(unit_id='unit_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.ocr.get_ocr_tasks()
 
 ```
@@ -10361,8 +11673,15 @@ To specify multiple IDs, repeat this parameter for each value: `id__in=<id1>&id_
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.ocr.post_ocr_tasks(file_url='file_url', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.ocr.post_ocr_tasks(
+    file_url="file_url",
+)
 
 ```
 </dd>
@@ -10420,7 +11739,12 @@ client.ocr.post_ocr_tasks(file_url='file_url', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.ocr.post_ocr_tasks_upload_from_file()
 
 ```
@@ -10438,6 +11762,7 @@ client.ocr.post_ocr_tasks_upload_from_file()
 <dd>
 
 **file:** `from __future__ import annotations
+
 core.File` — See core.File for more documentation
     
 </dd>
@@ -10480,8 +11805,15 @@ core.File` — See core.File for more documentation
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.ocr.get_ocr_tasks_id(task_id='task_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.ocr.get_ocr_tasks_id(
+    task_id="task_id",
+)
 
 ```
 </dd>
@@ -10532,7 +11864,12 @@ client.ocr.get_ocr_tasks_id(task_id='task_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.overdue_reminders.get()
 
 ```
@@ -10575,8 +11912,15 @@ client.overdue_reminders.get()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.overdue_reminders.create(name='name', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.overdue_reminders.create(
+    name="name",
+)
 
 ```
 </dd>
@@ -10642,8 +11986,15 @@ client.overdue_reminders.create(name='name', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.overdue_reminders.get_by_id(overdue_reminder_id='overdue_reminder_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.overdue_reminders.get_by_id(
+    overdue_reminder_id="overdue_reminder_id",
+)
 
 ```
 </dd>
@@ -10693,8 +12044,15 @@ client.overdue_reminders.get_by_id(overdue_reminder_id='overdue_reminder_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.overdue_reminders.delete_by_id(overdue_reminder_id='overdue_reminder_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.overdue_reminders.delete_by_id(
+    overdue_reminder_id="overdue_reminder_id",
+)
 
 ```
 </dd>
@@ -10744,8 +12102,15 @@ client.overdue_reminders.delete_by_id(overdue_reminder_id='overdue_reminder_id',
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.overdue_reminders.update_by_id(overdue_reminder_id='overdue_reminder_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.overdue_reminders.update_by_id(
+    overdue_reminder_id="overdue_reminder_id",
+)
 
 ```
 </dd>
@@ -10820,7 +12185,12 @@ client.overdue_reminders.update_by_id(overdue_reminder_id='overdue_reminder_id',
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.credit_notes.get_payable_credit_notes()
 
 ```
@@ -11081,7 +12451,11 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[
+        PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]
+    ]
+]` 
     
 </dd>
 </dl>
@@ -11089,7 +12463,11 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**status_not_in:** `typing.Optional[typing.Union[PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]]]` 
+**status_not_in:** `typing.Optional[
+    typing.Union[
+        PayableCreditNoteStateEnum, typing.Sequence[PayableCreditNoteStateEnum]
+    ]
+]` 
     
 </dd>
 </dl>
@@ -11155,8 +12533,16 @@ If not specified, the first page of results will be returned.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.post_payable_credit_notes(document_id='CN-2287', issued_at='2024-01-15', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.post_payable_credit_notes(
+    document_id="CN-2287",
+    issued_at="2024-01-15",
+)
 
 ```
 </dd>
@@ -11332,7 +12718,7 @@ client.credit_notes.post_payable_credit_notes(document_id='CN-2287', issued_at='
 <dl>
 <dd>
 
-Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+Upload an incoming credit note (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 </dd>
 </dl>
 </dd>
@@ -11348,7 +12734,12 @@ Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and s
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.credit_notes.post_payable_credit_notes_upload_from_file()
 
 ```
@@ -11366,6 +12757,7 @@ client.credit_notes.post_payable_credit_notes_upload_from_file()
 <dd>
 
 **file:** `from __future__ import annotations
+
 core.File` — See core.File for more documentation
     
 </dd>
@@ -11414,7 +12806,12 @@ Get credit notes validations.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.credit_notes.get_payable_credit_notes_validations()
 
 ```
@@ -11471,8 +12868,15 @@ Update credit notes validations.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.put_payable_credit_notes_validations(required_fields=["currency"], )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.put_payable_credit_notes_validations(
+    required_fields=["currency"],
+)
 
 ```
 </dd>
@@ -11536,7 +12940,12 @@ Reset credit notes validations.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.credit_notes.post_payable_credit_notes_validations_reset()
 
 ```
@@ -11579,8 +12988,15 @@ client.credit_notes.post_payable_credit_notes_validations_reset()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.get_payable_credit_notes_id(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.get_payable_credit_notes_id(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -11630,8 +13046,15 @@ client.credit_notes.get_payable_credit_notes_id(credit_note_id='credit_note_id',
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.delete_payable_credit_notes_id(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.delete_payable_credit_notes_id(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -11681,8 +13104,15 @@ client.credit_notes.delete_payable_credit_notes_id(credit_note_id='credit_note_i
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.patch_payable_credit_notes_id(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.patch_payable_credit_notes_id(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -11882,8 +13312,15 @@ Approve the credit note for appliance.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.post_payable_credit_notes_id_approve(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.post_payable_credit_notes_id_approve(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -11947,8 +13384,15 @@ Cancel the credit note that was not confirmed during the review.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.post_payable_credit_notes_id_cancel(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.post_payable_credit_notes_id_cancel(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -12012,8 +13456,15 @@ Request to cancel the OCR processing of the specified credit note.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.post_payable_credit_notes_id_cancel_ocr(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.post_payable_credit_notes_id_cancel_ocr(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -12063,8 +13514,15 @@ client.credit_notes.post_payable_credit_notes_id_cancel_ocr(credit_note_id='cred
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.get_payable_credit_notes_id_line_items(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.get_payable_credit_notes_id_line_items(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -12470,8 +13928,15 @@ If not specified, the first page of results will be returned.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.post_payable_credit_notes_id_line_items(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.post_payable_credit_notes_id_line_items(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -12568,10 +14033,17 @@ client.credit_notes.post_payable_credit_notes_id_line_items(credit_note_id='cred
 <dd>
 
 ```python
-from monite import Monite
-from monite import CreditNoteLineItemCreateRequest
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.put_payable_credit_notes_id_line_items(credit_note_id='credit_note_id', data=[CreditNoteLineItemCreateRequest()], )
+from monite import CreditNoteLineItemCreateRequest, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.put_payable_credit_notes_id_line_items(
+    credit_note_id="credit_note_id",
+    data=[CreditNoteLineItemCreateRequest()],
+)
 
 ```
 </dd>
@@ -12629,8 +14101,16 @@ client.credit_notes.put_payable_credit_notes_id_line_items(credit_note_id='credi
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.get_payable_credit_notes_id_line_items_id(credit_note_id='credit_note_id', line_item_id='line_item_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.get_payable_credit_notes_id_line_items_id(
+    credit_note_id="credit_note_id",
+    line_item_id="line_item_id",
+)
 
 ```
 </dd>
@@ -12688,8 +14168,16 @@ client.credit_notes.get_payable_credit_notes_id_line_items_id(credit_note_id='cr
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.delete_payable_credit_notes_id_line_items_id(credit_note_id='credit_note_id', line_item_id='line_item_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.delete_payable_credit_notes_id_line_items_id(
+    credit_note_id="credit_note_id",
+    line_item_id="line_item_id",
+)
 
 ```
 </dd>
@@ -12747,8 +14235,16 @@ client.credit_notes.delete_payable_credit_notes_id_line_items_id(credit_note_id=
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.patch_payable_credit_notes_id_line_items_id(credit_note_id='credit_note_id', line_item_id='line_item_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.patch_payable_credit_notes_id_line_items_id(
+    credit_note_id="credit_note_id",
+    line_item_id="line_item_id",
+)
 
 ```
 </dd>
@@ -12868,8 +14364,15 @@ Decline the credit note when an approver finds any mismatch or discrepancies.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.post_payable_credit_notes_id_reject(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.post_payable_credit_notes_id_reject(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -12933,8 +14436,15 @@ Start the approval process once the uploaded credit note is validated.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.post_payable_credit_notes_id_submit_for_approval(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.post_payable_credit_notes_id_submit_for_approval(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -12984,8 +14494,15 @@ client.credit_notes.post_payable_credit_notes_id_submit_for_approval(credit_note
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.credit_notes.get_payable_credit_notes_id_validate(credit_note_id='credit_note_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.credit_notes.get_payable_credit_notes_id_validate(
+    credit_note_id="credit_note_id",
+)
 
 ```
 </dd>
@@ -13036,7 +14553,12 @@ client.credit_notes.get_payable_credit_notes_id_validate(credit_note_id='credit_
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.purchase_orders.get()
 
 ```
@@ -13290,10 +14812,29 @@ If not specified, the first page of results will be returned.
 <dd>
 
 ```python
-from monite import Monite
-from monite import PurchaseOrderItem
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.purchase_orders.create(counterpart_id='counterpart_id', currency="AED", items=[PurchaseOrderItem(currency="AED", name='name', price=1, quantity=1, unit='unit', vat_rate=1, )], message='message', valid_for_days=1, )
+from monite import Monite, PurchaseOrderItem
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.purchase_orders.create(
+    counterpart_id="counterpart_id",
+    currency="AED",
+    items=[
+        PurchaseOrderItem(
+            currency="AED",
+            name="name",
+            price=1,
+            quantity=1,
+            unit="unit",
+            vat_rate=1,
+        )
+    ],
+    message="message",
+    valid_for_days=1,
+)
 
 ```
 </dd>
@@ -13413,7 +14954,12 @@ Get a list of placeholders allowed to insert into an email template for customiz
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.purchase_orders.get_variables()
 
 ```
@@ -13456,8 +15002,15 @@ client.purchase_orders.get_variables()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.purchase_orders.get_by_id(purchase_order_id='purchase_order_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.purchase_orders.get_by_id(
+    purchase_order_id="purchase_order_id",
+)
 
 ```
 </dd>
@@ -13507,8 +15060,15 @@ client.purchase_orders.get_by_id(purchase_order_id='purchase_order_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.purchase_orders.delete_by_id(purchase_order_id='purchase_order_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.purchase_orders.delete_by_id(
+    purchase_order_id="purchase_order_id",
+)
 
 ```
 </dd>
@@ -13558,8 +15118,15 @@ client.purchase_orders.delete_by_id(purchase_order_id='purchase_order_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.purchase_orders.update_by_id(purchase_order_id='purchase_order_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.purchase_orders.update_by_id(
+    purchase_order_id="purchase_order_id",
+)
 
 ```
 </dd>
@@ -13665,8 +15232,17 @@ client.purchase_orders.update_by_id(purchase_order_id='purchase_order_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.purchase_orders.preview_by_id(purchase_order_id='purchase_order_id', body_text='body_text', subject_text='subject_text', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.purchase_orders.preview_by_id(
+    purchase_order_id="purchase_order_id",
+    body_text="body_text",
+    subject_text="subject_text",
+)
 
 ```
 </dd>
@@ -13732,8 +15308,17 @@ client.purchase_orders.preview_by_id(purchase_order_id='purchase_order_id', body
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.purchase_orders.send_by_id(purchase_order_id='purchase_order_id', body_text='body_text', subject_text='subject_text', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.purchase_orders.send_by_id(
+    purchase_order_id="purchase_order_id",
+    body_text="body_text",
+    subject_text="subject_text",
+)
 
 ```
 </dd>
@@ -13845,7 +15430,12 @@ See also:
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payables.get()
 
 ```
@@ -13942,7 +15532,9 @@ To query multiple statuses at once, use the `status__in` parameter instead.
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[PayableStateEnum, typing.Sequence[PayableStateEnum]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[PayableStateEnum, typing.Sequence[PayableStateEnum]]
+]` 
 
 Return only payables that have the specified [statuses](https://docs.monite.com/accounts-payable/payables/index).
 
@@ -14288,6 +15880,14 @@ Valid but nonexistent project IDs do not raise errors but return no results.
 <dl>
 <dd>
 
+**has_tags:** `typing.Optional[bool]` — Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **origin:** `typing.Optional[PayableOriginEnum]` — Return only payables from a given origin ['einvoice', 'upload', 'email']
     
 </dd>
@@ -14350,7 +15950,12 @@ A newly created payable has the the `draft` [status](https://docs.monite.com/acc
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payables.create()
 
 ```
@@ -14597,7 +16202,12 @@ For more flexible configuration and retrieval of other data types, use `GET /ana
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payables.get_analytics()
 
 ```
@@ -14658,7 +16268,9 @@ To query multiple statuses at once, use the `status__in` parameter instead.
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[PayableStateEnum, typing.Sequence[PayableStateEnum]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[PayableStateEnum, typing.Sequence[PayableStateEnum]]
+]` 
 
 Return only payables that have the specified [statuses](https://docs.monite.com/accounts-payable/payables/index).
 
@@ -15004,6 +16616,14 @@ Valid but nonexistent project IDs do not raise errors but return no results.
 <dl>
 <dd>
 
+**has_tags:** `typing.Optional[bool]` — Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **origin:** `typing.Optional[PayableOriginEnum]` — Return only payables from a given origin ['einvoice', 'upload', 'email']
     
 </dd>
@@ -15044,7 +16664,7 @@ Valid but nonexistent project IDs do not raise errors but return no results.
 <dl>
 <dd>
 
-Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+Upload an incoming invoice (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 </dd>
 </dl>
 </dd>
@@ -15060,7 +16680,12 @@ Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan 
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payables.upload_from_file()
 
 ```
@@ -15078,6 +16703,7 @@ client.payables.upload_from_file()
 <dd>
 
 **file:** `from __future__ import annotations
+
 core.File` — See core.File for more documentation
     
 </dd>
@@ -15126,7 +16752,12 @@ Get payable validations.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payables.get_validations()
 
 ```
@@ -15183,8 +16814,15 @@ Update payable validations.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.update_validations(required_fields=["currency"], )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.update_validations(
+    required_fields=["currency"],
+)
 
 ```
 </dd>
@@ -15248,7 +16886,12 @@ Reset payable validations to default ones.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payables.reset_validations()
 
 ```
@@ -15305,7 +16948,12 @@ Get a list of placeholders allowed to insert into an email template for customiz
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payables.get_variables()
 
 ```
@@ -15362,8 +17010,15 @@ Retrieves information about a specific payable with the given ID.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.get_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.get_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -15427,8 +17082,15 @@ Deletes a specific payable.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.delete_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.delete_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -15492,8 +17154,15 @@ Updates the information about a specific payable.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.update_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.update_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -15733,8 +17402,15 @@ Confirms that the payable is ready to be paid.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.approve_payment_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.approve_payment_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -15798,8 +17474,15 @@ Attach file to payable without existing attachment.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.attach_file_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.attach_file_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -15824,6 +17507,7 @@ client.payables.attach_file_by_id(payable_id='payable_id', )
 <dd>
 
 **file:** `from __future__ import annotations
+
 core.File` — See core.File for more documentation
     
 </dd>
@@ -15872,8 +17556,15 @@ Cancels the payable that was not confirmed during the review.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.cancel_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.cancel_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -15937,8 +17628,15 @@ Request to cancel the OCR processing of the specified payable.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.post_payables_id_cancel_ocr(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.post_payables_id_cancel_ocr(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -15955,6 +17653,156 @@ client.payables.post_payables_id_cancel_ocr(payable_id='payable_id', )
 <dd>
 
 **payable_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payables.<a href="src/monite/payables/client.py">get_payables_id_history</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.get_payables_id_history(
+    payable_id="payable_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payable_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `typing.Optional[PayableHistoryCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event_type_in:** `typing.Optional[
+    typing.Union[
+        PayableHistoryEventTypeEnum,
+        typing.Sequence[PayableHistoryEventTypeEnum],
+    ]
+]` — Return only the specified event types
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_user_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only events caused by the entity users with the specified IDs. To specify multiple user IDs, repeat this parameter for each ID:
+`entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**timestamp_gt:** `typing.Optional[dt.datetime]` — Return only events that occurred after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**timestamp_lt:** `typing.Optional[dt.datetime]` — Return only events that occurred before the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**timestamp_gte:** `typing.Optional[dt.datetime]` — Return only events that occurred on or after the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**timestamp_lte:** `typing.Optional[dt.datetime]` — Return only events that occurred before or on the specified date and time.
     
 </dd>
 </dl>
@@ -16023,8 +17871,15 @@ See also:
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.mark_as_paid_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.mark_as_paid_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -16119,8 +17974,16 @@ See also:
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.mark_as_partially_paid_by_id(payable_id='payable_id', amount_paid=1, )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.mark_as_partially_paid_by_id(
+    payable_id="payable_id",
+    amount_paid=1,
+)
 
 ```
 </dd>
@@ -16192,8 +18055,15 @@ Declines the payable when an approver finds any mismatch or discrepancies.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.reject_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.reject_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -16257,8 +18127,15 @@ Reset payable state from rejected to new.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.reopen_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.reopen_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -16322,8 +18199,15 @@ Starts the approval process once the uploaded payable is validated.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.submit_for_approval_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.submit_for_approval_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -16387,8 +18271,15 @@ Check the invoice for compliance with the requirements for movement from draft t
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.validate_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.validate_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -16439,7 +18330,12 @@ client.payables.validate_by_id(payable_id='payable_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payment_intents.get()
 
 ```
@@ -16456,7 +18352,7 @@ client.payment_intents.get()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -16464,7 +18360,7 @@ client.payment_intents.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -16472,7 +18368,11 @@ client.payment_intents.get()
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -16480,7 +18380,7 @@ client.payment_intents.get()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[PaymentIntentCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[PaymentIntentCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -16530,8 +18430,15 @@ client.payment_intents.get()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_intents.get_by_id(payment_intent_id='payment_intent_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_intents.get_by_id(
+    payment_intent_id="payment_intent_id",
+)
 
 ```
 </dd>
@@ -16581,8 +18488,16 @@ client.payment_intents.get_by_id(payment_intent_id='payment_intent_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_intents.update_by_id(payment_intent_id='payment_intent_id', amount=1, )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_intents.update_by_id(
+    payment_intent_id="payment_intent_id",
+    amount=1,
+)
 
 ```
 </dd>
@@ -16640,8 +18555,15 @@ client.payment_intents.update_by_id(payment_intent_id='payment_intent_id', amoun
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_intents.get_history_by_id(payment_intent_id='payment_intent_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_intents.get_history_by_id(
+    payment_intent_id="payment_intent_id",
+)
 
 ```
 </dd>
@@ -16691,10 +18613,20 @@ client.payment_intents.get_history_by_id(payment_intent_id='payment_intent_id', 
 <dd>
 
 ```python
-from monite import Monite
-from monite import PaymentAccountObject
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_links.create(payment_methods=["sepa_credit"], recipient=PaymentAccountObject(id='id', type="entity", ), )
+from monite import Monite, PaymentAccountObject
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_links.create(
+    payment_methods=["sepa_credit"],
+    recipient=PaymentAccountObject(
+        id="id",
+        type="entity",
+    ),
+)
 
 ```
 </dd>
@@ -16808,8 +18740,15 @@ client.payment_links.create(payment_methods=["sepa_credit"], recipient=PaymentAc
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_links.get_by_id(payment_link_id='payment_link_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_links.get_by_id(
+    payment_link_id="payment_link_id",
+)
 
 ```
 </dd>
@@ -16859,8 +18798,15 @@ client.payment_links.get_by_id(payment_link_id='payment_link_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_links.expire_by_id(payment_link_id='payment_link_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_links.expire_by_id(
+    payment_link_id="payment_link_id",
+)
 
 ```
 </dd>
@@ -16911,7 +18857,12 @@ client.payment_links.expire_by_id(payment_link_id='payment_link_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payment_records.get()
 
 ```
@@ -16969,6 +18920,14 @@ client.payment_records.get()
 <dd>
 
 **object_id:** `typing.Optional[str]` — ID of the object, that is connected to payment
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**object_id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — List of IDs of the objects, that are connected to payments
     
 </dd>
 </dl>
@@ -17121,10 +19080,22 @@ client.payment_records.get()
 <dd>
 
 ```python
-from monite import Monite
-from monite import PaymentRecordObjectRequest
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_records.create(amount=1, currency="AED", object=PaymentRecordObjectRequest(id='id', type="receivable", ), payment_intent_id='payment_intent_id', )
+from monite import Monite, PaymentRecordObjectRequest
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_records.create(
+    amount=1,
+    currency="AED",
+    object=PaymentRecordObjectRequest(
+        id="id",
+        type="receivable",
+    ),
+    payment_intent_id="payment_intent_id",
+)
 
 ```
 </dd>
@@ -17246,8 +19217,15 @@ client.payment_records.create(amount=1, currency="AED", object=PaymentRecordObje
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_records.get_by_id(payment_record_id='payment_record_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_records.get_by_id(
+    payment_record_id="payment_record_id",
+)
 
 ```
 </dd>
@@ -17297,8 +19275,15 @@ client.payment_records.get_by_id(payment_record_id='payment_record_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_records.patch_payment_records_id(payment_record_id='payment_record_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_records.patch_payment_records_id(
+    payment_record_id="payment_record_id",
+)
 
 ```
 </dd>
@@ -17420,8 +19405,15 @@ client.payment_records.patch_payment_records_id(payment_record_id='payment_recor
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_records.post_payment_records_id_cancel(payment_record_id='payment_record_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_records.post_payment_records_id_cancel(
+    payment_record_id="payment_record_id",
+)
 
 ```
 </dd>
@@ -17478,10 +19470,21 @@ client.payment_records.post_payment_records_id_cancel(payment_record_id='payment
 <dd>
 
 ```python
-from monite import Monite
 import datetime
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_records.post_payment_records_id_mark_as_succeeded(payment_record_id='payment_record_id', paid_at=datetime.datetime.fromisoformat("2024-01-15 09:30:00+00:00", ), )
+
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_records.post_payment_records_id_mark_as_succeeded(
+    payment_record_id="payment_record_id",
+    paid_at=datetime.datetime.fromisoformat(
+        "2024-01-15 09:30:00+00:00",
+    ),
+)
 
 ```
 </dd>
@@ -17547,8 +19550,15 @@ client.payment_records.post_payment_records_id_mark_as_succeeded(payment_record_
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_records.post_payment_records_id_start_processing(payment_record_id='payment_record_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_records.post_payment_records_id_start_processing(
+    payment_record_id="payment_record_id",
+)
 
 ```
 </dd>
@@ -17607,7 +19617,12 @@ client.payment_records.post_payment_records_id_start_processing(payment_record_i
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payment_reminders.get()
 
 ```
@@ -17650,8 +19665,15 @@ client.payment_reminders.get()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_reminders.create(name='name', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_reminders.create(
+    name="name",
+)
 
 ```
 </dd>
@@ -17733,8 +19755,15 @@ client.payment_reminders.create(name='name', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_reminders.get_by_id(payment_reminder_id='payment_reminder_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_reminders.get_by_id(
+    payment_reminder_id="payment_reminder_id",
+)
 
 ```
 </dd>
@@ -17784,8 +19813,15 @@ client.payment_reminders.get_by_id(payment_reminder_id='payment_reminder_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_reminders.delete_by_id(payment_reminder_id='payment_reminder_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_reminders.delete_by_id(
+    payment_reminder_id="payment_reminder_id",
+)
 
 ```
 </dd>
@@ -17835,8 +19871,15 @@ client.payment_reminders.delete_by_id(payment_reminder_id='payment_reminder_id',
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_reminders.update_by_id(payment_reminder_id='payment_reminder_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_reminders.update_by_id(
+    payment_reminder_id="payment_reminder_id",
+)
 
 ```
 </dd>
@@ -17927,7 +19970,12 @@ client.payment_reminders.update_by_id(payment_reminder_id='payment_reminder_id',
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.payment_terms.get()
 
 ```
@@ -17969,10 +20017,19 @@ client.payment_terms.get()
 <dd>
 
 ```python
-from monite import Monite
-from monite import PaymentTerm
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_terms.create(name='name', term_final=PaymentTerm(number_of_days=1, ), )
+from monite import Monite, TermFinalDays
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_terms.create(
+    name="name",
+    term_final=TermFinalDays(
+        number_of_days=1,
+    ),
+)
 
 ```
 </dd>
@@ -17996,7 +20053,7 @@ client.payment_terms.create(name='name', term_final=PaymentTerm(number_of_days=1
 <dl>
 <dd>
 
-**term_final:** `PaymentTerm` — The final tier of the payment term. Defines the invoice due date.
+**term_final:** `TermFinalDays` — The final tier of the payment term. Defines the invoice due date.
     
 </dd>
 </dl>
@@ -18012,7 +20069,7 @@ client.payment_terms.create(name='name', term_final=PaymentTerm(number_of_days=1
 <dl>
 <dd>
 
-**term1:** `typing.Optional[PaymentTermDiscount]` — The first tier of the payment term. Represents the terms of the first early discount.
+**term1:** `typing.Optional[TermDiscountDays]` — The first tier of the payment term. Represents the terms of the first early discount.
     
 </dd>
 </dl>
@@ -18020,7 +20077,7 @@ client.payment_terms.create(name='name', term_final=PaymentTerm(number_of_days=1
 <dl>
 <dd>
 
-**term2:** `typing.Optional[PaymentTermDiscount]` — The second tier of the payment term. Defines the terms of the second early discount.
+**term2:** `typing.Optional[TermDiscountDays]` — The second tier of the payment term. Defines the terms of the second early discount.
     
 </dd>
 </dl>
@@ -18054,8 +20111,15 @@ client.payment_terms.create(name='name', term_final=PaymentTerm(number_of_days=1
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_terms.get_by_id(payment_terms_id='payment_terms_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_terms.get_by_id(
+    payment_terms_id="payment_terms_id",
+)
 
 ```
 </dd>
@@ -18105,8 +20169,15 @@ client.payment_terms.get_by_id(payment_terms_id='payment_terms_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_terms.delete_by_id(payment_terms_id='payment_terms_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_terms.delete_by_id(
+    payment_terms_id="payment_terms_id",
+)
 
 ```
 </dd>
@@ -18156,8 +20227,15 @@ client.payment_terms.delete_by_id(payment_terms_id='payment_terms_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payment_terms.update_by_id(payment_terms_id='payment_terms_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payment_terms.update_by_id(
+    payment_terms_id="payment_terms_id",
+)
 
 ```
 </dd>
@@ -18197,7 +20275,7 @@ client.payment_terms.update_by_id(payment_terms_id='payment_terms_id', )
 <dl>
 <dd>
 
-**term1:** `typing.Optional[PaymentTermDiscount]` — The first tier of the payment term. Represents the terms of the first early discount.
+**term1:** `typing.Optional[TermDiscountDays]` — The first tier of the payment term. Represents the terms of the first early discount.
     
 </dd>
 </dl>
@@ -18205,7 +20283,7 @@ client.payment_terms.update_by_id(payment_terms_id='payment_terms_id', )
 <dl>
 <dd>
 
-**term2:** `typing.Optional[PaymentTermDiscount]` — The second tier of the payment term. Defines the terms of the second early discount.
+**term2:** `typing.Optional[TermDiscountDays]` — The second tier of the payment term. Defines the terms of the second early discount.
     
 </dd>
 </dl>
@@ -18213,7 +20291,7 @@ client.payment_terms.update_by_id(payment_terms_id='payment_terms_id', )
 <dl>
 <dd>
 
-**term_final:** `typing.Optional[PaymentTerm]` — The final tier of the payment term. Defines the invoice due date.
+**term_final:** `typing.Optional[TermFinalDays]` — The final tier of the payment term. Defines the invoice due date.
     
 </dd>
 </dl>
@@ -18248,7 +20326,12 @@ client.payment_terms.update_by_id(payment_terms_id='payment_terms_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.products.get()
 
 ```
@@ -18463,8 +20546,15 @@ If not specified, the first page of results will be returned.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.products.create(name='name', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.products.create(
+    name="name",
+)
 
 ```
 </dd>
@@ -18489,6 +20579,14 @@ client.products.create(name='name', )
 <dd>
 
 **description:** `typing.Optional[str]` — Description of the product.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_reference:** `typing.Optional[str]` — A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
     
 </dd>
 </dl>
@@ -18562,8 +20660,15 @@ client.products.create(name='name', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.products.get_by_id(product_id='product_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.products.get_by_id(
+    product_id="product_id",
+)
 
 ```
 </dd>
@@ -18613,8 +20718,15 @@ client.products.get_by_id(product_id='product_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.products.delete_by_id(product_id='product_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.products.delete_by_id(
+    product_id="product_id",
+)
 
 ```
 </dd>
@@ -18664,8 +20776,15 @@ client.products.delete_by_id(product_id='product_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.products.update_by_id(product_id='product_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.products.update_by_id(
+    product_id="product_id",
+)
 
 ```
 </dd>
@@ -18690,6 +20809,14 @@ client.products.update_by_id(product_id='product_id', )
 <dd>
 
 **description:** `typing.Optional[str]` — Description of the product.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_reference:** `typing.Optional[str]` — A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
     
 </dd>
 </dl>
@@ -18786,7 +20913,12 @@ Get all projects for an entity
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.projects.get()
 
 ```
@@ -19039,8 +21171,15 @@ Create a new project.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.projects.create(name='Marketing', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.projects.create(
+    name="Marketing",
+)
 
 ```
 </dd>
@@ -19168,8 +21307,15 @@ Get a project with the given ID.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.projects.get_by_id(project_id='project_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.projects.get_by_id(
+    project_id="project_id",
+)
 
 ```
 </dd>
@@ -19233,8 +21379,15 @@ Delete a project.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.projects.delete_by_id(project_id='project_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.projects.delete_by_id(
+    project_id="project_id",
+)
 
 ```
 </dd>
@@ -19298,8 +21451,15 @@ Update a project.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.projects.update_by_id(project_id='project_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.projects.update_by_id(
+    project_id="project_id",
+)
 
 ```
 </dd>
@@ -19501,7 +21661,12 @@ This endpoint supports [pagination](https://docs.monite.com/api/concepts/paginat
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.receivables.get()
 
 ```
@@ -19563,7 +21728,12 @@ To specify multiple IDs, repeat this parameter for each value:
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[ReceivablesGetRequestStatusInItem, typing.Sequence[ReceivablesGetRequestStatusInItem]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[
+        ReceivablesGetRequestStatusInItem,
+        typing.Sequence[ReceivablesGetRequestStatusInItem],
+    ]
+]` 
 
 Return only receivables that have the specified statuses. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
 
@@ -19863,6 +22033,46 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
+**discounted_subtotal:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_gt:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_lt:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_gte:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_lte:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **status:** `typing.Optional[ReceivablesGetRequestStatus]` 
     
 </dd>
@@ -19952,11 +22162,25 @@ For example, given receivables with the following product IDs:
 <dd>
 
 ```python
-from monite import Monite
-from monite import ReceivableFacadeCreateQuotePayload
-from monite import LineItem
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.create(request=ReceivableFacadeCreateQuotePayload(counterpart_billing_address_id='counterpart_billing_address_id', counterpart_id='counterpart_id', currency="AED", line_items=[LineItem(quantity=1.1, )], ), )
+from monite import LineItem, Monite, ReceivableFacadeCreateQuotePayload
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.create(
+    request=ReceivableFacadeCreateQuotePayload(
+        counterpart_billing_address_id="counterpart_billing_address_id",
+        counterpart_id="counterpart_id",
+        currency="AED",
+        line_items=[
+            LineItem(
+                quantity=1.1,
+            )
+        ],
+    ),
+)
 
 ```
 </dd>
@@ -20020,7 +22244,12 @@ Get field requirements for invoice creation given the entity and counterpart det
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.receivables.get_receivables_required_fields()
 
 ```
@@ -20097,6 +22326,475 @@ client.receivables.get_receivables_required_fields()
 </dl>
 </details>
 
+<details><summary><code>client.receivables.<a href="src/monite/receivables/client.py">post_receivables_search</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This is a POST version of the `GET /receivables` endpoint. Use it to send search and filter parameters in the request body instead of the URL query string in case the query is too long and exceeds the URL length limit of your HTTP client.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.post_receivables_search()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**discounted_subtotal:** `typing.Optional[int]` — Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_gt:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_gte:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_lt:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_lte:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**based_on:** `typing.Optional[str]` 
+
+This parameter accepts a quote ID or an invoice ID.
+
+* Specify a quote ID to find invoices created from this quote.
+* Specify an invoice ID to find credit notes created for this invoice.
+
+Valid but nonexistent IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_id:** `typing.Optional[str]` 
+
+Return only receivables created for the counterpart with the specified ID.
+
+Counterparts that have been deleted but have associated receivables will still return results here because the receivables contain a frozen copy of the counterpart data.
+
+If the specified counterpart ID does not exist and never existed, no results are returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_name:** `typing.Optional[str]` — Return only receivables created for counterparts with the specified name (exact match, case-sensitive). For counterparts of `type` = `individual`, the full name is formatted as `first_name last_name`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_name_contains:** `typing.Optional[str]` — Return only receivables created for counterparts whose name contains the specified string (case-sensitive).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpart_name_icontains:** `typing.Optional[str]` — Return only receivables created for counterparts whose name contains the specified string (case-insensitive).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gt:** `typing.Optional[dt.datetime]` — Return only receivables created after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gte:** `typing.Optional[dt.datetime]` — Return only receivables created on or after the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lt:** `typing.Optional[dt.datetime]` — Return only receivables created before the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lte:** `typing.Optional[dt.datetime]` — Return only receivables created before or on the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id:** `typing.Optional[str]` — Return a receivable with the exact specified document number (case-sensitive). The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id_contains:** `typing.Optional[str]` — Return only receivables whose document number (`document_id`) contains the specified string (case-sensitive).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id_icontains:** `typing.Optional[str]` — Return only receivables whose document number (`document_id`) contains the specified string (case-insensitive).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**due_date_gt:** `typing.Optional[str]` 
+
+Return invoices that are due after the specified date (exclusive, `YYYY-MM-DD`).
+
+This filter excludes quotes, credit notes, and draft invoices.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**due_date_gte:** `typing.Optional[str]` 
+
+Return invoices that are due on or after the specified date (`YYYY-MM-DD`).
+
+This filter excludes quotes, credit notes, and draft invoices.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**due_date_lt:** `typing.Optional[str]` 
+
+Return invoices that are due before the specified date (exclusive, `YYYY-MM-DD`).
+
+This filter excludes quotes, credit notes, and draft invoices.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**due_date_lte:** `typing.Optional[str]` 
+
+Return invoices that are due before or on the specified date (`YYYY-MM-DD`).
+
+This filter excludes quotes, credit notes, and draft invoices.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_user_id:** `typing.Optional[str]` 
+
+Return only receivables created by the entity user with the specified ID. To query receivables by multiple user IDs at once, use the `entity_user_id__in` parameter instead.
+
+If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_user_id_in:** `typing.Optional[typing.Sequence[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id_in:** `typing.Optional[typing.Sequence[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issue_date_gt:** `typing.Optional[dt.datetime]` — Return only non-draft receivables that were issued after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issue_date_gte:** `typing.Optional[dt.datetime]` — Return only non-draft receivables that were issued on or after the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issue_date_lt:** `typing.Optional[dt.datetime]` — Return only non-draft receivables that were issued before the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issue_date_lte:** `typing.Optional[dt.datetime]` — Return only non-draft receivables that were issued before or on the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[OrderEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pagination_token:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**product_ids:** `typing.Optional[typing.Sequence[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**product_ids_in:** `typing.Optional[typing.Sequence[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id:** `typing.Optional[str]` — Return only receivables assigned to the project with the specified ID. Valid but nonexistent project IDs do not raise errors but return no results.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project_id_in:** `typing.Optional[typing.Sequence[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `typing.Optional[ReceivableCursorFields2]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[ReceivablesSearchRequestStatus]` 
+
+Return only receivables that have the specified status. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
+
+To query multiple statuses at once, use the `status__in` parameter instead.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status_in:** `typing.Optional[typing.Sequence[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag_ids:** `typing.Optional[typing.Sequence[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag_ids_in:** `typing.Optional[typing.Sequence[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount:** `typing.Optional[int]` — Return only receivables with the exact specified total amount. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_gt:** `typing.Optional[int]` — Return only receivables whose total amount (in minor units) exceeds the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_gte:** `typing.Optional[int]` — Return only receivables whose total amount (in minor units) is greater than or equal to the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_lt:** `typing.Optional[int]` — Return only receivables whose total amount (in minor units) is less than the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_lte:** `typing.Optional[int]` — Return only receivables whose total amount (in minor units) is less than or equal to the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `typing.Optional[ReceivableType]` — Return only receivables of the specified type. Use this parameter to get only invoices, or only quotes, or only credit notes.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.receivables.<a href="src/monite/receivables/client.py">get_variables</a>()</code></summary>
 <dl>
 <dd>
@@ -20125,7 +22823,12 @@ Get a list of placeholders that can be used in email templates for customization
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.receivables.get_variables()
 
 ```
@@ -20168,8 +22871,15 @@ client.receivables.get_variables()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.get_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.get_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -20219,8 +22929,15 @@ client.receivables.get_by_id(receivable_id='receivable_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.delete_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.delete_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -20269,11 +22986,19 @@ client.receivables.delete_by_id(receivable_id='receivable_id', )
 <dd>
 
 ```python
-from monite import Monite
-from monite import UpdateQuotePayload
-from monite import UpdateQuote
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.update_by_id(receivable_id='receivable_id', request=UpdateQuotePayload(quote=UpdateQuote(), ), )
+from monite import Monite, UpdateQuote, UpdateQuotePayload
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.update_by_id(
+    receivable_id="receivable_id",
+    request=UpdateQuotePayload(
+        quote=UpdateQuote(),
+    ),
+)
 
 ```
 </dd>
@@ -20331,8 +23056,15 @@ client.receivables.update_by_id(receivable_id='receivable_id', request=UpdateQuo
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.accept_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.accept_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -20390,8 +23122,15 @@ client.receivables.accept_by_id(receivable_id='receivable_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.cancel_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.cancel_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -20441,8 +23180,15 @@ client.receivables.cancel_by_id(receivable_id='receivable_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.clone_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.clone_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -20492,8 +23238,15 @@ client.receivables.clone_by_id(receivable_id='receivable_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.decline_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.decline_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -20567,8 +23320,15 @@ You can filter the history by the date range and event type. Events are sorted f
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.get_history(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.get_history(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -20628,7 +23388,12 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**event_type_in:** `typing.Optional[typing.Union[ReceivableHistoryEventTypeEnum, typing.Sequence[ReceivableHistoryEventTypeEnum]]]` 
+**event_type_in:** `typing.Optional[
+    typing.Union[
+        ReceivableHistoryEventTypeEnum,
+        typing.Sequence[ReceivableHistoryEventTypeEnum],
+    ]
+]` 
 
 Return only the specified [event types](https://docs.monite.com/accounts-receivable/document-history#event-types). To include multiple types, repeat this parameter for each value:
 `event_type__in=receivable_updated&event_type__in=status_changed`
@@ -20722,8 +23487,16 @@ Returns a single record from the change history of the specified accounts receiv
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.get_history_by_id(receivable_history_id='receivable_history_id', receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.get_history_by_id(
+    receivable_history_id="receivable_history_id",
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -20781,8 +23554,15 @@ client.receivables.get_history_by_id(receivable_history_id='receivable_history_i
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.issue_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.issue_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -20845,10 +23625,21 @@ Replace all line items of an existing invoice or quote with a new list of line i
 <dd>
 
 ```python
-from monite import Monite
-from monite import LineItem
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.update_line_items_by_id(receivable_id='receivable_id', data=[LineItem(quantity=1.1, )], )
+from monite import LineItem, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.update_line_items_by_id(
+    receivable_id="receivable_id",
+    data=[
+        LineItem(
+            quantity=1.1,
+        )
+    ],
+)
 
 ```
 </dd>
@@ -20906,8 +23697,15 @@ client.receivables.update_line_items_by_id(receivable_id='receivable_id', data=[
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.get_mails(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.get_mails(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -20975,7 +23773,11 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Union[ReceivableMailStatusEnum, typing.Sequence[ReceivableMailStatusEnum]]]` 
+**status_in:** `typing.Optional[
+    typing.Union[
+        ReceivableMailStatusEnum, typing.Sequence[ReceivableMailStatusEnum]
+    ]
+]` 
     
 </dd>
 </dl>
@@ -21041,8 +23843,16 @@ If not specified, the first page of results will be returned.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.get_mail_by_id(receivable_id='receivable_id', mail_id='mail_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.get_mail_by_id(
+    receivable_id="receivable_id",
+    mail_id="mail_id",
+)
 
 ```
 </dd>
@@ -21100,8 +23910,15 @@ client.receivables.get_mail_by_id(receivable_id='receivable_id', mail_id='mail_i
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.mark_as_paid_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.mark_as_paid_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -21181,8 +23998,16 @@ Deprecated. Use `POST /payment_records` to record an invoice payment.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.mark_as_partially_paid_by_id(receivable_id='receivable_id', amount_paid=1, )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.mark_as_partially_paid_by_id(
+    receivable_id="receivable_id",
+    amount_paid=1,
+)
 
 ```
 </dd>
@@ -21248,8 +24073,15 @@ client.receivables.mark_as_partially_paid_by_id(receivable_id='receivable_id', a
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.mark_as_uncollectible_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.mark_as_uncollectible_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -21307,8 +24139,15 @@ client.receivables.mark_as_uncollectible_by_id(receivable_id='receivable_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.get_pdf_link_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.get_pdf_link_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -21358,8 +24197,17 @@ client.receivables.get_pdf_link_by_id(receivable_id='receivable_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.preview_by_id(receivable_id='receivable_id', body_text='body_text', subject_text='subject_text', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.preview_by_id(
+    receivable_id="receivable_id",
+    body_text="body_text",
+    subject_text="subject_text",
+)
 
 ```
 </dd>
@@ -21441,8 +24289,17 @@ client.receivables.preview_by_id(receivable_id='receivable_id', body_text='body_
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.send_by_id(receivable_id='receivable_id', body_text='body_text', subject_text='subject_text', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.send_by_id(
+    receivable_id="receivable_id",
+    body_text="body_text",
+    subject_text="subject_text",
+)
 
 ```
 </dd>
@@ -21516,8 +24373,16 @@ client.receivables.send_by_id(receivable_id='receivable_id', body_text='body_tex
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.send_test_reminder_by_id(receivable_id='receivable_id', reminder_type="term_1", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.send_test_reminder_by_id(
+    receivable_id="receivable_id",
+    reminder_type="term_1",
+)
 
 ```
 </dd>
@@ -21583,8 +24448,15 @@ client.receivables.send_test_reminder_by_id(receivable_id='receivable_id', remin
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.receivables.verify_by_id(receivable_id='receivable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receivables.verify_by_id(
+    receivable_id="receivable_id",
+)
 
 ```
 </dd>
@@ -21635,7 +24507,12 @@ client.receivables.verify_by_id(receivable_id='receivable_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.recurrences.get()
 
 ```
@@ -21678,8 +24555,15 @@ client.recurrences.get()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.recurrences.create(day_of_month="first_day", end_month=1, end_year=1, invoice_id='invoice_id', start_month=1, start_year=1, )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.recurrences.create(
+    invoice_id="invoice_id",
+)
 
 ```
 </dd>
@@ -21695,47 +24579,7 @@ client.recurrences.create(day_of_month="first_day", end_month=1, end_year=1, inv
 <dl>
 <dd>
 
-**day_of_month:** `DayOfMonth` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_month:** `int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_year:** `int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**invoice_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**start_month:** `int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**start_year:** `int` 
+**invoice_id:** `str` — ID of the base invoice that will be used as a template for creating recurring invoices.
     
 </dd>
 </dl>
@@ -21760,7 +24604,7 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 <dl>
 <dd>
 
-**body_text:** `typing.Optional[str]` 
+**body_text:** `typing.Optional[str]` — The body text for the email that will be sent with the recurring invoice.
     
 </dd>
 </dl>
@@ -21768,7 +24612,7 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 <dl>
 <dd>
 
-**recipients:** `typing.Optional[Recipients]` 
+**day_of_month:** `typing.Optional[DayOfMonth]` — Deprecated, use `start_date` instead
     
 </dd>
 </dl>
@@ -21776,7 +24620,87 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 <dl>
 <dd>
 
-**subject_text:** `typing.Optional[str]` 
+**end_date:** `typing.Optional[str]` — The end date of the recurring invoice, in the `yyyy-mm-dd` format. The end date is inclusive, that is, the last invoice will be created on this date if the last occurrence falls on this date. `end_date` is mutually exclusive with `max_occurrences`. Either `end_date` or `max_occurrences` must be specified.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_month:** `typing.Optional[int]` — Deprecated, use `end_date` instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_year:** `typing.Optional[int]` — Deprecated, use `end_date` instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**frequency:** `typing.Optional[RecurrenceFrequency]` — How often the invoice will be created.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**interval:** `typing.Optional[int]` — The interval between each occurrence of the invoice. For example, when using monthly frequency, an interval of 1 means invoices will be created every month, an interval of 2 means invoices will be created every 2 months.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**max_occurrences:** `typing.Optional[int]` — How many times the recurring invoice will be created. The recurrence will stop after this number is reached. `max_occurrences` is mutually exclusive with `end_date`. Either `max_occurrences` or `end_date` must be specified.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recipients:** `typing.Optional[Recipients]` — An object containing the recipients (To, CC, BCC) of the recurring invoices. Can be omitted if the base invoice has the counterpart contact email specified in the `counterpart_contact.email` field.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[str]` — The date when the first invoice will be created, in the `yyyy-mm-dd` format. Cannot be a past date. Subsequent invoice dates will be calculated based on `start_date`, `frequency`, and `interval`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_month:** `typing.Optional[int]` — Deprecated, use `start_date` instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_year:** `typing.Optional[int]` — Deprecated, use `start_date` instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subject_text:** `typing.Optional[str]` — The subject for the email that will be sent with the recurring invoice.
     
 </dd>
 </dl>
@@ -21810,8 +24734,15 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.recurrences.get_by_id(recurrence_id='recurrence_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.recurrences.get_by_id(
+    recurrence_id="recurrence_id",
+)
 
 ```
 </dd>
@@ -21861,8 +24792,15 @@ client.recurrences.get_by_id(recurrence_id='recurrence_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.recurrences.update_by_id(recurrence_id='recurrence_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.recurrences.update_by_id(
+    recurrence_id="recurrence_id",
+)
 
 ```
 </dd>
@@ -21903,7 +24841,7 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 <dl>
 <dd>
 
-**body_text:** `typing.Optional[str]` 
+**body_text:** `typing.Optional[str]` — The body text for the email that will be sent with the recurring invoice.
     
 </dd>
 </dl>
@@ -21911,7 +24849,7 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 <dl>
 <dd>
 
-**day_of_month:** `typing.Optional[DayOfMonth]` 
+**day_of_month:** `typing.Optional[DayOfMonth]` — Deprecated, use `start_date` instead
     
 </dd>
 </dl>
@@ -21919,7 +24857,7 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 <dl>
 <dd>
 
-**end_month:** `typing.Optional[int]` 
+**end_date:** `typing.Optional[str]` — The end date of the recurring invoice, in the `yyyy-mm-dd` format. The end date is inclusive, that is, the last invoice will be created on this date if the last occurrence falls on this date. `end_date` is mutually exclusive with `max_occurrences`. Either `end_date` or `max_occurrences` must be specified.
     
 </dd>
 </dl>
@@ -21927,7 +24865,7 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 <dl>
 <dd>
 
-**end_year:** `typing.Optional[int]` 
+**end_month:** `typing.Optional[int]` — Deprecated, use `end_date` instead
     
 </dd>
 </dl>
@@ -21935,7 +24873,7 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 <dl>
 <dd>
 
-**recipients:** `typing.Optional[Recipients]` 
+**end_year:** `typing.Optional[int]` — Deprecated, use `end_date` instead
     
 </dd>
 </dl>
@@ -21943,7 +24881,47 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 <dl>
 <dd>
 
-**subject_text:** `typing.Optional[str]` 
+**frequency:** `typing.Optional[RecurrenceFrequency]` — How often the invoice will be created.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**interval:** `typing.Optional[int]` — The interval between each occurrence of the invoice. For example, when using monthly frequency, an interval of 1 means invoices will be created every month, an interval of 2 means invoices will be created every 2 months.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**max_occurrences:** `typing.Optional[int]` — How many times the recurring invoice will be created. The recurrence will stop after this number is reached. `max_occurrences` is mutually exclusive with `end_date`. Either `max_occurrences` or `end_date` must be specified.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recipients:** `typing.Optional[Recipients]` — An object containing the recipients (To, CC, BCC) of the recurring invoices. Can be omitted if the base invoice has the counterpart contact email specified in the `counterpart_contact.email` field.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[str]` — The date when the first invoice will be created, in the `yyyy-mm-dd` format. Cannot be a past date. Subsequent invoice dates will be calculated based on `start_date`, `frequency`, and `interval`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subject_text:** `typing.Optional[str]` — The subject for the email that will be sent with the recurring invoice.
     
 </dd>
 </dl>
@@ -21977,8 +24955,131 @@ Note: When using "issue_and_send", both subject_text and body_text must be provi
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.recurrences.cancel_by_id(recurrence_id='recurrence_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.recurrences.cancel_by_id(
+    recurrence_id="recurrence_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**recurrence_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.recurrences.<a href="src/monite/recurrences/client.py">post_recurrences_id_pause</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.recurrences.post_recurrences_id_pause(
+    recurrence_id="recurrence_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**recurrence_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.recurrences.<a href="src/monite/recurrences/client.py">post_recurrences_id_resume</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.recurrences.post_recurrences_id_resume(
+    recurrence_id="recurrence_id",
+)
 
 ```
 </dd>
@@ -22043,7 +25144,12 @@ Find all roles that match the search criteria.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.roles.get()
 
 ```
@@ -22191,10 +25297,17 @@ Create a new role from the specified values.
 <dd>
 
 ```python
-from monite import Monite
-from monite import BizObjectsSchemaInput
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.roles.create(name='name', permissions=BizObjectsSchemaInput(), )
+from monite import BizObjectsSchemaInput, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.roles.create(
+    name="name",
+    permissions=BizObjectsSchemaInput(),
+)
 
 ```
 </dd>
@@ -22252,8 +25365,15 @@ client.roles.create(name='name', permissions=BizObjectsSchemaInput(), )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.roles.get_by_id(role_id='role_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.roles.get_by_id(
+    role_id="role_id",
+)
 
 ```
 </dd>
@@ -22317,8 +25437,15 @@ Delete a role with the specified ID. The role being deleted must not be in use b
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.roles.delete_roles_id(role_id='role_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.roles.delete_roles_id(
+    role_id="role_id",
+)
 
 ```
 </dd>
@@ -22382,8 +25509,15 @@ Change the specified fields with the provided values.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.roles.update_by_id(role_id='role_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.roles.update_by_id(
+    role_id="role_id",
+)
 
 ```
 </dd>
@@ -22464,7 +25598,12 @@ Retrieve all settings for this partner.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.partner_settings.get()
 
 ```
@@ -22521,7 +25660,12 @@ Change the specified fields with the provided values.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.partner_settings.update()
 
 ```
@@ -22660,7 +25804,12 @@ Get a list of all tags. Tags can be assigned to resources to assist with searchi
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.tags.get()
 
 ```
@@ -22782,8 +25931,15 @@ To assign this tag to a resource, send the tag ID in the `tag_ids` list when cre
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.tags.create(name='Marketing', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.tags.create(
+    name="Marketing",
+)
 
 ```
 </dd>
@@ -22863,8 +26019,15 @@ Get information about a tag with the given ID.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.tags.get_by_id(tag_id='tag_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.tags.get_by_id(
+    tag_id="tag_id",
+)
 
 ```
 </dd>
@@ -22928,8 +26091,15 @@ Delete a tag with the given ID. This tag will be automatically deleted from all 
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.tags.delete_by_id(tag_id='tag_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.tags.delete_by_id(
+    tag_id="tag_id",
+)
 
 ```
 </dd>
@@ -22994,8 +26164,15 @@ Change the tag name. The new name must be unique among existing tags.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.tags.update_by_id(tag_id='tag_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.tags.update_by_id(
+    tag_id="tag_id",
+)
 
 ```
 </dd>
@@ -23084,7 +26261,12 @@ Get text templates
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.text_templates.get()
 
 ```
@@ -23165,8 +26347,18 @@ Create a text template
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.text_templates.create(document_type="quote", name='name', template='template', type="email_header", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.text_templates.create(
+    document_type="quote",
+    name="name",
+    template="template",
+    type="email_header",
+)
 
 ```
 </dd>
@@ -23254,8 +26446,15 @@ Get all custom contents
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.text_templates.get_by_id(text_template_id='text_template_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.text_templates.get_by_id(
+    text_template_id="text_template_id",
+)
 
 ```
 </dd>
@@ -23319,8 +26518,15 @@ Delete custom content by ID
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.text_templates.delete_by_id(text_template_id='text_template_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.text_templates.delete_by_id(
+    text_template_id="text_template_id",
+)
 
 ```
 </dd>
@@ -23384,8 +26590,15 @@ Update custom content by ID
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.text_templates.update_by_id(text_template_id='text_template_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.text_templates.update_by_id(
+    text_template_id="text_template_id",
+)
 
 ```
 </dd>
@@ -23465,8 +26678,15 @@ Make text template default
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.text_templates.make_default_by_id(text_template_id='text_template_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.text_templates.make_default_by_id(
+    text_template_id="text_template_id",
+)
 
 ```
 </dd>
@@ -23517,7 +26737,12 @@ client.text_templates.make_default_by_id(text_template_id='text_template_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.vat_rates.get()
 
 ```
@@ -23619,7 +26844,12 @@ Note that if the same event type is included in multiple webhook subscriptions, 
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.webhook_deliveries.get()
 
 ```
@@ -23755,7 +26985,12 @@ If not specified, the first page of results will be returned.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.webhook_subscriptions.get()
 
 ```
@@ -23874,8 +27109,16 @@ If not specified, the first page of results will be returned.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.webhook_subscriptions.create(object_type="account", url='url', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.webhook_subscriptions.create(
+    object_type="account",
+    url="url",
+)
 
 ```
 </dd>
@@ -23941,8 +27184,15 @@ client.webhook_subscriptions.create(object_type="account", url='url', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.webhook_subscriptions.get_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.webhook_subscriptions.get_by_id(
+    webhook_subscription_id="webhook_subscription_id",
+)
 
 ```
 </dd>
@@ -23992,8 +27242,15 @@ client.webhook_subscriptions.get_by_id(webhook_subscription_id='webhook_subscrip
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.webhook_subscriptions.delete_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.webhook_subscriptions.delete_by_id(
+    webhook_subscription_id="webhook_subscription_id",
+)
 
 ```
 </dd>
@@ -24043,8 +27300,15 @@ client.webhook_subscriptions.delete_by_id(webhook_subscription_id='webhook_subsc
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.webhook_subscriptions.update_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.webhook_subscriptions.update_by_id(
+    webhook_subscription_id="webhook_subscription_id",
+)
 
 ```
 </dd>
@@ -24118,8 +27382,15 @@ client.webhook_subscriptions.update_by_id(webhook_subscription_id='webhook_subsc
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.webhook_subscriptions.disable_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.webhook_subscriptions.disable_by_id(
+    webhook_subscription_id="webhook_subscription_id",
+)
 
 ```
 </dd>
@@ -24169,8 +27440,15 @@ client.webhook_subscriptions.disable_by_id(webhook_subscription_id='webhook_subs
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.webhook_subscriptions.enable_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.webhook_subscriptions.enable_by_id(
+    webhook_subscription_id="webhook_subscription_id",
+)
 
 ```
 </dd>
@@ -24220,8 +27498,15 @@ client.webhook_subscriptions.enable_by_id(webhook_subscription_id='webhook_subsc
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.webhook_subscriptions.regenerate_secret_by_id(webhook_subscription_id='webhook_subscription_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.webhook_subscriptions.regenerate_secret_by_id(
+    webhook_subscription_id="webhook_subscription_id",
+)
 
 ```
 </dd>
@@ -24290,7 +27575,12 @@ Data is actual as of the date and time of the last accounting synchronization, w
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.accounting.payables.get()
 
 ```
@@ -24363,8 +27653,15 @@ Returns information about an individual payable invoice (bill) that exists in th
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.accounting.payables.get_by_id(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.accounting.payables.get_by_id(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -24433,7 +27730,12 @@ Data is actual as of the date and time of the last accounting synchronization, w
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.accounting.receivables.get()
 
 ```
@@ -24506,8 +27808,15 @@ Returns information about an individual invoice that exists in the entity's acco
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.accounting.receivables.get_by_id(invoice_id='invoice_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.accounting.receivables.get_by_id(
+    invoice_id="invoice_id",
+)
 
 ```
 </dd>
@@ -24572,7 +27881,12 @@ Get all connections
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.accounting.connections.get()
 
 ```
@@ -24629,7 +27943,12 @@ Create new connection
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.accounting.connections.create()
 
 ```
@@ -24686,8 +28005,15 @@ Get connection by id
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.accounting.connections.get_by_id(connection_id='connection_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.accounting.connections.get_by_id(
+    connection_id="connection_id",
+)
 
 ```
 </dd>
@@ -24751,8 +28077,15 @@ Disconnect
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.accounting.connections.disconnect_by_id(connection_id='connection_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.accounting.connections.disconnect_by_id(
+    connection_id="connection_id",
+)
 
 ```
 </dd>
@@ -24802,8 +28135,15 @@ client.accounting.connections.disconnect_by_id(connection_id='connection_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.accounting.connections.sync_by_id(connection_id='connection_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.accounting.connections.sync_by_id(
+    connection_id="connection_id",
+)
 
 ```
 </dd>
@@ -24868,8 +28208,15 @@ Get synchronized records
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.accounting.synced_records.get(object_type="product", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.accounting.synced_records.get(
+    object_type="product",
+)
 
 ```
 </dd>
@@ -24901,7 +28248,11 @@ client.accounting.synced_records.get(object_type="product", )
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+**limit:** `typing.Optional[int]` 
+
+The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page. 
+
+When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
     
 </dd>
 </dl>
@@ -24911,7 +28262,7 @@ client.accounting.synced_records.get(object_type="product", )
 
 **pagination_token:** `typing.Optional[str]` 
 
-A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
 
 If not specified, the first page of results will be returned.
     
@@ -25049,8 +28400,15 @@ Get synchronized record by id
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.accounting.synced_records.get_by_id(synced_record_id='synced_record_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.accounting.synced_records.get_by_id(
+    synced_record_id="synced_record_id",
+)
 
 ```
 </dd>
@@ -25114,8 +28472,15 @@ Push object to the accounting system manually
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.accounting.synced_records.push_by_id(synced_record_id='synced_record_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.accounting.synced_records.push_by_id(
+    synced_record_id="synced_record_id",
+)
 
 ```
 </dd>
@@ -25180,7 +28545,12 @@ Get all tax rate accounts
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.accounting.tax_rates.get()
 
 ```
@@ -25205,7 +28575,11 @@ client.accounting.tax_rates.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+**limit:** `typing.Optional[int]` 
+
+The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page. 
+
+When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
     
 </dd>
 </dl>
@@ -25215,7 +28589,7 @@ client.accounting.tax_rates.get()
 
 **pagination_token:** `typing.Optional[str]` 
 
-A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
 
 If not specified, the first page of results will be returned.
     
@@ -25273,8 +28647,15 @@ Get tax rate account by id
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.accounting.tax_rates.get_by_id(tax_rate_id='tax_rate_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.accounting.tax_rates.get_by_id(
+    tax_rate_id="tax_rate_id",
+)
 
 ```
 </dd>
@@ -25339,7 +28720,12 @@ Get all ledger accounts
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.accounting.ledger_accounts.get()
 
 ```
@@ -25364,7 +28750,11 @@ client.accounting.ledger_accounts.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+**limit:** `typing.Optional[int]` 
+
+The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page. 
+
+When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
     
 </dd>
 </dl>
@@ -25374,7 +28764,7 @@ client.accounting.ledger_accounts.get()
 
 **pagination_token:** `typing.Optional[str]` 
 
-A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
 
 If not specified, the first page of results will be returned.
     
@@ -25432,8 +28822,15 @@ Get ledger account by id
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.accounting.ledger_accounts.get_by_id(ledger_account_id='ledger_account_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.accounting.ledger_accounts.get_by_id(
+    ledger_account_id="ledger_account_id",
+)
 
 ```
 </dd>
@@ -25498,8 +28895,15 @@ Retrieve a list of all approval policy processes.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_policies.processes.get(approval_policy_id='approval_policy_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_policies.processes.get(
+    approval_policy_id="approval_policy_id",
+)
 
 ```
 </dd>
@@ -25563,8 +28967,16 @@ Retrieve a specific approval policy process.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_policies.processes.get_by_id(approval_policy_id='approval_policy_id', process_id='process_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_policies.processes.get_by_id(
+    approval_policy_id="approval_policy_id",
+    process_id="process_id",
+)
 
 ```
 </dd>
@@ -25636,8 +29048,16 @@ Cancel an ongoing approval process for a specific approval policy.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_policies.processes.cancel_by_id(approval_policy_id='approval_policy_id', process_id='process_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_policies.processes.cancel_by_id(
+    approval_policy_id="approval_policy_id",
+    process_id="process_id",
+)
 
 ```
 </dd>
@@ -25709,8 +29129,16 @@ Retrieve a list of approval policy process steps.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.approval_policies.processes.get_steps(approval_policy_id='approval_policy_id', process_id='process_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.approval_policies.processes.get_steps(
+    approval_policy_id="approval_policy_id",
+    process_id="process_id",
+)
 
 ```
 </dd>
@@ -25769,8 +29197,15 @@ client.approval_policies.processes.get_steps(approval_policy_id='approval_policy
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.addresses.get(counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.addresses.get(
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -25820,8 +29255,19 @@ client.counterparts.addresses.get(counterpart_id='counterpart_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.addresses.create(counterpart_id='counterpart_id', city='Berlin', country="AF", line1='Flughafenstrasse 52', postal_code='10115', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.addresses.create(
+    counterpart_id="counterpart_id",
+    city="Berlin",
+    country="AF",
+    line1="Flughafenstrasse 52",
+    postal_code="10115",
+)
 
 ```
 </dd>
@@ -25919,8 +29365,16 @@ client.counterparts.addresses.create(counterpart_id='counterpart_id', city='Berl
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.addresses.get_by_id(address_id='address_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.addresses.get_by_id(
+    address_id="address_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -25978,8 +29432,16 @@ client.counterparts.addresses.get_by_id(address_id='address_id', counterpart_id=
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.addresses.delete_by_id(address_id='address_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.addresses.delete_by_id(
+    address_id="address_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -26037,8 +29499,16 @@ client.counterparts.addresses.delete_by_id(address_id='address_id', counterpart_
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.addresses.update_by_id(address_id='address_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.addresses.update_by_id(
+    address_id="address_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -26145,8 +29615,15 @@ client.counterparts.addresses.update_by_id(address_id='address_id', counterpart_
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.bank_accounts.get(counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.bank_accounts.get(
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -26196,8 +29673,17 @@ client.counterparts.bank_accounts.get(counterpart_id='counterpart_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.bank_accounts.create(counterpart_id='counterpart_id', country="AF", currency="AED", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.bank_accounts.create(
+    counterpart_id="counterpart_id",
+    country="AF",
+    currency="AED",
+)
 
 ```
 </dd>
@@ -26335,8 +29821,16 @@ client.counterparts.bank_accounts.create(counterpart_id='counterpart_id', countr
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.bank_accounts.get_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.bank_accounts.get_by_id(
+    bank_account_id="bank_account_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -26394,8 +29888,16 @@ client.counterparts.bank_accounts.get_by_id(bank_account_id='bank_account_id', c
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.bank_accounts.delete_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.bank_accounts.delete_by_id(
+    bank_account_id="bank_account_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -26453,8 +29955,16 @@ client.counterparts.bank_accounts.delete_by_id(bank_account_id='bank_account_id'
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.bank_accounts.update_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.bank_accounts.update_by_id(
+    bank_account_id="bank_account_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -26592,8 +30102,16 @@ client.counterparts.bank_accounts.update_by_id(bank_account_id='bank_account_id'
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.bank_accounts.make_default_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.bank_accounts.make_default_by_id(
+    bank_account_id="bank_account_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -26652,8 +30170,15 @@ client.counterparts.bank_accounts.make_default_by_id(bank_account_id='bank_accou
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.contacts.get(counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.contacts.get(
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -26702,10 +30227,24 @@ client.counterparts.contacts.get(counterpart_id='counterpart_id', )
 <dd>
 
 ```python
-from monite import Monite
-from monite import CounterpartAddress
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.contacts.create(counterpart_id='counterpart_id', address=CounterpartAddress(city='Berlin', country="AF", line1='Flughafenstrasse 52', postal_code='10115', ), first_name='Mary', last_name="O'Brien", )
+from monite import CounterpartAddress, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.contacts.create(
+    counterpart_id="counterpart_id",
+    address=CounterpartAddress(
+        city="Berlin",
+        country="AF",
+        line1="Flughafenstrasse 52",
+        postal_code="10115",
+    ),
+    first_name="Mary",
+    last_name="O'Brien",
+)
 
 ```
 </dd>
@@ -26803,8 +30342,16 @@ client.counterparts.contacts.create(counterpart_id='counterpart_id', address=Cou
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.contacts.get_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.contacts.get_by_id(
+    contact_id="contact_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -26862,8 +30409,16 @@ client.counterparts.contacts.get_by_id(contact_id='contact_id', counterpart_id='
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.contacts.delete_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.contacts.delete_by_id(
+    contact_id="contact_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -26921,8 +30476,16 @@ client.counterparts.contacts.delete_by_id(contact_id='contact_id', counterpart_i
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.contacts.update_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.contacts.update_by_id(
+    contact_id="contact_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -27028,8 +30591,16 @@ client.counterparts.contacts.update_by_id(contact_id='contact_id', counterpart_i
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.contacts.make_default_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.contacts.make_default_by_id(
+    contact_id="contact_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -27088,8 +30659,15 @@ client.counterparts.contacts.make_default_by_id(contact_id='contact_id', counter
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.vat_ids.get(counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.vat_ids.get(
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -27139,8 +30717,16 @@ client.counterparts.vat_ids.get(counterpart_id='counterpart_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.vat_ids.create(counterpart_id='counterpart_id', value='123456789', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.vat_ids.create(
+    counterpart_id="counterpart_id",
+    value="123456789",
+)
 
 ```
 </dd>
@@ -27214,8 +30800,16 @@ client.counterparts.vat_ids.create(counterpart_id='counterpart_id', value='12345
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.vat_ids.get_by_id(vat_id='vat_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.vat_ids.get_by_id(
+    vat_id="vat_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -27273,8 +30867,16 @@ client.counterparts.vat_ids.get_by_id(vat_id='vat_id', counterpart_id='counterpa
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.vat_ids.delete_by_id(vat_id='vat_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.vat_ids.delete_by_id(
+    vat_id="vat_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -27332,8 +30934,16 @@ client.counterparts.vat_ids.delete_by_id(vat_id='vat_id', counterpart_id='counte
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.counterparts.vat_ids.update_by_id(vat_id='vat_id', counterpart_id='counterpart_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.counterparts.vat_ids.update_by_id(
+    vat_id="vat_id",
+    counterpart_id="counterpart_id",
+)
 
 ```
 </dd>
@@ -27416,7 +31026,12 @@ client.counterparts.vat_ids.update_by_id(vat_id='vat_id', counterpart_id='counte
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.data_exports.extra_data.get()
 
 ```
@@ -27579,8 +31194,17 @@ client.data_exports.extra_data.get()
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.data_exports.extra_data.create(field_name="default_account_code", field_value='field_value', object_id='object_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.data_exports.extra_data.create(
+    field_name="default_account_code",
+    field_value="field_value",
+    object_id="object_id",
+)
 
 ```
 </dd>
@@ -27646,8 +31270,15 @@ client.data_exports.extra_data.create(field_name="default_account_code", field_v
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.data_exports.extra_data.get_by_id(extra_data_id='extra_data_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.data_exports.extra_data.get_by_id(
+    extra_data_id="extra_data_id",
+)
 
 ```
 </dd>
@@ -27697,8 +31328,15 @@ client.data_exports.extra_data.get_by_id(extra_data_id='extra_data_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.data_exports.extra_data.delete_by_id(extra_data_id='extra_data_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.data_exports.extra_data.delete_by_id(
+    extra_data_id="extra_data_id",
+)
 
 ```
 </dd>
@@ -27748,8 +31386,15 @@ client.data_exports.extra_data.delete_by_id(extra_data_id='extra_data_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.data_exports.extra_data.update_by_id(extra_data_id='extra_data_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.data_exports.extra_data.update_by_id(
+    extra_data_id="extra_data_id",
+)
 
 ```
 </dd>
@@ -27846,7 +31491,12 @@ Get all bank accounts of this entity.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entities.bank_accounts.get()
 
 ```
@@ -27916,8 +31566,16 @@ For other countries:
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.bank_accounts.create(country="AF", currency="AED", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.bank_accounts.create(
+    country="AF",
+    currency="AED",
+)
 
 ```
 </dd>
@@ -28069,8 +31727,15 @@ Retrieve a bank account by its ID.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.bank_accounts.get_by_id(bank_account_id='bank_account_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.bank_accounts.get_by_id(
+    bank_account_id="bank_account_id",
+)
 
 ```
 </dd>
@@ -28134,8 +31799,15 @@ Delete the bank account specified by its ID.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.bank_accounts.delete_by_id(bank_account_id='bank_account_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.bank_accounts.delete_by_id(
+    bank_account_id="bank_account_id",
+)
 
 ```
 </dd>
@@ -28199,8 +31871,15 @@ Change the specified fields with the provided values.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.bank_accounts.update_by_id(bank_account_id='bank_account_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.bank_accounts.update_by_id(
+    bank_account_id="bank_account_id",
+)
 
 ```
 </dd>
@@ -28280,8 +31959,15 @@ Set a bank account as the default for this entity per currency.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.bank_accounts.make_default_by_id(bank_account_id='bank_account_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.bank_accounts.make_default_by_id(
+    bank_account_id="bank_account_id",
+)
 
 ```
 </dd>
@@ -28332,8 +32018,15 @@ client.entities.bank_accounts.make_default_by_id(bank_account_id='bank_account_i
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.onboarding_data.get(entity_id='entity_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.onboarding_data.get(
+    entity_id="entity_id",
+)
 
 ```
 </dd>
@@ -28383,8 +32076,15 @@ client.entities.onboarding_data.get(entity_id='entity_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.onboarding_data.update(entity_id='entity_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.onboarding_data.update(
+    entity_id="entity_id",
+)
 
 ```
 </dd>
@@ -28473,8 +32173,15 @@ Get all enabled payment methods.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.payment_methods.get(entity_id='entity_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.payment_methods.get(
+    entity_id="entity_id",
+)
 
 ```
 </dd>
@@ -28538,8 +32245,15 @@ Set which payment methods should be enabled.
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.payment_methods.set(entity_id='entity_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.payment_methods.set(
+    entity_id="entity_id",
+)
 
 ```
 </dd>
@@ -28614,8 +32328,15 @@ client.entities.payment_methods.set(entity_id='entity_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.vat_ids.get(entity_id='entity_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.vat_ids.get(
+    entity_id="entity_id",
+)
 
 ```
 </dd>
@@ -28665,8 +32386,17 @@ client.entities.vat_ids.get(entity_id='entity_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.vat_ids.create(entity_id='entity_id', country="AF", value='123456789', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.vat_ids.create(
+    entity_id="entity_id",
+    country="AF",
+    value="123456789",
+)
 
 ```
 </dd>
@@ -28740,8 +32470,16 @@ client.entities.vat_ids.create(entity_id='entity_id', country="AF", value='12345
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.vat_ids.get_by_id(id='id', entity_id='entity_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.vat_ids.get_by_id(
+    id="id",
+    entity_id="entity_id",
+)
 
 ```
 </dd>
@@ -28799,8 +32537,16 @@ client.entities.vat_ids.get_by_id(id='id', entity_id='entity_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.vat_ids.delete_by_id(id='id', entity_id='entity_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.vat_ids.delete_by_id(
+    id="id",
+    entity_id="entity_id",
+)
 
 ```
 </dd>
@@ -28858,8 +32604,16 @@ client.entities.vat_ids.delete_by_id(id='id', entity_id='entity_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.vat_ids.update_by_id(id='id', entity_id='entity_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.vat_ids.update_by_id(
+    id="id",
+    entity_id="entity_id",
+)
 
 ```
 </dd>
@@ -28942,7 +32696,12 @@ client.entities.vat_ids.update_by_id(id='id', entity_id='entity_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
 client.entities.persons.get()
 
 ```
@@ -28984,10 +32743,19 @@ client.entities.persons.get()
 <dd>
 
 ```python
-from monite import Monite
-from monite import PersonRelationshipRequest
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.persons.create(email='email', first_name='first_name', last_name='last_name', relationship=PersonRelationshipRequest(), )
+from monite import Monite, PersonRelationshipRequest
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.persons.create(
+    email="email",
+    first_name="first_name",
+    last_name="last_name",
+    relationship=PersonRelationshipRequest(),
+)
 
 ```
 </dd>
@@ -29109,8 +32877,15 @@ client.entities.persons.create(email='email', first_name='first_name', last_name
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.persons.get_by_id(person_id='person_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.persons.get_by_id(
+    person_id="person_id",
+)
 
 ```
 </dd>
@@ -29160,8 +32935,15 @@ client.entities.persons.get_by_id(person_id='person_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.persons.delete_by_id(person_id='person_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.persons.delete_by_id(
+    person_id="person_id",
+)
 
 ```
 </dd>
@@ -29211,8 +32993,15 @@ client.entities.persons.delete_by_id(person_id='person_id', )
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.persons.update_by_id(person_id='person_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.persons.update_by_id(
+    person_id="person_id",
+)
 
 ```
 </dd>
@@ -29356,8 +33145,15 @@ Provide files for person onboarding verification
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.entities.persons.upload_onboarding_documents(person_id='person_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.persons.upload_onboarding_documents(
+    person_id="person_id",
+)
 
 ```
 </dd>
@@ -29461,8 +33257,15 @@ See also:
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.line_items.get(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.line_items.get(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -29582,8 +33385,15 @@ See also:
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.line_items.create(payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.line_items.create(
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -29718,10 +33528,17 @@ See also:
 <dd>
 
 ```python
-from monite import Monite
-from monite import LineItemInternalRequest
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.line_items.replace(payable_id='payable_id', data=[LineItemInternalRequest()], )
+from monite import LineItemInternalRequest, Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.line_items.replace(
+    payable_id="payable_id",
+    data=[LineItemInternalRequest()],
+)
 
 ```
 </dd>
@@ -29801,8 +33618,16 @@ See also:
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.line_items.get_by_id(line_item_id='line_item_id', payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.line_items.get_by_id(
+    line_item_id="line_item_id",
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -29882,8 +33707,16 @@ See also:
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.line_items.delete_by_id(line_item_id='line_item_id', payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.line_items.delete_by_id(
+    line_item_id="line_item_id",
+    payable_id="payable_id",
+)
 
 ```
 </dd>
@@ -29963,8 +33796,16 @@ See also:
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.payables.line_items.update_by_id(line_item_id='line_item_id', payable_id='payable_id', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.line_items.update_by_id(
+    line_item_id="line_item_id",
+    payable_id="payable_id",
+)
 
 ```
 </dd>

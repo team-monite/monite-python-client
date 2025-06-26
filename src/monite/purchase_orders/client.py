@@ -139,7 +139,12 @@ class PurchaseOrdersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.purchase_orders.get()
         """
         _response = self._raw_client.get(
@@ -223,10 +228,29 @@ class PurchaseOrdersClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import PurchaseOrderItem
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.purchase_orders.create(counterpart_id='counterpart_id', currency="AED", items=[PurchaseOrderItem(currency="AED", name='name', price=1, quantity=1, unit='unit', vat_rate=1, )], message='message', valid_for_days=1, )
+        from monite import Monite, PurchaseOrderItem
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.purchase_orders.create(
+            counterpart_id="counterpart_id",
+            currency="AED",
+            items=[
+                PurchaseOrderItem(
+                    currency="AED",
+                    name="name",
+                    price=1,
+                    quantity=1,
+                    unit="unit",
+                    vat_rate=1,
+                )
+            ],
+            message="message",
+            valid_for_days=1,
+        )
         """
         _response = self._raw_client.create(
             counterpart_id=counterpart_id,
@@ -258,7 +282,12 @@ class PurchaseOrdersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.purchase_orders.get_variables()
         """
         _response = self._raw_client.get_variables(request_options=request_options)
@@ -283,8 +312,15 @@ class PurchaseOrdersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.purchase_orders.get_by_id(purchase_order_id='purchase_order_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.purchase_orders.get_by_id(
+            purchase_order_id="purchase_order_id",
+        )
         """
         _response = self._raw_client.get_by_id(purchase_order_id, request_options=request_options)
         return _response.data
@@ -305,8 +341,15 @@ class PurchaseOrdersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.purchase_orders.delete_by_id(purchase_order_id='purchase_order_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.purchase_orders.delete_by_id(
+            purchase_order_id="purchase_order_id",
+        )
         """
         _response = self._raw_client.delete_by_id(purchase_order_id, request_options=request_options)
         return _response.data
@@ -361,8 +404,15 @@ class PurchaseOrdersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.purchase_orders.update_by_id(purchase_order_id='purchase_order_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.purchase_orders.update_by_id(
+            purchase_order_id="purchase_order_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             purchase_order_id,
@@ -405,8 +455,17 @@ class PurchaseOrdersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.purchase_orders.preview_by_id(purchase_order_id='purchase_order_id', body_text='body_text', subject_text='subject_text', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.purchase_orders.preview_by_id(
+            purchase_order_id="purchase_order_id",
+            body_text="body_text",
+            subject_text="subject_text",
+        )
         """
         _response = self._raw_client.preview_by_id(
             purchase_order_id, body_text=body_text, subject_text=subject_text, request_options=request_options
@@ -441,8 +500,17 @@ class PurchaseOrdersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.purchase_orders.send_by_id(purchase_order_id='purchase_order_id', body_text='body_text', subject_text='subject_text', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.purchase_orders.send_by_id(
+            purchase_order_id="purchase_order_id",
+            body_text="body_text",
+            subject_text="subject_text",
+        )
         """
         _response = self._raw_client.send_by_id(
             purchase_order_id, body_text=body_text, subject_text=subject_text, request_options=request_options
@@ -567,11 +635,21 @@ class AsyncPurchaseOrdersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.purchase_orders.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -655,12 +733,36 @@ class AsyncPurchaseOrdersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import PurchaseOrderItem
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, PurchaseOrderItem
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.purchase_orders.create(counterpart_id='counterpart_id', currency="AED", items=[PurchaseOrderItem(currency="AED", name='name', price=1, quantity=1, unit='unit', vat_rate=1, )], message='message', valid_for_days=1, )
+            await client.purchase_orders.create(
+                counterpart_id="counterpart_id",
+                currency="AED",
+                items=[
+                    PurchaseOrderItem(
+                        currency="AED",
+                        name="name",
+                        price=1,
+                        quantity=1,
+                        unit="unit",
+                        vat_rate=1,
+                    )
+                ],
+                message="message",
+                valid_for_days=1,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -692,11 +794,21 @@ class AsyncPurchaseOrdersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.purchase_orders.get_variables()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_variables(request_options=request_options)
@@ -720,11 +832,23 @@ class AsyncPurchaseOrdersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.purchase_orders.get_by_id(purchase_order_id='purchase_order_id', )
+            await client.purchase_orders.get_by_id(
+                purchase_order_id="purchase_order_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(purchase_order_id, request_options=request_options)
@@ -747,11 +871,23 @@ class AsyncPurchaseOrdersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.purchase_orders.delete_by_id(purchase_order_id='purchase_order_id', )
+            await client.purchase_orders.delete_by_id(
+                purchase_order_id="purchase_order_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(purchase_order_id, request_options=request_options)
@@ -806,11 +942,23 @@ class AsyncPurchaseOrdersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.purchase_orders.update_by_id(purchase_order_id='purchase_order_id', )
+            await client.purchase_orders.update_by_id(
+                purchase_order_id="purchase_order_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -853,11 +1001,25 @@ class AsyncPurchaseOrdersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.purchase_orders.preview_by_id(purchase_order_id='purchase_order_id', body_text='body_text', subject_text='subject_text', )
+            await client.purchase_orders.preview_by_id(
+                purchase_order_id="purchase_order_id",
+                body_text="body_text",
+                subject_text="subject_text",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.preview_by_id(
@@ -892,11 +1054,25 @@ class AsyncPurchaseOrdersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.purchase_orders.send_by_id(purchase_order_id='purchase_order_id', body_text='body_text', subject_text='subject_text', )
+            await client.purchase_orders.send_by_id(
+                purchase_order_id="purchase_order_id",
+                body_text="body_text",
+                subject_text="subject_text",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.send_by_id(

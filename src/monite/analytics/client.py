@@ -182,8 +182,16 @@ class AnalyticsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.analytics.get_analytics_credit_notes(metric="id", aggregation_function="count", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.analytics.get_analytics_credit_notes(
+            metric="id",
+            aggregation_function="count",
+        )
         """
         _response = self._raw_client.get_analytics_credit_notes(
             metric=metric,
@@ -280,6 +288,7 @@ class AnalyticsClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -451,6 +460,9 @@ class AnalyticsClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -468,8 +480,16 @@ class AnalyticsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.analytics.get_analytics_payables(metric="id", aggregation_function="count", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.analytics.get_analytics_payables(
+            metric="id",
+            aggregation_function="count",
+        )
         """
         _response = self._raw_client.get_analytics_payables(
             metric=metric,
@@ -522,6 +542,7 @@ class AnalyticsClient:
             project_id_in=project_id_in,
             tag_ids=tag_ids,
             tag_ids_not_in=tag_ids_not_in,
+            has_tags=has_tags,
             origin=origin,
             has_file=has_file,
             request_options=request_options,
@@ -572,6 +593,11 @@ class AnalyticsClient:
         total_amount_lt: typing.Optional[int] = None,
         total_amount_gte: typing.Optional[int] = None,
         total_amount_lte: typing.Optional[int] = None,
+        discounted_subtotal: typing.Optional[int] = None,
+        discounted_subtotal_gt: typing.Optional[int] = None,
+        discounted_subtotal_lt: typing.Optional[int] = None,
+        discounted_subtotal_gte: typing.Optional[int] = None,
+        discounted_subtotal_lte: typing.Optional[int] = None,
         status: typing.Optional[GetAnalyticsReceivablesRequestStatus] = None,
         entity_user_id: typing.Optional[str] = None,
         based_on: typing.Optional[str] = None,
@@ -736,6 +762,16 @@ class AnalyticsClient:
 
         total_amount_lte : typing.Optional[int]
 
+        discounted_subtotal : typing.Optional[int]
+
+        discounted_subtotal_gt : typing.Optional[int]
+
+        discounted_subtotal_lt : typing.Optional[int]
+
+        discounted_subtotal_gte : typing.Optional[int]
+
+        discounted_subtotal_lte : typing.Optional[int]
+
         status : typing.Optional[GetAnalyticsReceivablesRequestStatus]
 
         entity_user_id : typing.Optional[str]
@@ -763,8 +799,16 @@ class AnalyticsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.analytics.get_analytics_receivables(metric="id", aggregation_function="count", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.analytics.get_analytics_receivables(
+            metric="id",
+            aggregation_function="count",
+        )
         """
         _response = self._raw_client.get_analytics_receivables(
             metric=metric,
@@ -804,6 +848,11 @@ class AnalyticsClient:
             total_amount_lt=total_amount_lt,
             total_amount_gte=total_amount_gte,
             total_amount_lte=total_amount_lte,
+            discounted_subtotal=discounted_subtotal,
+            discounted_subtotal_gt=discounted_subtotal_gt,
+            discounted_subtotal_lt=discounted_subtotal_lt,
+            discounted_subtotal_gte=discounted_subtotal_gte,
+            discounted_subtotal_lte=discounted_subtotal_lte,
             status=status,
             entity_user_id=entity_user_id,
             based_on=based_on,
@@ -968,11 +1017,24 @@ class AsyncAnalyticsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.analytics.get_analytics_credit_notes(metric="id", aggregation_function="count", )
+            await client.analytics.get_analytics_credit_notes(
+                metric="id",
+                aggregation_function="count",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_analytics_credit_notes(
@@ -1070,6 +1132,7 @@ class AsyncAnalyticsClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1241,6 +1304,9 @@ class AsyncAnalyticsClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -1257,11 +1323,24 @@ class AsyncAnalyticsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.analytics.get_analytics_payables(metric="id", aggregation_function="count", )
+            await client.analytics.get_analytics_payables(
+                metric="id",
+                aggregation_function="count",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_analytics_payables(
@@ -1315,6 +1394,7 @@ class AsyncAnalyticsClient:
             project_id_in=project_id_in,
             tag_ids=tag_ids,
             tag_ids_not_in=tag_ids_not_in,
+            has_tags=has_tags,
             origin=origin,
             has_file=has_file,
             request_options=request_options,
@@ -1365,6 +1445,11 @@ class AsyncAnalyticsClient:
         total_amount_lt: typing.Optional[int] = None,
         total_amount_gte: typing.Optional[int] = None,
         total_amount_lte: typing.Optional[int] = None,
+        discounted_subtotal: typing.Optional[int] = None,
+        discounted_subtotal_gt: typing.Optional[int] = None,
+        discounted_subtotal_lt: typing.Optional[int] = None,
+        discounted_subtotal_gte: typing.Optional[int] = None,
+        discounted_subtotal_lte: typing.Optional[int] = None,
         status: typing.Optional[GetAnalyticsReceivablesRequestStatus] = None,
         entity_user_id: typing.Optional[str] = None,
         based_on: typing.Optional[str] = None,
@@ -1529,6 +1614,16 @@ class AsyncAnalyticsClient:
 
         total_amount_lte : typing.Optional[int]
 
+        discounted_subtotal : typing.Optional[int]
+
+        discounted_subtotal_gt : typing.Optional[int]
+
+        discounted_subtotal_lt : typing.Optional[int]
+
+        discounted_subtotal_gte : typing.Optional[int]
+
+        discounted_subtotal_lte : typing.Optional[int]
+
         status : typing.Optional[GetAnalyticsReceivablesRequestStatus]
 
         entity_user_id : typing.Optional[str]
@@ -1555,11 +1650,24 @@ class AsyncAnalyticsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.analytics.get_analytics_receivables(metric="id", aggregation_function="count", )
+            await client.analytics.get_analytics_receivables(
+                metric="id",
+                aggregation_function="count",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_analytics_receivables(
@@ -1600,6 +1708,11 @@ class AsyncAnalyticsClient:
             total_amount_lt=total_amount_lt,
             total_amount_gte=total_amount_gte,
             total_amount_lte=total_amount_lte,
+            discounted_subtotal=discounted_subtotal,
+            discounted_subtotal_gt=discounted_subtotal_gt,
+            discounted_subtotal_lt=discounted_subtotal_lt,
+            discounted_subtotal_gte=discounted_subtotal_gte,
+            discounted_subtotal_lte=discounted_subtotal_lte,
             status=status,
             entity_user_id=entity_user_id,
             based_on=based_on,

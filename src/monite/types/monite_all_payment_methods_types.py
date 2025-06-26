@@ -18,6 +18,8 @@ MoniteAllPaymentMethodsTypes = typing.Union[
         "sofort",
         "applepay",
         "googlepay",
+        "affirm",
+        "klarna",
     ],
     typing.Any,
 ]

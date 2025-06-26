@@ -5,14 +5,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .counterpart_type import CounterpartType
 from .currency_enum import CurrencyEnum
-from .discount import Discount
+from .discount_response import DiscountResponse
 from .einvoicing_credentials import EinvoicingCredentials
 from .invoice_response_payload_entity import InvoiceResponsePayloadEntity
 from .language_code_enum import LanguageCodeEnum
 from .payment_terms import PaymentTerms
 from .receivable_counterpart_contact import ReceivableCounterpartContact
-from .receivable_counterpart_type import ReceivableCounterpartType
 from .receivable_counterpart_vat_id_response import ReceivableCounterpartVatIdResponse
 from .receivable_entity_address_schema import ReceivableEntityAddressSchema
 from .receivable_entity_vat_id_response import ReceivableEntityVatIdResponse
@@ -122,7 +122,7 @@ class InvoiceResponsePayload(UniversalBaseModel):
     The VAT/TAX ID of the counterpart.
     """
 
-    counterpart_type: ReceivableCounterpartType = pydantic.Field()
+    counterpart_type: CounterpartType = pydantic.Field()
     """
     The type of the counterpart.
     """
@@ -143,7 +143,7 @@ class InvoiceResponsePayload(UniversalBaseModel):
     A note with additional information about a tax deduction
     """
 
-    discount: typing.Optional[Discount] = pydantic.Field(default=None)
+    discount: typing.Optional[DiscountResponse] = pydantic.Field(default=None)
     """
     The discount for a receivable.
     """

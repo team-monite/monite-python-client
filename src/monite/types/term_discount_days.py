@@ -6,8 +6,12 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class TermFinalWithDate(UniversalBaseModel):
-    end_date: typing.Optional[str] = None
+class TermDiscountDays(UniversalBaseModel):
+    discount: int = pydantic.Field()
+    """
+    The discount percentage in minor units. E.g., 200 means 2%. 1050 means 10.5%.
+    """
+
     number_of_days: int = pydantic.Field()
     """
     The amount of days after the invoice issue date.
