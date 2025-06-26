@@ -42,7 +42,12 @@ class ConnectionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.accounting.connections.get()
         """
         _response = self._raw_client.get(request_options=request_options)
@@ -65,7 +70,12 @@ class ConnectionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.accounting.connections.create()
         """
         _response = self._raw_client.create(request_options=request_options)
@@ -92,8 +102,15 @@ class ConnectionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.accounting.connections.get_by_id(connection_id='connection_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.accounting.connections.get_by_id(
+            connection_id="connection_id",
+        )
         """
         _response = self._raw_client.get_by_id(connection_id, request_options=request_options)
         return _response.data
@@ -119,8 +136,15 @@ class ConnectionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.accounting.connections.disconnect_by_id(connection_id='connection_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.accounting.connections.disconnect_by_id(
+            connection_id="connection_id",
+        )
         """
         _response = self._raw_client.disconnect_by_id(connection_id, request_options=request_options)
         return _response.data
@@ -144,8 +168,15 @@ class ConnectionsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.accounting.connections.sync_by_id(connection_id='connection_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.accounting.connections.sync_by_id(
+            connection_id="connection_id",
+        )
         """
         _response = self._raw_client.sync_by_id(connection_id, request_options=request_options)
         return _response.data
@@ -182,11 +213,21 @@ class AsyncConnectionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.accounting.connections.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(request_options=request_options)
@@ -208,11 +249,21 @@ class AsyncConnectionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.accounting.connections.create()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(request_options=request_options)
@@ -238,11 +289,23 @@ class AsyncConnectionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.accounting.connections.get_by_id(connection_id='connection_id', )
+            await client.accounting.connections.get_by_id(
+                connection_id="connection_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(connection_id, request_options=request_options)
@@ -268,11 +331,23 @@ class AsyncConnectionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.accounting.connections.disconnect_by_id(connection_id='connection_id', )
+            await client.accounting.connections.disconnect_by_id(
+                connection_id="connection_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.disconnect_by_id(connection_id, request_options=request_options)
@@ -296,11 +371,23 @@ class AsyncConnectionsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.accounting.connections.sync_by_id(connection_id='connection_id', )
+            await client.accounting.connections.sync_by_id(
+                connection_id="connection_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.sync_by_id(connection_id, request_options=request_options)

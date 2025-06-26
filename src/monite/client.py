@@ -16,6 +16,7 @@ from .counterpart_e_invoicing_credentials.client import (
 )
 from .counterparts.client import AsyncCounterpartsClient, CounterpartsClient
 from .credit_notes.client import AsyncCreditNotesClient, CreditNotesClient
+from .custom_vat_rates.client import AsyncCustomVatRatesClient, CustomVatRatesClient
 from .data_exports.client import AsyncDataExportsClient, DataExportsClient
 from .delivery_notes.client import AsyncDeliveryNotesClient, DeliveryNotesClient
 from .e_invoicing_connections.client import AsyncEInvoicingConnectionsClient, EInvoicingConnectionsClient
@@ -64,6 +65,8 @@ class Monite:
     environment : MoniteEnvironment
         The environment to use for requests from the client. from .environment import MoniteEnvironment
 
+
+
         Defaults to MoniteEnvironment.SANDBOX
 
 
@@ -71,6 +74,9 @@ class Monite:
     monite_version : str
     monite_entity_id : typing.Optional[str]
     token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    headers : typing.Optional[typing.Dict[str, str]]
+        Additional headers to send with every request.
+
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
@@ -83,7 +89,12 @@ class Monite:
     Examples
     --------
     from monite import Monite
-    client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+    client = Monite(
+        monite_version="YOUR_MONITE_VERSION",
+        monite_entity_id="YOUR_MONITE_ENTITY_ID",
+        token="YOUR_TOKEN",
+    )
     """
 
     def __init__(
@@ -94,6 +105,7 @@ class Monite:
         monite_version: str,
         monite_entity_id: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
@@ -106,6 +118,7 @@ class Monite:
             monite_version=monite_version,
             monite_entity_id=monite_entity_id,
             token=token,
+            headers=headers,
             httpx_client=httpx_client
             if httpx_client is not None
             else httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
@@ -122,6 +135,7 @@ class Monite:
         self.counterpart_e_invoicing_credentials = CounterpartEInvoicingCredentialsClient(
             client_wrapper=self._client_wrapper
         )
+        self.custom_vat_rates = CustomVatRatesClient(client_wrapper=self._client_wrapper)
         self.data_exports = DataExportsClient(client_wrapper=self._client_wrapper)
         self.delivery_notes = DeliveryNotesClient(client_wrapper=self._client_wrapper)
         self.pdf_templates = PdfTemplatesClient(client_wrapper=self._client_wrapper)
@@ -171,6 +185,8 @@ class AsyncMonite:
     environment : MoniteEnvironment
         The environment to use for requests from the client. from .environment import MoniteEnvironment
 
+
+
         Defaults to MoniteEnvironment.SANDBOX
 
 
@@ -178,6 +194,9 @@ class AsyncMonite:
     monite_version : str
     monite_entity_id : typing.Optional[str]
     token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    headers : typing.Optional[typing.Dict[str, str]]
+        Additional headers to send with every request.
+
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
@@ -190,7 +209,12 @@ class AsyncMonite:
     Examples
     --------
     from monite import AsyncMonite
-    client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+    client = AsyncMonite(
+        monite_version="YOUR_MONITE_VERSION",
+        monite_entity_id="YOUR_MONITE_ENTITY_ID",
+        token="YOUR_TOKEN",
+    )
     """
 
     def __init__(
@@ -201,6 +225,7 @@ class AsyncMonite:
         monite_version: str,
         monite_entity_id: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
@@ -213,6 +238,7 @@ class AsyncMonite:
             monite_version=monite_version,
             monite_entity_id=monite_entity_id,
             token=token,
+            headers=headers,
             httpx_client=httpx_client
             if httpx_client is not None
             else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
@@ -229,6 +255,7 @@ class AsyncMonite:
         self.counterpart_e_invoicing_credentials = AsyncCounterpartEInvoicingCredentialsClient(
             client_wrapper=self._client_wrapper
         )
+        self.custom_vat_rates = AsyncCustomVatRatesClient(client_wrapper=self._client_wrapper)
         self.data_exports = AsyncDataExportsClient(client_wrapper=self._client_wrapper)
         self.delivery_notes = AsyncDeliveryNotesClient(client_wrapper=self._client_wrapper)
         self.pdf_templates = AsyncPdfTemplatesClient(client_wrapper=self._client_wrapper)

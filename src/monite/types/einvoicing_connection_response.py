@@ -36,6 +36,16 @@ class EinvoicingConnectionResponse(UniversalBaseModel):
     ID of the entity
     """
 
+    is_receiver: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Set to `true` if the entity needs to receive e-invoices.
+    """
+
+    is_sender: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`.
+    """
+
     legal_name: str = pydantic.Field()
     """
     Legal name of the Entity

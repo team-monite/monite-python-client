@@ -4,5 +4,6 @@
 
 from .receivables_get_request_status import ReceivablesGetRequestStatus
 from .receivables_get_request_status_in_item import ReceivablesGetRequestStatusInItem
+from .receivables_search_request_status import ReceivablesSearchRequestStatus
 
-__all__ = ["ReceivablesGetRequestStatus", "ReceivablesGetRequestStatusInItem"]
+__all__ = ["ReceivablesGetRequestStatus", "ReceivablesGetRequestStatusInItem", "ReceivablesSearchRequestStatus"]

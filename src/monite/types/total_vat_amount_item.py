@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .total_vat_amount_item_component import TotalVatAmountItemComponent
 
 
 class TotalVatAmountItem(UniversalBaseModel):
@@ -11,6 +12,16 @@ class TotalVatAmountItem(UniversalBaseModel):
     amount: int = pydantic.Field()
     """
     The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    """
+
+    components: typing.Optional[typing.List[TotalVatAmountItemComponent]] = pydantic.Field(default=None)
+    """
+    Sub-taxes included in the VAT.
+    """
+
+    name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Display name of the vat rate.
     """
 
     taxable_amount: int = pydantic.Field()

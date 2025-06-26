@@ -169,8 +169,15 @@ class CounterpartsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.get(sort_code='123456', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.get(
+            sort_code="123456",
+        )
         """
         _response = self._raw_client.get(
             iban=iban,
@@ -226,12 +233,33 @@ class CounterpartsClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import CounterpartCreatePayload_Organization
-        from monite import CounterpartOrganizationCreatePayload
-        from monite import CounterpartAddress
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.create(request=CounterpartCreatePayload_Organization(organization=CounterpartOrganizationCreatePayload(address=CounterpartAddress(city='Berlin', country="AF", line1='Flughafenstrasse 52', postal_code='10115', ), is_customer=True, is_vendor=True, legal_name='Acme Inc.', ), ), )
+        from monite import (
+            CounterpartAddress,
+            CounterpartCreatePayload_Organization,
+            CounterpartOrganizationCreatePayload,
+            Monite,
+        )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.create(
+            request=CounterpartCreatePayload_Organization(
+                organization=CounterpartOrganizationCreatePayload(
+                    address=CounterpartAddress(
+                        city="Berlin",
+                        country="AF",
+                        line1="Flughafenstrasse 52",
+                        postal_code="10115",
+                    ),
+                    is_customer=True,
+                    is_vendor=True,
+                    legal_name="Acme Inc.",
+                ),
+            ),
+        )
         """
         _response = self._raw_client.create(request=request, request_options=request_options)
         return _response.data
@@ -255,8 +283,15 @@ class CounterpartsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.get_by_id(counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.get_by_id(
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get_by_id(counterpart_id, request_options=request_options)
         return _response.data
@@ -277,8 +312,15 @@ class CounterpartsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.delete_by_id(counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.delete_by_id(
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.delete_by_id(counterpart_id, request_options=request_options)
         return _response.data
@@ -307,11 +349,23 @@ class CounterpartsClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import CounterpartIndividualRootUpdatePayload
-        from monite import CounterpartIndividualUpdatePayload
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.update_by_id(counterpart_id='counterpart_id', request=CounterpartIndividualRootUpdatePayload(individual=CounterpartIndividualUpdatePayload(), ), )
+        from monite import (
+            CounterpartIndividualRootUpdatePayload,
+            CounterpartIndividualUpdatePayload,
+            Monite,
+        )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.update_by_id(
+            counterpart_id="counterpart_id",
+            request=CounterpartIndividualRootUpdatePayload(
+                individual=CounterpartIndividualUpdatePayload(),
+            ),
+        )
         """
         _response = self._raw_client.update_by_id(counterpart_id, request=request, request_options=request_options)
         return _response.data
@@ -335,8 +389,15 @@ class CounterpartsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.get_partner_metadata_by_id(counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.get_partner_metadata_by_id(
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get_partner_metadata_by_id(counterpart_id, request_options=request_options)
         return _response.data
@@ -367,9 +428,16 @@ class CounterpartsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.update_partner_metadata_by_id(counterpart_id='counterpart_id', metadata={'key': 'value'
-        }, )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.update_partner_metadata_by_id(
+            counterpart_id="counterpart_id",
+            metadata={"key": "value"},
+        )
         """
         _response = self._raw_client.update_partner_metadata_by_id(
             counterpart_id, metadata=metadata, request_options=request_options
@@ -522,11 +590,23 @@ class AsyncCounterpartsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.get(sort_code='123456', )
+            await client.counterparts.get(
+                sort_code="123456",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -583,14 +663,40 @@ class AsyncCounterpartsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import CounterpartCreatePayload_Organization
-        from monite import CounterpartOrganizationCreatePayload
-        from monite import CounterpartAddress
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import (
+            AsyncMonite,
+            CounterpartAddress,
+            CounterpartCreatePayload_Organization,
+            CounterpartOrganizationCreatePayload,
+        )
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.create(request=CounterpartCreatePayload_Organization(organization=CounterpartOrganizationCreatePayload(address=CounterpartAddress(city='Berlin', country="AF", line1='Flughafenstrasse 52', postal_code='10115', ), is_customer=True, is_vendor=True, legal_name='Acme Inc.', ), ), )
+            await client.counterparts.create(
+                request=CounterpartCreatePayload_Organization(
+                    organization=CounterpartOrganizationCreatePayload(
+                        address=CounterpartAddress(
+                            city="Berlin",
+                            country="AF",
+                            line1="Flughafenstrasse 52",
+                            postal_code="10115",
+                        ),
+                        is_customer=True,
+                        is_vendor=True,
+                        legal_name="Acme Inc.",
+                    ),
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(request=request, request_options=request_options)
@@ -614,11 +720,23 @@ class AsyncCounterpartsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.get_by_id(counterpart_id='counterpart_id', )
+            await client.counterparts.get_by_id(
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(counterpart_id, request_options=request_options)
@@ -641,11 +759,23 @@ class AsyncCounterpartsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.delete_by_id(counterpart_id='counterpart_id', )
+            await client.counterparts.delete_by_id(
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(counterpart_id, request_options=request_options)
@@ -675,13 +805,30 @@ class AsyncCounterpartsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import CounterpartIndividualRootUpdatePayload
-        from monite import CounterpartIndividualUpdatePayload
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import (
+            AsyncMonite,
+            CounterpartIndividualRootUpdatePayload,
+            CounterpartIndividualUpdatePayload,
+        )
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.update_by_id(counterpart_id='counterpart_id', request=CounterpartIndividualRootUpdatePayload(individual=CounterpartIndividualUpdatePayload(), ), )
+            await client.counterparts.update_by_id(
+                counterpart_id="counterpart_id",
+                request=CounterpartIndividualRootUpdatePayload(
+                    individual=CounterpartIndividualUpdatePayload(),
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -707,11 +854,23 @@ class AsyncCounterpartsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.get_partner_metadata_by_id(counterpart_id='counterpart_id', )
+            await client.counterparts.get_partner_metadata_by_id(
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_partner_metadata_by_id(counterpart_id, request_options=request_options)
@@ -742,12 +901,24 @@ class AsyncCounterpartsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.update_partner_metadata_by_id(counterpart_id='counterpart_id', metadata={'key': 'value'
-            }, )
+            await client.counterparts.update_partner_metadata_by_id(
+                counterpart_id="counterpart_id",
+                metadata={"key": "value"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_partner_metadata_by_id(

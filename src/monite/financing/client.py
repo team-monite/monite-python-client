@@ -75,16 +75,18 @@ class FinancingClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[FinancingInvoiceCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         invoice_id : typing.Optional[str]
             ID of a payable or receivable invoice.
@@ -172,7 +174,12 @@ class FinancingClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.financing.get_financing_invoices()
         """
         _response = self._raw_client.get_financing_invoices(
@@ -233,10 +240,21 @@ class FinancingClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import FinancingPushInvoicesRequestInvoice
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.financing.post_financing_invoices(invoices=[FinancingPushInvoicesRequestInvoice(id='id', type="payable", )], )
+        from monite import FinancingPushInvoicesRequestInvoice, Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.financing.post_financing_invoices(
+            invoices=[
+                FinancingPushInvoicesRequestInvoice(
+                    id="id",
+                    type="payable",
+                )
+            ],
+        )
         """
         _response = self._raw_client.post_financing_invoices(invoices=invoices, request_options=request_options)
         return _response.data
@@ -260,7 +278,12 @@ class FinancingClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.financing.get_financing_offers()
         """
         _response = self._raw_client.get_financing_offers(request_options=request_options)
@@ -285,7 +308,12 @@ class FinancingClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.financing.post_financing_tokens()
         """
         _response = self._raw_client.post_financing_tokens(request_options=request_options)
@@ -347,16 +375,18 @@ class AsyncFinancingClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[FinancingInvoiceCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         invoice_id : typing.Optional[str]
             ID of a payable or receivable invoice.
@@ -443,11 +473,21 @@ class AsyncFinancingClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.financing.get_financing_invoices()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_financing_invoices(
@@ -508,12 +548,28 @@ class AsyncFinancingClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import FinancingPushInvoicesRequestInvoice
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, FinancingPushInvoicesRequestInvoice
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.financing.post_financing_invoices(invoices=[FinancingPushInvoicesRequestInvoice(id='id', type="payable", )], )
+            await client.financing.post_financing_invoices(
+                invoices=[
+                    FinancingPushInvoicesRequestInvoice(
+                        id="id",
+                        type="payable",
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_financing_invoices(invoices=invoices, request_options=request_options)
@@ -537,11 +593,21 @@ class AsyncFinancingClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.financing.get_financing_offers()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_financing_offers(request_options=request_options)
@@ -565,11 +631,21 @@ class AsyncFinancingClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.financing.post_financing_tokens()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_financing_tokens(request_options=request_options)

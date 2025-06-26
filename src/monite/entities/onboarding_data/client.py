@@ -48,8 +48,15 @@ class OnboardingDataClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.onboarding_data.get(entity_id='entity_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.onboarding_data.get(
+            entity_id="entity_id",
+        )
         """
         _response = self._raw_client.get(entity_id, request_options=request_options)
         return _response.data
@@ -88,8 +95,15 @@ class OnboardingDataClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.onboarding_data.update(entity_id='entity_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.onboarding_data.update(
+            entity_id="entity_id",
+        )
         """
         _response = self._raw_client.update(
             entity_id,
@@ -134,11 +148,23 @@ class AsyncOnboardingDataClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.onboarding_data.get(entity_id='entity_id', )
+            await client.entities.onboarding_data.get(
+                entity_id="entity_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(entity_id, request_options=request_options)
@@ -177,11 +203,23 @@ class AsyncOnboardingDataClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.onboarding_data.update(entity_id='entity_id', )
+            await client.entities.onboarding_data.update(
+                entity_id="entity_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update(

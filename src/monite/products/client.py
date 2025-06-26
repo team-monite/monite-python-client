@@ -121,7 +121,12 @@ class ProductsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.products.get()
         """
         _response = self._raw_client.get(
@@ -155,6 +160,7 @@ class ProductsClient:
         *,
         name: str,
         description: typing.Optional[str] = OMIT,
+        external_reference: typing.Optional[str] = OMIT,
         ledger_account_id: typing.Optional[str] = OMIT,
         measure_unit_id: typing.Optional[str] = OMIT,
         price: typing.Optional[Price] = OMIT,
@@ -170,6 +176,9 @@ class ProductsClient:
 
         description : typing.Optional[str]
             Description of the product.
+
+        external_reference : typing.Optional[str]
+            A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
 
         ledger_account_id : typing.Optional[str]
 
@@ -195,12 +204,20 @@ class ProductsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.products.create(name='name', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.products.create(
+            name="name",
+        )
         """
         _response = self._raw_client.create(
             name=name,
             description=description,
+            external_reference=external_reference,
             ledger_account_id=ledger_account_id,
             measure_unit_id=measure_unit_id,
             price=price,
@@ -229,8 +246,15 @@ class ProductsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.products.get_by_id(product_id='product_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.products.get_by_id(
+            product_id="product_id",
+        )
         """
         _response = self._raw_client.get_by_id(product_id, request_options=request_options)
         return _response.data
@@ -251,8 +275,15 @@ class ProductsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.products.delete_by_id(product_id='product_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.products.delete_by_id(
+            product_id="product_id",
+        )
         """
         _response = self._raw_client.delete_by_id(product_id, request_options=request_options)
         return _response.data
@@ -262,6 +293,7 @@ class ProductsClient:
         product_id: str,
         *,
         description: typing.Optional[str] = OMIT,
+        external_reference: typing.Optional[str] = OMIT,
         ledger_account_id: typing.Optional[str] = OMIT,
         measure_unit_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -277,6 +309,9 @@ class ProductsClient:
 
         description : typing.Optional[str]
             Description of the product.
+
+        external_reference : typing.Optional[str]
+            A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
 
         ledger_account_id : typing.Optional[str]
 
@@ -305,12 +340,20 @@ class ProductsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.products.update_by_id(product_id='product_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.products.update_by_id(
+            product_id="product_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             product_id,
             description=description,
+            external_reference=external_reference,
             ledger_account_id=ledger_account_id,
             measure_unit_id=measure_unit_id,
             name=name,
@@ -424,11 +467,21 @@ class AsyncProductsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.products.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -462,6 +515,7 @@ class AsyncProductsClient:
         *,
         name: str,
         description: typing.Optional[str] = OMIT,
+        external_reference: typing.Optional[str] = OMIT,
         ledger_account_id: typing.Optional[str] = OMIT,
         measure_unit_id: typing.Optional[str] = OMIT,
         price: typing.Optional[Price] = OMIT,
@@ -477,6 +531,9 @@ class AsyncProductsClient:
 
         description : typing.Optional[str]
             Description of the product.
+
+        external_reference : typing.Optional[str]
+            A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
 
         ledger_account_id : typing.Optional[str]
 
@@ -501,16 +558,29 @@ class AsyncProductsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.products.create(name='name', )
+            await client.products.create(
+                name="name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
             name=name,
             description=description,
+            external_reference=external_reference,
             ledger_account_id=ledger_account_id,
             measure_unit_id=measure_unit_id,
             price=price,
@@ -538,11 +608,23 @@ class AsyncProductsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.products.get_by_id(product_id='product_id', )
+            await client.products.get_by_id(
+                product_id="product_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(product_id, request_options=request_options)
@@ -563,11 +645,23 @@ class AsyncProductsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.products.delete_by_id(product_id='product_id', )
+            await client.products.delete_by_id(
+                product_id="product_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(product_id, request_options=request_options)
@@ -578,6 +672,7 @@ class AsyncProductsClient:
         product_id: str,
         *,
         description: typing.Optional[str] = OMIT,
+        external_reference: typing.Optional[str] = OMIT,
         ledger_account_id: typing.Optional[str] = OMIT,
         measure_unit_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -593,6 +688,9 @@ class AsyncProductsClient:
 
         description : typing.Optional[str]
             Description of the product.
+
+        external_reference : typing.Optional[str]
+            A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
 
         ledger_account_id : typing.Optional[str]
 
@@ -620,16 +718,29 @@ class AsyncProductsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.products.update_by_id(product_id='product_id', )
+            await client.products.update_by_id(
+                product_id="product_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
             product_id,
             description=description,
+            external_reference=external_reference,
             ledger_account_id=ledger_account_id,
             measure_unit_id=measure_unit_id,
             name=name,

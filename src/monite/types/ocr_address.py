@@ -13,29 +13,14 @@ class OcrAddress(UniversalBaseModel):
     * There is an additional field original_country_name
     """
 
-    country: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Two-letter ISO country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-    """
-
-    original_country_name: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Country name as it is stated in the document.
-    """
-
     city: typing.Optional[str] = pydantic.Field(default=None)
     """
     City name.
     """
 
-    postal_code: typing.Optional[str] = pydantic.Field(default=None)
+    country: typing.Optional[str] = pydantic.Field(default=None)
     """
-    ZIP or postal code.
-    """
-
-    state: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    State, region, province, or county.
+    Two-letter ISO country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
     """
 
     line1: typing.Optional[str] = pydantic.Field(default=None)
@@ -46,6 +31,21 @@ class OcrAddress(UniversalBaseModel):
     line2: typing.Optional[str] = pydantic.Field(default=None)
     """
     Additional address information (if any).
+    """
+
+    original_country_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Country name as it is stated in the document.
+    """
+
+    postal_code: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ZIP or postal code.
+    """
+
+    state: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    State, region, province, or county.
     """
 
     if IS_PYDANTIC_V2:

@@ -19,9 +19,10 @@ from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.automation_level import AutomationLevel
 from ..types.day_of_month import DayOfMonth
-from ..types.get_all_recurrences import GetAllRecurrences
 from ..types.recipients import Recipients
-from ..types.recurrence import Recurrence
+from ..types.recurrence_frequency import RecurrenceFrequency
+from ..types.recurrence_response import RecurrenceResponse
+from ..types.recurrence_response_list import RecurrenceResponseList
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -31,7 +32,7 @@ class RawRecurrencesClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def get(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[GetAllRecurrences]:
+    def get(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[RecurrenceResponseList]:
         """
         Parameters
         ----------
@@ -40,7 +41,7 @@ class RawRecurrencesClient:
 
         Returns
         -------
-        HttpResponse[GetAllRecurrences]
+        HttpResponse[RecurrenceResponseList]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -51,9 +52,9 @@ class RawRecurrencesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetAllRecurrences,
+                    RecurrenceResponseList,
                     parse_obj_as(
-                        type_=GetAllRecurrences,  # type: ignore
+                        type_=RecurrenceResponseList,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -132,32 +133,28 @@ class RawRecurrencesClient:
     def create(
         self,
         *,
-        day_of_month: DayOfMonth,
-        end_month: int,
-        end_year: int,
         invoice_id: str,
-        start_month: int,
-        start_year: int,
         automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
+        day_of_month: typing.Optional[DayOfMonth] = OMIT,
+        end_date: typing.Optional[str] = OMIT,
+        end_month: typing.Optional[int] = OMIT,
+        end_year: typing.Optional[int] = OMIT,
+        frequency: typing.Optional[RecurrenceFrequency] = OMIT,
+        interval: typing.Optional[int] = OMIT,
+        max_occurrences: typing.Optional[int] = OMIT,
         recipients: typing.Optional[Recipients] = OMIT,
+        start_date: typing.Optional[str] = OMIT,
+        start_month: typing.Optional[int] = OMIT,
+        start_year: typing.Optional[int] = OMIT,
         subject_text: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[Recurrence]:
+    ) -> HttpResponse[RecurrenceResponse]:
         """
         Parameters
         ----------
-        day_of_month : DayOfMonth
-
-        end_month : int
-
-        end_year : int
-
         invoice_id : str
-
-        start_month : int
-
-        start_year : int
+            ID of the base invoice that will be used as a template for creating recurring invoices.
 
         automation_level : typing.Optional[AutomationLevel]
             Controls how invoices are processed when generated:
@@ -170,17 +167,50 @@ class RawRecurrencesClient:
             Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
+            The body text for the email that will be sent with the recurring invoice.
+
+        day_of_month : typing.Optional[DayOfMonth]
+            Deprecated, use `start_date` instead
+
+        end_date : typing.Optional[str]
+            The end date of the recurring invoice, in the `yyyy-mm-dd` format. The end date is inclusive, that is, the last invoice will be created on this date if the last occurrence falls on this date. `end_date` is mutually exclusive with `max_occurrences`. Either `end_date` or `max_occurrences` must be specified.
+
+        end_month : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        end_year : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        frequency : typing.Optional[RecurrenceFrequency]
+            How often the invoice will be created.
+
+        interval : typing.Optional[int]
+            The interval between each occurrence of the invoice. For example, when using monthly frequency, an interval of 1 means invoices will be created every month, an interval of 2 means invoices will be created every 2 months.
+
+        max_occurrences : typing.Optional[int]
+            How many times the recurring invoice will be created. The recurrence will stop after this number is reached. `max_occurrences` is mutually exclusive with `end_date`. Either `max_occurrences` or `end_date` must be specified.
 
         recipients : typing.Optional[Recipients]
+            An object containing the recipients (To, CC, BCC) of the recurring invoices. Can be omitted if the base invoice has the counterpart contact email specified in the `counterpart_contact.email` field.
+
+        start_date : typing.Optional[str]
+            The date when the first invoice will be created, in the `yyyy-mm-dd` format. Cannot be a past date. Subsequent invoice dates will be calculated based on `start_date`, `frequency`, and `interval`.
+
+        start_month : typing.Optional[int]
+            Deprecated, use `start_date` instead
+
+        start_year : typing.Optional[int]
+            Deprecated, use `start_date` instead
 
         subject_text : typing.Optional[str]
+            The subject for the email that will be sent with the recurring invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[Recurrence]
+        HttpResponse[RecurrenceResponse]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -190,12 +220,17 @@ class RawRecurrencesClient:
                 "automation_level": automation_level,
                 "body_text": body_text,
                 "day_of_month": day_of_month,
+                "end_date": end_date,
                 "end_month": end_month,
                 "end_year": end_year,
+                "frequency": frequency,
+                "interval": interval,
                 "invoice_id": invoice_id,
+                "max_occurrences": max_occurrences,
                 "recipients": convert_and_respect_annotation_metadata(
                     object_=recipients, annotation=Recipients, direction="write"
                 ),
+                "start_date": start_date,
                 "start_month": start_month,
                 "start_year": start_year,
                 "subject_text": subject_text,
@@ -209,9 +244,9 @@ class RawRecurrencesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    Recurrence,
+                    RecurrenceResponse,
                     parse_obj_as(
-                        type_=Recurrence,  # type: ignore
+                        type_=RecurrenceResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -289,7 +324,7 @@ class RawRecurrencesClient:
 
     def get_by_id(
         self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[Recurrence]:
+    ) -> HttpResponse[RecurrenceResponse]:
         """
         Parameters
         ----------
@@ -300,7 +335,7 @@ class RawRecurrencesClient:
 
         Returns
         -------
-        HttpResponse[Recurrence]
+        HttpResponse[RecurrenceResponse]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -311,9 +346,9 @@ class RawRecurrencesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    Recurrence,
+                    RecurrenceResponse,
                     parse_obj_as(
-                        type_=Recurrence,  # type: ignore
+                        type_=RecurrenceResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -396,12 +431,17 @@ class RawRecurrencesClient:
         automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
         day_of_month: typing.Optional[DayOfMonth] = OMIT,
+        end_date: typing.Optional[str] = OMIT,
         end_month: typing.Optional[int] = OMIT,
         end_year: typing.Optional[int] = OMIT,
+        frequency: typing.Optional[RecurrenceFrequency] = OMIT,
+        interval: typing.Optional[int] = OMIT,
+        max_occurrences: typing.Optional[int] = OMIT,
         recipients: typing.Optional[Recipients] = OMIT,
+        start_date: typing.Optional[str] = OMIT,
         subject_text: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[Recurrence]:
+    ) -> HttpResponse[RecurrenceResponse]:
         """
         Parameters
         ----------
@@ -418,23 +458,44 @@ class RawRecurrencesClient:
             Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
+            The body text for the email that will be sent with the recurring invoice.
 
         day_of_month : typing.Optional[DayOfMonth]
+            Deprecated, use `start_date` instead
+
+        end_date : typing.Optional[str]
+            The end date of the recurring invoice, in the `yyyy-mm-dd` format. The end date is inclusive, that is, the last invoice will be created on this date if the last occurrence falls on this date. `end_date` is mutually exclusive with `max_occurrences`. Either `end_date` or `max_occurrences` must be specified.
 
         end_month : typing.Optional[int]
+            Deprecated, use `end_date` instead
 
         end_year : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        frequency : typing.Optional[RecurrenceFrequency]
+            How often the invoice will be created.
+
+        interval : typing.Optional[int]
+            The interval between each occurrence of the invoice. For example, when using monthly frequency, an interval of 1 means invoices will be created every month, an interval of 2 means invoices will be created every 2 months.
+
+        max_occurrences : typing.Optional[int]
+            How many times the recurring invoice will be created. The recurrence will stop after this number is reached. `max_occurrences` is mutually exclusive with `end_date`. Either `max_occurrences` or `end_date` must be specified.
 
         recipients : typing.Optional[Recipients]
+            An object containing the recipients (To, CC, BCC) of the recurring invoices. Can be omitted if the base invoice has the counterpart contact email specified in the `counterpart_contact.email` field.
+
+        start_date : typing.Optional[str]
+            The date when the first invoice will be created, in the `yyyy-mm-dd` format. Cannot be a past date. Subsequent invoice dates will be calculated based on `start_date`, `frequency`, and `interval`.
 
         subject_text : typing.Optional[str]
+            The subject for the email that will be sent with the recurring invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[Recurrence]
+        HttpResponse[RecurrenceResponse]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -444,11 +505,16 @@ class RawRecurrencesClient:
                 "automation_level": automation_level,
                 "body_text": body_text,
                 "day_of_month": day_of_month,
+                "end_date": end_date,
                 "end_month": end_month,
                 "end_year": end_year,
+                "frequency": frequency,
+                "interval": interval,
+                "max_occurrences": max_occurrences,
                 "recipients": convert_and_respect_annotation_metadata(
                     object_=recipients, annotation=Recipients, direction="write"
                 ),
+                "start_date": start_date,
                 "subject_text": subject_text,
             },
             headers={
@@ -460,9 +526,9 @@ class RawRecurrencesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    Recurrence,
+                    RecurrenceResponse,
                     parse_obj_as(
-                        type_=Recurrence,  # type: ignore
+                        type_=RecurrenceResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -643,6 +709,236 @@ class RawRecurrencesClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def post_recurrences_id_pause(
+        self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        recurrence_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"recurrences/{jsonable_encoder(recurrence_id)}/pause",
+            method="POST",
+            request_options=request_options,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def post_recurrences_id_resume(
+        self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        recurrence_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"recurrences/{jsonable_encoder(recurrence_id)}/resume",
+            method="POST",
+            request_options=request_options,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
 
 class AsyncRawRecurrencesClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -650,7 +946,7 @@ class AsyncRawRecurrencesClient:
 
     async def get(
         self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[GetAllRecurrences]:
+    ) -> AsyncHttpResponse[RecurrenceResponseList]:
         """
         Parameters
         ----------
@@ -659,7 +955,7 @@ class AsyncRawRecurrencesClient:
 
         Returns
         -------
-        AsyncHttpResponse[GetAllRecurrences]
+        AsyncHttpResponse[RecurrenceResponseList]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -670,9 +966,9 @@ class AsyncRawRecurrencesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetAllRecurrences,
+                    RecurrenceResponseList,
                     parse_obj_as(
-                        type_=GetAllRecurrences,  # type: ignore
+                        type_=RecurrenceResponseList,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -751,32 +1047,28 @@ class AsyncRawRecurrencesClient:
     async def create(
         self,
         *,
-        day_of_month: DayOfMonth,
-        end_month: int,
-        end_year: int,
         invoice_id: str,
-        start_month: int,
-        start_year: int,
         automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
+        day_of_month: typing.Optional[DayOfMonth] = OMIT,
+        end_date: typing.Optional[str] = OMIT,
+        end_month: typing.Optional[int] = OMIT,
+        end_year: typing.Optional[int] = OMIT,
+        frequency: typing.Optional[RecurrenceFrequency] = OMIT,
+        interval: typing.Optional[int] = OMIT,
+        max_occurrences: typing.Optional[int] = OMIT,
         recipients: typing.Optional[Recipients] = OMIT,
+        start_date: typing.Optional[str] = OMIT,
+        start_month: typing.Optional[int] = OMIT,
+        start_year: typing.Optional[int] = OMIT,
         subject_text: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[Recurrence]:
+    ) -> AsyncHttpResponse[RecurrenceResponse]:
         """
         Parameters
         ----------
-        day_of_month : DayOfMonth
-
-        end_month : int
-
-        end_year : int
-
         invoice_id : str
-
-        start_month : int
-
-        start_year : int
+            ID of the base invoice that will be used as a template for creating recurring invoices.
 
         automation_level : typing.Optional[AutomationLevel]
             Controls how invoices are processed when generated:
@@ -789,17 +1081,50 @@ class AsyncRawRecurrencesClient:
             Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
+            The body text for the email that will be sent with the recurring invoice.
+
+        day_of_month : typing.Optional[DayOfMonth]
+            Deprecated, use `start_date` instead
+
+        end_date : typing.Optional[str]
+            The end date of the recurring invoice, in the `yyyy-mm-dd` format. The end date is inclusive, that is, the last invoice will be created on this date if the last occurrence falls on this date. `end_date` is mutually exclusive with `max_occurrences`. Either `end_date` or `max_occurrences` must be specified.
+
+        end_month : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        end_year : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        frequency : typing.Optional[RecurrenceFrequency]
+            How often the invoice will be created.
+
+        interval : typing.Optional[int]
+            The interval between each occurrence of the invoice. For example, when using monthly frequency, an interval of 1 means invoices will be created every month, an interval of 2 means invoices will be created every 2 months.
+
+        max_occurrences : typing.Optional[int]
+            How many times the recurring invoice will be created. The recurrence will stop after this number is reached. `max_occurrences` is mutually exclusive with `end_date`. Either `max_occurrences` or `end_date` must be specified.
 
         recipients : typing.Optional[Recipients]
+            An object containing the recipients (To, CC, BCC) of the recurring invoices. Can be omitted if the base invoice has the counterpart contact email specified in the `counterpart_contact.email` field.
+
+        start_date : typing.Optional[str]
+            The date when the first invoice will be created, in the `yyyy-mm-dd` format. Cannot be a past date. Subsequent invoice dates will be calculated based on `start_date`, `frequency`, and `interval`.
+
+        start_month : typing.Optional[int]
+            Deprecated, use `start_date` instead
+
+        start_year : typing.Optional[int]
+            Deprecated, use `start_date` instead
 
         subject_text : typing.Optional[str]
+            The subject for the email that will be sent with the recurring invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[Recurrence]
+        AsyncHttpResponse[RecurrenceResponse]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -809,12 +1134,17 @@ class AsyncRawRecurrencesClient:
                 "automation_level": automation_level,
                 "body_text": body_text,
                 "day_of_month": day_of_month,
+                "end_date": end_date,
                 "end_month": end_month,
                 "end_year": end_year,
+                "frequency": frequency,
+                "interval": interval,
                 "invoice_id": invoice_id,
+                "max_occurrences": max_occurrences,
                 "recipients": convert_and_respect_annotation_metadata(
                     object_=recipients, annotation=Recipients, direction="write"
                 ),
+                "start_date": start_date,
                 "start_month": start_month,
                 "start_year": start_year,
                 "subject_text": subject_text,
@@ -828,9 +1158,9 @@ class AsyncRawRecurrencesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    Recurrence,
+                    RecurrenceResponse,
                     parse_obj_as(
-                        type_=Recurrence,  # type: ignore
+                        type_=RecurrenceResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -908,7 +1238,7 @@ class AsyncRawRecurrencesClient:
 
     async def get_by_id(
         self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[Recurrence]:
+    ) -> AsyncHttpResponse[RecurrenceResponse]:
         """
         Parameters
         ----------
@@ -919,7 +1249,7 @@ class AsyncRawRecurrencesClient:
 
         Returns
         -------
-        AsyncHttpResponse[Recurrence]
+        AsyncHttpResponse[RecurrenceResponse]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -930,9 +1260,9 @@ class AsyncRawRecurrencesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    Recurrence,
+                    RecurrenceResponse,
                     parse_obj_as(
-                        type_=Recurrence,  # type: ignore
+                        type_=RecurrenceResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1015,12 +1345,17 @@ class AsyncRawRecurrencesClient:
         automation_level: typing.Optional[AutomationLevel] = OMIT,
         body_text: typing.Optional[str] = OMIT,
         day_of_month: typing.Optional[DayOfMonth] = OMIT,
+        end_date: typing.Optional[str] = OMIT,
         end_month: typing.Optional[int] = OMIT,
         end_year: typing.Optional[int] = OMIT,
+        frequency: typing.Optional[RecurrenceFrequency] = OMIT,
+        interval: typing.Optional[int] = OMIT,
+        max_occurrences: typing.Optional[int] = OMIT,
         recipients: typing.Optional[Recipients] = OMIT,
+        start_date: typing.Optional[str] = OMIT,
         subject_text: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[Recurrence]:
+    ) -> AsyncHttpResponse[RecurrenceResponse]:
         """
         Parameters
         ----------
@@ -1037,23 +1372,44 @@ class AsyncRawRecurrencesClient:
             Note: When using "issue_and_send", both subject_text and body_text must be provided.
 
         body_text : typing.Optional[str]
+            The body text for the email that will be sent with the recurring invoice.
 
         day_of_month : typing.Optional[DayOfMonth]
+            Deprecated, use `start_date` instead
+
+        end_date : typing.Optional[str]
+            The end date of the recurring invoice, in the `yyyy-mm-dd` format. The end date is inclusive, that is, the last invoice will be created on this date if the last occurrence falls on this date. `end_date` is mutually exclusive with `max_occurrences`. Either `end_date` or `max_occurrences` must be specified.
 
         end_month : typing.Optional[int]
+            Deprecated, use `end_date` instead
 
         end_year : typing.Optional[int]
+            Deprecated, use `end_date` instead
+
+        frequency : typing.Optional[RecurrenceFrequency]
+            How often the invoice will be created.
+
+        interval : typing.Optional[int]
+            The interval between each occurrence of the invoice. For example, when using monthly frequency, an interval of 1 means invoices will be created every month, an interval of 2 means invoices will be created every 2 months.
+
+        max_occurrences : typing.Optional[int]
+            How many times the recurring invoice will be created. The recurrence will stop after this number is reached. `max_occurrences` is mutually exclusive with `end_date`. Either `max_occurrences` or `end_date` must be specified.
 
         recipients : typing.Optional[Recipients]
+            An object containing the recipients (To, CC, BCC) of the recurring invoices. Can be omitted if the base invoice has the counterpart contact email specified in the `counterpart_contact.email` field.
+
+        start_date : typing.Optional[str]
+            The date when the first invoice will be created, in the `yyyy-mm-dd` format. Cannot be a past date. Subsequent invoice dates will be calculated based on `start_date`, `frequency`, and `interval`.
 
         subject_text : typing.Optional[str]
+            The subject for the email that will be sent with the recurring invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[Recurrence]
+        AsyncHttpResponse[RecurrenceResponse]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1063,11 +1419,16 @@ class AsyncRawRecurrencesClient:
                 "automation_level": automation_level,
                 "body_text": body_text,
                 "day_of_month": day_of_month,
+                "end_date": end_date,
                 "end_month": end_month,
                 "end_year": end_year,
+                "frequency": frequency,
+                "interval": interval,
+                "max_occurrences": max_occurrences,
                 "recipients": convert_and_respect_annotation_metadata(
                     object_=recipients, annotation=Recipients, direction="write"
                 ),
+                "start_date": start_date,
                 "subject_text": subject_text,
             },
             headers={
@@ -1079,9 +1440,9 @@ class AsyncRawRecurrencesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    Recurrence,
+                    RecurrenceResponse,
                     parse_obj_as(
-                        type_=Recurrence,  # type: ignore
+                        type_=RecurrenceResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1180,6 +1541,236 @@ class AsyncRawRecurrencesClient:
         try:
             if 200 <= _response.status_code < 300:
                 return AsyncHttpResponse(response=_response, data=None)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def post_recurrences_id_pause(
+        self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        recurrence_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"recurrences/{jsonable_encoder(recurrence_id)}/pause",
+            method="POST",
+            request_options=request_options,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def post_recurrences_id_resume(
+        self, recurrence_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        recurrence_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"recurrences/{jsonable_encoder(recurrence_id)}/resume",
+            method="POST",
+            request_options=request_options,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
                     headers=dict(_response.headers),

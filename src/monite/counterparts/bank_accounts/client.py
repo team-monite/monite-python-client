@@ -48,8 +48,15 @@ class BankAccountsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.bank_accounts.get(counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.bank_accounts.get(
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get(counterpart_id, request_options=request_options)
         return _response.data
@@ -116,8 +123,17 @@ class BankAccountsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.bank_accounts.create(counterpart_id='counterpart_id', country="AF", currency="AED", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.bank_accounts.create(
+            counterpart_id="counterpart_id",
+            country="AF",
+            currency="AED",
+        )
         """
         _response = self._raw_client.create(
             counterpart_id,
@@ -157,8 +173,16 @@ class BankAccountsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.bank_accounts.get_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.bank_accounts.get_by_id(
+            bank_account_id="bank_account_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get_by_id(bank_account_id, counterpart_id, request_options=request_options)
         return _response.data
@@ -183,8 +207,16 @@ class BankAccountsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.bank_accounts.delete_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.bank_accounts.delete_by_id(
+            bank_account_id="bank_account_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.delete_by_id(bank_account_id, counterpart_id, request_options=request_options)
         return _response.data
@@ -251,8 +283,16 @@ class BankAccountsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.bank_accounts.update_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.bank_accounts.update_by_id(
+            bank_account_id="bank_account_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             bank_account_id,
@@ -292,8 +332,16 @@ class BankAccountsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.bank_accounts.make_default_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.bank_accounts.make_default_by_id(
+            bank_account_id="bank_account_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.make_default_by_id(
             bank_account_id, counterpart_id, request_options=request_options
@@ -334,11 +382,23 @@ class AsyncBankAccountsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.bank_accounts.get(counterpart_id='counterpart_id', )
+            await client.counterparts.bank_accounts.get(
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(counterpart_id, request_options=request_options)
@@ -405,11 +465,25 @@ class AsyncBankAccountsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.bank_accounts.create(counterpart_id='counterpart_id', country="AF", currency="AED", )
+            await client.counterparts.bank_accounts.create(
+                counterpart_id="counterpart_id",
+                country="AF",
+                currency="AED",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -449,11 +523,24 @@ class AsyncBankAccountsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.bank_accounts.get_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+            await client.counterparts.bank_accounts.get_by_id(
+                bank_account_id="bank_account_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(bank_account_id, counterpart_id, request_options=request_options)
@@ -478,11 +565,24 @@ class AsyncBankAccountsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.bank_accounts.delete_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+            await client.counterparts.bank_accounts.delete_by_id(
+                bank_account_id="bank_account_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(
@@ -551,11 +651,24 @@ class AsyncBankAccountsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.bank_accounts.update_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+            await client.counterparts.bank_accounts.update_by_id(
+                bank_account_id="bank_account_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -595,11 +708,24 @@ class AsyncBankAccountsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.bank_accounts.make_default_by_id(bank_account_id='bank_account_id', counterpart_id='counterpart_id', )
+            await client.counterparts.bank_accounts.make_default_by_id(
+                bank_account_id="bank_account_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.make_default_by_id(

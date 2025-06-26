@@ -275,7 +275,7 @@ class RawPdfTemplatesClient:
             request_options=request_options,
         ) as _response:
 
-            def stream() -> HttpResponse[typing.Iterator[bytes]]:
+            def _stream() -> HttpResponse[typing.Iterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
                         _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
@@ -312,7 +312,7 @@ class RawPdfTemplatesClient:
                     )
                 raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield stream()
+            yield _stream()
 
 
 class AsyncRawPdfTemplatesClient:
@@ -576,7 +576,7 @@ class AsyncRawPdfTemplatesClient:
             request_options=request_options,
         ) as _response:
 
-            async def stream() -> AsyncHttpResponse[typing.AsyncIterator[bytes]]:
+            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
                         _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
@@ -614,4 +614,4 @@ class AsyncRawPdfTemplatesClient:
                     )
                 raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield await stream()
+            yield await _stream()

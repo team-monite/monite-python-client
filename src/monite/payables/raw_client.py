@@ -27,6 +27,9 @@ from ..types.ocr_status_enum import OcrStatusEnum
 from ..types.order_enum import OrderEnum
 from ..types.payable_aggregated_data_response import PayableAggregatedDataResponse
 from ..types.payable_cursor_fields import PayableCursorFields
+from ..types.payable_history_cursor_fields import PayableHistoryCursorFields
+from ..types.payable_history_event_type_enum import PayableHistoryEventTypeEnum
+from ..types.payable_history_pagination_response import PayableHistoryPaginationResponse
 from ..types.payable_origin_enum import PayableOriginEnum
 from ..types.payable_pagination_response import PayablePaginationResponse
 from ..types.payable_payment_terms_create_payload import PayablePaymentTermsCreatePayload
@@ -99,6 +102,7 @@ class RawPayablesClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -304,6 +308,9 @@ class RawPayablesClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -371,6 +378,7 @@ class RawPayablesClient:
                 "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
                 "tag_ids__not_in": tag_ids_not_in,
+                "has_tags": has_tags,
                 "origin": origin,
                 "has_file": has_file,
             },
@@ -731,6 +739,7 @@ class RawPayablesClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -893,6 +902,9 @@ class RawPayablesClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -956,6 +968,7 @@ class RawPayablesClient:
                 "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
                 "tag_ids__not_in": tag_ids_not_in,
+                "has_tags": has_tags,
                 "origin": origin,
                 "has_file": has_file,
             },
@@ -1024,7 +1037,7 @@ class RawPayablesClient:
         self, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[PayableResponseSchema]:
         """
-        Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+        Upload an incoming invoice (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
         Parameters
         ----------
@@ -1046,11 +1059,9 @@ class RawPayablesClient:
             files={
                 "file": file,
             },
-            headers={
-                "content-type": "multipart/form-data",
-            },
             request_options=request_options,
             omit=OMIT,
+            force_multipart=True,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -2059,11 +2070,9 @@ class RawPayablesClient:
             files={
                 "file": file,
             },
-            headers={
-                "content-type": "multipart/form-data",
-            },
             request_options=request_options,
             omit=OMIT,
+            force_multipart=True,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -2340,6 +2349,168 @@ class RawPayablesClient:
                 )
             if _response.status_code == 409:
                 raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def get_payables_id_history(
+        self,
+        payable_id: str,
+        *,
+        order: typing.Optional[OrderEnum] = None,
+        limit: typing.Optional[int] = None,
+        pagination_token: typing.Optional[str] = None,
+        sort: typing.Optional[PayableHistoryCursorFields] = None,
+        event_type_in: typing.Optional[
+            typing.Union[PayableHistoryEventTypeEnum, typing.Sequence[PayableHistoryEventTypeEnum]]
+        ] = None,
+        entity_user_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        timestamp_gt: typing.Optional[dt.datetime] = None,
+        timestamp_lt: typing.Optional[dt.datetime] = None,
+        timestamp_gte: typing.Optional[dt.datetime] = None,
+        timestamp_lte: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[PayableHistoryPaginationResponse]:
+        """
+        Parameters
+        ----------
+        payable_id : str
+
+        order : typing.Optional[OrderEnum]
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
+
+        limit : typing.Optional[int]
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+
+        pagination_token : typing.Optional[str]
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
+
+        sort : typing.Optional[PayableHistoryCursorFields]
+            The field to sort the results by. Typically used together with the `order` parameter.
+
+        event_type_in : typing.Optional[typing.Union[PayableHistoryEventTypeEnum, typing.Sequence[PayableHistoryEventTypeEnum]]]
+            Return only the specified event types
+
+        entity_user_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only events caused by the entity users with the specified IDs. To specify multiple user IDs, repeat this parameter for each ID:
+            `entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+
+        timestamp_gt : typing.Optional[dt.datetime]
+            Return only events that occurred after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+
+        timestamp_lt : typing.Optional[dt.datetime]
+            Return only events that occurred before the specified date and time.
+
+        timestamp_gte : typing.Optional[dt.datetime]
+            Return only events that occurred on or after the specified date and time.
+
+        timestamp_lte : typing.Optional[dt.datetime]
+            Return only events that occurred before or on the specified date and time.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[PayableHistoryPaginationResponse]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"payables/{jsonable_encoder(payable_id)}/history",
+            method="GET",
+            params={
+                "order": order,
+                "limit": limit,
+                "pagination_token": pagination_token,
+                "sort": sort,
+                "event_type__in": event_type_in,
+                "entity_user_id__in": entity_user_id_in,
+                "timestamp__gt": serialize_datetime(timestamp_gt) if timestamp_gt is not None else None,
+                "timestamp__lt": serialize_datetime(timestamp_lt) if timestamp_lt is not None else None,
+                "timestamp__gte": serialize_datetime(timestamp_gte) if timestamp_gte is not None else None,
+                "timestamp__lte": serialize_datetime(timestamp_lte) if timestamp_lte is not None else None,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PayableHistoryPaginationResponse,
+                    parse_obj_as(
+                        type_=PayableHistoryPaginationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -3180,6 +3351,7 @@ class AsyncRawPayablesClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3385,6 +3557,9 @@ class AsyncRawPayablesClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -3452,6 +3627,7 @@ class AsyncRawPayablesClient:
                 "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
                 "tag_ids__not_in": tag_ids_not_in,
+                "has_tags": has_tags,
                 "origin": origin,
                 "has_file": has_file,
             },
@@ -3812,6 +3988,7 @@ class AsyncRawPayablesClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3974,6 +4151,9 @@ class AsyncRawPayablesClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -4037,6 +4217,7 @@ class AsyncRawPayablesClient:
                 "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
                 "tag_ids__not_in": tag_ids_not_in,
+                "has_tags": has_tags,
                 "origin": origin,
                 "has_file": has_file,
             },
@@ -4105,7 +4286,7 @@ class AsyncRawPayablesClient:
         self, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[PayableResponseSchema]:
         """
-        Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+        Upload an incoming invoice (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
         Parameters
         ----------
@@ -4127,11 +4308,9 @@ class AsyncRawPayablesClient:
             files={
                 "file": file,
             },
-            headers={
-                "content-type": "multipart/form-data",
-            },
             request_options=request_options,
             omit=OMIT,
+            force_multipart=True,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -5140,11 +5319,9 @@ class AsyncRawPayablesClient:
             files={
                 "file": file,
             },
-            headers={
-                "content-type": "multipart/form-data",
-            },
             request_options=request_options,
             omit=OMIT,
+            force_multipart=True,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -5421,6 +5598,168 @@ class AsyncRawPayablesClient:
                 )
             if _response.status_code == 409:
                 raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def get_payables_id_history(
+        self,
+        payable_id: str,
+        *,
+        order: typing.Optional[OrderEnum] = None,
+        limit: typing.Optional[int] = None,
+        pagination_token: typing.Optional[str] = None,
+        sort: typing.Optional[PayableHistoryCursorFields] = None,
+        event_type_in: typing.Optional[
+            typing.Union[PayableHistoryEventTypeEnum, typing.Sequence[PayableHistoryEventTypeEnum]]
+        ] = None,
+        entity_user_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        timestamp_gt: typing.Optional[dt.datetime] = None,
+        timestamp_lt: typing.Optional[dt.datetime] = None,
+        timestamp_gte: typing.Optional[dt.datetime] = None,
+        timestamp_lte: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[PayableHistoryPaginationResponse]:
+        """
+        Parameters
+        ----------
+        payable_id : str
+
+        order : typing.Optional[OrderEnum]
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
+
+        limit : typing.Optional[int]
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+
+        pagination_token : typing.Optional[str]
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
+
+        sort : typing.Optional[PayableHistoryCursorFields]
+            The field to sort the results by. Typically used together with the `order` parameter.
+
+        event_type_in : typing.Optional[typing.Union[PayableHistoryEventTypeEnum, typing.Sequence[PayableHistoryEventTypeEnum]]]
+            Return only the specified event types
+
+        entity_user_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only events caused by the entity users with the specified IDs. To specify multiple user IDs, repeat this parameter for each ID:
+            `entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+
+        timestamp_gt : typing.Optional[dt.datetime]
+            Return only events that occurred after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+
+        timestamp_lt : typing.Optional[dt.datetime]
+            Return only events that occurred before the specified date and time.
+
+        timestamp_gte : typing.Optional[dt.datetime]
+            Return only events that occurred on or after the specified date and time.
+
+        timestamp_lte : typing.Optional[dt.datetime]
+            Return only events that occurred before or on the specified date and time.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[PayableHistoryPaginationResponse]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"payables/{jsonable_encoder(payable_id)}/history",
+            method="GET",
+            params={
+                "order": order,
+                "limit": limit,
+                "pagination_token": pagination_token,
+                "sort": sort,
+                "event_type__in": event_type_in,
+                "entity_user_id__in": entity_user_id_in,
+                "timestamp__gt": serialize_datetime(timestamp_gt) if timestamp_gt is not None else None,
+                "timestamp__lt": serialize_datetime(timestamp_lt) if timestamp_lt is not None else None,
+                "timestamp__gte": serialize_datetime(timestamp_gte) if timestamp_gte is not None else None,
+                "timestamp__lte": serialize_datetime(timestamp_lte) if timestamp_lte is not None else None,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PayableHistoryPaginationResponse,
+                    parse_obj_as(
+                        type_=PayableHistoryPaginationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

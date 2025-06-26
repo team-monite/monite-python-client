@@ -5,7 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .counterpart_tag_category import CounterpartTagCategory
+from .tag_category import TagCategory
 
 
 class CounterpartTagSchema(UniversalBaseModel):
@@ -28,7 +28,7 @@ class CounterpartTagSchema(UniversalBaseModel):
     Date and time when the tag was last updated. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
     """
 
-    category: typing.Optional[CounterpartTagCategory] = pydantic.Field(default=None)
+    category: typing.Optional[TagCategory] = pydantic.Field(default=None)
     """
     The tag category.
     """

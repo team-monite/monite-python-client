@@ -57,7 +57,12 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.accounting.payables.get()
         """
         _response = self._raw_client.get(limit=limit, offset=offset, request_options=request_options)
@@ -85,8 +90,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.accounting.payables.get_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.accounting.payables.get_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.get_by_id(payable_id, request_options=request_options)
         return _response.data
@@ -139,11 +151,21 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.accounting.payables.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(limit=limit, offset=offset, request_options=request_options)
@@ -170,11 +192,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.accounting.payables.get_by_id(payable_id='payable_id', )
+            await client.accounting.payables.get_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(payable_id, request_options=request_options)

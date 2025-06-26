@@ -47,8 +47,15 @@ class ContactsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.contacts.get(counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.contacts.get(
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get(counterpart_id, request_options=request_options)
         return _response.data
@@ -98,10 +105,24 @@ class ContactsClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import CounterpartAddress
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.contacts.create(counterpart_id='counterpart_id', address=CounterpartAddress(city='Berlin', country="AF", line1='Flughafenstrasse 52', postal_code='10115', ), first_name='Mary', last_name="O'Brien", )
+        from monite import CounterpartAddress, Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.contacts.create(
+            counterpart_id="counterpart_id",
+            address=CounterpartAddress(
+                city="Berlin",
+                country="AF",
+                line1="Flughafenstrasse 52",
+                postal_code="10115",
+            ),
+            first_name="Mary",
+            last_name="O'Brien",
+        )
         """
         _response = self._raw_client.create(
             counterpart_id,
@@ -136,8 +157,16 @@ class ContactsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.contacts.get_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.contacts.get_by_id(
+            contact_id="contact_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get_by_id(contact_id, counterpart_id, request_options=request_options)
         return _response.data
@@ -162,8 +191,16 @@ class ContactsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.contacts.delete_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.contacts.delete_by_id(
+            contact_id="contact_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.delete_by_id(contact_id, counterpart_id, request_options=request_options)
         return _response.data
@@ -217,8 +254,16 @@ class ContactsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.contacts.update_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.contacts.update_by_id(
+            contact_id="contact_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             contact_id,
@@ -254,8 +299,16 @@ class ContactsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.contacts.make_default_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.contacts.make_default_by_id(
+            contact_id="contact_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.make_default_by_id(contact_id, counterpart_id, request_options=request_options)
         return _response.data
@@ -294,11 +347,23 @@ class AsyncContactsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.contacts.get(counterpart_id='counterpart_id', )
+            await client.counterparts.contacts.get(
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(counterpart_id, request_options=request_options)
@@ -349,12 +414,31 @@ class AsyncContactsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import CounterpartAddress
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, CounterpartAddress
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.contacts.create(counterpart_id='counterpart_id', address=CounterpartAddress(city='Berlin', country="AF", line1='Flughafenstrasse 52', postal_code='10115', ), first_name='Mary', last_name="O'Brien", )
+            await client.counterparts.contacts.create(
+                counterpart_id="counterpart_id",
+                address=CounterpartAddress(
+                    city="Berlin",
+                    country="AF",
+                    line1="Flughafenstrasse 52",
+                    postal_code="10115",
+                ),
+                first_name="Mary",
+                last_name="O'Brien",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -389,11 +473,24 @@ class AsyncContactsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.contacts.get_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+            await client.counterparts.contacts.get_by_id(
+                contact_id="contact_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(contact_id, counterpart_id, request_options=request_options)
@@ -418,11 +515,24 @@ class AsyncContactsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.contacts.delete_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+            await client.counterparts.contacts.delete_by_id(
+                contact_id="contact_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(contact_id, counterpart_id, request_options=request_options)
@@ -476,11 +586,24 @@ class AsyncContactsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.contacts.update_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+            await client.counterparts.contacts.update_by_id(
+                contact_id="contact_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -516,11 +639,24 @@ class AsyncContactsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.contacts.make_default_by_id(contact_id='contact_id', counterpart_id='counterpart_id', )
+            await client.counterparts.contacts.make_default_by_id(
+                contact_id="contact_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.make_default_by_id(

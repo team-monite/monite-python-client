@@ -2,6 +2,6 @@
 
 # isort: skip_file
 
-from .types import ReceivablesGetRequestStatus, ReceivablesGetRequestStatusInItem
+from .types import ReceivablesGetRequestStatus, ReceivablesGetRequestStatusInItem, ReceivablesSearchRequestStatus
 
-__all__ = ["ReceivablesGetRequestStatus", "ReceivablesGetRequestStatusInItem"]
+__all__ = ["ReceivablesGetRequestStatus", "ReceivablesGetRequestStatusInItem", "ReceivablesSearchRequestStatus"]

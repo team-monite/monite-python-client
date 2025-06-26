@@ -3,7 +3,7 @@ name = "monite"
 
 [tool.poetry]
 name = "monite"
-version = "0.5.2"
+version = "0.5.3"
 description = ""
 readme = "README.md"
 authors = []
@@ -38,7 +38,7 @@ Repository = 'https://github.com/team-monite/monite-python-client'
 python = "^3.8"
 httpx = ">=0.21.2"
 pydantic = ">= 1.9.2"
-pydantic-core = "^2.18.2"
+pydantic-core = ">=2.18.2"
 typing_extensions = ">= 4.0.0"
 
 [tool.poetry.group.dev.dependencies]

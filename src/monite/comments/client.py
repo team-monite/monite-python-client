@@ -82,8 +82,15 @@ class CommentsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.comments.get(object_id='object_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.comments.get(
+            object_id="object_id",
+        )
         """
         _response = self._raw_client.get(
             object_id=object_id,
@@ -132,8 +139,17 @@ class CommentsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.comments.create(object_id='object_id', object_type='object_type', text='text', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.comments.create(
+            object_id="object_id",
+            object_type="object_type",
+            text="text",
+        )
         """
         _response = self._raw_client.create(
             object_id=object_id,
@@ -163,8 +179,15 @@ class CommentsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.comments.get_by_id(comment_id='comment_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.comments.get_by_id(
+            comment_id="comment_id",
+        )
         """
         _response = self._raw_client.get_by_id(comment_id, request_options=request_options)
         return _response.data
@@ -187,8 +210,15 @@ class CommentsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.comments.delete_by_id(comment_id='comment_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.comments.delete_by_id(
+            comment_id="comment_id",
+        )
         """
         _response = self._raw_client.delete_by_id(comment_id, request_options=request_options)
         return _response.data
@@ -223,8 +253,15 @@ class CommentsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.comments.update_by_id(comment_id='comment_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.comments.update_by_id(
+            comment_id="comment_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             comment_id, reply_to_entity_user_id=reply_to_entity_user_id, text=text, request_options=request_options
@@ -298,11 +335,23 @@ class AsyncCommentsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.comments.get(object_id='object_id', )
+            await client.comments.get(
+                object_id="object_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -351,11 +400,25 @@ class AsyncCommentsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.comments.create(object_id='object_id', object_type='object_type', text='text', )
+            await client.comments.create(
+                object_id="object_id",
+                object_type="object_type",
+                text="text",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -387,11 +450,23 @@ class AsyncCommentsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.comments.get_by_id(comment_id='comment_id', )
+            await client.comments.get_by_id(
+                comment_id="comment_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(comment_id, request_options=request_options)
@@ -414,11 +489,23 @@ class AsyncCommentsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.comments.delete_by_id(comment_id='comment_id', )
+            await client.comments.delete_by_id(
+                comment_id="comment_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(comment_id, request_options=request_options)
@@ -453,11 +540,23 @@ class AsyncCommentsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.comments.update_by_id(comment_id='comment_id', )
+            await client.comments.update_by_id(
+                comment_id="comment_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(

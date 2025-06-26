@@ -17,7 +17,7 @@ pip install monite
 
 ## Reference
 
-A full reference for this library is available [here](./reference.md).
+A full reference for this library is available [here](https://github.com/team-monite/monite-python-client/blob/HEAD/./reference.md).
 
 ## Usage
 
@@ -25,8 +25,15 @@ Instantiate and use the client with the following:
 
 ```python
 from monite import Monite
-client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-client.products.create(name='name', )
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.products.create(
+    name="name",
+)
 ```
 
 ## Async Client
@@ -34,12 +41,25 @@ client.products.create(name='name', )
 The SDK also exports an `async` client so that you can make non-blocking calls to our API.
 
 ```python
-from monite import AsyncMonite
 import asyncio
-client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+from monite import AsyncMonite
+
+client = AsyncMonite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+
+
 async def main() -> None:
-    await client.products.create(name='name', )
-asyncio.run(main())```
+    await client.products.create(
+        name="name",
+    )
+
+
+asyncio.run(main())
+```
 
 ## Exception Handling
 
@@ -48,6 +68,7 @@ will be thrown.
 
 ```python
 from monite.core.api_error import ApiError
+
 try:
     client.products.create(...)
 except ApiError as e:
@@ -64,7 +85,10 @@ The `.with_raw_response` property returns a "raw" client that can be used to acc
 
 ```python
 from monite import Monite
-client = Monite(..., )
+
+client = Monite(
+    ...,
+)
 response = client.products.with_raw_response.create(...)
 print(response.headers)  # access the response headers
 print(response.data)  # access the underlying object
@@ -97,7 +121,12 @@ The SDK defaults to a 60 second timeout. You can configure this with a timeout o
 ```python
 
 from monite import Monite
-client = Monite(..., timeout=20.0, )
+
+client = Monite(
+    ...,
+    timeout=20.0,
+)
+
 
 # Override timeout for a specific method
 client.products.create(..., request_options={
@@ -111,9 +140,17 @@ You can override the `httpx` client to customize it for your use-case. Some comm
 and transports.
 
 ```python
-from monite import Monite
 import httpx
-client = Monite(..., httpx_client=httpx.Client(proxies="http://my.test.proxy.example.com", transport=httpx.HTTPTransport(local_address="0.0.0.0"), ))```
+from monite import Monite
+
+client = Monite(
+    ...,
+    httpx_client=httpx.Client(
+        proxies="http://my.test.proxy.example.com",
+        transport=httpx.HTTPTransport(local_address="0.0.0.0"),
+    ),
+)
+```
 
 ## Contributing
 

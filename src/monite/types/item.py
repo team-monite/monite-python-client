@@ -11,17 +11,16 @@ class Item(UniversalBaseModel):
     Contains information about a text block or line extracted from an uploaded document by OCR.
     """
 
-    text: str = pydantic.Field()
-    """
-    The text as recognized by OCR.
-    """
-
     confidence: float = pydantic.Field()
     """
     OCR confidence score - the estimated accuracy percentage of character recognition of the extracted text, from 0 to 100%.
     """
 
     processed_text: typing.Optional[typing.Optional[typing.Any]] = None
+    text: str = pydantic.Field()
+    """
+    The text as recognized by OCR.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

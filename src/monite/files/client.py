@@ -51,7 +51,12 @@ class FilesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.files.get()
         """
         _response = self._raw_client.get(id_in=id_in, request_options=request_options)
@@ -79,8 +84,15 @@ class FilesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.files.upload(file_type="ocr_results", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.files.upload(
+            file_type="ocr_results",
+        )
         """
         _response = self._raw_client.upload(file=file, file_type=file_type, request_options=request_options)
         return _response.data
@@ -102,8 +114,15 @@ class FilesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.files.get_by_id(file_id='file_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.files.get_by_id(
+            file_id="file_id",
+        )
         """
         _response = self._raw_client.get_by_id(file_id, request_options=request_options)
         return _response.data
@@ -124,8 +143,15 @@ class FilesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.files.delete(file_id='file_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.files.delete(
+            file_id="file_id",
+        )
         """
         _response = self._raw_client.delete(file_id, request_options=request_options)
         return _response.data
@@ -167,11 +193,21 @@ class AsyncFilesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.files.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(id_in=id_in, request_options=request_options)
@@ -198,11 +234,23 @@ class AsyncFilesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.files.upload(file_type="ocr_results", )
+            await client.files.upload(
+                file_type="ocr_results",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upload(file=file, file_type=file_type, request_options=request_options)
@@ -224,11 +272,23 @@ class AsyncFilesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.files.get_by_id(file_id='file_id', )
+            await client.files.get_by_id(
+                file_id="file_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(file_id, request_options=request_options)
@@ -249,11 +309,23 @@ class AsyncFilesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.files.delete(file_id='file_id', )
+            await client.files.delete(
+                file_id="file_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete(file_id, request_options=request_options)

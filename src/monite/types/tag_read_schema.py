@@ -5,7 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .receivable_tag_category import ReceivableTagCategory
+from .tag_category import TagCategory
 
 
 class TagReadSchema(UniversalBaseModel):
@@ -28,7 +28,7 @@ class TagReadSchema(UniversalBaseModel):
     Date and time when the tag was last updated. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
     """
 
-    category: typing.Optional[ReceivableTagCategory] = pydantic.Field(default=None)
+    category: typing.Optional[TagCategory] = pydantic.Field(default=None)
     """
     The tag category.
     """

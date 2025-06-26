@@ -44,7 +44,12 @@ class PaymentRemindersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payment_reminders.get()
         """
         _response = self._raw_client.get(request_options=request_options)
@@ -87,8 +92,15 @@ class PaymentRemindersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_reminders.create(name='name', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_reminders.create(
+            name="name",
+        )
         """
         _response = self._raw_client.create(
             name=name,
@@ -119,8 +131,15 @@ class PaymentRemindersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_reminders.get_by_id(payment_reminder_id='payment_reminder_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_reminders.get_by_id(
+            payment_reminder_id="payment_reminder_id",
+        )
         """
         _response = self._raw_client.get_by_id(payment_reminder_id, request_options=request_options)
         return _response.data
@@ -143,8 +162,15 @@ class PaymentRemindersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_reminders.delete_by_id(payment_reminder_id='payment_reminder_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_reminders.delete_by_id(
+            payment_reminder_id="payment_reminder_id",
+        )
         """
         _response = self._raw_client.delete_by_id(payment_reminder_id, request_options=request_options)
         return _response.data
@@ -189,8 +215,15 @@ class PaymentRemindersClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payment_reminders.update_by_id(payment_reminder_id='payment_reminder_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payment_reminders.update_by_id(
+            payment_reminder_id="payment_reminder_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             payment_reminder_id,
@@ -233,11 +266,21 @@ class AsyncPaymentRemindersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payment_reminders.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(request_options=request_options)
@@ -279,11 +322,23 @@ class AsyncPaymentRemindersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_reminders.create(name='name', )
+            await client.payment_reminders.create(
+                name="name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -314,11 +369,23 @@ class AsyncPaymentRemindersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_reminders.get_by_id(payment_reminder_id='payment_reminder_id', )
+            await client.payment_reminders.get_by_id(
+                payment_reminder_id="payment_reminder_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(payment_reminder_id, request_options=request_options)
@@ -341,11 +408,23 @@ class AsyncPaymentRemindersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_reminders.delete_by_id(payment_reminder_id='payment_reminder_id', )
+            await client.payment_reminders.delete_by_id(
+                payment_reminder_id="payment_reminder_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(payment_reminder_id, request_options=request_options)
@@ -390,11 +469,23 @@ class AsyncPaymentRemindersClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payment_reminders.update_by_id(payment_reminder_id='payment_reminder_id', )
+            await client.payment_reminders.update_by_id(
+                payment_reminder_id="payment_reminder_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(

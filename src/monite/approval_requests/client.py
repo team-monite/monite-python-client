@@ -119,7 +119,12 @@ class ApprovalRequestsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.approval_requests.get()
         """
         _response = self._raw_client.get(
@@ -166,10 +171,21 @@ class ApprovalRequestsClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import ApprovalRequestCreateByRoleRequest
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.approval_requests.create(request=ApprovalRequestCreateByRoleRequest(object_id='object_id', object_type="account", required_approval_count=1, role_ids=['role_ids'], ), )
+        from monite import ApprovalRequestCreateByRoleRequest, Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.approval_requests.create(
+            request=ApprovalRequestCreateByRoleRequest(
+                object_id="object_id",
+                object_type="account",
+                required_approval_count=1,
+                role_ids=["role_ids"],
+            ),
+        )
         """
         _response = self._raw_client.create(request=request, request_options=request_options)
         return _response.data
@@ -193,8 +209,15 @@ class ApprovalRequestsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.approval_requests.get_by_id(approval_request_id='approval_request_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.approval_requests.get_by_id(
+            approval_request_id="approval_request_id",
+        )
         """
         _response = self._raw_client.get_by_id(approval_request_id, request_options=request_options)
         return _response.data
@@ -218,8 +241,15 @@ class ApprovalRequestsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.approval_requests.approve_by_id(approval_request_id='approval_request_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.approval_requests.approve_by_id(
+            approval_request_id="approval_request_id",
+        )
         """
         _response = self._raw_client.approve_by_id(approval_request_id, request_options=request_options)
         return _response.data
@@ -243,8 +273,15 @@ class ApprovalRequestsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.approval_requests.cancel_by_id(approval_request_id='approval_request_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.approval_requests.cancel_by_id(
+            approval_request_id="approval_request_id",
+        )
         """
         _response = self._raw_client.cancel_by_id(approval_request_id, request_options=request_options)
         return _response.data
@@ -268,8 +305,15 @@ class ApprovalRequestsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.approval_requests.reject_by_id(approval_request_id='approval_request_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.approval_requests.reject_by_id(
+            approval_request_id="approval_request_id",
+        )
         """
         _response = self._raw_client.reject_by_id(approval_request_id, request_options=request_options)
         return _response.data
@@ -375,11 +419,21 @@ class AsyncApprovalRequestsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.approval_requests.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -426,12 +480,28 @@ class AsyncApprovalRequestsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import ApprovalRequestCreateByRoleRequest
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import ApprovalRequestCreateByRoleRequest, AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.approval_requests.create(request=ApprovalRequestCreateByRoleRequest(object_id='object_id', object_type="account", required_approval_count=1, role_ids=['role_ids'], ), )
+            await client.approval_requests.create(
+                request=ApprovalRequestCreateByRoleRequest(
+                    object_id="object_id",
+                    object_type="account",
+                    required_approval_count=1,
+                    role_ids=["role_ids"],
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(request=request, request_options=request_options)
@@ -455,11 +525,23 @@ class AsyncApprovalRequestsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.approval_requests.get_by_id(approval_request_id='approval_request_id', )
+            await client.approval_requests.get_by_id(
+                approval_request_id="approval_request_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(approval_request_id, request_options=request_options)
@@ -483,11 +565,23 @@ class AsyncApprovalRequestsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.approval_requests.approve_by_id(approval_request_id='approval_request_id', )
+            await client.approval_requests.approve_by_id(
+                approval_request_id="approval_request_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.approve_by_id(approval_request_id, request_options=request_options)
@@ -511,11 +605,23 @@ class AsyncApprovalRequestsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.approval_requests.cancel_by_id(approval_request_id='approval_request_id', )
+            await client.approval_requests.cancel_by_id(
+                approval_request_id="approval_request_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.cancel_by_id(approval_request_id, request_options=request_options)
@@ -539,11 +645,23 @@ class AsyncApprovalRequestsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.approval_requests.reject_by_id(approval_request_id='approval_request_id', )
+            await client.approval_requests.reject_by_id(
+                approval_request_id="approval_request_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.reject_by_id(approval_request_id, request_options=request_options)

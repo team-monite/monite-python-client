@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .allowed_countries import AllowedCountries
+from .vat_rate_component import VatRateComponent
 from .vat_rate_creator import VatRateCreator
 from .vat_rate_status_enum import VatRateStatusEnum
 
@@ -24,6 +25,11 @@ class VatRateResponse(UniversalBaseModel):
     updated_at: dt.datetime = pydantic.Field()
     """
     Date/time when this rate was updated in the table.
+    """
+
+    components: typing.Optional[typing.List[VatRateComponent]] = pydantic.Field(default=None)
+    """
+    Sub-taxes included in the VAT.
     """
 
     country: AllowedCountries = pydantic.Field()

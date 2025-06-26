@@ -45,7 +45,12 @@ class MailboxDomainsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.mailbox_domains.get()
         """
         _response = self._raw_client.get(request_options=request_options)
@@ -71,8 +76,15 @@ class MailboxDomainsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.mailbox_domains.create(domain='domain', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.mailbox_domains.create(
+            domain="domain",
+        )
         """
         _response = self._raw_client.create(domain=domain, request_options=request_options)
         return _response.data
@@ -95,8 +107,15 @@ class MailboxDomainsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.mailbox_domains.delete_by_id(domain_id='domain_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.mailbox_domains.delete_by_id(
+            domain_id="domain_id",
+        )
         """
         _response = self._raw_client.delete_by_id(domain_id, request_options=request_options)
         return _response.data
@@ -122,8 +141,15 @@ class MailboxDomainsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.mailbox_domains.verify_by_id(domain_id='domain_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.mailbox_domains.verify_by_id(
+            domain_id="domain_id",
+        )
         """
         _response = self._raw_client.verify_by_id(domain_id, request_options=request_options)
         return _response.data
@@ -160,11 +186,21 @@ class AsyncMailboxDomainsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.mailbox_domains.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(request_options=request_options)
@@ -189,11 +225,23 @@ class AsyncMailboxDomainsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.mailbox_domains.create(domain='domain', )
+            await client.mailbox_domains.create(
+                domain="domain",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(domain=domain, request_options=request_options)
@@ -216,11 +264,23 @@ class AsyncMailboxDomainsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.mailbox_domains.delete_by_id(domain_id='domain_id', )
+            await client.mailbox_domains.delete_by_id(
+                domain_id="domain_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(domain_id, request_options=request_options)
@@ -246,11 +306,23 @@ class AsyncMailboxDomainsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.mailbox_domains.verify_by_id(domain_id='domain_id', )
+            await client.mailbox_domains.verify_by_id(
+                domain_id="domain_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.verify_by_id(domain_id, request_options=request_options)

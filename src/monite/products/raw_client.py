@@ -222,6 +222,7 @@ class RawProductsClient:
         *,
         name: str,
         description: typing.Optional[str] = OMIT,
+        external_reference: typing.Optional[str] = OMIT,
         ledger_account_id: typing.Optional[str] = OMIT,
         measure_unit_id: typing.Optional[str] = OMIT,
         price: typing.Optional[Price] = OMIT,
@@ -237,6 +238,9 @@ class RawProductsClient:
 
         description : typing.Optional[str]
             Description of the product.
+
+        external_reference : typing.Optional[str]
+            A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
 
         ledger_account_id : typing.Optional[str]
 
@@ -264,6 +268,7 @@ class RawProductsClient:
             method="POST",
             json={
                 "description": description,
+                "external_reference": external_reference,
                 "ledger_account_id": ledger_account_id,
                 "measure_unit_id": measure_unit_id,
                 "name": name,
@@ -548,6 +553,7 @@ class RawProductsClient:
         product_id: str,
         *,
         description: typing.Optional[str] = OMIT,
+        external_reference: typing.Optional[str] = OMIT,
         ledger_account_id: typing.Optional[str] = OMIT,
         measure_unit_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -563,6 +569,9 @@ class RawProductsClient:
 
         description : typing.Optional[str]
             Description of the product.
+
+        external_reference : typing.Optional[str]
+            A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
 
         ledger_account_id : typing.Optional[str]
 
@@ -593,6 +602,7 @@ class RawProductsClient:
             method="PATCH",
             json={
                 "description": description,
+                "external_reference": external_reference,
                 "ledger_account_id": ledger_account_id,
                 "measure_unit_id": measure_unit_id,
                 "name": name,
@@ -880,6 +890,7 @@ class AsyncRawProductsClient:
         *,
         name: str,
         description: typing.Optional[str] = OMIT,
+        external_reference: typing.Optional[str] = OMIT,
         ledger_account_id: typing.Optional[str] = OMIT,
         measure_unit_id: typing.Optional[str] = OMIT,
         price: typing.Optional[Price] = OMIT,
@@ -895,6 +906,9 @@ class AsyncRawProductsClient:
 
         description : typing.Optional[str]
             Description of the product.
+
+        external_reference : typing.Optional[str]
+            A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
 
         ledger_account_id : typing.Optional[str]
 
@@ -922,6 +936,7 @@ class AsyncRawProductsClient:
             method="POST",
             json={
                 "description": description,
+                "external_reference": external_reference,
                 "ledger_account_id": ledger_account_id,
                 "measure_unit_id": measure_unit_id,
                 "name": name,
@@ -1206,6 +1221,7 @@ class AsyncRawProductsClient:
         product_id: str,
         *,
         description: typing.Optional[str] = OMIT,
+        external_reference: typing.Optional[str] = OMIT,
         ledger_account_id: typing.Optional[str] = OMIT,
         measure_unit_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -1221,6 +1237,9 @@ class AsyncRawProductsClient:
 
         description : typing.Optional[str]
             Description of the product.
+
+        external_reference : typing.Optional[str]
+            A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.
 
         ledger_account_id : typing.Optional[str]
 
@@ -1251,6 +1270,7 @@ class AsyncRawProductsClient:
             method="PATCH",
             json={
                 "description": description,
+                "external_reference": external_reference,
                 "ledger_account_id": ledger_account_id,
                 "measure_unit_id": measure_unit_id,
                 "name": name,

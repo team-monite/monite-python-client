@@ -48,8 +48,15 @@ class VatIdsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.vat_ids.get(counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.vat_ids.get(
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get(counterpart_id, request_options=request_options)
         return _response.data
@@ -85,8 +92,16 @@ class VatIdsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.vat_ids.create(counterpart_id='counterpart_id', value='123456789', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.vat_ids.create(
+            counterpart_id="counterpart_id",
+            value="123456789",
+        )
         """
         _response = self._raw_client.create(
             counterpart_id, value=value, country=country, type=type, request_options=request_options
@@ -114,8 +129,16 @@ class VatIdsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.vat_ids.get_by_id(vat_id='vat_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.vat_ids.get_by_id(
+            vat_id="vat_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.get_by_id(vat_id, counterpart_id, request_options=request_options)
         return _response.data
@@ -140,8 +163,16 @@ class VatIdsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.vat_ids.delete_by_id(vat_id='vat_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.vat_ids.delete_by_id(
+            vat_id="vat_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.delete_by_id(vat_id, counterpart_id, request_options=request_options)
         return _response.data
@@ -180,8 +211,16 @@ class VatIdsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.counterparts.vat_ids.update_by_id(vat_id='vat_id', counterpart_id='counterpart_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.counterparts.vat_ids.update_by_id(
+            vat_id="vat_id",
+            counterpart_id="counterpart_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             vat_id, counterpart_id, country=country, type=type, value=value, request_options=request_options
@@ -222,11 +261,23 @@ class AsyncVatIdsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.vat_ids.get(counterpart_id='counterpart_id', )
+            await client.counterparts.vat_ids.get(
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(counterpart_id, request_options=request_options)
@@ -262,11 +313,24 @@ class AsyncVatIdsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.vat_ids.create(counterpart_id='counterpart_id', value='123456789', )
+            await client.counterparts.vat_ids.create(
+                counterpart_id="counterpart_id",
+                value="123456789",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -294,11 +358,24 @@ class AsyncVatIdsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.vat_ids.get_by_id(vat_id='vat_id', counterpart_id='counterpart_id', )
+            await client.counterparts.vat_ids.get_by_id(
+                vat_id="vat_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(vat_id, counterpart_id, request_options=request_options)
@@ -323,11 +400,24 @@ class AsyncVatIdsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.vat_ids.delete_by_id(vat_id='vat_id', counterpart_id='counterpart_id', )
+            await client.counterparts.vat_ids.delete_by_id(
+                vat_id="vat_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(vat_id, counterpart_id, request_options=request_options)
@@ -366,11 +456,24 @@ class AsyncVatIdsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.counterparts.vat_ids.update_by_id(vat_id='vat_id', counterpart_id='counterpart_id', )
+            await client.counterparts.vat_ids.update_by_id(
+                vat_id="vat_id",
+                counterpart_id="counterpart_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(

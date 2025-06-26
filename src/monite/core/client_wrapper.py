@@ -13,21 +13,24 @@ class BaseClientWrapper:
         monite_version: str,
         monite_entity_id: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
     ):
         self._monite_version = monite_version
         self._monite_entity_id = monite_entity_id
         self._token = token
+        self._headers = headers
         self._base_url = base_url
         self._timeout = timeout
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "monite/0.5.2",
+            "User-Agent": "monite/0.5.3",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "monite",
-            "X-Fern-SDK-Version": "0.5.2",
+            "X-Fern-SDK-Version": "0.5.3",
+            **(self.get_custom_headers() or {}),
         }
         headers["x-monite-version"] = self._monite_version
         if self._monite_entity_id is not None:
@@ -43,6 +46,9 @@ class BaseClientWrapper:
         else:
             return self._token()
 
+    def get_custom_headers(self) -> typing.Optional[typing.Dict[str, str]]:
+        return self._headers
+
     def get_base_url(self) -> str:
         return self._base_url
 
@@ -57,6 +63,7 @@ class SyncClientWrapper(BaseClientWrapper):
         monite_version: str,
         monite_entity_id: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
         httpx_client: httpx.Client,
@@ -65,6 +72,7 @@ class SyncClientWrapper(BaseClientWrapper):
             monite_version=monite_version,
             monite_entity_id=monite_entity_id,
             token=token,
+            headers=headers,
             base_url=base_url,
             timeout=timeout,
         )
@@ -83,6 +91,7 @@ class AsyncClientWrapper(BaseClientWrapper):
         monite_version: str,
         monite_entity_id: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
         httpx_client: httpx.AsyncClient,
@@ -91,6 +100,7 @@ class AsyncClientWrapper(BaseClientWrapper):
             monite_version=monite_version,
             monite_entity_id=monite_entity_id,
             token=token,
+            headers=headers,
             base_url=base_url,
             timeout=timeout,
         )

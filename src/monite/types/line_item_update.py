@@ -8,6 +8,11 @@ from .discount import Discount
 
 
 class LineItemUpdate(UniversalBaseModel):
+    custom_vat_rate_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unique identifier of the user-defined vat rate object.
+    """
+
     discount: typing.Optional[Discount] = pydantic.Field(default=None)
     """
     The discount for a product.
@@ -21,6 +26,11 @@ class LineItemUpdate(UniversalBaseModel):
     quantity: typing.Optional[float] = pydantic.Field(default=None)
     """
     The quantity of each of the goods, materials, or services listed in the receivable.
+    """
+
+    tax_rate_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Specifies the display name of the tax rate. This field is applicable only when tax_rate_value is also provided.
     """
 
     tax_rate_value: typing.Optional[int] = pydantic.Field(default=None)

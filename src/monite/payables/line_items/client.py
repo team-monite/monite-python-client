@@ -83,8 +83,15 @@ class LineItemsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.line_items.get(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.line_items.get(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.get(
             payable_id,
@@ -165,8 +172,15 @@ class LineItemsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.line_items.create(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.line_items.create(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.create(
             payable_id,
@@ -216,10 +230,17 @@ class LineItemsClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import LineItemInternalRequest
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.line_items.replace(payable_id='payable_id', data=[LineItemInternalRequest()], )
+        from monite import LineItemInternalRequest, Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.line_items.replace(
+            payable_id="payable_id",
+            data=[LineItemInternalRequest()],
+        )
         """
         _response = self._raw_client.replace(payable_id, data=data, request_options=request_options)
         return _response.data
@@ -255,8 +276,16 @@ class LineItemsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.line_items.get_by_id(line_item_id='line_item_id', payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.line_items.get_by_id(
+            line_item_id="line_item_id",
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.get_by_id(line_item_id, payable_id, request_options=request_options)
         return _response.data
@@ -291,8 +320,16 @@ class LineItemsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.line_items.delete_by_id(line_item_id='line_item_id', payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.line_items.delete_by_id(
+            line_item_id="line_item_id",
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.delete_by_id(line_item_id, payable_id, request_options=request_options)
         return _response.data
@@ -364,8 +401,16 @@ class LineItemsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.line_items.update_by_id(line_item_id='line_item_id', payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.line_items.update_by_id(
+            line_item_id="line_item_id",
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             line_item_id,
@@ -449,11 +494,23 @@ class AsyncLineItemsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.line_items.get(payable_id='payable_id', )
+            await client.payables.line_items.get(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -534,11 +591,23 @@ class AsyncLineItemsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.line_items.create(payable_id='payable_id', )
+            await client.payables.line_items.create(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -589,12 +658,24 @@ class AsyncLineItemsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import LineItemInternalRequest
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, LineItemInternalRequest
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.line_items.replace(payable_id='payable_id', data=[LineItemInternalRequest()], )
+            await client.payables.line_items.replace(
+                payable_id="payable_id",
+                data=[LineItemInternalRequest()],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.replace(payable_id, data=data, request_options=request_options)
@@ -630,11 +711,24 @@ class AsyncLineItemsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.line_items.get_by_id(line_item_id='line_item_id', payable_id='payable_id', )
+            await client.payables.line_items.get_by_id(
+                line_item_id="line_item_id",
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(line_item_id, payable_id, request_options=request_options)
@@ -669,11 +763,24 @@ class AsyncLineItemsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.line_items.delete_by_id(line_item_id='line_item_id', payable_id='payable_id', )
+            await client.payables.line_items.delete_by_id(
+                line_item_id="line_item_id",
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(line_item_id, payable_id, request_options=request_options)
@@ -745,11 +852,24 @@ class AsyncLineItemsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.line_items.update_by_id(line_item_id='line_item_id', payable_id='payable_id', )
+            await client.payables.line_items.update_by_id(
+                line_item_id="line_item_id",
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(

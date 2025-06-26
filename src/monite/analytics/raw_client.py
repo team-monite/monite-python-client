@@ -333,6 +333,7 @@ class RawAnalyticsClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -504,6 +505,9 @@ class RawAnalyticsClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -572,6 +576,7 @@ class RawAnalyticsClient:
                 "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
                 "tag_ids__not_in": tag_ids_not_in,
+                "has_tags": has_tags,
                 "origin": origin,
                 "has_file": has_file,
             },
@@ -680,6 +685,11 @@ class RawAnalyticsClient:
         total_amount_lt: typing.Optional[int] = None,
         total_amount_gte: typing.Optional[int] = None,
         total_amount_lte: typing.Optional[int] = None,
+        discounted_subtotal: typing.Optional[int] = None,
+        discounted_subtotal_gt: typing.Optional[int] = None,
+        discounted_subtotal_lt: typing.Optional[int] = None,
+        discounted_subtotal_gte: typing.Optional[int] = None,
+        discounted_subtotal_lte: typing.Optional[int] = None,
         status: typing.Optional[GetAnalyticsReceivablesRequestStatus] = None,
         entity_user_id: typing.Optional[str] = None,
         based_on: typing.Optional[str] = None,
@@ -844,6 +854,16 @@ class RawAnalyticsClient:
 
         total_amount_lte : typing.Optional[int]
 
+        discounted_subtotal : typing.Optional[int]
+
+        discounted_subtotal_gt : typing.Optional[int]
+
+        discounted_subtotal_lt : typing.Optional[int]
+
+        discounted_subtotal_gte : typing.Optional[int]
+
+        discounted_subtotal_lte : typing.Optional[int]
+
         status : typing.Optional[GetAnalyticsReceivablesRequestStatus]
 
         entity_user_id : typing.Optional[str]
@@ -909,6 +929,11 @@ class RawAnalyticsClient:
                 "total_amount__lt": total_amount_lt,
                 "total_amount__gte": total_amount_gte,
                 "total_amount__lte": total_amount_lte,
+                "discounted_subtotal": discounted_subtotal,
+                "discounted_subtotal__gt": discounted_subtotal_gt,
+                "discounted_subtotal__lt": discounted_subtotal_lt,
+                "discounted_subtotal__gte": discounted_subtotal_gte,
+                "discounted_subtotal__lte": discounted_subtotal_lte,
                 "status": status,
                 "entity_user_id": entity_user_id,
                 "based_on": based_on,
@@ -1285,6 +1310,7 @@ class AsyncRawAnalyticsClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1456,6 +1482,9 @@ class AsyncRawAnalyticsClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -1524,6 +1553,7 @@ class AsyncRawAnalyticsClient:
                 "project_id__in": project_id_in,
                 "tag_ids": tag_ids,
                 "tag_ids__not_in": tag_ids_not_in,
+                "has_tags": has_tags,
                 "origin": origin,
                 "has_file": has_file,
             },
@@ -1632,6 +1662,11 @@ class AsyncRawAnalyticsClient:
         total_amount_lt: typing.Optional[int] = None,
         total_amount_gte: typing.Optional[int] = None,
         total_amount_lte: typing.Optional[int] = None,
+        discounted_subtotal: typing.Optional[int] = None,
+        discounted_subtotal_gt: typing.Optional[int] = None,
+        discounted_subtotal_lt: typing.Optional[int] = None,
+        discounted_subtotal_gte: typing.Optional[int] = None,
+        discounted_subtotal_lte: typing.Optional[int] = None,
         status: typing.Optional[GetAnalyticsReceivablesRequestStatus] = None,
         entity_user_id: typing.Optional[str] = None,
         based_on: typing.Optional[str] = None,
@@ -1796,6 +1831,16 @@ class AsyncRawAnalyticsClient:
 
         total_amount_lte : typing.Optional[int]
 
+        discounted_subtotal : typing.Optional[int]
+
+        discounted_subtotal_gt : typing.Optional[int]
+
+        discounted_subtotal_lt : typing.Optional[int]
+
+        discounted_subtotal_gte : typing.Optional[int]
+
+        discounted_subtotal_lte : typing.Optional[int]
+
         status : typing.Optional[GetAnalyticsReceivablesRequestStatus]
 
         entity_user_id : typing.Optional[str]
@@ -1861,6 +1906,11 @@ class AsyncRawAnalyticsClient:
                 "total_amount__lt": total_amount_lt,
                 "total_amount__gte": total_amount_gte,
                 "total_amount__lte": total_amount_lte,
+                "discounted_subtotal": discounted_subtotal,
+                "discounted_subtotal__gt": discounted_subtotal_gt,
+                "discounted_subtotal__lt": discounted_subtotal_lt,
+                "discounted_subtotal__gte": discounted_subtotal_gte,
+                "discounted_subtotal__lte": discounted_subtotal_lte,
                 "status": status,
                 "entity_user_id": entity_user_id,
                 "based_on": based_on,

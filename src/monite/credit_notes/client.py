@@ -178,7 +178,12 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.credit_notes.get_payable_credit_notes()
         """
         _response = self._raw_client.get_payable_credit_notes(
@@ -309,8 +314,16 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.post_payable_credit_notes(document_id='CN-2287', issued_at='2024-01-15', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.post_payable_credit_notes(
+            document_id="CN-2287",
+            issued_at="2024-01-15",
+        )
         """
         _response = self._raw_client.post_payable_credit_notes(
             document_id=document_id,
@@ -338,7 +351,7 @@ class CreditNotesClient:
         self, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
     ) -> CreditNoteResponse:
         """
-        Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+        Upload an incoming credit note (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
         Parameters
         ----------
@@ -356,7 +369,12 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.credit_notes.post_payable_credit_notes_upload_from_file()
         """
         _response = self._raw_client.post_payable_credit_notes_upload_from_file(
@@ -383,7 +401,12 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.credit_notes.get_payable_credit_notes_validations()
         """
         _response = self._raw_client.get_payable_credit_notes_validations(request_options=request_options)
@@ -413,8 +436,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.put_payable_credit_notes_validations(required_fields=["currency"], )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.put_payable_credit_notes_validations(
+            required_fields=["currency"],
+        )
         """
         _response = self._raw_client.put_payable_credit_notes_validations(
             required_fields=required_fields, request_options=request_options
@@ -440,7 +470,12 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.credit_notes.post_payable_credit_notes_validations_reset()
         """
         _response = self._raw_client.post_payable_credit_notes_validations_reset(request_options=request_options)
@@ -465,8 +500,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.get_payable_credit_notes_id(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.get_payable_credit_notes_id(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.get_payable_credit_notes_id(credit_note_id, request_options=request_options)
         return _response.data
@@ -489,8 +531,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.delete_payable_credit_notes_id(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.delete_payable_credit_notes_id(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.delete_payable_credit_notes_id(credit_note_id, request_options=request_options)
         return _response.data
@@ -585,8 +634,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.patch_payable_credit_notes_id(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.patch_payable_credit_notes_id(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.patch_payable_credit_notes_id(
             credit_note_id,
@@ -632,8 +688,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.post_payable_credit_notes_id_approve(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.post_payable_credit_notes_id_approve(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.post_payable_credit_notes_id_approve(
             credit_note_id, request_options=request_options
@@ -661,8 +724,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.post_payable_credit_notes_id_cancel(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.post_payable_credit_notes_id_cancel(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.post_payable_credit_notes_id_cancel(
             credit_note_id, request_options=request_options
@@ -690,8 +760,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.post_payable_credit_notes_id_cancel_ocr(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.post_payable_credit_notes_id_cancel_ocr(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.post_payable_credit_notes_id_cancel_ocr(
             credit_note_id, request_options=request_options
@@ -858,8 +935,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.get_payable_credit_notes_id_line_items(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.get_payable_credit_notes_id_line_items(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.get_payable_credit_notes_id_line_items(
             credit_note_id,
@@ -957,8 +1041,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.post_payable_credit_notes_id_line_items(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.post_payable_credit_notes_id_line_items(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.post_payable_credit_notes_id_line_items(
             credit_note_id,
@@ -997,10 +1088,17 @@ class CreditNotesClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import CreditNoteLineItemCreateRequest
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.put_payable_credit_notes_id_line_items(credit_note_id='credit_note_id', data=[CreditNoteLineItemCreateRequest()], )
+        from monite import CreditNoteLineItemCreateRequest, Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.put_payable_credit_notes_id_line_items(
+            credit_note_id="credit_note_id",
+            data=[CreditNoteLineItemCreateRequest()],
+        )
         """
         _response = self._raw_client.put_payable_credit_notes_id_line_items(
             credit_note_id, data=data, request_options=request_options
@@ -1028,8 +1126,16 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.get_payable_credit_notes_id_line_items_id(credit_note_id='credit_note_id', line_item_id='line_item_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.get_payable_credit_notes_id_line_items_id(
+            credit_note_id="credit_note_id",
+            line_item_id="line_item_id",
+        )
         """
         _response = self._raw_client.get_payable_credit_notes_id_line_items_id(
             credit_note_id, line_item_id, request_options=request_options
@@ -1057,8 +1163,16 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.delete_payable_credit_notes_id_line_items_id(credit_note_id='credit_note_id', line_item_id='line_item_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.delete_payable_credit_notes_id_line_items_id(
+            credit_note_id="credit_note_id",
+            line_item_id="line_item_id",
+        )
         """
         _response = self._raw_client.delete_payable_credit_notes_id_line_items_id(
             credit_note_id, line_item_id, request_options=request_options
@@ -1114,8 +1228,16 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.patch_payable_credit_notes_id_line_items_id(credit_note_id='credit_note_id', line_item_id='line_item_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.patch_payable_credit_notes_id_line_items_id(
+            credit_note_id="credit_note_id",
+            line_item_id="line_item_id",
+        )
         """
         _response = self._raw_client.patch_payable_credit_notes_id_line_items_id(
             credit_note_id,
@@ -1151,8 +1273,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.post_payable_credit_notes_id_reject(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.post_payable_credit_notes_id_reject(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.post_payable_credit_notes_id_reject(
             credit_note_id, request_options=request_options
@@ -1180,8 +1309,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.post_payable_credit_notes_id_submit_for_approval(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.post_payable_credit_notes_id_submit_for_approval(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.post_payable_credit_notes_id_submit_for_approval(
             credit_note_id, request_options=request_options
@@ -1207,8 +1343,15 @@ class CreditNotesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.credit_notes.get_payable_credit_notes_id_validate(credit_note_id='credit_note_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.credit_notes.get_payable_credit_notes_id_validate(
+            credit_note_id="credit_note_id",
+        )
         """
         _response = self._raw_client.get_payable_credit_notes_id_validate(
             credit_note_id, request_options=request_options
@@ -1367,11 +1510,21 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.credit_notes.get_payable_credit_notes()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_payable_credit_notes(
@@ -1501,11 +1654,24 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.post_payable_credit_notes(document_id='CN-2287', issued_at='2024-01-15', )
+            await client.credit_notes.post_payable_credit_notes(
+                document_id="CN-2287",
+                issued_at="2024-01-15",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payable_credit_notes(
@@ -1534,7 +1700,7 @@ class AsyncCreditNotesClient:
         self, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
     ) -> CreditNoteResponse:
         """
-        Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+        Upload an incoming credit note (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
         Parameters
         ----------
@@ -1551,11 +1717,21 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.credit_notes.post_payable_credit_notes_upload_from_file()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payable_credit_notes_upload_from_file(
@@ -1581,11 +1757,21 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.credit_notes.get_payable_credit_notes_validations()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_payable_credit_notes_validations(request_options=request_options)
@@ -1614,11 +1800,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.put_payable_credit_notes_validations(required_fields=["currency"], )
+            await client.credit_notes.put_payable_credit_notes_validations(
+                required_fields=["currency"],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.put_payable_credit_notes_validations(
@@ -1644,11 +1842,21 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.credit_notes.post_payable_credit_notes_validations_reset()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payable_credit_notes_validations_reset(request_options=request_options)
@@ -1672,11 +1880,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.get_payable_credit_notes_id(credit_note_id='credit_note_id', )
+            await client.credit_notes.get_payable_credit_notes_id(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_payable_credit_notes_id(credit_note_id, request_options=request_options)
@@ -1699,11 +1919,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.delete_payable_credit_notes_id(credit_note_id='credit_note_id', )
+            await client.credit_notes.delete_payable_credit_notes_id(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_payable_credit_notes_id(
@@ -1800,11 +2032,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.patch_payable_credit_notes_id(credit_note_id='credit_note_id', )
+            await client.credit_notes.patch_payable_credit_notes_id(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.patch_payable_credit_notes_id(
@@ -1850,11 +2094,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.post_payable_credit_notes_id_approve(credit_note_id='credit_note_id', )
+            await client.credit_notes.post_payable_credit_notes_id_approve(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payable_credit_notes_id_approve(
@@ -1882,11 +2138,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.post_payable_credit_notes_id_cancel(credit_note_id='credit_note_id', )
+            await client.credit_notes.post_payable_credit_notes_id_cancel(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payable_credit_notes_id_cancel(
@@ -1914,11 +2182,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.post_payable_credit_notes_id_cancel_ocr(credit_note_id='credit_note_id', )
+            await client.credit_notes.post_payable_credit_notes_id_cancel_ocr(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payable_credit_notes_id_cancel_ocr(
@@ -2085,11 +2365,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.get_payable_credit_notes_id_line_items(credit_note_id='credit_note_id', )
+            await client.credit_notes.get_payable_credit_notes_id_line_items(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_payable_credit_notes_id_line_items(
@@ -2187,11 +2479,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.post_payable_credit_notes_id_line_items(credit_note_id='credit_note_id', )
+            await client.credit_notes.post_payable_credit_notes_id_line_items(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payable_credit_notes_id_line_items(
@@ -2231,12 +2535,24 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import CreditNoteLineItemCreateRequest
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, CreditNoteLineItemCreateRequest
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.put_payable_credit_notes_id_line_items(credit_note_id='credit_note_id', data=[CreditNoteLineItemCreateRequest()], )
+            await client.credit_notes.put_payable_credit_notes_id_line_items(
+                credit_note_id="credit_note_id",
+                data=[CreditNoteLineItemCreateRequest()],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.put_payable_credit_notes_id_line_items(
@@ -2264,11 +2580,24 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.get_payable_credit_notes_id_line_items_id(credit_note_id='credit_note_id', line_item_id='line_item_id', )
+            await client.credit_notes.get_payable_credit_notes_id_line_items_id(
+                credit_note_id="credit_note_id",
+                line_item_id="line_item_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_payable_credit_notes_id_line_items_id(
@@ -2296,11 +2625,24 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.delete_payable_credit_notes_id_line_items_id(credit_note_id='credit_note_id', line_item_id='line_item_id', )
+            await client.credit_notes.delete_payable_credit_notes_id_line_items_id(
+                credit_note_id="credit_note_id",
+                line_item_id="line_item_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_payable_credit_notes_id_line_items_id(
@@ -2356,11 +2698,24 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.patch_payable_credit_notes_id_line_items_id(credit_note_id='credit_note_id', line_item_id='line_item_id', )
+            await client.credit_notes.patch_payable_credit_notes_id_line_items_id(
+                credit_note_id="credit_note_id",
+                line_item_id="line_item_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.patch_payable_credit_notes_id_line_items_id(
@@ -2396,11 +2751,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.post_payable_credit_notes_id_reject(credit_note_id='credit_note_id', )
+            await client.credit_notes.post_payable_credit_notes_id_reject(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payable_credit_notes_id_reject(
@@ -2428,11 +2795,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.post_payable_credit_notes_id_submit_for_approval(credit_note_id='credit_note_id', )
+            await client.credit_notes.post_payable_credit_notes_id_submit_for_approval(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payable_credit_notes_id_submit_for_approval(
@@ -2458,11 +2837,23 @@ class AsyncCreditNotesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.credit_notes.get_payable_credit_notes_id_validate(credit_note_id='credit_note_id', )
+            await client.credit_notes.get_payable_credit_notes_id_validate(
+                credit_note_id="credit_note_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_payable_credit_notes_id_validate(

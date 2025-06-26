@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .allowed_countries import AllowedCountries
+from .vat_rate_component import VatRateComponent
 
 
 class LineItemProductVatRate(UniversalBaseModel):
@@ -13,9 +14,24 @@ class LineItemProductVatRate(UniversalBaseModel):
     Unique identifier of the vat rate object.
     """
 
+    components: typing.Optional[typing.List[VatRateComponent]] = pydantic.Field(default=None)
+    """
+    Sub-taxes included in the VAT.
+    """
+
     country: AllowedCountries = pydantic.Field()
     """
     Two-letter ISO country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+    """
+
+    is_custom: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Indicates whether this vat rate is defined by user.
+    """
+
+    name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Display name of the vat rate.
     """
 
     value: int = pydantic.Field()

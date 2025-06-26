@@ -100,7 +100,12 @@ class OcrClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.ocr.get_ocr_tasks()
         """
         _response = self._raw_client.get_ocr_tasks(
@@ -144,8 +149,15 @@ class OcrClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.ocr.post_ocr_tasks(file_url='file_url', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.ocr.post_ocr_tasks(
+            file_url="file_url",
+        )
         """
         _response = self._raw_client.post_ocr_tasks(
             file_url=file_url, document_type=document_type, request_options=request_options
@@ -178,7 +190,12 @@ class OcrClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.ocr.post_ocr_tasks_upload_from_file()
         """
         _response = self._raw_client.post_ocr_tasks_upload_from_file(
@@ -205,8 +222,15 @@ class OcrClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.ocr.get_ocr_tasks_id(task_id='task_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.ocr.get_ocr_tasks_id(
+            task_id="task_id",
+        )
         """
         _response = self._raw_client.get_ocr_tasks_id(task_id, request_options=request_options)
         return _response.data
@@ -293,11 +317,21 @@ class AsyncOcrClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.ocr.get_ocr_tasks()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_ocr_tasks(
@@ -340,11 +374,23 @@ class AsyncOcrClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.ocr.post_ocr_tasks(file_url='file_url', )
+            await client.ocr.post_ocr_tasks(
+                file_url="file_url",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_ocr_tasks(
@@ -377,11 +423,21 @@ class AsyncOcrClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.ocr.post_ocr_tasks_upload_from_file()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_ocr_tasks_upload_from_file(
@@ -407,11 +463,23 @@ class AsyncOcrClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.ocr.get_ocr_tasks_id(task_id='task_id', )
+            await client.ocr.get_ocr_tasks_id(
+                task_id="task_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_ocr_tasks_id(task_id, request_options=request_options)

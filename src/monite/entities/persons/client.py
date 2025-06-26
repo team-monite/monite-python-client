@@ -47,7 +47,12 @@ class PersonsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.entities.persons.get()
         """
         _response = self._raw_client.get(request_options=request_options)
@@ -111,10 +116,19 @@ class PersonsClient:
 
         Examples
         --------
-        from monite import Monite
-        from monite import PersonRelationshipRequest
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.persons.create(email='email', first_name='first_name', last_name='last_name', relationship=PersonRelationshipRequest(), )
+        from monite import Monite, PersonRelationshipRequest
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.persons.create(
+            email="email",
+            first_name="first_name",
+            last_name="last_name",
+            relationship=PersonRelationshipRequest(),
+        )
         """
         _response = self._raw_client.create(
             email=email,
@@ -148,8 +162,15 @@ class PersonsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.persons.get_by_id(person_id='person_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.persons.get_by_id(
+            person_id="person_id",
+        )
         """
         _response = self._raw_client.get_by_id(person_id, request_options=request_options)
         return _response.data
@@ -170,8 +191,15 @@ class PersonsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.persons.delete_by_id(person_id='person_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.persons.delete_by_id(
+            person_id="person_id",
+        )
         """
         _response = self._raw_client.delete_by_id(person_id, request_options=request_options)
         return _response.data
@@ -238,8 +266,15 @@ class PersonsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.persons.update_by_id(person_id='person_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.persons.update_by_id(
+            person_id="person_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             person_id,
@@ -292,8 +327,15 @@ class PersonsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.entities.persons.upload_onboarding_documents(person_id='person_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.persons.upload_onboarding_documents(
+            person_id="person_id",
+        )
         """
         _response = self._raw_client.upload_onboarding_documents(
             person_id,
@@ -335,11 +377,21 @@ class AsyncPersonsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.entities.persons.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(request_options=request_options)
@@ -403,12 +455,26 @@ class AsyncPersonsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
-        from monite import PersonRelationshipRequest
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite, PersonRelationshipRequest
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.persons.create(email='email', first_name='first_name', last_name='last_name', relationship=PersonRelationshipRequest(), )
+            await client.entities.persons.create(
+                email="email",
+                first_name="first_name",
+                last_name="last_name",
+                relationship=PersonRelationshipRequest(),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -444,11 +510,23 @@ class AsyncPersonsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.persons.get_by_id(person_id='person_id', )
+            await client.entities.persons.get_by_id(
+                person_id="person_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(person_id, request_options=request_options)
@@ -469,11 +547,23 @@ class AsyncPersonsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.persons.delete_by_id(person_id='person_id', )
+            await client.entities.persons.delete_by_id(
+                person_id="person_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(person_id, request_options=request_options)
@@ -540,11 +630,23 @@ class AsyncPersonsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.persons.update_by_id(person_id='person_id', )
+            await client.entities.persons.update_by_id(
+                person_id="person_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -597,11 +699,23 @@ class AsyncPersonsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.entities.persons.upload_onboarding_documents(person_id='person_id', )
+            await client.entities.persons.upload_onboarding_documents(
+                person_id="person_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upload_onboarding_documents(

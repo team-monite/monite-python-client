@@ -59,10 +59,12 @@ class SyncedRecordsClient:
             Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page.
+
+            When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
 
             If not specified, the first page of results will be returned.
 
@@ -100,8 +102,15 @@ class SyncedRecordsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.accounting.synced_records.get(object_type="product", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.accounting.synced_records.get(
+            object_type="product",
+        )
         """
         _response = self._raw_client.get(
             object_type=object_type,
@@ -144,8 +153,15 @@ class SyncedRecordsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.accounting.synced_records.get_by_id(synced_record_id='synced_record_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.accounting.synced_records.get_by_id(
+            synced_record_id="synced_record_id",
+        )
         """
         _response = self._raw_client.get_by_id(synced_record_id, request_options=request_options)
         return _response.data
@@ -171,8 +187,15 @@ class SyncedRecordsClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.accounting.synced_records.push_by_id(synced_record_id='synced_record_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.accounting.synced_records.push_by_id(
+            synced_record_id="synced_record_id",
+        )
         """
         _response = self._raw_client.push_by_id(synced_record_id, request_options=request_options)
         return _response.data
@@ -224,10 +247,12 @@ class AsyncSyncedRecordsClient:
             Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+            The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page.
+
+            When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
 
         pagination_token : typing.Optional[str]
-            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.
 
             If not specified, the first page of results will be returned.
 
@@ -264,11 +289,23 @@ class AsyncSyncedRecordsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.accounting.synced_records.get(object_type="product", )
+            await client.accounting.synced_records.get(
+                object_type="product",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -311,11 +348,23 @@ class AsyncSyncedRecordsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.accounting.synced_records.get_by_id(synced_record_id='synced_record_id', )
+            await client.accounting.synced_records.get_by_id(
+                synced_record_id="synced_record_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(synced_record_id, request_options=request_options)
@@ -341,11 +390,23 @@ class AsyncSyncedRecordsClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.accounting.synced_records.push_by_id(synced_record_id='synced_record_id', )
+            await client.accounting.synced_records.push_by_id(
+                synced_record_id="synced_record_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.push_by_id(synced_record_id, request_options=request_options)

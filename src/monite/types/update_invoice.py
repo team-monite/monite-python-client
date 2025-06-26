@@ -6,6 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .currency_enum import CurrencyEnum
 from .discount import Discount
+from .inline_payment_terms_request_payload import InlinePaymentTermsRequestPayload
 from .line_item_update import LineItemUpdate
 from .receivable_entity_base import ReceivableEntityBase
 
@@ -110,6 +111,7 @@ class UpdateInvoice(UniversalBaseModel):
     """
 
     payment_reminder_id: typing.Optional[str] = None
+    payment_terms: typing.Optional[InlinePaymentTermsRequestPayload] = None
     payment_terms_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Unique ID of the payment terms.

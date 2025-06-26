@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .currency_enum import CurrencyEnum
+from .payment_record_history_response import PaymentRecordHistoryResponse
 from .payment_record_object_response import PaymentRecordObjectResponse
 
 
@@ -24,6 +25,11 @@ class PaymentRecordResponse(UniversalBaseModel):
     entity_user_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     ID of the user associated with the payment, if applicable.
+    """
+
+    history: typing.List[PaymentRecordHistoryResponse] = pydantic.Field()
+    """
+    History of the payment record.
     """
 
     is_external: bool

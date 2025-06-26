@@ -3,5 +3,5 @@
 import typing
 
 IterationStatus = typing.Union[
-    typing.Literal["pending", "completed", "canceled", "issue_failed", "send_failed"], typing.Any
+    typing.Literal["pending", "completed", "canceled", "skipped", "issue_failed", "send_failed"], typing.Any
 ]

@@ -99,7 +99,12 @@ class ExtraDataClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.data_exports.extra_data.get()
         """
         _response = self._raw_client.get(
@@ -150,8 +155,17 @@ class ExtraDataClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.data_exports.extra_data.create(field_name="default_account_code", field_value='field_value', object_id='object_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.data_exports.extra_data.create(
+            field_name="default_account_code",
+            field_value="field_value",
+            object_id="object_id",
+        )
         """
         _response = self._raw_client.create(
             field_name=field_name, field_value=field_value, object_id=object_id, request_options=request_options
@@ -177,8 +191,15 @@ class ExtraDataClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.data_exports.extra_data.get_by_id(extra_data_id='extra_data_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.data_exports.extra_data.get_by_id(
+            extra_data_id="extra_data_id",
+        )
         """
         _response = self._raw_client.get_by_id(extra_data_id, request_options=request_options)
         return _response.data
@@ -202,8 +223,15 @@ class ExtraDataClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.data_exports.extra_data.delete_by_id(extra_data_id='extra_data_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.data_exports.extra_data.delete_by_id(
+            extra_data_id="extra_data_id",
+        )
         """
         _response = self._raw_client.delete_by_id(extra_data_id, request_options=request_options)
         return _response.data
@@ -242,8 +270,15 @@ class ExtraDataClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.data_exports.extra_data.update_by_id(extra_data_id='extra_data_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.data_exports.extra_data.update_by_id(
+            extra_data_id="extra_data_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             extra_data_id,
@@ -338,11 +373,21 @@ class AsyncExtraDataClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.data_exports.extra_data.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -392,11 +437,25 @@ class AsyncExtraDataClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.data_exports.extra_data.create(field_name="default_account_code", field_value='field_value', object_id='object_id', )
+            await client.data_exports.extra_data.create(
+                field_name="default_account_code",
+                field_value="field_value",
+                object_id="object_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -422,11 +481,23 @@ class AsyncExtraDataClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.data_exports.extra_data.get_by_id(extra_data_id='extra_data_id', )
+            await client.data_exports.extra_data.get_by_id(
+                extra_data_id="extra_data_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(extra_data_id, request_options=request_options)
@@ -450,11 +521,23 @@ class AsyncExtraDataClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.data_exports.extra_data.delete_by_id(extra_data_id='extra_data_id', )
+            await client.data_exports.extra_data.delete_by_id(
+                extra_data_id="extra_data_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(extra_data_id, request_options=request_options)
@@ -493,11 +576,23 @@ class AsyncExtraDataClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.data_exports.extra_data.update_by_id(extra_data_id='extra_data_id', )
+            await client.data_exports.extra_data.update_by_id(
+                extra_data_id="extra_data_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(

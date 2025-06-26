@@ -8,6 +8,7 @@ ReceivableCursorFields = typing.Union[
         "counterpart_id",
         "amount",
         "total_amount",
+        "discounted_subtotal",
         "status",
         "due_date",
         "issue_date",

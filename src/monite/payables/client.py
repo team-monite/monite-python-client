@@ -12,6 +12,9 @@ from ..types.ocr_status_enum import OcrStatusEnum
 from ..types.order_enum import OrderEnum
 from ..types.payable_aggregated_data_response import PayableAggregatedDataResponse
 from ..types.payable_cursor_fields import PayableCursorFields
+from ..types.payable_history_cursor_fields import PayableHistoryCursorFields
+from ..types.payable_history_event_type_enum import PayableHistoryEventTypeEnum
+from ..types.payable_history_pagination_response import PayableHistoryPaginationResponse
 from ..types.payable_origin_enum import PayableOriginEnum
 from ..types.payable_pagination_response import PayablePaginationResponse
 from ..types.payable_payment_terms_create_payload import PayablePaymentTermsCreatePayload
@@ -98,6 +101,7 @@ class PayablesClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -303,6 +307,9 @@ class PayablesClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -320,7 +327,12 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payables.get()
         """
         _response = self._raw_client.get(
@@ -373,6 +385,7 @@ class PayablesClient:
             project_id_in=project_id_in,
             tag_ids=tag_ids,
             tag_ids_not_in=tag_ids_not_in,
+            has_tags=has_tags,
             origin=origin,
             has_file=has_file,
             request_options=request_options,
@@ -500,7 +513,12 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payables.create()
         """
         _response = self._raw_client.create(
@@ -579,6 +597,7 @@ class PayablesClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -741,6 +760,9 @@ class PayablesClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -758,7 +780,12 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payables.get_analytics()
         """
         _response = self._raw_client.get_analytics(
@@ -807,6 +834,7 @@ class PayablesClient:
             project_id_in=project_id_in,
             tag_ids=tag_ids,
             tag_ids_not_in=tag_ids_not_in,
+            has_tags=has_tags,
             origin=origin,
             has_file=has_file,
             request_options=request_options,
@@ -817,7 +845,7 @@ class PayablesClient:
         self, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
     ) -> PayableResponseSchema:
         """
-        Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+        Upload an incoming invoice (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
         Parameters
         ----------
@@ -835,7 +863,12 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payables.upload_from_file()
         """
         _response = self._raw_client.upload_from_file(file=file, request_options=request_options)
@@ -858,7 +891,12 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payables.get_validations()
         """
         _response = self._raw_client.get_validations(request_options=request_options)
@@ -888,8 +926,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.update_validations(required_fields=["currency"], )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.update_validations(
+            required_fields=["currency"],
+        )
         """
         _response = self._raw_client.update_validations(
             required_fields=required_fields, request_options=request_options
@@ -915,7 +960,12 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payables.reset_validations()
         """
         _response = self._raw_client.reset_validations(request_options=request_options)
@@ -940,7 +990,12 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
         client.payables.get_variables()
         """
         _response = self._raw_client.get_variables(request_options=request_options)
@@ -967,8 +1022,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.get_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.get_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.get_by_id(payable_id, request_options=request_options)
         return _response.data
@@ -991,8 +1053,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.delete_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.delete_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.delete_by_id(payable_id, request_options=request_options)
         return _response.data
@@ -1109,8 +1178,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.update_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.update_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.update_by_id(
             payable_id,
@@ -1161,8 +1237,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.approve_payment_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.approve_payment_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.approve_payment_by_id(payable_id, request_options=request_options)
         return _response.data
@@ -1191,8 +1274,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.attach_file_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.attach_file_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.attach_file_by_id(payable_id, file=file, request_options=request_options)
         return _response.data
@@ -1218,8 +1308,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.cancel_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.cancel_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.cancel_by_id(payable_id, request_options=request_options)
         return _response.data
@@ -1245,10 +1342,110 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.post_payables_id_cancel_ocr(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.post_payables_id_cancel_ocr(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.post_payables_id_cancel_ocr(payable_id, request_options=request_options)
+        return _response.data
+
+    def get_payables_id_history(
+        self,
+        payable_id: str,
+        *,
+        order: typing.Optional[OrderEnum] = None,
+        limit: typing.Optional[int] = None,
+        pagination_token: typing.Optional[str] = None,
+        sort: typing.Optional[PayableHistoryCursorFields] = None,
+        event_type_in: typing.Optional[
+            typing.Union[PayableHistoryEventTypeEnum, typing.Sequence[PayableHistoryEventTypeEnum]]
+        ] = None,
+        entity_user_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        timestamp_gt: typing.Optional[dt.datetime] = None,
+        timestamp_lt: typing.Optional[dt.datetime] = None,
+        timestamp_gte: typing.Optional[dt.datetime] = None,
+        timestamp_lte: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PayableHistoryPaginationResponse:
+        """
+        Parameters
+        ----------
+        payable_id : str
+
+        order : typing.Optional[OrderEnum]
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
+
+        limit : typing.Optional[int]
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+
+        pagination_token : typing.Optional[str]
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
+
+        sort : typing.Optional[PayableHistoryCursorFields]
+            The field to sort the results by. Typically used together with the `order` parameter.
+
+        event_type_in : typing.Optional[typing.Union[PayableHistoryEventTypeEnum, typing.Sequence[PayableHistoryEventTypeEnum]]]
+            Return only the specified event types
+
+        entity_user_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only events caused by the entity users with the specified IDs. To specify multiple user IDs, repeat this parameter for each ID:
+            `entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+
+        timestamp_gt : typing.Optional[dt.datetime]
+            Return only events that occurred after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+
+        timestamp_lt : typing.Optional[dt.datetime]
+            Return only events that occurred before the specified date and time.
+
+        timestamp_gte : typing.Optional[dt.datetime]
+            Return only events that occurred on or after the specified date and time.
+
+        timestamp_lte : typing.Optional[dt.datetime]
+            Return only events that occurred before or on the specified date and time.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PayableHistoryPaginationResponse
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.get_payables_id_history(
+            payable_id="payable_id",
+        )
+        """
+        _response = self._raw_client.get_payables_id_history(
+            payable_id,
+            order=order,
+            limit=limit,
+            pagination_token=pagination_token,
+            sort=sort,
+            event_type_in=event_type_in,
+            entity_user_id_in=entity_user_id_in,
+            timestamp_gt=timestamp_gt,
+            timestamp_lt=timestamp_lt,
+            timestamp_gte=timestamp_gte,
+            timestamp_lte=timestamp_lte,
+            request_options=request_options,
+        )
         return _response.data
 
     def mark_as_paid_by_id(
@@ -1300,8 +1497,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.mark_as_paid_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.mark_as_paid_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.mark_as_paid_by_id(payable_id, comment=comment, request_options=request_options)
         return _response.data
@@ -1353,8 +1557,16 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.mark_as_partially_paid_by_id(payable_id='payable_id', amount_paid=1, )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.mark_as_partially_paid_by_id(
+            payable_id="payable_id",
+            amount_paid=1,
+        )
         """
         _response = self._raw_client.mark_as_partially_paid_by_id(
             payable_id, amount_paid=amount_paid, request_options=request_options
@@ -1382,8 +1594,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.reject_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.reject_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.reject_by_id(payable_id, request_options=request_options)
         return _response.data
@@ -1409,8 +1628,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.reopen_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.reopen_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.reopen_by_id(payable_id, request_options=request_options)
         return _response.data
@@ -1436,8 +1662,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.submit_for_approval_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.submit_for_approval_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.submit_for_approval_by_id(payable_id, request_options=request_options)
         return _response.data
@@ -1463,8 +1696,15 @@ class PayablesClient:
         Examples
         --------
         from monite import Monite
-        client = Monite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
-        client.payables.validate_by_id(payable_id='payable_id', )
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.validate_by_id(
+            payable_id="payable_id",
+        )
         """
         _response = self._raw_client.validate_by_id(payable_id, request_options=request_options)
         return _response.data
@@ -1538,6 +1778,7 @@ class AsyncPayablesClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1743,6 +1984,9 @@ class AsyncPayablesClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -1759,11 +2003,21 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payables.get()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
@@ -1816,6 +2070,7 @@ class AsyncPayablesClient:
             project_id_in=project_id_in,
             tag_ids=tag_ids,
             tag_ids_not_in=tag_ids_not_in,
+            has_tags=has_tags,
             origin=origin,
             has_file=has_file,
             request_options=request_options,
@@ -1942,11 +2197,21 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payables.create()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -2025,6 +2290,7 @@ class AsyncPayablesClient:
         project_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         tag_ids_not_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_tags: typing.Optional[bool] = None,
         origin: typing.Optional[PayableOriginEnum] = None,
         has_file: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2187,6 +2453,9 @@ class AsyncPayablesClient:
         tag_ids_not_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
 
+        has_tags : typing.Optional[bool]
+            Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.
+
         origin : typing.Optional[PayableOriginEnum]
             Return only payables from a given origin ['einvoice', 'upload', 'email']
 
@@ -2203,11 +2472,21 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payables.get_analytics()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_analytics(
@@ -2256,6 +2535,7 @@ class AsyncPayablesClient:
             project_id_in=project_id_in,
             tag_ids=tag_ids,
             tag_ids_not_in=tag_ids_not_in,
+            has_tags=has_tags,
             origin=origin,
             has_file=has_file,
             request_options=request_options,
@@ -2266,7 +2546,7 @@ class AsyncPayablesClient:
         self, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
     ) -> PayableResponseSchema:
         """
-        Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+        Upload an incoming invoice (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
         Parameters
         ----------
@@ -2283,11 +2563,21 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payables.upload_from_file()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upload_from_file(file=file, request_options=request_options)
@@ -2311,11 +2601,21 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payables.get_validations()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_validations(request_options=request_options)
@@ -2344,11 +2644,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.update_validations(required_fields=["currency"], )
+            await client.payables.update_validations(
+                required_fields=["currency"],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_validations(
@@ -2374,11 +2686,21 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payables.reset_validations()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.reset_validations(request_options=request_options)
@@ -2402,11 +2724,21 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.payables.get_variables()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_variables(request_options=request_options)
@@ -2432,11 +2764,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.get_by_id(payable_id='payable_id', )
+            await client.payables.get_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_by_id(payable_id, request_options=request_options)
@@ -2459,11 +2803,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.delete_by_id(payable_id='payable_id', )
+            await client.payables.delete_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_id(payable_id, request_options=request_options)
@@ -2580,11 +2936,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.update_by_id(payable_id='payable_id', )
+            await client.payables.update_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_by_id(
@@ -2635,11 +3003,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.approve_payment_by_id(payable_id='payable_id', )
+            await client.payables.approve_payment_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.approve_payment_by_id(payable_id, request_options=request_options)
@@ -2668,11 +3048,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.attach_file_by_id(payable_id='payable_id', )
+            await client.payables.attach_file_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.attach_file_by_id(payable_id, file=file, request_options=request_options)
@@ -2698,11 +3090,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.cancel_by_id(payable_id='payable_id', )
+            await client.payables.cancel_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.cancel_by_id(payable_id, request_options=request_options)
@@ -2728,14 +3132,127 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.post_payables_id_cancel_ocr(payable_id='payable_id', )
+            await client.payables.post_payables_id_cancel_ocr(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.post_payables_id_cancel_ocr(payable_id, request_options=request_options)
+        return _response.data
+
+    async def get_payables_id_history(
+        self,
+        payable_id: str,
+        *,
+        order: typing.Optional[OrderEnum] = None,
+        limit: typing.Optional[int] = None,
+        pagination_token: typing.Optional[str] = None,
+        sort: typing.Optional[PayableHistoryCursorFields] = None,
+        event_type_in: typing.Optional[
+            typing.Union[PayableHistoryEventTypeEnum, typing.Sequence[PayableHistoryEventTypeEnum]]
+        ] = None,
+        entity_user_id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        timestamp_gt: typing.Optional[dt.datetime] = None,
+        timestamp_lt: typing.Optional[dt.datetime] = None,
+        timestamp_gte: typing.Optional[dt.datetime] = None,
+        timestamp_lte: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PayableHistoryPaginationResponse:
+        """
+        Parameters
+        ----------
+        payable_id : str
+
+        order : typing.Optional[OrderEnum]
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
+
+        limit : typing.Optional[int]
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+
+        pagination_token : typing.Optional[str]
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
+
+        sort : typing.Optional[PayableHistoryCursorFields]
+            The field to sort the results by. Typically used together with the `order` parameter.
+
+        event_type_in : typing.Optional[typing.Union[PayableHistoryEventTypeEnum, typing.Sequence[PayableHistoryEventTypeEnum]]]
+            Return only the specified event types
+
+        entity_user_id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only events caused by the entity users with the specified IDs. To specify multiple user IDs, repeat this parameter for each ID:
+            `entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+
+        timestamp_gt : typing.Optional[dt.datetime]
+            Return only events that occurred after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+
+        timestamp_lt : typing.Optional[dt.datetime]
+            Return only events that occurred before the specified date and time.
+
+        timestamp_gte : typing.Optional[dt.datetime]
+            Return only events that occurred on or after the specified date and time.
+
+        timestamp_lte : typing.Optional[dt.datetime]
+            Return only events that occurred before or on the specified date and time.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PayableHistoryPaginationResponse
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.payables.get_payables_id_history(
+                payable_id="payable_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_payables_id_history(
+            payable_id,
+            order=order,
+            limit=limit,
+            pagination_token=pagination_token,
+            sort=sort,
+            event_type_in=event_type_in,
+            entity_user_id_in=entity_user_id_in,
+            timestamp_gt=timestamp_gt,
+            timestamp_lt=timestamp_lt,
+            timestamp_gte=timestamp_gte,
+            timestamp_lte=timestamp_lte,
+            request_options=request_options,
+        )
         return _response.data
 
     async def mark_as_paid_by_id(
@@ -2786,11 +3303,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.mark_as_paid_by_id(payable_id='payable_id', )
+            await client.payables.mark_as_paid_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.mark_as_paid_by_id(
@@ -2844,11 +3373,24 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.mark_as_partially_paid_by_id(payable_id='payable_id', amount_paid=1, )
+            await client.payables.mark_as_partially_paid_by_id(
+                payable_id="payable_id",
+                amount_paid=1,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.mark_as_partially_paid_by_id(
@@ -2876,11 +3418,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.reject_by_id(payable_id='payable_id', )
+            await client.payables.reject_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.reject_by_id(payable_id, request_options=request_options)
@@ -2906,11 +3460,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.reopen_by_id(payable_id='payable_id', )
+            await client.payables.reopen_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.reopen_by_id(payable_id, request_options=request_options)
@@ -2936,11 +3502,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.submit_for_approval_by_id(payable_id='payable_id', )
+            await client.payables.submit_for_approval_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.submit_for_approval_by_id(payable_id, request_options=request_options)
@@ -2966,11 +3544,23 @@ class AsyncPayablesClient:
 
         Examples
         --------
-        from monite import AsyncMonite
         import asyncio
-        client = AsyncMonite(monite_version="YOUR_MONITE_VERSION", monite_entity_id="YOUR_MONITE_ENTITY_ID", token="YOUR_TOKEN", )
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.payables.validate_by_id(payable_id='payable_id', )
+            await client.payables.validate_by_id(
+                payable_id="payable_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.validate_by_id(payable_id, request_options=request_options)

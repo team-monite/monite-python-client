@@ -27,6 +27,7 @@ from ..types.line_item import LineItem
 from ..types.line_items_response import LineItemsResponse
 from ..types.order_enum import OrderEnum
 from ..types.receivable_cursor_fields import ReceivableCursorFields
+from ..types.receivable_cursor_fields2 import ReceivableCursorFields2
 from ..types.receivable_facade_create_payload import ReceivableFacadeCreatePayload
 from ..types.receivable_file_url import ReceivableFileUrl
 from ..types.receivable_history_cursor_fields import ReceivableHistoryCursorFields
@@ -54,6 +55,7 @@ from ..types.signature import Signature
 from ..types.success_result import SuccessResult
 from .types.receivables_get_request_status import ReceivablesGetRequestStatus
 from .types.receivables_get_request_status_in_item import ReceivablesGetRequestStatusInItem
+from .types.receivables_search_request_status import ReceivablesSearchRequestStatus
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -101,6 +103,11 @@ class RawReceivablesClient:
         total_amount_lt: typing.Optional[int] = None,
         total_amount_gte: typing.Optional[int] = None,
         total_amount_lte: typing.Optional[int] = None,
+        discounted_subtotal: typing.Optional[int] = None,
+        discounted_subtotal_gt: typing.Optional[int] = None,
+        discounted_subtotal_lt: typing.Optional[int] = None,
+        discounted_subtotal_gte: typing.Optional[int] = None,
+        discounted_subtotal_lte: typing.Optional[int] = None,
         status: typing.Optional[ReceivablesGetRequestStatus] = None,
         entity_user_id: typing.Optional[str] = None,
         based_on: typing.Optional[str] = None,
@@ -322,6 +329,16 @@ class RawReceivablesClient:
 
         total_amount_lte : typing.Optional[int]
 
+        discounted_subtotal : typing.Optional[int]
+
+        discounted_subtotal_gt : typing.Optional[int]
+
+        discounted_subtotal_lt : typing.Optional[int]
+
+        discounted_subtotal_gte : typing.Optional[int]
+
+        discounted_subtotal_lte : typing.Optional[int]
+
         status : typing.Optional[ReceivablesGetRequestStatus]
 
         entity_user_id : typing.Optional[str]
@@ -383,6 +400,11 @@ class RawReceivablesClient:
                 "total_amount__lt": total_amount_lt,
                 "total_amount__gte": total_amount_gte,
                 "total_amount__lte": total_amount_lte,
+                "discounted_subtotal": discounted_subtotal,
+                "discounted_subtotal__gt": discounted_subtotal_gt,
+                "discounted_subtotal__lt": discounted_subtotal_lt,
+                "discounted_subtotal__gte": discounted_subtotal_gte,
+                "discounted_subtotal__lte": discounted_subtotal_lte,
                 "status": status,
                 "entity_user_id": entity_user_id,
                 "based_on": based_on,
@@ -654,6 +676,357 @@ class RawReceivablesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def post_receivables_search(
+        self,
+        *,
+        discounted_subtotal: typing.Optional[int] = OMIT,
+        discounted_subtotal_gt: typing.Optional[int] = OMIT,
+        discounted_subtotal_gte: typing.Optional[int] = OMIT,
+        discounted_subtotal_lt: typing.Optional[int] = OMIT,
+        discounted_subtotal_lte: typing.Optional[int] = OMIT,
+        based_on: typing.Optional[str] = OMIT,
+        counterpart_id: typing.Optional[str] = OMIT,
+        counterpart_name: typing.Optional[str] = OMIT,
+        counterpart_name_contains: typing.Optional[str] = OMIT,
+        counterpart_name_icontains: typing.Optional[str] = OMIT,
+        created_at_gt: typing.Optional[dt.datetime] = OMIT,
+        created_at_gte: typing.Optional[dt.datetime] = OMIT,
+        created_at_lt: typing.Optional[dt.datetime] = OMIT,
+        created_at_lte: typing.Optional[dt.datetime] = OMIT,
+        document_id: typing.Optional[str] = OMIT,
+        document_id_contains: typing.Optional[str] = OMIT,
+        document_id_icontains: typing.Optional[str] = OMIT,
+        due_date_gt: typing.Optional[str] = OMIT,
+        due_date_gte: typing.Optional[str] = OMIT,
+        due_date_lt: typing.Optional[str] = OMIT,
+        due_date_lte: typing.Optional[str] = OMIT,
+        entity_user_id: typing.Optional[str] = OMIT,
+        entity_user_id_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        id_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        issue_date_gt: typing.Optional[dt.datetime] = OMIT,
+        issue_date_gte: typing.Optional[dt.datetime] = OMIT,
+        issue_date_lt: typing.Optional[dt.datetime] = OMIT,
+        issue_date_lte: typing.Optional[dt.datetime] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        order: typing.Optional[OrderEnum] = OMIT,
+        pagination_token: typing.Optional[str] = OMIT,
+        product_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        product_ids_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        project_id: typing.Optional[str] = OMIT,
+        project_id_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        sort: typing.Optional[ReceivableCursorFields2] = OMIT,
+        status: typing.Optional[ReceivablesSearchRequestStatus] = OMIT,
+        status_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        tag_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        tag_ids_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        total_amount: typing.Optional[int] = OMIT,
+        total_amount_gt: typing.Optional[int] = OMIT,
+        total_amount_gte: typing.Optional[int] = OMIT,
+        total_amount_lt: typing.Optional[int] = OMIT,
+        total_amount_lte: typing.Optional[int] = OMIT,
+        type: typing.Optional[ReceivableType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ReceivablePaginationResponse]:
+        """
+        This is a POST version of the `GET /receivables` endpoint. Use it to send search and filter parameters in the request body instead of the URL query string in case the query is too long and exceeds the URL length limit of your HTTP client.
+
+        Parameters
+        ----------
+        discounted_subtotal : typing.Optional[int]
+            Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
+
+        discounted_subtotal_gt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
+
+        discounted_subtotal_gte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
+
+        discounted_subtotal_lt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
+
+        discounted_subtotal_lte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
+
+        based_on : typing.Optional[str]
+            This parameter accepts a quote ID or an invoice ID.
+
+            * Specify a quote ID to find invoices created from this quote.
+            * Specify an invoice ID to find credit notes created for this invoice.
+
+            Valid but nonexistent IDs do not raise errors but produce no results.
+
+        counterpart_id : typing.Optional[str]
+            Return only receivables created for the counterpart with the specified ID.
+
+            Counterparts that have been deleted but have associated receivables will still return results here because the receivables contain a frozen copy of the counterpart data.
+
+            If the specified counterpart ID does not exist and never existed, no results are returned.
+
+        counterpart_name : typing.Optional[str]
+            Return only receivables created for counterparts with the specified name (exact match, case-sensitive). For counterparts of `type` = `individual`, the full name is formatted as `first_name last_name`.
+
+        counterpart_name_contains : typing.Optional[str]
+            Return only receivables created for counterparts whose name contains the specified string (case-sensitive).
+
+        counterpart_name_icontains : typing.Optional[str]
+            Return only receivables created for counterparts whose name contains the specified string (case-insensitive).
+
+        created_at_gt : typing.Optional[dt.datetime]
+            Return only receivables created after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+
+        created_at_gte : typing.Optional[dt.datetime]
+            Return only receivables created on or after the specified date and time.
+
+        created_at_lt : typing.Optional[dt.datetime]
+            Return only receivables created before the specified date and time.
+
+        created_at_lte : typing.Optional[dt.datetime]
+            Return only receivables created before or on the specified date and time.
+
+        document_id : typing.Optional[str]
+            Return a receivable with the exact specified document number (case-sensitive). The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
+
+        document_id_contains : typing.Optional[str]
+            Return only receivables whose document number (`document_id`) contains the specified string (case-sensitive).
+
+        document_id_icontains : typing.Optional[str]
+            Return only receivables whose document number (`document_id`) contains the specified string (case-insensitive).
+
+        due_date_gt : typing.Optional[str]
+            Return invoices that are due after the specified date (exclusive, `YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
+
+        due_date_gte : typing.Optional[str]
+            Return invoices that are due on or after the specified date (`YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
+
+        due_date_lt : typing.Optional[str]
+            Return invoices that are due before the specified date (exclusive, `YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
+
+        due_date_lte : typing.Optional[str]
+            Return invoices that are due before or on the specified date (`YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
+
+        entity_user_id : typing.Optional[str]
+            Return only receivables created by the entity user with the specified ID. To query receivables by multiple user IDs at once, use the `entity_user_id__in` parameter instead.
+
+            If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+            IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
+
+        entity_user_id_in : typing.Optional[typing.Sequence[str]]
+
+        id_in : typing.Optional[typing.Sequence[str]]
+
+        issue_date_gt : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+
+        issue_date_gte : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued on or after the specified date and time.
+
+        issue_date_lt : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued before the specified date and time.
+
+        issue_date_lte : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued before or on the specified date and time.
+
+        limit : typing.Optional[int]
+
+        order : typing.Optional[OrderEnum]
+
+        pagination_token : typing.Optional[str]
+
+        product_ids : typing.Optional[typing.Sequence[str]]
+
+        product_ids_in : typing.Optional[typing.Sequence[str]]
+
+        project_id : typing.Optional[str]
+            Return only receivables assigned to the project with the specified ID. Valid but nonexistent project IDs do not raise errors but return no results.
+
+        project_id_in : typing.Optional[typing.Sequence[str]]
+
+        sort : typing.Optional[ReceivableCursorFields2]
+
+        status : typing.Optional[ReceivablesSearchRequestStatus]
+            Return only receivables that have the specified status. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
+
+            To query multiple statuses at once, use the `status__in` parameter instead.
+
+        status_in : typing.Optional[typing.Sequence[str]]
+
+        tag_ids : typing.Optional[typing.Sequence[str]]
+
+        tag_ids_in : typing.Optional[typing.Sequence[str]]
+
+        total_amount : typing.Optional[int]
+            Return only receivables with the exact specified total amount. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
+
+        total_amount_gt : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) exceeds the specified value.
+
+        total_amount_gte : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is greater than or equal to the specified value.
+
+        total_amount_lt : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is less than the specified value.
+
+        total_amount_lte : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is less than or equal to the specified value.
+
+        type : typing.Optional[ReceivableType]
+            Return only receivables of the specified type. Use this parameter to get only invoices, or only quotes, or only credit notes.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ReceivablePaginationResponse]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "receivables/search",
+            method="POST",
+            json={
+                "discounted_subtotal": discounted_subtotal,
+                "discounted_subtotal__gt": discounted_subtotal_gt,
+                "discounted_subtotal__gte": discounted_subtotal_gte,
+                "discounted_subtotal__lt": discounted_subtotal_lt,
+                "discounted_subtotal__lte": discounted_subtotal_lte,
+                "based_on": based_on,
+                "counterpart_id": counterpart_id,
+                "counterpart_name": counterpart_name,
+                "counterpart_name__contains": counterpart_name_contains,
+                "counterpart_name__icontains": counterpart_name_icontains,
+                "created_at__gt": created_at_gt,
+                "created_at__gte": created_at_gte,
+                "created_at__lt": created_at_lt,
+                "created_at__lte": created_at_lte,
+                "document_id": document_id,
+                "document_id__contains": document_id_contains,
+                "document_id__icontains": document_id_icontains,
+                "due_date__gt": due_date_gt,
+                "due_date__gte": due_date_gte,
+                "due_date__lt": due_date_lt,
+                "due_date__lte": due_date_lte,
+                "entity_user_id": entity_user_id,
+                "entity_user_id__in": entity_user_id_in,
+                "id__in": id_in,
+                "issue_date__gt": issue_date_gt,
+                "issue_date__gte": issue_date_gte,
+                "issue_date__lt": issue_date_lt,
+                "issue_date__lte": issue_date_lte,
+                "limit": limit,
+                "order": order,
+                "pagination_token": pagination_token,
+                "product_ids": product_ids,
+                "product_ids__in": product_ids_in,
+                "project_id": project_id,
+                "project_id__in": project_id_in,
+                "sort": sort,
+                "status": status,
+                "status__in": status_in,
+                "tag_ids": tag_ids,
+                "tag_ids__in": tag_ids_in,
+                "total_amount": total_amount,
+                "total_amount__gt": total_amount_gt,
+                "total_amount__gte": total_amount_gte,
+                "total_amount__lt": total_amount_lt,
+                "total_amount__lte": total_amount_lte,
+                "type": type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ReceivablePaginationResponse,
+                    parse_obj_as(
+                        type_=ReceivablePaginationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 406:
+                raise NotAcceptableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -3388,6 +3761,11 @@ class AsyncRawReceivablesClient:
         total_amount_lt: typing.Optional[int] = None,
         total_amount_gte: typing.Optional[int] = None,
         total_amount_lte: typing.Optional[int] = None,
+        discounted_subtotal: typing.Optional[int] = None,
+        discounted_subtotal_gt: typing.Optional[int] = None,
+        discounted_subtotal_lt: typing.Optional[int] = None,
+        discounted_subtotal_gte: typing.Optional[int] = None,
+        discounted_subtotal_lte: typing.Optional[int] = None,
         status: typing.Optional[ReceivablesGetRequestStatus] = None,
         entity_user_id: typing.Optional[str] = None,
         based_on: typing.Optional[str] = None,
@@ -3609,6 +3987,16 @@ class AsyncRawReceivablesClient:
 
         total_amount_lte : typing.Optional[int]
 
+        discounted_subtotal : typing.Optional[int]
+
+        discounted_subtotal_gt : typing.Optional[int]
+
+        discounted_subtotal_lt : typing.Optional[int]
+
+        discounted_subtotal_gte : typing.Optional[int]
+
+        discounted_subtotal_lte : typing.Optional[int]
+
         status : typing.Optional[ReceivablesGetRequestStatus]
 
         entity_user_id : typing.Optional[str]
@@ -3670,6 +4058,11 @@ class AsyncRawReceivablesClient:
                 "total_amount__lt": total_amount_lt,
                 "total_amount__gte": total_amount_gte,
                 "total_amount__lte": total_amount_lte,
+                "discounted_subtotal": discounted_subtotal,
+                "discounted_subtotal__gt": discounted_subtotal_gt,
+                "discounted_subtotal__lt": discounted_subtotal_lt,
+                "discounted_subtotal__gte": discounted_subtotal_gte,
+                "discounted_subtotal__lte": discounted_subtotal_lte,
                 "status": status,
                 "entity_user_id": entity_user_id,
                 "based_on": based_on,
@@ -3941,6 +4334,357 @@ class AsyncRawReceivablesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def post_receivables_search(
+        self,
+        *,
+        discounted_subtotal: typing.Optional[int] = OMIT,
+        discounted_subtotal_gt: typing.Optional[int] = OMIT,
+        discounted_subtotal_gte: typing.Optional[int] = OMIT,
+        discounted_subtotal_lt: typing.Optional[int] = OMIT,
+        discounted_subtotal_lte: typing.Optional[int] = OMIT,
+        based_on: typing.Optional[str] = OMIT,
+        counterpart_id: typing.Optional[str] = OMIT,
+        counterpart_name: typing.Optional[str] = OMIT,
+        counterpart_name_contains: typing.Optional[str] = OMIT,
+        counterpart_name_icontains: typing.Optional[str] = OMIT,
+        created_at_gt: typing.Optional[dt.datetime] = OMIT,
+        created_at_gte: typing.Optional[dt.datetime] = OMIT,
+        created_at_lt: typing.Optional[dt.datetime] = OMIT,
+        created_at_lte: typing.Optional[dt.datetime] = OMIT,
+        document_id: typing.Optional[str] = OMIT,
+        document_id_contains: typing.Optional[str] = OMIT,
+        document_id_icontains: typing.Optional[str] = OMIT,
+        due_date_gt: typing.Optional[str] = OMIT,
+        due_date_gte: typing.Optional[str] = OMIT,
+        due_date_lt: typing.Optional[str] = OMIT,
+        due_date_lte: typing.Optional[str] = OMIT,
+        entity_user_id: typing.Optional[str] = OMIT,
+        entity_user_id_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        id_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        issue_date_gt: typing.Optional[dt.datetime] = OMIT,
+        issue_date_gte: typing.Optional[dt.datetime] = OMIT,
+        issue_date_lt: typing.Optional[dt.datetime] = OMIT,
+        issue_date_lte: typing.Optional[dt.datetime] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        order: typing.Optional[OrderEnum] = OMIT,
+        pagination_token: typing.Optional[str] = OMIT,
+        product_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        product_ids_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        project_id: typing.Optional[str] = OMIT,
+        project_id_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        sort: typing.Optional[ReceivableCursorFields2] = OMIT,
+        status: typing.Optional[ReceivablesSearchRequestStatus] = OMIT,
+        status_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        tag_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        tag_ids_in: typing.Optional[typing.Sequence[str]] = OMIT,
+        total_amount: typing.Optional[int] = OMIT,
+        total_amount_gt: typing.Optional[int] = OMIT,
+        total_amount_gte: typing.Optional[int] = OMIT,
+        total_amount_lt: typing.Optional[int] = OMIT,
+        total_amount_lte: typing.Optional[int] = OMIT,
+        type: typing.Optional[ReceivableType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ReceivablePaginationResponse]:
+        """
+        This is a POST version of the `GET /receivables` endpoint. Use it to send search and filter parameters in the request body instead of the URL query string in case the query is too long and exceeds the URL length limit of your HTTP client.
+
+        Parameters
+        ----------
+        discounted_subtotal : typing.Optional[int]
+            Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
+
+        discounted_subtotal_gt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
+
+        discounted_subtotal_gte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
+
+        discounted_subtotal_lt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
+
+        discounted_subtotal_lte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
+
+        based_on : typing.Optional[str]
+            This parameter accepts a quote ID or an invoice ID.
+
+            * Specify a quote ID to find invoices created from this quote.
+            * Specify an invoice ID to find credit notes created for this invoice.
+
+            Valid but nonexistent IDs do not raise errors but produce no results.
+
+        counterpart_id : typing.Optional[str]
+            Return only receivables created for the counterpart with the specified ID.
+
+            Counterparts that have been deleted but have associated receivables will still return results here because the receivables contain a frozen copy of the counterpart data.
+
+            If the specified counterpart ID does not exist and never existed, no results are returned.
+
+        counterpart_name : typing.Optional[str]
+            Return only receivables created for counterparts with the specified name (exact match, case-sensitive). For counterparts of `type` = `individual`, the full name is formatted as `first_name last_name`.
+
+        counterpart_name_contains : typing.Optional[str]
+            Return only receivables created for counterparts whose name contains the specified string (case-sensitive).
+
+        counterpart_name_icontains : typing.Optional[str]
+            Return only receivables created for counterparts whose name contains the specified string (case-insensitive).
+
+        created_at_gt : typing.Optional[dt.datetime]
+            Return only receivables created after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+
+        created_at_gte : typing.Optional[dt.datetime]
+            Return only receivables created on or after the specified date and time.
+
+        created_at_lt : typing.Optional[dt.datetime]
+            Return only receivables created before the specified date and time.
+
+        created_at_lte : typing.Optional[dt.datetime]
+            Return only receivables created before or on the specified date and time.
+
+        document_id : typing.Optional[str]
+            Return a receivable with the exact specified document number (case-sensitive). The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
+
+        document_id_contains : typing.Optional[str]
+            Return only receivables whose document number (`document_id`) contains the specified string (case-sensitive).
+
+        document_id_icontains : typing.Optional[str]
+            Return only receivables whose document number (`document_id`) contains the specified string (case-insensitive).
+
+        due_date_gt : typing.Optional[str]
+            Return invoices that are due after the specified date (exclusive, `YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
+
+        due_date_gte : typing.Optional[str]
+            Return invoices that are due on or after the specified date (`YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
+
+        due_date_lt : typing.Optional[str]
+            Return invoices that are due before the specified date (exclusive, `YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
+
+        due_date_lte : typing.Optional[str]
+            Return invoices that are due before or on the specified date (`YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
+
+        entity_user_id : typing.Optional[str]
+            Return only receivables created by the entity user with the specified ID. To query receivables by multiple user IDs at once, use the `entity_user_id__in` parameter instead.
+
+            If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+            IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
+
+        entity_user_id_in : typing.Optional[typing.Sequence[str]]
+
+        id_in : typing.Optional[typing.Sequence[str]]
+
+        issue_date_gt : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
+
+        issue_date_gte : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued on or after the specified date and time.
+
+        issue_date_lt : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued before the specified date and time.
+
+        issue_date_lte : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued before or on the specified date and time.
+
+        limit : typing.Optional[int]
+
+        order : typing.Optional[OrderEnum]
+
+        pagination_token : typing.Optional[str]
+
+        product_ids : typing.Optional[typing.Sequence[str]]
+
+        product_ids_in : typing.Optional[typing.Sequence[str]]
+
+        project_id : typing.Optional[str]
+            Return only receivables assigned to the project with the specified ID. Valid but nonexistent project IDs do not raise errors but return no results.
+
+        project_id_in : typing.Optional[typing.Sequence[str]]
+
+        sort : typing.Optional[ReceivableCursorFields2]
+
+        status : typing.Optional[ReceivablesSearchRequestStatus]
+            Return only receivables that have the specified status. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
+
+            To query multiple statuses at once, use the `status__in` parameter instead.
+
+        status_in : typing.Optional[typing.Sequence[str]]
+
+        tag_ids : typing.Optional[typing.Sequence[str]]
+
+        tag_ids_in : typing.Optional[typing.Sequence[str]]
+
+        total_amount : typing.Optional[int]
+            Return only receivables with the exact specified total amount. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
+
+        total_amount_gt : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) exceeds the specified value.
+
+        total_amount_gte : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is greater than or equal to the specified value.
+
+        total_amount_lt : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is less than the specified value.
+
+        total_amount_lte : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is less than or equal to the specified value.
+
+        type : typing.Optional[ReceivableType]
+            Return only receivables of the specified type. Use this parameter to get only invoices, or only quotes, or only credit notes.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ReceivablePaginationResponse]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "receivables/search",
+            method="POST",
+            json={
+                "discounted_subtotal": discounted_subtotal,
+                "discounted_subtotal__gt": discounted_subtotal_gt,
+                "discounted_subtotal__gte": discounted_subtotal_gte,
+                "discounted_subtotal__lt": discounted_subtotal_lt,
+                "discounted_subtotal__lte": discounted_subtotal_lte,
+                "based_on": based_on,
+                "counterpart_id": counterpart_id,
+                "counterpart_name": counterpart_name,
+                "counterpart_name__contains": counterpart_name_contains,
+                "counterpart_name__icontains": counterpart_name_icontains,
+                "created_at__gt": created_at_gt,
+                "created_at__gte": created_at_gte,
+                "created_at__lt": created_at_lt,
+                "created_at__lte": created_at_lte,
+                "document_id": document_id,
+                "document_id__contains": document_id_contains,
+                "document_id__icontains": document_id_icontains,
+                "due_date__gt": due_date_gt,
+                "due_date__gte": due_date_gte,
+                "due_date__lt": due_date_lt,
+                "due_date__lte": due_date_lte,
+                "entity_user_id": entity_user_id,
+                "entity_user_id__in": entity_user_id_in,
+                "id__in": id_in,
+                "issue_date__gt": issue_date_gt,
+                "issue_date__gte": issue_date_gte,
+                "issue_date__lt": issue_date_lt,
+                "issue_date__lte": issue_date_lte,
+                "limit": limit,
+                "order": order,
+                "pagination_token": pagination_token,
+                "product_ids": product_ids,
+                "product_ids__in": product_ids_in,
+                "project_id": project_id,
+                "project_id__in": project_id_in,
+                "sort": sort,
+                "status": status,
+                "status__in": status_in,
+                "tag_ids": tag_ids,
+                "tag_ids__in": tag_ids_in,
+                "total_amount": total_amount,
+                "total_amount__gt": total_amount_gt,
+                "total_amount__gte": total_amount_gte,
+                "total_amount__lt": total_amount_lt,
+                "total_amount__lte": total_amount_lte,
+                "type": type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ReceivablePaginationResponse,
+                    parse_obj_as(
+                        type_=ReceivablePaginationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 406:
+                raise NotAcceptableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
