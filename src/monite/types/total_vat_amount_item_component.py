@@ -7,15 +7,15 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class TotalVatAmountItemComponent(UniversalBaseModel):
+    amount: int = pydantic.Field()
+    """
+    The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units).
+    """
+
     name: str
     value: float = pydantic.Field()
     """
     Percent minor units. Example: 12.5% is 1250.
-    """
-
-    amount: int = pydantic.Field()
-    """
-    The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units).
     """
 
     if IS_PYDANTIC_V2:

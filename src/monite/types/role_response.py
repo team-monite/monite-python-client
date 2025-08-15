@@ -15,6 +15,16 @@ class RoleResponse(UniversalBaseModel):
     UUID role ID
     """
 
+    created_at: dt.datetime = pydantic.Field()
+    """
+    UTC datetime
+    """
+
+    updated_at: dt.datetime = pydantic.Field()
+    """
+    UTC datetime
+    """
+
     name: str = pydantic.Field()
     """
     Role name
@@ -28,16 +38,6 @@ class RoleResponse(UniversalBaseModel):
     status: StatusEnum = pydantic.Field()
     """
     record status, 'active' by default
-    """
-
-    created_at: dt.datetime = pydantic.Field()
-    """
-    UTC datetime
-    """
-
-    updated_at: dt.datetime = pydantic.Field()
-    """
-    UTC datetime
     """
 
     if IS_PYDANTIC_V2:

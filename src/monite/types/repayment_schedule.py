@@ -11,14 +11,14 @@ class RepaymentSchedule(UniversalBaseModel):
     Repayment schedule model
     """
 
-    repayment_date: str = pydantic.Field()
-    """
-    Repayment date in ISO 8601 format
-    """
-
     repayment_amount: int = pydantic.Field()
     """
     Repayment amount in minor units
+    """
+
+    repayment_date: str = pydantic.Field()
+    """
+    Repayment date in ISO 8601 format
     """
 
     repayment_fee_amount: int = pydantic.Field()

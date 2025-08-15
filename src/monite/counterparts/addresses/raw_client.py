@@ -9,8 +9,9 @@ from ...core.http_response import AsyncHttpResponse, HttpResponse
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import parse_obj_as
 from ...core.request_options import RequestOptions
-from ...errors.internal_server_error import InternalServerError
 from ...errors.not_found_error import NotFoundError
+from ...errors.too_many_requests_error import TooManyRequestsError
+from ...errors.unauthorized_error import UnauthorizedError
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
 from ...types.allowed_countries import AllowedCountries
 from ...types.counterpart_address_resource_list import CounterpartAddressResourceList
@@ -55,6 +56,17 @@ class RawAddressesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -77,8 +89,8 @@ class RawAddressesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -126,7 +138,7 @@ class RawAddressesClient:
             Additional address information (if any).
 
         state : typing.Optional[str]
-            State, region, province, or county.
+            State, county, province, prefecture, region, or similar component of the counterpart's address. For US counterparts, `state` is required and must be a two-letter [USPS state abbreviation](https://pe.usps.com/text/pub28/28apb.htm), for example, NY or CA.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -163,6 +175,17 @@ class RawAddressesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -185,8 +208,8 @@ class RawAddressesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -234,6 +257,17 @@ class RawAddressesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -256,8 +290,8 @@ class RawAddressesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -297,6 +331,17 @@ class RawAddressesClient:
         try:
             if 200 <= _response.status_code < 300:
                 return HttpResponse(response=_response, data=None)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -319,8 +364,8 @@ class RawAddressesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -408,6 +453,17 @@ class RawAddressesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -430,8 +486,8 @@ class RawAddressesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -482,6 +538,17 @@ class AsyncRawAddressesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -504,8 +571,8 @@ class AsyncRawAddressesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -553,7 +620,7 @@ class AsyncRawAddressesClient:
             Additional address information (if any).
 
         state : typing.Optional[str]
-            State, region, province, or county.
+            State, county, province, prefecture, region, or similar component of the counterpart's address. For US counterparts, `state` is required and must be a two-letter [USPS state abbreviation](https://pe.usps.com/text/pub28/28apb.htm), for example, NY or CA.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -590,6 +657,17 @@ class AsyncRawAddressesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -612,8 +690,8 @@ class AsyncRawAddressesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -661,6 +739,17 @@ class AsyncRawAddressesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -683,8 +772,8 @@ class AsyncRawAddressesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -724,6 +813,17 @@ class AsyncRawAddressesClient:
         try:
             if 200 <= _response.status_code < 300:
                 return AsyncHttpResponse(response=_response, data=None)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -746,8 +846,8 @@ class AsyncRawAddressesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -835,6 +935,17 @@ class AsyncRawAddressesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -857,8 +968,8 @@ class AsyncRawAddressesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

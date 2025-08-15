@@ -24,13 +24,6 @@ from .accounting_vendor_ref_object import AccountingVendorRefObject
 from .action_enum import ActionEnum
 from .action_schema import ActionSchema
 from .aggregation_function_enum import AggregationFunctionEnum
-from .airwallex_mandate import AirwallexMandate
-from .airwallex_mandate_type import AirwallexMandateType
-from .airwallex_mandate_version import AirwallexMandateVersion
-from .airwallex_plaid_account import AirwallexPlaidAccount
-from .airwallex_plaid_bank_account_verification_status import AirwallexPlaidBankAccountVerificationStatus
-from .airwallex_plaid_institution import AirwallexPlaidInstitution
-from .airwallex_plaid_verification import AirwallexPlaidVerification
 from .all_document_export_response_schema import AllDocumentExportResponseSchema
 from .all_overdue_reminders_response import AllOverdueRemindersResponse
 from .allowed_countries import AllowedCountries
@@ -56,10 +49,10 @@ from .approval_request_cursor_fields import ApprovalRequestCursorFields
 from .approval_request_resource_list import ApprovalRequestResourceList
 from .approval_request_resource_with_metadata import ApprovalRequestResourceWithMetadata
 from .approval_request_status import ApprovalRequestStatus
+from .attachment_request import AttachmentRequest
+from .attachment_response import AttachmentResponse
 from .automation_level import AutomationLevel
 from .bank_account import BankAccount
-from .bank_account_verification_type import BankAccountVerificationType
-from .bank_account_verifications import BankAccountVerifications
 from .based_on_receivable_created_event_data import BasedOnReceivableCreatedEventData
 from .based_on_transition_type import BasedOnTransitionType
 from .biz_objects_schema_input import BizObjectsSchemaInput
@@ -74,11 +67,6 @@ from .comment_resource import CommentResource
 from .comment_resource_list import CommentResourceList
 from .common_schema_input import CommonSchemaInput
 from .common_schema_output import CommonSchemaOutput
-from .complete_refresh_verification_request import CompleteRefreshVerificationRequest
-from .complete_refresh_verification_response import CompleteRefreshVerificationResponse
-from .complete_verification_airwallex_plaid_request import CompleteVerificationAirwallexPlaidRequest
-from .complete_verification_request import CompleteVerificationRequest
-from .complete_verification_response import CompleteVerificationResponse
 from .connection_status import ConnectionStatus
 from .counterpart_address import CounterpartAddress
 from .counterpart_address_resource_list import CounterpartAddressResourceList
@@ -93,6 +81,7 @@ from .counterpart_create_payload import (
     CounterpartCreatePayload_Organization,
 )
 from .counterpart_cursor_fields import CounterpartCursorFields
+from .counterpart_einvoicing_credential_existence_response import CounterpartEinvoicingCredentialExistenceResponse
 from .counterpart_einvoicing_credential_response import CounterpartEinvoicingCredentialResponse
 from .counterpart_einvoicing_credential_response_list import CounterpartEinvoicingCredentialResponseList
 from .counterpart_einvoicing_credential_schema import CounterpartEinvoicingCredentialSchema
@@ -129,7 +118,6 @@ from .create_counterpart_einvoicing_credential_counterpart_vat_id import (
 )
 from .create_counterpart_einvoicing_credential_payload import CreateCounterpartEinvoicingCredentialPayload
 from .create_export_task_response_schema import CreateExportTaskResponseSchema
-from .create_onboarding_link_request import CreateOnboardingLinkRequest
 from .credit_note_cursor_fields import CreditNoteCursorFields
 from .credit_note_dimension_enum import CreditNoteDimensionEnum
 from .credit_note_fields_allowed_for_validate import CreditNoteFieldsAllowedForValidate
@@ -195,6 +183,8 @@ from .document_i_ds_settings_request import DocumentIDsSettingsRequest
 from .document_id_separators import DocumentIdSeparators
 from .document_object_type_request_enum import DocumentObjectTypeRequestEnum
 from .document_rendering_settings import DocumentRenderingSettings
+from .document_rendering_settings_input import DocumentRenderingSettingsInput
+from .document_rendering_settings_output import DocumentRenderingSettingsOutput
 from .document_type_enum import DocumentTypeEnum
 from .document_type_prefix import DocumentTypePrefix
 from .domain_list_response import DomainListResponse
@@ -285,9 +275,11 @@ from .ledger_account_cursor_fields import LedgerAccountCursorFields
 from .ledger_account_list_response import LedgerAccountListResponse
 from .ledger_account_response import LedgerAccountResponse
 from .line_item import LineItem
+from .line_item_column_settings import LineItemColumnSettings
 from .line_item_cursor_fields import LineItemCursorFields
 from .line_item_fields import LineItemFields
 from .line_item_internal_request import LineItemInternalRequest
+from .line_item_numeric_column_settings import LineItemNumericColumnSettings
 from .line_item_pagination_response import LineItemPaginationResponse
 from .line_item_product import LineItemProduct
 from .line_item_product_create import LineItemProductCreate
@@ -296,6 +288,7 @@ from .line_item_product_vat_rate import LineItemProductVatRate
 from .line_item_request import LineItemRequest
 from .line_item_response import LineItemResponse
 from .line_item_update import LineItemUpdate
+from .line_items_rendering_settings import LineItemsRenderingSettings
 from .line_items_replace_response import LineItemsReplaceResponse
 from .line_items_response import LineItemsResponse
 from .mail_sent_event_data import MailSentEventData
@@ -308,6 +301,7 @@ from .missing_fields import MissingFields
 from .missing_line_item_fields import MissingLineItemFields
 from .monite_all_payment_methods import MoniteAllPaymentMethods
 from .monite_all_payment_methods_types import MoniteAllPaymentMethodsTypes
+from .next_document_numbers import NextDocumentNumbers
 from .object_match_types import ObjectMatchTypes
 from .object_type import ObjectType
 from .object_type_available_comment import ObjectTypeAvailableComment
@@ -336,9 +330,6 @@ from .ocr_task_response_schema_recognized_data import (
 )
 from .ocr_task_status import OcrTaskStatus
 from .ocr_tasks_pagination_response import OcrTasksPaginationResponse
-from .onboarding_link_public_response import OnboardingLinkPublicResponse
-from .onboarding_link_request import OnboardingLinkRequest
-from .onboarding_link_response import OnboardingLinkResponse
 from .onboarding_payment_methods_response import OnboardingPaymentMethodsResponse
 from .onboarding_requirements_error import OnboardingRequirementsError
 from .onboarding_requirements_response import OnboardingRequirementsResponse
@@ -412,16 +403,13 @@ from .payment_intent import PaymentIntent
 from .payment_intent_cursor_fields import PaymentIntentCursorFields
 from .payment_intent_history import PaymentIntentHistory
 from .payment_intent_history_response import PaymentIntentHistoryResponse
-from .payment_intent_payout_method import PaymentIntentPayoutMethod
 from .payment_intent_response import PaymentIntentResponse
 from .payment_intents_list_response import PaymentIntentsListResponse
-from .payment_intents_recipient import PaymentIntentsRecipient
 from .payment_method import PaymentMethod
 from .payment_method_direction import PaymentMethodDirection
 from .payment_method_requirements import PaymentMethodRequirements
 from .payment_method_status import PaymentMethodStatus
 from .payment_object import PaymentObject
-from .payment_object_payable import PaymentObjectPayable
 from .payment_object_type import PaymentObjectType
 from .payment_page_theme import PaymentPageTheme
 from .payment_priority_enum import PaymentPriorityEnum
@@ -439,9 +427,6 @@ from .payment_requirements import PaymentRequirements
 from .payment_terms import PaymentTerms
 from .payment_terms_list_response import PaymentTermsListResponse
 from .payment_terms_response import PaymentTermsResponse
-from .payments_batch_payment_request import PaymentsBatchPaymentRequest
-from .payments_batch_payment_response import PaymentsBatchPaymentResponse
-from .payments_batch_payment_status import PaymentsBatchPaymentStatus
 from .payments_settings_input import PaymentsSettingsInput
 from .payments_settings_output import PaymentsSettingsOutput
 from .permission_enum import PermissionEnum
@@ -493,6 +478,12 @@ from .quote_response_payload_entity import (
     QuoteResponsePayloadEntity_Organization,
 )
 from .quote_state_enum import QuoteStateEnum
+from .receipt_cursor_fields import ReceiptCursorFields
+from .receipt_line_item_cursor_fields import ReceiptLineItemCursorFields
+from .receipt_line_item_response_schema import ReceiptLineItemResponseSchema
+from .receipt_line_items_pagination_response import ReceiptLineItemsPaginationResponse
+from .receipt_pagination_response import ReceiptPaginationResponse
+from .receipt_response_schema import ReceiptResponseSchema
 from .receivable_counterpart_contact import ReceivableCounterpartContact
 from .receivable_counterpart_vat_id_response import ReceivableCounterpartVatIdResponse
 from .receivable_create_based_on_payload import ReceivableCreateBasedOnPayload
@@ -551,9 +542,7 @@ from .receivables_representation_of_entity_bank_account import ReceivablesRepres
 from .receivables_send_response import ReceivablesSendResponse
 from .receivables_status_enum import ReceivablesStatusEnum
 from .receivables_verify_response import ReceivablesVerifyResponse
-from .recipient import Recipient
 from .recipient_account_response import RecipientAccountResponse
-from .recipient_type import RecipientType
 from .recipients import Recipients
 from .recurrence_frequency import RecurrenceFrequency
 from .recurrence_iteration import RecurrenceIteration
@@ -595,6 +584,7 @@ from .root_schema_input import (
     RootSchemaInput_Person,
     RootSchemaInput_Product,
     RootSchemaInput_Project,
+    RootSchemaInput_Receipt,
     RootSchemaInput_Receivable,
     RootSchemaInput_Reconciliation,
     RootSchemaInput_Role,
@@ -628,6 +618,7 @@ from .root_schema_output import (
     RootSchemaOutput_Person,
     RootSchemaOutput_Product,
     RootSchemaOutput_Project,
+    RootSchemaOutput_Receipt,
     RootSchemaOutput_Receivable,
     RootSchemaOutput_Reconciliation,
     RootSchemaOutput_Role,
@@ -641,13 +632,14 @@ from .service_providers_enum import ServiceProvidersEnum
 from .settings_response import SettingsResponse
 from .signature import Signature
 from .single_onboarding_requirements_response import SingleOnboardingRequirementsResponse
-from .single_payment_intent import SinglePaymentIntent
-from .single_payment_intent_response import SinglePaymentIntentResponse
 from .source_of_payable_data_enum import SourceOfPayableDataEnum
+from .source_of_receipt_data_enum import SourceOfReceiptDataEnum
 from .status_changed_event_data import StatusChangedEventData
 from .status_enum import StatusEnum
 from .success_result import SuccessResult
+from .suggested_counterpart_payload import SuggestedCounterpartPayload
 from .suggested_payment_term import SuggestedPaymentTerm
+from .suggested_response import SuggestedResponse
 from .supported_field_names import SupportedFieldNames
 from .supported_format_schema import SupportedFormatSchema
 from .supported_format_schema_object_type import SupportedFormatSchemaObjectType
@@ -712,11 +704,7 @@ from .vat_rate_creator import VatRateCreator
 from .vat_rate_list_response import VatRateListResponse
 from .vat_rate_response import VatRateResponse
 from .vat_rate_status_enum import VatRateStatusEnum
-from .verification_airwallex_plaid_request import VerificationAirwallexPlaidRequest
-from .verification_airwallex_plaid_response import VerificationAirwallexPlaidResponse
 from .verification_error import VerificationError
-from .verification_request import VerificationRequest
-from .verification_response import VerificationResponse
 from .verification_status_enum import VerificationStatusEnum
 from .verify_response import VerifyResponse
 from .wc_business_status import WcBusinessStatus
@@ -756,13 +744,6 @@ __all__ = [
     "ActionEnum",
     "ActionSchema",
     "AggregationFunctionEnum",
-    "AirwallexMandate",
-    "AirwallexMandateType",
-    "AirwallexMandateVersion",
-    "AirwallexPlaidAccount",
-    "AirwallexPlaidBankAccountVerificationStatus",
-    "AirwallexPlaidInstitution",
-    "AirwallexPlaidVerification",
     "AllDocumentExportResponseSchema",
     "AllOverdueRemindersResponse",
     "AllowedCountries",
@@ -788,10 +769,10 @@ __all__ = [
     "ApprovalRequestResourceList",
     "ApprovalRequestResourceWithMetadata",
     "ApprovalRequestStatus",
+    "AttachmentRequest",
+    "AttachmentResponse",
     "AutomationLevel",
     "BankAccount",
-    "BankAccountVerificationType",
-    "BankAccountVerifications",
     "BasedOnReceivableCreatedEventData",
     "BasedOnTransitionType",
     "BizObjectsSchemaInput",
@@ -806,11 +787,6 @@ __all__ = [
     "CommentResourceList",
     "CommonSchemaInput",
     "CommonSchemaOutput",
-    "CompleteRefreshVerificationRequest",
-    "CompleteRefreshVerificationResponse",
-    "CompleteVerificationAirwallexPlaidRequest",
-    "CompleteVerificationRequest",
-    "CompleteVerificationResponse",
     "ConnectionStatus",
     "CounterpartAddress",
     "CounterpartAddressResourceList",
@@ -823,6 +799,7 @@ __all__ = [
     "CounterpartCreatePayload_Individual",
     "CounterpartCreatePayload_Organization",
     "CounterpartCursorFields",
+    "CounterpartEinvoicingCredentialExistenceResponse",
     "CounterpartEinvoicingCredentialResponse",
     "CounterpartEinvoicingCredentialResponseList",
     "CounterpartEinvoicingCredentialSchema",
@@ -857,7 +834,6 @@ __all__ = [
     "CreateCounterpartEinvoicingCredentialCounterpartVatId",
     "CreateCounterpartEinvoicingCredentialPayload",
     "CreateExportTaskResponseSchema",
-    "CreateOnboardingLinkRequest",
     "CreditNoteCursorFields",
     "CreditNoteDimensionEnum",
     "CreditNoteFieldsAllowedForValidate",
@@ -919,6 +895,8 @@ __all__ = [
     "DocumentIdSeparators",
     "DocumentObjectTypeRequestEnum",
     "DocumentRenderingSettings",
+    "DocumentRenderingSettingsInput",
+    "DocumentRenderingSettingsOutput",
     "DocumentTypeEnum",
     "DocumentTypePrefix",
     "DomainListResponse",
@@ -1011,9 +989,11 @@ __all__ = [
     "LedgerAccountListResponse",
     "LedgerAccountResponse",
     "LineItem",
+    "LineItemColumnSettings",
     "LineItemCursorFields",
     "LineItemFields",
     "LineItemInternalRequest",
+    "LineItemNumericColumnSettings",
     "LineItemPaginationResponse",
     "LineItemProduct",
     "LineItemProductCreate",
@@ -1022,6 +1002,7 @@ __all__ = [
     "LineItemRequest",
     "LineItemResponse",
     "LineItemUpdate",
+    "LineItemsRenderingSettings",
     "LineItemsReplaceResponse",
     "LineItemsResponse",
     "MailSentEventData",
@@ -1034,6 +1015,7 @@ __all__ = [
     "MissingLineItemFields",
     "MoniteAllPaymentMethods",
     "MoniteAllPaymentMethodsTypes",
+    "NextDocumentNumbers",
     "ObjectMatchTypes",
     "ObjectType",
     "ObjectTypeAvailableComment",
@@ -1060,9 +1042,6 @@ __all__ = [
     "OcrTaskResponseSchemaRecognizedData_Receipt",
     "OcrTaskStatus",
     "OcrTasksPaginationResponse",
-    "OnboardingLinkPublicResponse",
-    "OnboardingLinkRequest",
-    "OnboardingLinkResponse",
     "OnboardingPaymentMethodsResponse",
     "OnboardingRequirementsError",
     "OnboardingRequirementsResponse",
@@ -1136,16 +1115,13 @@ __all__ = [
     "PaymentIntentCursorFields",
     "PaymentIntentHistory",
     "PaymentIntentHistoryResponse",
-    "PaymentIntentPayoutMethod",
     "PaymentIntentResponse",
     "PaymentIntentsListResponse",
-    "PaymentIntentsRecipient",
     "PaymentMethod",
     "PaymentMethodDirection",
     "PaymentMethodRequirements",
     "PaymentMethodStatus",
     "PaymentObject",
-    "PaymentObjectPayable",
     "PaymentObjectType",
     "PaymentPageTheme",
     "PaymentPriorityEnum",
@@ -1163,9 +1139,6 @@ __all__ = [
     "PaymentTerms",
     "PaymentTermsListResponse",
     "PaymentTermsResponse",
-    "PaymentsBatchPaymentRequest",
-    "PaymentsBatchPaymentResponse",
-    "PaymentsBatchPaymentStatus",
     "PaymentsSettingsInput",
     "PaymentsSettingsOutput",
     "PermissionEnum",
@@ -1215,6 +1188,12 @@ __all__ = [
     "QuoteResponsePayloadEntity_Individual",
     "QuoteResponsePayloadEntity_Organization",
     "QuoteStateEnum",
+    "ReceiptCursorFields",
+    "ReceiptLineItemCursorFields",
+    "ReceiptLineItemResponseSchema",
+    "ReceiptLineItemsPaginationResponse",
+    "ReceiptPaginationResponse",
+    "ReceiptResponseSchema",
     "ReceivableCounterpartContact",
     "ReceivableCounterpartVatIdResponse",
     "ReceivableCreateBasedOnPayload",
@@ -1271,9 +1250,7 @@ __all__ = [
     "ReceivablesSendResponse",
     "ReceivablesStatusEnum",
     "ReceivablesVerifyResponse",
-    "Recipient",
     "RecipientAccountResponse",
-    "RecipientType",
     "Recipients",
     "RecurrenceFrequency",
     "RecurrenceIteration",
@@ -1314,6 +1291,7 @@ __all__ = [
     "RootSchemaInput_Person",
     "RootSchemaInput_Product",
     "RootSchemaInput_Project",
+    "RootSchemaInput_Receipt",
     "RootSchemaInput_Receivable",
     "RootSchemaInput_Reconciliation",
     "RootSchemaInput_Role",
@@ -1345,6 +1323,7 @@ __all__ = [
     "RootSchemaOutput_Person",
     "RootSchemaOutput_Product",
     "RootSchemaOutput_Project",
+    "RootSchemaOutput_Receipt",
     "RootSchemaOutput_Receivable",
     "RootSchemaOutput_Reconciliation",
     "RootSchemaOutput_Role",
@@ -1357,13 +1336,14 @@ __all__ = [
     "SettingsResponse",
     "Signature",
     "SingleOnboardingRequirementsResponse",
-    "SinglePaymentIntent",
-    "SinglePaymentIntentResponse",
     "SourceOfPayableDataEnum",
+    "SourceOfReceiptDataEnum",
     "StatusChangedEventData",
     "StatusEnum",
     "SuccessResult",
+    "SuggestedCounterpartPayload",
     "SuggestedPaymentTerm",
+    "SuggestedResponse",
     "SupportedFieldNames",
     "SupportedFormatSchema",
     "SupportedFormatSchemaObjectType",
@@ -1426,11 +1406,7 @@ __all__ = [
     "VatRateListResponse",
     "VatRateResponse",
     "VatRateStatusEnum",
-    "VerificationAirwallexPlaidRequest",
-    "VerificationAirwallexPlaidResponse",
     "VerificationError",
-    "VerificationRequest",
-    "VerificationResponse",
     "VerificationStatusEnum",
     "VerifyResponse",
     "WcBusinessStatus",

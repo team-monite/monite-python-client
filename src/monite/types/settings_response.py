@@ -7,7 +7,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .accounting_settings import AccountingSettings
 from .currency_settings_output import CurrencySettingsOutput
 from .document_i_ds_settings import DocumentIDsSettings
-from .document_rendering_settings import DocumentRenderingSettings
+from .document_rendering_settings_output import DocumentRenderingSettingsOutput
 from .language_code_enum import LanguageCodeEnum
 from .ocr_auto_tagging_settings_request import OcrAutoTaggingSettingsRequest
 from .payment_priority_enum import PaymentPriorityEnum
@@ -17,31 +17,31 @@ from .vat_mode_enum import VatModeEnum
 
 
 class SettingsResponse(UniversalBaseModel):
-    language: typing.Optional[LanguageCodeEnum] = None
-    currency: typing.Optional[CurrencySettingsOutput] = None
-    reminder: typing.Optional[RemindersSettings] = None
-    vat_mode: typing.Optional[VatModeEnum] = pydantic.Field(default=None)
-    """
-    Defines whether the prices of products in receivables will already include VAT or not.
-    """
-
-    vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = pydantic.Field(default=None)
-    """
-    Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
-    """
-
-    payment_priority: typing.Optional[PaymentPriorityEnum] = pydantic.Field(default=None)
-    """
-    Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
-    """
-
+    accounting: typing.Optional[AccountingSettings] = None
     allow_purchase_order_autolinking: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Automatically attempt to find a corresponding purchase order for all incoming payables.
     """
 
-    receivable_edit_flow: typing.Optional[ReceivableEditFlow] = None
+    currency: typing.Optional[CurrencySettingsOutput] = None
     document_ids: typing.Optional[DocumentIDsSettings] = None
+    document_rendering: typing.Optional[DocumentRenderingSettingsOutput] = pydantic.Field(default=None)
+    """
+    Settings for rendering documents in PDF format.
+    """
+
+    generate_paid_invoice_pdf: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    This setting affects how PDF is generated for accounts receivable invoices that are paid, partially paid, or have credit notes applied.
+    If this setting is `true`:
+    
+     * The totals block in the PDF invoice will include a list of all payments made and credit notes issued.
+     * Once an invoice becomes fully paid, the payment link and QR code are removed.
+    
+    The PDF invoice gets regenerated at the moment when an invoice payment is recorded or a credit note is issued.  This PDF is not issued as a separate document, and the original PDF invoice is no longer available.
+    """
+
+    language: typing.Optional[LanguageCodeEnum] = None
     payables_ocr_auto_tagging: typing.Optional[typing.List[OcrAutoTaggingSettingsRequest]] = pydantic.Field(
         default=None
     )
@@ -49,29 +49,39 @@ class SettingsResponse(UniversalBaseModel):
     Auto tagging settings for all incoming OCR payable documents.
     """
 
-    quote_signature_required: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    Sets the default behavior of whether a signature is required to accept quotes.
-    """
-
-    generate_paid_invoice_pdf: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.
-    
-    The PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.
-    
-    This field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.
-    """
-
-    accounting: typing.Optional[AccountingSettings] = None
     payables_skip_approval_flow: typing.Optional[bool] = pydantic.Field(default=None)
     """
     If enabled, the approval policy will be skipped and the payable will be moved to `waiting_to_be_paid` status.
     """
 
-    document_rendering: typing.Optional[DocumentRenderingSettings] = pydantic.Field(default=None)
+    payment_priority: typing.Optional[PaymentPriorityEnum] = pydantic.Field(default=None)
     """
-    Settings for rendering documents in PDF format.
+    Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
+    """
+
+    quote_signature_required: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Sets the default behavior of whether a signature is required to accept quotes.
+    """
+
+    receivable_edit_flow: typing.Optional[ReceivableEditFlow] = pydantic.Field(default=None)
+    """
+    [Invoice compliance mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance) for accounts receivable. Possible values:
+    
+     * `compliant` - invoices cannot be edited once issued.
+     * `non_compliant` - issued invoices can still be edited.
+     * `partially_compliant` - deprecated mode, should not be used.
+    """
+
+    reminder: typing.Optional[RemindersSettings] = None
+    vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = pydantic.Field(default=None)
+    """
+    Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
+    """
+
+    vat_mode: typing.Optional[VatModeEnum] = pydantic.Field(default=None)
+    """
+    Defines whether the prices of products in receivables will already include VAT or not.
     """
 
     if IS_PYDANTIC_V2:

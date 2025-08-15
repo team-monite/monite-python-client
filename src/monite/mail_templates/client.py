@@ -60,7 +60,7 @@ class MailTemplatesClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
             Max is 100
@@ -69,7 +69,7 @@ class MailTemplatesClient:
             A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[CustomTemplatesCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         type : typing.Optional[DocumentObjectTypeRequestEnum]
 
@@ -481,7 +481,7 @@ class AsyncMailTemplatesClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
             Max is 100
@@ -490,7 +490,7 @@ class AsyncMailTemplatesClient:
             A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[CustomTemplatesCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         type : typing.Optional[DocumentObjectTypeRequestEnum]
 

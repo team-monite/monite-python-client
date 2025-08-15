@@ -10,13 +10,10 @@ from .payment_account_type import PaymentAccountType
 class PaymentAccountObject(UniversalBaseModel):
     id: str = pydantic.Field()
     """
-    ID of a payment account
+    ID of the entity or counterpart that issued the invoice for which you are creating a payment link.
     """
 
-    type: PaymentAccountType = pydantic.Field()
-    """
-    Type of a payment account. Can be `entity` or `counterpart`
-    """
+    type: PaymentAccountType
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

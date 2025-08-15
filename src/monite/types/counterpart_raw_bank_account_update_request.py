@@ -27,6 +27,11 @@ class CounterpartRawBankAccountUpdateRequest(UniversalBaseModel):
     required for non-GB bank accounts
     """
 
+    routing_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    required for US bank accounts
+    """
+
     sort_code: typing.Optional[str] = pydantic.Field(default=None)
     """
     required for GB bank accounts

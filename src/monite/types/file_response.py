@@ -10,18 +10,74 @@ from ..core.serialization import FieldMetadata
 
 
 class FileResponse(UniversalBaseModel):
-    id: str
-    created_at: dt.datetime
-    updated_at: dt.datetime
-    file_type: str
-    md5: str
-    mimetype: str
-    name: str
-    region: str
-    s3bucket: typing_extensions.Annotated[str, FieldMetadata(alias="s3_bucket")]
-    s3file_path: typing_extensions.Annotated[str, FieldMetadata(alias="s3_file_path")]
-    size: int
-    url: str
+    id: str = pydantic.Field()
+    """
+    A unique ID assigned to this file.
+    """
+
+    created_at: dt.datetime = pydantic.Field()
+    """
+    Date and time when this file was uploaded to or created in Monite. Timestamps follow the ISO 8601 format.
+    """
+
+    updated_at: dt.datetime = pydantic.Field()
+    """
+    Date and time when this file was last updated in Monite. Timestamps follow the ISO 8601 format.
+    """
+
+    file_type: str = pydantic.Field()
+    """
+    Possible values:
+    
+     * `additional_identity_documents` and `identity_documents` - [entity verification documents](https://docs.monite.com/payments/onboarding/via-api/documents) uploaded for payments onboarding.
+     * `attachments` - supplementary attachments for accounts receivable invoices, quotes, and credit notes.
+     * `delivery_notes` - auto-generated PDF versions of delivery notes.
+     * `einvoices_xml` - e-invoice XML generated when sending e-invoices.
+     * `payables` - payables (bills) received via email or uploaded via API.
+     * `receivable_signatures` - images of customer signatures provided during quote acceptance.
+     * `receivables` - auto-generated PDF versions of invoices, quotes, and credit notes.
+     * `zip` - data export archives created by `POST /data_exports`.
+    """
+
+    md5: str = pydantic.Field()
+    """
+    The MD5 hash of the file.
+    """
+
+    mimetype: str = pydantic.Field()
+    """
+    The file's media type, for example, `application/pdf` or `image/png`.
+    """
+
+    name: str = pydantic.Field()
+    """
+    The original file name (if available).
+    """
+
+    region: str = pydantic.Field()
+    """
+    Geographical region of the data center where the file is stored.
+    """
+
+    s3bucket: typing_extensions.Annotated[str, FieldMetadata(alias="s3_bucket")] = pydantic.Field()
+    """
+    Unused.
+    """
+
+    s3file_path: typing_extensions.Annotated[str, FieldMetadata(alias="s3_file_path")] = pydantic.Field()
+    """
+    Unused.
+    """
+
+    size: int = pydantic.Field()
+    """
+    The file size in bytes.
+    """
+
+    url: str = pydantic.Field()
+    """
+    The URL to download the file.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

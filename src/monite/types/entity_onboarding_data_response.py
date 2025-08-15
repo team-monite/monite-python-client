@@ -25,6 +25,11 @@ class EntityOnboardingDataResponse(UniversalBaseModel):
     Details on the entity's acceptance of the service agreement.
     """
 
+    treasury_tos_acceptance: typing.Optional[TermsOfServiceAcceptanceOutput] = pydantic.Field(default=None)
+    """
+    Details on the entity's acceptance of the Stripe Treasury service agreement.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

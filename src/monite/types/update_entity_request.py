@@ -24,29 +24,9 @@ class UpdateEntityRequest(UniversalBaseModel):
     An official email address of the entity
     """
 
-    phone: typing.Optional[str] = pydantic.Field(default=None)
+    individual: typing.Optional[OptionalIndividualSchema] = pydantic.Field(default=None)
     """
-    The contact phone number of the entity. Required for US organizations to use payments.
-    """
-
-    website: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    A website of the entity
-    """
-
-    tax_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-    """
-
-    registration_number: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-    """
-
-    registration_authority: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+    A set of meta data describing the individual
     """
 
     organization: typing.Optional[OptionalOrganizationSchema] = pydantic.Field(default=None)
@@ -54,9 +34,29 @@ class UpdateEntityRequest(UniversalBaseModel):
     A set of meta data describing the organization
     """
 
-    individual: typing.Optional[OptionalIndividualSchema] = pydantic.Field(default=None)
+    phone: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A set of meta data describing the individual
+    The contact phone number of the entity. Required for US organizations to use payments.
+    """
+
+    registration_authority: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+    """
+
+    registration_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+    """
+
+    tax_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    """
+
+    website: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    A website of the entity
     """
 
     if IS_PYDANTIC_V2:

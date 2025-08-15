@@ -318,6 +318,20 @@ class RootSchemaOutput_Project(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class RootSchemaOutput_Receipt(UniversalBaseModel):
+    object_type: typing.Literal["receipt"] = "receipt"
+    actions: typing.Optional[typing.List[ActionSchema]] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 class RootSchemaOutput_Receivable(UniversalBaseModel):
     object_type: typing.Literal["receivable"] = "receivable"
     actions: typing.Optional[typing.List[ActionSchema]] = None
@@ -453,6 +467,7 @@ RootSchemaOutput = typing.Union[
     RootSchemaOutput_Person,
     RootSchemaOutput_Product,
     RootSchemaOutput_Project,
+    RootSchemaOutput_Receipt,
     RootSchemaOutput_Receivable,
     RootSchemaOutput_Reconciliation,
     RootSchemaOutput_Role,

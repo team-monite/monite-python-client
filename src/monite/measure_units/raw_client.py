@@ -11,8 +11,8 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
-from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
+from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.unit_list_response import UnitListResponse
@@ -97,8 +97,8 @@ class RawMeasureUnitsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -202,8 +202,8 @@ class RawMeasureUnitsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -304,8 +304,8 @@ class RawMeasureUnitsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -398,8 +398,8 @@ class RawMeasureUnitsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -517,8 +517,8 @@ class RawMeasureUnitsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -611,8 +611,8 @@ class AsyncRawMeasureUnitsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -716,8 +716,8 @@ class AsyncRawMeasureUnitsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -818,8 +818,8 @@ class AsyncRawMeasureUnitsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -912,8 +912,8 @@ class AsyncRawMeasureUnitsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1031,8 +1031,8 @@ class AsyncRawMeasureUnitsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

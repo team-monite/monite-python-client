@@ -7,11 +7,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class OcrResponseInvoiceReceiptLineItemRaw(UniversalBaseModel):
-    line_item_ocr_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    OCR Id of line item
-    """
-
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
     Human-readable line item description
@@ -22,29 +17,14 @@ class OcrResponseInvoiceReceiptLineItemRaw(UniversalBaseModel):
     Item Quantity/Unit Price adjusted
     """
 
+    line_item_ocr_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    OCR Id of line item
+    """
+
     quantity: typing.Optional[float] = pydantic.Field(default=None)
     """
     Quantity
-    """
-
-    unit_price: typing.Optional[float] = pydantic.Field(default=None)
-    """
-    Price as parsed
-    """
-
-    unit: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Unit
-    """
-
-    vat_percentage: typing.Optional[float] = pydantic.Field(default=None)
-    """
-    VAT Percent as parsed.
-    """
-
-    vat_amount: typing.Optional[float] = pydantic.Field(default=None)
-    """
-    VAT Amount as parsed.
     """
 
     total_excl_vat: typing.Optional[float] = pydantic.Field(default=None)
@@ -55,6 +35,26 @@ class OcrResponseInvoiceReceiptLineItemRaw(UniversalBaseModel):
     total_incl_vat: typing.Optional[float] = pydantic.Field(default=None)
     """
     Total included VAT as parsed.
+    """
+
+    unit: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unit
+    """
+
+    unit_price: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Price as parsed
+    """
+
+    vat_amount: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    VAT Amount as parsed.
+    """
+
+    vat_percentage: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    VAT Percent as parsed.
     """
 
     if IS_PYDANTIC_V2:

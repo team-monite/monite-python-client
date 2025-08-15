@@ -7,9 +7,20 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class AccessTokenResponse(UniversalBaseModel):
-    access_token: str
-    expires_in: int
-    token_type: str
+    access_token: str = pydantic.Field()
+    """
+    The access token. Send it in the `Authorization: Bearer ACCESS_TOKEN` header in subsequent API calls.
+    """
+
+    expires_in: int = pydantic.Field()
+    """
+    The token expiration time, in seconds.
+    """
+
+    token_type: str = pydantic.Field()
+    """
+    Always "Bearer".
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

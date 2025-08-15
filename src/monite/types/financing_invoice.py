@@ -11,39 +11,14 @@ from .wc_invoice_status import WcInvoiceStatus
 
 
 class FinancingInvoice(UniversalBaseModel):
-    type: FinancingInvoiceType = pydantic.Field()
+    advance_amount: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The type of the invoice i.e. receivable or payable.
-    """
-
-    status: WcInvoiceStatus = pydantic.Field()
-    """
-    Status of the invoice.
+    Amount after fees the business will receive in minor units.
     """
 
-    invoice_id: str = pydantic.Field()
+    advance_rate_percentage: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Monite invoice ID.
-    """
-
-    document_id: str = pydantic.Field()
-    """
-    Monite document ID.
-    """
-
-    due_date: str = pydantic.Field()
-    """
-    Monite invoice due date.
-    """
-
-    issue_date: str = pydantic.Field()
-    """
-    Monite invoice issue date.
-    """
-
-    total_amount: int = pydantic.Field()
-    """
-    Total amount of the invoice in minor units.
+    Advance rate percentage. 10000 means 100%
     """
 
     currency: CurrencyEnum = pydantic.Field()
@@ -56,9 +31,34 @@ class FinancingInvoice(UniversalBaseModel):
     Description of the invoice.
     """
 
-    payer_type: str = pydantic.Field()
+    document_id: str = pydantic.Field()
     """
-    Payer type. BUSINESS or INDIVIDUAL
+    Monite document ID.
+    """
+
+    due_date: str = pydantic.Field()
+    """
+    Monite invoice due date.
+    """
+
+    fee_amount: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Fee amount in minor units.
+    """
+
+    fee_percentage: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Fee percentage. 300 means 3%
+    """
+
+    invoice_id: str = pydantic.Field()
+    """
+    Monite invoice ID.
+    """
+
+    issue_date: str = pydantic.Field()
+    """
+    Monite invoice issue date.
     """
 
     payer_business_name: typing.Optional[str] = pydantic.Field(default=None)
@@ -76,9 +76,9 @@ class FinancingInvoice(UniversalBaseModel):
     Payer last name. Only applicable for INDIVIDUAL payer type.
     """
 
-    requested_amount: typing.Optional[int] = pydantic.Field(default=None)
+    payer_type: str = pydantic.Field()
     """
-    Amount the business requests to be financed in minor units.
+    Payer type. BUSINESS or INDIVIDUAL
     """
 
     principal_amount: typing.Optional[int] = pydantic.Field(default=None)
@@ -91,29 +91,29 @@ class FinancingInvoice(UniversalBaseModel):
     Amount the business will repay in minor units.
     """
 
-    advance_amount: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Amount after fees the business will receive in minor units.
-    """
-
-    advance_rate_percentage: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Advance rate percentage. 10000 means 100%
-    """
-
-    fee_amount: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Fee amount in minor units.
-    """
-
-    fee_percentage: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Fee percentage. 300 means 3%
-    """
-
     repayment_schedule: typing.Optional[RepaymentSchedule] = pydantic.Field(default=None)
     """
     Repayment schedule of the invoice.
+    """
+
+    requested_amount: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Amount the business requests to be financed in minor units.
+    """
+
+    status: WcInvoiceStatus = pydantic.Field()
+    """
+    Status of the invoice.
+    """
+
+    total_amount: int = pydantic.Field()
+    """
+    Total amount of the invoice in minor units.
+    """
+
+    type: FinancingInvoiceType = pydantic.Field()
+    """
+    The type of the invoice i.e. receivable or payable.
     """
 
     if IS_PYDANTIC_V2:

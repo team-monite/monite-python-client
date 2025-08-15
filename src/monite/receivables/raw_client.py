@@ -15,9 +15,9 @@ from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
 from ..errors.conflict_error import ConflictError
 from ..errors.forbidden_error import ForbiddenError
-from ..errors.internal_server_error import InternalServerError
 from ..errors.not_acceptable_error import NotAcceptableError
 from ..errors.not_found_error import NotFoundError
+from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.allowed_countries import AllowedCountries
@@ -288,72 +288,130 @@ class RawReceivablesClient:
             Return only receivables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
 
         type : typing.Optional[ReceivableType]
+            Return only receivables of the specified type. Use this parameter to get only invoices, or only quotes, or only credit notes.
 
         document_id : typing.Optional[str]
+            Return a receivable with the exact specified document number (case-sensitive). The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
 
         document_id_contains : typing.Optional[str]
+            Return only receivables whose document number (`document_id`) contains the specified string (case-sensitive).
 
         document_id_icontains : typing.Optional[str]
+            Return only receivables whose document number (`document_id`) contains the specified string (case-insensitive).
 
         issue_date_gt : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
 
         issue_date_lt : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued before the specified date and time.
 
         issue_date_gte : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued on or after the specified date and time.
 
         issue_date_lte : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued before or on the specified date and time.
 
         created_at_gt : typing.Optional[dt.datetime]
+            Return only receivables created after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
 
         created_at_lt : typing.Optional[dt.datetime]
+            Return only receivables created before the specified date and time.
 
         created_at_gte : typing.Optional[dt.datetime]
+            Return only receivables created on or after the specified date and time.
 
         created_at_lte : typing.Optional[dt.datetime]
+            Return only receivables created before or on the specified date and time.
 
         counterpart_id : typing.Optional[str]
+            Return only receivables created for the counterpart with the specified ID.
+
+            Counterparts that have been deleted but have associated receivables will still return results here because the receivables contain a frozen copy of the counterpart data.
+
+            If the specified counterpart ID does not exist and never existed, no results are returned.
 
         counterpart_name : typing.Optional[str]
+            Return only receivables created for counterparts with the specified name (exact match, case-sensitive). For counterparts of `type` = `individual`, the full name is formatted as `first_name last_name`.
 
         counterpart_name_contains : typing.Optional[str]
+            Return only receivables created for counterparts whose name contains the specified string (case-sensitive).
 
         counterpart_name_icontains : typing.Optional[str]
+            Return only receivables created for counterparts whose name contains the specified string (case-insensitive).
 
         total_amount : typing.Optional[int]
+            Return only receivables with the exact specified total amount. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250."
 
         total_amount_gt : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) exceeds the specified value.
 
         total_amount_lt : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is less than the specified value.
 
         total_amount_gte : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is greater than or equal to the specified value.
 
         total_amount_lte : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is less than or equal to the specified value.
 
         discounted_subtotal : typing.Optional[int]
+            Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
 
         discounted_subtotal_gt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
 
         discounted_subtotal_lt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
 
         discounted_subtotal_gte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
 
         discounted_subtotal_lte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
 
         status : typing.Optional[ReceivablesGetRequestStatus]
+            Return only receivables that have the specified status. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
+
+            To query multiple statuses at once, use the `status__in` parameter instead.
 
         entity_user_id : typing.Optional[str]
+            Return only receivables created by the entity users with the specified IDs. To specify multiple user IDs, repeat this parameter for each ID:
+            `entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+
+            If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+            IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
 
         based_on : typing.Optional[str]
+            This parameter accepts a quote ID or an invoice ID.
+
+             * Specify a quote ID to find invoices created from this quote.
+             * Specify an invoice ID to find credit notes created for this invoice or find recurring invoices created from a base invoice.
+
+            Valid but nonexistent IDs do not raise errors but produce no results.
 
         due_date_gt : typing.Optional[str]
+            Return invoices that are due after the specified date (exclusive, `YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
 
         due_date_lt : typing.Optional[str]
+            Return invoices that are due before the specified date (exclusive, `YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
 
         due_date_gte : typing.Optional[str]
+            Return invoices that are due on or after the specified date (`YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
 
         due_date_lte : typing.Optional[str]
+            Return invoices that are due before or on the specified date (`YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
 
         project_id : typing.Optional[str]
+            Return only receivables assigned to the project with the specified ID. Valid but nonexistent project IDs do not raise errors but return no results.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -437,6 +495,17 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 403:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
@@ -481,8 +550,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -601,8 +670,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -676,6 +745,17 @@ class RawReceivablesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -687,8 +767,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -706,11 +786,6 @@ class RawReceivablesClient:
     def post_receivables_search(
         self,
         *,
-        discounted_subtotal: typing.Optional[int] = OMIT,
-        discounted_subtotal_gt: typing.Optional[int] = OMIT,
-        discounted_subtotal_gte: typing.Optional[int] = OMIT,
-        discounted_subtotal_lt: typing.Optional[int] = OMIT,
-        discounted_subtotal_lte: typing.Optional[int] = OMIT,
         based_on: typing.Optional[str] = OMIT,
         counterpart_id: typing.Optional[str] = OMIT,
         counterpart_name: typing.Optional[str] = OMIT,
@@ -720,6 +795,11 @@ class RawReceivablesClient:
         created_at_gte: typing.Optional[dt.datetime] = OMIT,
         created_at_lt: typing.Optional[dt.datetime] = OMIT,
         created_at_lte: typing.Optional[dt.datetime] = OMIT,
+        discounted_subtotal: typing.Optional[int] = OMIT,
+        discounted_subtotal_gt: typing.Optional[int] = OMIT,
+        discounted_subtotal_gte: typing.Optional[int] = OMIT,
+        discounted_subtotal_lt: typing.Optional[int] = OMIT,
+        discounted_subtotal_lte: typing.Optional[int] = OMIT,
         document_id: typing.Optional[str] = OMIT,
         document_id_contains: typing.Optional[str] = OMIT,
         document_id_icontains: typing.Optional[str] = OMIT,
@@ -759,21 +839,6 @@ class RawReceivablesClient:
 
         Parameters
         ----------
-        discounted_subtotal : typing.Optional[int]
-            Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
-
-        discounted_subtotal_gt : typing.Optional[int]
-            Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
-
-        discounted_subtotal_gte : typing.Optional[int]
-            Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
-
-        discounted_subtotal_lt : typing.Optional[int]
-            Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
-
-        discounted_subtotal_lte : typing.Optional[int]
-            Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
-
         based_on : typing.Optional[str]
             This parameter accepts a quote ID or an invoice ID.
 
@@ -809,6 +874,21 @@ class RawReceivablesClient:
 
         created_at_lte : typing.Optional[dt.datetime]
             Return only receivables created before or on the specified date and time.
+
+        discounted_subtotal : typing.Optional[int]
+            Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
+
+        discounted_subtotal_gt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
+
+        discounted_subtotal_gte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
+
+        discounted_subtotal_lt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
+
+        discounted_subtotal_lte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
 
         document_id : typing.Optional[str]
             Return a receivable with the exact specified document number (case-sensitive). The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
@@ -847,8 +927,14 @@ class RawReceivablesClient:
             IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
 
         entity_user_id_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables created by the entity users with the specified IDs.
+
+            If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+            IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
 
         id_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables with the specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
 
         issue_date_gt : typing.Optional[dt.datetime]
             Return only non-draft receivables that were issued after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
@@ -863,21 +949,56 @@ class RawReceivablesClient:
             Return only non-draft receivables that were issued before or on the specified date and time.
 
         limit : typing.Optional[int]
+            The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page.
+
+            When using pagination with a non-default limit, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other pagination parameters, `limit` is not inferred from `pagination_token`.
 
         order : typing.Optional[OrderEnum]
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         pagination_token : typing.Optional[str]
+            A pagination token obtained from a previous call to `GET /receivables` or `POST /receivables/search`. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other parameters except `limit` are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         product_ids : typing.Optional[typing.Sequence[str]]
+            Return only receivables with line items containing all of the products with the specified IDs and optionally other products that are not specified.
+
+            For example, given receivables that contain the following products:
+
+             1. productA
+             2. productB
+             3. productA, productB
+             4. productC
+             5. productA, productB, productC
+
+            `product_ids` = `[productA, productB]` will return receivables 3 and 5.
+
+            Valid but nonexistent product IDs do not raise errors but produce no results.
 
         product_ids_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables with line items containing at least one of the products with the specified IDs.
+
+            For example, given receivables that contain the following products:
+
+             1. productA
+             2. productB
+             3. productA, productB
+             4. productC
+             5. productB, productC
+
+            `product_ids__in` = `[productA, productB]` will return receivables 1, 2, 3, and 5.
+
+            Valid but nonexistent product IDs do not raise errors but produce no results.
 
         project_id : typing.Optional[str]
             Return only receivables assigned to the project with the specified ID. Valid but nonexistent project IDs do not raise errors but return no results.
 
         project_id_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables that belong to one of the projects with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
 
         sort : typing.Optional[ReceivableCursorFields2]
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         status : typing.Optional[ReceivablesSearchRequestStatus]
             Return only receivables that have the specified status. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
@@ -885,10 +1006,35 @@ class RawReceivablesClient:
             To query multiple statuses at once, use the `status__in` parameter instead.
 
         status_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables that have the specified statuses. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
 
         tag_ids : typing.Optional[typing.Sequence[str]]
+            Return only receivables whose [tags](https://docs.monite.com/common/tags) include all of the tags with the specified IDs and optionally other tags that are not specified.
+
+            For example, given receivables with the following tags:
+
+             1. tagA
+             2. tagB
+             3. tagA, tagB
+             4. tagC
+             5. tagA, tagB, tagC
+
+            `tag_ids` = `[tagA, tagB]` will return receivables 3 and 5.
 
         tag_ids_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables whose [tags](https://docs.monite.com/common/tags) include at least one of the tags with the specified IDs.
+
+            For example, given receivables with the following tags:
+
+             1. tagA
+             2. tagB
+             3. tagA, tagB
+             4. tagC
+             5. tagB, tagC
+
+            `tag_ids__in` = `[tagA, tagB]` will return receivables 1, 2, 3, and 5.
+
+            Valid but nonexistent tag IDs do not raise errors but produce no results.
 
         total_amount : typing.Optional[int]
             Return only receivables with the exact specified total amount. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
@@ -920,11 +1066,6 @@ class RawReceivablesClient:
             "receivables/search",
             method="POST",
             json={
-                "discounted_subtotal": discounted_subtotal,
-                "discounted_subtotal__gt": discounted_subtotal_gt,
-                "discounted_subtotal__gte": discounted_subtotal_gte,
-                "discounted_subtotal__lt": discounted_subtotal_lt,
-                "discounted_subtotal__lte": discounted_subtotal_lte,
                 "based_on": based_on,
                 "counterpart_id": counterpart_id,
                 "counterpart_name": counterpart_name,
@@ -934,6 +1075,11 @@ class RawReceivablesClient:
                 "created_at__gte": created_at_gte,
                 "created_at__lt": created_at_lt,
                 "created_at__lte": created_at_lte,
+                "discounted_subtotal": discounted_subtotal,
+                "discounted_subtotal__gt": discounted_subtotal_gt,
+                "discounted_subtotal__gte": discounted_subtotal_gte,
+                "discounted_subtotal__lt": discounted_subtotal_lt,
+                "discounted_subtotal__lte": discounted_subtotal_lte,
                 "document_id": document_id,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
@@ -994,6 +1140,17 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 403:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
@@ -1038,8 +1195,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1085,6 +1242,17 @@ class RawReceivablesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -1118,8 +1286,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1138,9 +1306,16 @@ class RawReceivablesClient:
         self, receivable_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ReceivableResponse]:
         """
+        Returns the details of an existing accounts receivable invoice, quote, or credit note with the specified ID.
+
+        The response fields vary depending on the document type. Use the `type` field to distinguish between different document types.
+
+        Entity users with the `receivable.read.allowed_for_own` permission (rather than `allowed`) can access only documents that they created themselves.
+
         Parameters
         ----------
         receivable_id : str
+            ID of an existing invoice, quote, or credit note that you want to retrieve.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1220,8 +1395,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1325,8 +1500,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1451,8 +1626,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1475,12 +1650,16 @@ class RawReceivablesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[SuccessResult]:
         """
+        Only quotes in the `issued` status can be accepted.
+
+        When a quote is accepted, Monite automatically creates a draft invoice based on this quote. To find the newly created invoice, use `GET /receivables?based_on=QUOTE_ID`.
+
         Parameters
         ----------
         receivable_id : str
 
         signature : typing.Optional[Signature]
-            A digital signature, if required for quote acceptance
+            The counterpart's signature. Required if the quote field `signature_required` is `true`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1580,8 +1759,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1685,8 +1864,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1705,9 +1884,21 @@ class RawReceivablesClient:
         self, receivable_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ReceivableResponse]:
         """
+        Creates a copy of an existing accounts receivable invoice or quote. The original document can be in any status. The cloned document will have the `draft` status.
+
+        Cloning a document requires that all of the referenced resource IDs (counterpart ID, product IDs, and others) still exist.
+
+        Most of the original document's data is copied as is, with a few exceptions:
+
+         * Some fields are not copied: `attachments`, `document_id`, `issue_date`, quote `expiry_date`.
+         * Counterpart details, entity bank account details, and entity VAT number are fetched anew from their corresponding IDs.
+           This means, for example, that if the counterpart details have been changed since the original invoice or quote was created,
+           the cloned document will use the current counterpart details rather than the old details from the original document.
+
         Parameters
         ----------
         receivable_id : str
+            ID of an existing invoice or quote that you want to clone.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1798,8 +1989,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1822,6 +2013,8 @@ class RawReceivablesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[SuccessResult]:
         """
+        Only quotes in the `issued` status can be declined.
+
         Parameters
         ----------
         receivable_id : str
@@ -1925,8 +2118,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -2093,8 +2286,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -2201,8 +2394,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -2314,8 +2507,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -2444,8 +2637,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -2599,8 +2792,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -2703,8 +2896,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -2835,8 +3028,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -2969,8 +3162,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -3096,8 +3289,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -3198,8 +3391,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -3225,6 +3418,13 @@ class RawReceivablesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReceivablePreviewResponse]:
         """
+        You can preview emails only for documents in the following statuses:
+
+         * Invoices: `draft`, `issued`, `overdue`, `partially_paid`, `paid`.
+           In the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance): also `canceled`.
+         * Quotes: `draft`, `issued`.
+         * Credit notes: `draft`, `issued`.
+
         Parameters
         ----------
         receivable_id : str
@@ -3329,8 +3529,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -3355,6 +3555,17 @@ class RawReceivablesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReceivableSendResponse]:
         """
+        Only documents in the following statuses can be sent via email:
+
+         * Invoices: `draft`, `issued`, `overdue`, `partially_paid`, `paid`.
+           In the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance): also `canceled`.
+         * Quotes: `draft`, `issued`.
+         * Credit notes: `draft`, `issued`.
+
+        Draft documents are automatically moved to the `issued` status before sending.
+
+        For more information, see [Send an invoice via email](https://docs.monite.com/accounts-receivable/invoices/create#send-via-email).
+
         Parameters
         ----------
         receivable_id : str
@@ -3467,8 +3678,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -3600,8 +3811,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -3702,8 +3913,8 @@ class RawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -3946,72 +4157,130 @@ class AsyncRawReceivablesClient:
             Return only receivables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
 
         type : typing.Optional[ReceivableType]
+            Return only receivables of the specified type. Use this parameter to get only invoices, or only quotes, or only credit notes.
 
         document_id : typing.Optional[str]
+            Return a receivable with the exact specified document number (case-sensitive). The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
 
         document_id_contains : typing.Optional[str]
+            Return only receivables whose document number (`document_id`) contains the specified string (case-sensitive).
 
         document_id_icontains : typing.Optional[str]
+            Return only receivables whose document number (`document_id`) contains the specified string (case-insensitive).
 
         issue_date_gt : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
 
         issue_date_lt : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued before the specified date and time.
 
         issue_date_gte : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued on or after the specified date and time.
 
         issue_date_lte : typing.Optional[dt.datetime]
+            Return only non-draft receivables that were issued before or on the specified date and time.
 
         created_at_gt : typing.Optional[dt.datetime]
+            Return only receivables created after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
 
         created_at_lt : typing.Optional[dt.datetime]
+            Return only receivables created before the specified date and time.
 
         created_at_gte : typing.Optional[dt.datetime]
+            Return only receivables created on or after the specified date and time.
 
         created_at_lte : typing.Optional[dt.datetime]
+            Return only receivables created before or on the specified date and time.
 
         counterpart_id : typing.Optional[str]
+            Return only receivables created for the counterpart with the specified ID.
+
+            Counterparts that have been deleted but have associated receivables will still return results here because the receivables contain a frozen copy of the counterpart data.
+
+            If the specified counterpart ID does not exist and never existed, no results are returned.
 
         counterpart_name : typing.Optional[str]
+            Return only receivables created for counterparts with the specified name (exact match, case-sensitive). For counterparts of `type` = `individual`, the full name is formatted as `first_name last_name`.
 
         counterpart_name_contains : typing.Optional[str]
+            Return only receivables created for counterparts whose name contains the specified string (case-sensitive).
 
         counterpart_name_icontains : typing.Optional[str]
+            Return only receivables created for counterparts whose name contains the specified string (case-insensitive).
 
         total_amount : typing.Optional[int]
+            Return only receivables with the exact specified total amount. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250."
 
         total_amount_gt : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) exceeds the specified value.
 
         total_amount_lt : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is less than the specified value.
 
         total_amount_gte : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is greater than or equal to the specified value.
 
         total_amount_lte : typing.Optional[int]
+            Return only receivables whose total amount (in minor units) is less than or equal to the specified value.
 
         discounted_subtotal : typing.Optional[int]
+            Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
 
         discounted_subtotal_gt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
 
         discounted_subtotal_lt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
 
         discounted_subtotal_gte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
 
         discounted_subtotal_lte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
 
         status : typing.Optional[ReceivablesGetRequestStatus]
+            Return only receivables that have the specified status. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
+
+            To query multiple statuses at once, use the `status__in` parameter instead.
 
         entity_user_id : typing.Optional[str]
+            Return only receivables created by the entity users with the specified IDs. To specify multiple user IDs, repeat this parameter for each ID:
+            `entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+
+            If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+            IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
 
         based_on : typing.Optional[str]
+            This parameter accepts a quote ID or an invoice ID.
+
+             * Specify a quote ID to find invoices created from this quote.
+             * Specify an invoice ID to find credit notes created for this invoice or find recurring invoices created from a base invoice.
+
+            Valid but nonexistent IDs do not raise errors but produce no results.
 
         due_date_gt : typing.Optional[str]
+            Return invoices that are due after the specified date (exclusive, `YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
 
         due_date_lt : typing.Optional[str]
+            Return invoices that are due before the specified date (exclusive, `YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
 
         due_date_gte : typing.Optional[str]
+            Return invoices that are due on or after the specified date (`YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
 
         due_date_lte : typing.Optional[str]
+            Return invoices that are due before or on the specified date (`YYYY-MM-DD`).
+
+            This filter excludes quotes, credit notes, and draft invoices.
 
         project_id : typing.Optional[str]
+            Return only receivables assigned to the project with the specified ID. Valid but nonexistent project IDs do not raise errors but return no results.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4095,6 +4364,17 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 403:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
@@ -4139,8 +4419,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -4259,8 +4539,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -4334,6 +4614,17 @@ class AsyncRawReceivablesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -4345,8 +4636,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -4364,11 +4655,6 @@ class AsyncRawReceivablesClient:
     async def post_receivables_search(
         self,
         *,
-        discounted_subtotal: typing.Optional[int] = OMIT,
-        discounted_subtotal_gt: typing.Optional[int] = OMIT,
-        discounted_subtotal_gte: typing.Optional[int] = OMIT,
-        discounted_subtotal_lt: typing.Optional[int] = OMIT,
-        discounted_subtotal_lte: typing.Optional[int] = OMIT,
         based_on: typing.Optional[str] = OMIT,
         counterpart_id: typing.Optional[str] = OMIT,
         counterpart_name: typing.Optional[str] = OMIT,
@@ -4378,6 +4664,11 @@ class AsyncRawReceivablesClient:
         created_at_gte: typing.Optional[dt.datetime] = OMIT,
         created_at_lt: typing.Optional[dt.datetime] = OMIT,
         created_at_lte: typing.Optional[dt.datetime] = OMIT,
+        discounted_subtotal: typing.Optional[int] = OMIT,
+        discounted_subtotal_gt: typing.Optional[int] = OMIT,
+        discounted_subtotal_gte: typing.Optional[int] = OMIT,
+        discounted_subtotal_lt: typing.Optional[int] = OMIT,
+        discounted_subtotal_lte: typing.Optional[int] = OMIT,
         document_id: typing.Optional[str] = OMIT,
         document_id_contains: typing.Optional[str] = OMIT,
         document_id_icontains: typing.Optional[str] = OMIT,
@@ -4417,21 +4708,6 @@ class AsyncRawReceivablesClient:
 
         Parameters
         ----------
-        discounted_subtotal : typing.Optional[int]
-            Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
-
-        discounted_subtotal_gt : typing.Optional[int]
-            Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
-
-        discounted_subtotal_gte : typing.Optional[int]
-            Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
-
-        discounted_subtotal_lt : typing.Optional[int]
-            Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
-
-        discounted_subtotal_lte : typing.Optional[int]
-            Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
-
         based_on : typing.Optional[str]
             This parameter accepts a quote ID or an invoice ID.
 
@@ -4467,6 +4743,21 @@ class AsyncRawReceivablesClient:
 
         created_at_lte : typing.Optional[dt.datetime]
             Return only receivables created before or on the specified date and time.
+
+        discounted_subtotal : typing.Optional[int]
+            Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
+
+        discounted_subtotal_gt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
+
+        discounted_subtotal_gte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
+
+        discounted_subtotal_lt : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
+
+        discounted_subtotal_lte : typing.Optional[int]
+            Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
 
         document_id : typing.Optional[str]
             Return a receivable with the exact specified document number (case-sensitive). The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
@@ -4505,8 +4796,14 @@ class AsyncRawReceivablesClient:
             IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
 
         entity_user_id_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables created by the entity users with the specified IDs.
+
+            If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+            IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
 
         id_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables with the specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
 
         issue_date_gt : typing.Optional[dt.datetime]
             Return only non-draft receivables that were issued after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
@@ -4521,21 +4818,56 @@ class AsyncRawReceivablesClient:
             Return only non-draft receivables that were issued before or on the specified date and time.
 
         limit : typing.Optional[int]
+            The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page.
+
+            When using pagination with a non-default limit, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other pagination parameters, `limit` is not inferred from `pagination_token`.
 
         order : typing.Optional[OrderEnum]
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         pagination_token : typing.Optional[str]
+            A pagination token obtained from a previous call to `GET /receivables` or `POST /receivables/search`. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other parameters except `limit` are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         product_ids : typing.Optional[typing.Sequence[str]]
+            Return only receivables with line items containing all of the products with the specified IDs and optionally other products that are not specified.
+
+            For example, given receivables that contain the following products:
+
+             1. productA
+             2. productB
+             3. productA, productB
+             4. productC
+             5. productA, productB, productC
+
+            `product_ids` = `[productA, productB]` will return receivables 3 and 5.
+
+            Valid but nonexistent product IDs do not raise errors but produce no results.
 
         product_ids_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables with line items containing at least one of the products with the specified IDs.
+
+            For example, given receivables that contain the following products:
+
+             1. productA
+             2. productB
+             3. productA, productB
+             4. productC
+             5. productB, productC
+
+            `product_ids__in` = `[productA, productB]` will return receivables 1, 2, 3, and 5.
+
+            Valid but nonexistent product IDs do not raise errors but produce no results.
 
         project_id : typing.Optional[str]
             Return only receivables assigned to the project with the specified ID. Valid but nonexistent project IDs do not raise errors but return no results.
 
         project_id_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables that belong to one of the projects with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
 
         sort : typing.Optional[ReceivableCursorFields2]
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         status : typing.Optional[ReceivablesSearchRequestStatus]
             Return only receivables that have the specified status. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
@@ -4543,10 +4875,35 @@ class AsyncRawReceivablesClient:
             To query multiple statuses at once, use the `status__in` parameter instead.
 
         status_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables that have the specified statuses. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
 
         tag_ids : typing.Optional[typing.Sequence[str]]
+            Return only receivables whose [tags](https://docs.monite.com/common/tags) include all of the tags with the specified IDs and optionally other tags that are not specified.
+
+            For example, given receivables with the following tags:
+
+             1. tagA
+             2. tagB
+             3. tagA, tagB
+             4. tagC
+             5. tagA, tagB, tagC
+
+            `tag_ids` = `[tagA, tagB]` will return receivables 3 and 5.
 
         tag_ids_in : typing.Optional[typing.Sequence[str]]
+            Return only receivables whose [tags](https://docs.monite.com/common/tags) include at least one of the tags with the specified IDs.
+
+            For example, given receivables with the following tags:
+
+             1. tagA
+             2. tagB
+             3. tagA, tagB
+             4. tagC
+             5. tagB, tagC
+
+            `tag_ids__in` = `[tagA, tagB]` will return receivables 1, 2, 3, and 5.
+
+            Valid but nonexistent tag IDs do not raise errors but produce no results.
 
         total_amount : typing.Optional[int]
             Return only receivables with the exact specified total amount. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
@@ -4578,11 +4935,6 @@ class AsyncRawReceivablesClient:
             "receivables/search",
             method="POST",
             json={
-                "discounted_subtotal": discounted_subtotal,
-                "discounted_subtotal__gt": discounted_subtotal_gt,
-                "discounted_subtotal__gte": discounted_subtotal_gte,
-                "discounted_subtotal__lt": discounted_subtotal_lt,
-                "discounted_subtotal__lte": discounted_subtotal_lte,
                 "based_on": based_on,
                 "counterpart_id": counterpart_id,
                 "counterpart_name": counterpart_name,
@@ -4592,6 +4944,11 @@ class AsyncRawReceivablesClient:
                 "created_at__gte": created_at_gte,
                 "created_at__lt": created_at_lt,
                 "created_at__lte": created_at_lte,
+                "discounted_subtotal": discounted_subtotal,
+                "discounted_subtotal__gt": discounted_subtotal_gt,
+                "discounted_subtotal__gte": discounted_subtotal_gte,
+                "discounted_subtotal__lt": discounted_subtotal_lt,
+                "discounted_subtotal__lte": discounted_subtotal_lte,
                 "document_id": document_id,
                 "document_id__contains": document_id_contains,
                 "document_id__icontains": document_id_icontains,
@@ -4652,6 +5009,17 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 403:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
@@ -4696,8 +5064,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -4743,6 +5111,17 @@ class AsyncRawReceivablesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -4776,8 +5155,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -4796,9 +5175,16 @@ class AsyncRawReceivablesClient:
         self, receivable_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ReceivableResponse]:
         """
+        Returns the details of an existing accounts receivable invoice, quote, or credit note with the specified ID.
+
+        The response fields vary depending on the document type. Use the `type` field to distinguish between different document types.
+
+        Entity users with the `receivable.read.allowed_for_own` permission (rather than `allowed`) can access only documents that they created themselves.
+
         Parameters
         ----------
         receivable_id : str
+            ID of an existing invoice, quote, or credit note that you want to retrieve.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4878,8 +5264,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -4983,8 +5369,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -5109,8 +5495,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -5133,12 +5519,16 @@ class AsyncRawReceivablesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[SuccessResult]:
         """
+        Only quotes in the `issued` status can be accepted.
+
+        When a quote is accepted, Monite automatically creates a draft invoice based on this quote. To find the newly created invoice, use `GET /receivables?based_on=QUOTE_ID`.
+
         Parameters
         ----------
         receivable_id : str
 
         signature : typing.Optional[Signature]
-            A digital signature, if required for quote acceptance
+            The counterpart's signature. Required if the quote field `signature_required` is `true`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5238,8 +5628,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -5343,8 +5733,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -5363,9 +5753,21 @@ class AsyncRawReceivablesClient:
         self, receivable_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ReceivableResponse]:
         """
+        Creates a copy of an existing accounts receivable invoice or quote. The original document can be in any status. The cloned document will have the `draft` status.
+
+        Cloning a document requires that all of the referenced resource IDs (counterpart ID, product IDs, and others) still exist.
+
+        Most of the original document's data is copied as is, with a few exceptions:
+
+         * Some fields are not copied: `attachments`, `document_id`, `issue_date`, quote `expiry_date`.
+         * Counterpart details, entity bank account details, and entity VAT number are fetched anew from their corresponding IDs.
+           This means, for example, that if the counterpart details have been changed since the original invoice or quote was created,
+           the cloned document will use the current counterpart details rather than the old details from the original document.
+
         Parameters
         ----------
         receivable_id : str
+            ID of an existing invoice or quote that you want to clone.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5456,8 +5858,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -5480,6 +5882,8 @@ class AsyncRawReceivablesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[SuccessResult]:
         """
+        Only quotes in the `issued` status can be declined.
+
         Parameters
         ----------
         receivable_id : str
@@ -5583,8 +5987,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -5751,8 +6155,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -5859,8 +6263,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -5972,8 +6376,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -6102,8 +6506,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -6257,8 +6661,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -6361,8 +6765,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -6493,8 +6897,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -6627,8 +7031,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -6754,8 +7158,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -6856,8 +7260,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -6883,6 +7287,13 @@ class AsyncRawReceivablesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReceivablePreviewResponse]:
         """
+        You can preview emails only for documents in the following statuses:
+
+         * Invoices: `draft`, `issued`, `overdue`, `partially_paid`, `paid`.
+           In the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance): also `canceled`.
+         * Quotes: `draft`, `issued`.
+         * Credit notes: `draft`, `issued`.
+
         Parameters
         ----------
         receivable_id : str
@@ -6987,8 +7398,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -7013,6 +7424,17 @@ class AsyncRawReceivablesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReceivableSendResponse]:
         """
+        Only documents in the following statuses can be sent via email:
+
+         * Invoices: `draft`, `issued`, `overdue`, `partially_paid`, `paid`.
+           In the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance): also `canceled`.
+         * Quotes: `draft`, `issued`.
+         * Credit notes: `draft`, `issued`.
+
+        Draft documents are automatically moved to the `issued` status before sending.
+
+        For more information, see [Send an invoice via email](https://docs.monite.com/accounts-receivable/invoices/create#send-via-email).
+
         Parameters
         ----------
         receivable_id : str
@@ -7125,8 +7547,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -7258,8 +7680,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -7360,8 +7782,8 @@ class AsyncRawReceivablesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

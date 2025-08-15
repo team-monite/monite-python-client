@@ -6,20 +6,11 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class AirwallexPlaidAccount(UniversalBaseModel):
-    id: str = pydantic.Field()
+class LineItemColumnSettings(UniversalBaseModel):
+    display: typing.Optional[bool] = None
+    label: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Plaid`s unique identifier for the account
-    """
-
-    mask: str = pydantic.Field()
-    """
-    The last 2-4 alphanumeric characters of an account's official account number
-    """
-
-    name: str = pydantic.Field()
-    """
-    The name of the account, either assigned by the user or by the financial institution itself
+    Line item table column header to override Monite's default. If not set, the Monite's default will be used.
     """
 
     if IS_PYDANTIC_V2:

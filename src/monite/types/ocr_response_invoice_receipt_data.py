@@ -9,10 +9,99 @@ from .ocr_response_invoice_receipt_line_item_raw import OcrResponseInvoiceReceip
 
 
 class OcrResponseInvoiceReceiptData(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["invoice"]] = None
+    counterpart_account_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Counterpart bank ID
+    """
+
+    counterpart_account_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The bank account number
+    """
+
+    counterpart_address: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Counterpart address
+    """
+
+    counterpart_address_object: typing.Optional[OcrAddress] = pydantic.Field(default=None)
+    """
+    Counterpart address as a json object compatible with counterparts service
+    """
+
+    counterpart_branch_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The bank branch number
+    """
+
+    counterpart_email: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Email address of the counterpart
+    """
+
+    counterpart_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Counterpart name
+    """
+
+    counterpart_routing_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The bank routing number
+    """
+
+    counterpart_vat_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Counterpart VAT ID
+    """
+
+    currency: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ISO 4217 currency code
+    """
+
     discount_raw: typing.Optional[float] = pydantic.Field(default=None)
     """
     Discount Raw amount
+    """
+
+    document_due_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Document due date in ISO format
+    """
+
+    document_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Invoice/receipt ID
+    """
+
+    document_issued_at_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Document issuance date in ISO format
+    """
+
+    line_items_raw: typing.Optional[typing.List[OcrResponseInvoiceReceiptLineItemRaw]] = pydantic.Field(default=None)
+    """
+    List of line items from document raw, without minor units conversion.
+    """
+
+    payment_terms_raw: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Raw payment terms parsed but not calculated.
+    """
+
+    purchase_order_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Purchase Order Number
+    """
+
+    tax_payer_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Tax payer ID
+    """
+
+    total_excl_vat_raw: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Subtotal, without minor units
     """
 
     total_paid_amount_raw: typing.Optional[float] = pydantic.Field(default=None)
@@ -25,11 +114,6 @@ class OcrResponseInvoiceReceiptData(UniversalBaseModel):
     Total, without minor units
     """
 
-    total_excl_vat_raw: typing.Optional[float] = pydantic.Field(default=None)
-    """
-    Subtotal, without minor units
-    """
-
     total_vat_amount_raw: typing.Optional[float] = pydantic.Field(default=None)
     """
     VAT amount, without minor units
@@ -40,85 +124,7 @@ class OcrResponseInvoiceReceiptData(UniversalBaseModel):
     VAT Percent raw, without minor units.
     """
 
-    currency: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    ISO 4217 currency code
-    """
-
-    purchase_order_number: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Purchase Order Number
-    """
-
-    counterpart_name: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Counterpart name
-    """
-
-    counterpart_email: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Email address of the counterpart
-    """
-
-    counterpart_address: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Counterpart address
-    """
-
-    counterpart_account_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Counterpart bank ID
-    """
-
-    document_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Invoice/receipt ID
-    """
-
-    payment_terms_raw: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
-    """
-    Raw payment terms parsed but not calculated.
-    """
-
-    tax_payer_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Tax payer ID
-    """
-
-    counterpart_vat_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Counterpart VAT ID
-    """
-
-    document_issued_at_date: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Document issuance date in ISO format
-    """
-
-    document_due_date: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Document due date in ISO format
-    """
-
-    counterpart_address_object: typing.Optional[OcrAddress] = pydantic.Field(default=None)
-    """
-    Counterpart address as a json object compatible with counterparts service
-    """
-
-    counterpart_account_number: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The bank account number
-    """
-
-    counterpart_routing_number: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The bank routing number
-    """
-
-    line_items_raw: typing.Optional[typing.List[OcrResponseInvoiceReceiptLineItemRaw]] = pydantic.Field(default=None)
-    """
-    List of line items from document raw, without minor units conversion.
-    """
+    type: typing.Optional[typing.Literal["invoice"]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

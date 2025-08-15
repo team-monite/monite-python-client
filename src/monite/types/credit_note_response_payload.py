@@ -5,11 +5,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .attachment_response import AttachmentResponse
 from .counterpart_type import CounterpartType
 from .credit_note_response_payload_entity import CreditNoteResponsePayloadEntity
 from .credit_note_state_enum import CreditNoteStateEnum
 from .currency_enum import CurrencyEnum
 from .discount_response import DiscountResponse
+from .document_rendering_settings import DocumentRenderingSettings
 from .einvoicing_credentials import EinvoicingCredentials
 from .language_code_enum import LanguageCodeEnum
 from .receivable_counterpart_contact import ReceivableCounterpartContact
@@ -34,6 +36,11 @@ class CreditNoteResponsePayload(UniversalBaseModel):
     updated_at: dt.datetime = pydantic.Field()
     """
     Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard.
+    """
+
+    attachments: typing.Optional[typing.List[AttachmentResponse]] = pydantic.Field(default=None)
+    """
+    List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated.
     """
 
     based_on: typing.Optional[str] = pydantic.Field(default=None)
@@ -136,6 +143,11 @@ class CreditNoteResponsePayload(UniversalBaseModel):
     The sequential code systematically assigned to invoices.
     """
 
+    document_rendering: typing.Optional[DocumentRenderingSettings] = pydantic.Field(default=None)
+    """
+    Settings for rendering documents in PDF format, including settings for line items and specific document types.
+    """
+
     due_date: typing.Optional[str] = pydantic.Field(default=None)
     """
     Optional field representing date until which invoice should be paid
@@ -172,7 +184,12 @@ class CreditNoteResponsePayload(UniversalBaseModel):
 
     footer: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Optional text displayed below the line items table in the PDF.
+    Optional text displayed below the line items table in the PDF. See also: `memo`, `commercial_condition_description`.
+    """
+
+    is_einvoice: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If `true`, the credit note will be sent through an e-invoicing network. The value is inherited from the invoice for which the credit note was created, and cannot be changed.
     """
 
     issue_date: typing.Optional[dt.datetime] = pydantic.Field(default=None)
@@ -183,7 +200,7 @@ class CreditNoteResponsePayload(UniversalBaseModel):
     line_items: typing.List[ResponseItem]
     memo: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A note with additional information for a receivable.
+    An optional note for the customer, displayed above the line items table in the PDF. See also: `footer`, `commercial_condition_description`.
     """
 
     network_credentials: typing.Optional[EinvoicingCredentials] = pydantic.Field(default=None)
@@ -208,7 +225,7 @@ class CreditNoteResponsePayload(UniversalBaseModel):
 
     project_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A project related to current receivable
+    ID of the [project](https://docs.monite.com/common/projects) associated with this credit note. If specified, the project name will be included in the header of the PDF credit note.
     """
 
     purchase_order: typing.Optional[str] = pydantic.Field(default=None)

@@ -4,11 +4,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .bank_account_verification_type import BankAccountVerificationType
+from .suggested_counterpart_payload import SuggestedCounterpartPayload
 
 
-class CompleteRefreshVerificationRequest(UniversalBaseModel):
-    type: BankAccountVerificationType
+class SuggestedResponse(UniversalBaseModel):
+    suggested_counterpart: SuggestedCounterpartPayload
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

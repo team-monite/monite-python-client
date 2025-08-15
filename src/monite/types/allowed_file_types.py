@@ -18,6 +18,7 @@ AllowedFileTypes = typing.Union[
         "additional_identity_documents",
         "receivable_signatures",
         "einvoices_xml",
+        "attachments",
     ],
     typing.Any,
 ]

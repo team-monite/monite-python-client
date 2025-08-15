@@ -8,9 +8,20 @@ from .invoice_file import InvoiceFile
 
 
 class Invoice(UniversalBaseModel):
-    due_date: typing.Optional[str] = None
-    file: typing.Optional[InvoiceFile] = None
-    issue_date: typing.Optional[str] = None
+    due_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The invoice due date (`yyyy-mm-dd`) to be displayed on the payment page.
+    """
+
+    file: typing.Optional[InvoiceFile] = pydantic.Field(default=None)
+    """
+    The invoice file (for example, PDF or PNG). If specified, the payment page will include a link to download this file.
+    """
+
+    issue_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The invoice issue date (`yyyy-mm-dd`) to be displayed on the payment page.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -99,9 +99,10 @@ class PaymentTermsClient:
             token="YOUR_TOKEN",
         )
         client.payment_terms.create(
-            name="name",
+            description="Payment is due within 30 days after the invoice issue date",
+            name="Net 30",
             term_final=TermFinalDays(
-                number_of_days=1,
+                number_of_days=30,
             ),
         )
         """
@@ -336,9 +337,10 @@ class AsyncPaymentTermsClient:
 
         async def main() -> None:
             await client.payment_terms.create(
-                name="name",
+                description="Payment is due within 30 days after the invoice issue date",
+                name="Net 30",
                 term_final=TermFinalDays(
-                    number_of_days=1,
+                    number_of_days=30,
                 ),
             )
 

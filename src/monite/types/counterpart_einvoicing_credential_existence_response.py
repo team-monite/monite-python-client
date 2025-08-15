@@ -4,18 +4,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .payment_intents_recipient import PaymentIntentsRecipient
-from .payment_object_payable import PaymentObjectPayable
 
 
-class SinglePaymentIntent(UniversalBaseModel):
-    object: PaymentObjectPayable
-    payment_reference: typing.Optional[str] = pydantic.Field(default=None)
+class CounterpartEinvoicingCredentialExistenceResponse(UniversalBaseModel):
+    exists: bool = pydantic.Field()
     """
-    Must be provided if payable's document id is missing.
+    `true` is the specified identifier is registered as a receiver in PEPPOL, and `false` otherwise.
     """
-
-    recipient: PaymentIntentsRecipient
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

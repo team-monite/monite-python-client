@@ -44,7 +44,7 @@ class EntityIndividualResponse(UniversalBaseModel):
 
     logo: typing.Optional[FileSchema2] = pydantic.Field(default=None)
     """
-    A logo image of the entity
+    An object containing the entity logo URL and other image details, or `null` if the entity does not have a logo.
     """
 
     phone: typing.Optional[str] = pydantic.Field(default=None)

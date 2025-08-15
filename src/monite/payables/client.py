@@ -26,6 +26,7 @@ from ..types.payable_validations_resource import PayableValidationsResource
 from ..types.payables_fields_allowed_for_validate import PayablesFieldsAllowedForValidate
 from ..types.source_of_payable_data_enum import SourceOfPayableDataEnum
 from ..types.suggested_payment_term import SuggestedPaymentTerm
+from ..types.suggested_response import SuggestedResponse
 from .line_items.client import AsyncLineItemsClient, LineItemsClient
 from .raw_client import AsyncRawPayablesClient, RawPayablesClient
 
@@ -975,7 +976,7 @@ class PayablesClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> PayableTemplatesVariablesObjectList:
         """
-        Get a list of placeholders allowed to insert into an email template for customization
+        Returns a list of placeholders that can be used to personalize email templates  related to payables. These include payables attributes such as `currency`,  `customer_name`, `document_id`, `due_date`,  `invoice_id`, `total_amount`, and `uploaded_username`.
 
         Parameters
         ----------
@@ -1070,6 +1071,7 @@ class PayablesClient:
         self,
         payable_id: str,
         *,
+        amount_paid: typing.Optional[int] = OMIT,
         counterpart_address_id: typing.Optional[str] = OMIT,
         counterpart_bank_account_id: typing.Optional[str] = OMIT,
         counterpart_id: typing.Optional[str] = OMIT,
@@ -1100,6 +1102,9 @@ class PayablesClient:
         Parameters
         ----------
         payable_id : str
+
+        amount_paid : typing.Optional[int]
+            How much was paid on the invoice (in minor units).
 
         counterpart_address_id : typing.Optional[str]
             The ID of counterpart address object stored in counterparts service
@@ -1190,6 +1195,7 @@ class PayablesClient:
         """
         _response = self._raw_client.update_by_id(
             payable_id,
+            amount_paid=amount_paid,
             counterpart_address_id=counterpart_address_id,
             counterpart_bank_account_id=counterpart_bank_account_id,
             counterpart_id=counterpart_id,
@@ -1374,9 +1380,12 @@ class PayablesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PayableHistoryPaginationResponse:
         """
+        Returns a chronological list of events related to the specified payable.  This includes changes in status, updates to data, comments, and actions taken  by users or automation rules.
+
         Parameters
         ----------
         payable_id : str
+            The unique identifier of the payable whose history you want to retrieve.
 
         order : typing.Optional[OrderEnum]
             Sort order (ascending by default). Typically used together with the `sort` parameter.
@@ -1611,11 +1620,12 @@ class PayablesClient:
         self, payable_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> PayableResponseSchema:
         """
-        Reset payable state from rejected to new.
+        Moves payables in the `rejected` or `waiting_to_be_paid` statuses back to `new`, allowing further actions such as editing, approval, or payment. The
 
         Parameters
         ----------
         payable_id : str
+            The unique identifier of the payable you want to reopen.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1673,6 +1683,82 @@ class PayablesClient:
         )
         """
         _response = self._raw_client.submit_for_approval_by_id(payable_id, request_options=request_options)
+        return _response.data
+
+    def get_payables_id_suggestions(
+        self, payable_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> SuggestedResponse:
+        """
+        Retrieves the most likely matching counterpart for a given payable, based on an AI-powered analysis of the payable's data.
+
+        When a user uploads a payable, Monite automatically compares key fields—such as `name`, `address`, `VAT ID`, and bank `account`—against existing counterparts. If a sufficiently similar match is found, this endpoint will return a suggested counterpart.
+
+        If no suitable match is identified, the response will be empty.
+
+        **Note:** Suggestions are automatically generated during payable upload. This endpoint simply retrieves the existing suggestion for a specific payable.
+
+        Parameters
+        ----------
+        payable_id : str
+            The unique identifier of the payable you want to find matching suggestions for.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SuggestedResponse
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.get_payables_id_suggestions(
+            payable_id="payable_id",
+        )
+        """
+        _response = self._raw_client.get_payables_id_suggestions(payable_id, request_options=request_options)
+        return _response.data
+
+    def delete_payables_id_suggestions(
+        self, payable_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Deletes the automatically generated counterpart suggestion for a specific payable.
+
+        Parameters
+        ----------
+        payable_id : str
+            The unique identifier of the payable whose suggestions you want to delete.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.payables.delete_payables_id_suggestions(
+            payable_id="payable_id",
+        )
+        """
+        _response = self._raw_client.delete_payables_id_suggestions(payable_id, request_options=request_options)
         return _response.data
 
     def validate_by_id(
@@ -2710,7 +2796,7 @@ class AsyncPayablesClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> PayableTemplatesVariablesObjectList:
         """
-        Get a list of placeholders allowed to insert into an email template for customization
+        Returns a list of placeholders that can be used to personalize email templates  related to payables. These include payables attributes such as `currency`,  `customer_name`, `document_id`, `due_date`,  `invoice_id`, `total_amount`, and `uploaded_username`.
 
         Parameters
         ----------
@@ -2829,6 +2915,7 @@ class AsyncPayablesClient:
         self,
         payable_id: str,
         *,
+        amount_paid: typing.Optional[int] = OMIT,
         counterpart_address_id: typing.Optional[str] = OMIT,
         counterpart_bank_account_id: typing.Optional[str] = OMIT,
         counterpart_id: typing.Optional[str] = OMIT,
@@ -2859,6 +2946,9 @@ class AsyncPayablesClient:
         Parameters
         ----------
         payable_id : str
+
+        amount_paid : typing.Optional[int]
+            How much was paid on the invoice (in minor units).
 
         counterpart_address_id : typing.Optional[str]
             The ID of counterpart address object stored in counterparts service
@@ -2957,6 +3047,7 @@ class AsyncPayablesClient:
         """
         _response = await self._raw_client.update_by_id(
             payable_id,
+            amount_paid=amount_paid,
             counterpart_address_id=counterpart_address_id,
             counterpart_bank_account_id=counterpart_bank_account_id,
             counterpart_id=counterpart_id,
@@ -3173,9 +3264,12 @@ class AsyncPayablesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PayableHistoryPaginationResponse:
         """
+        Returns a chronological list of events related to the specified payable.  This includes changes in status, updates to data, comments, and actions taken  by users or automation rules.
+
         Parameters
         ----------
         payable_id : str
+            The unique identifier of the payable whose history you want to retrieve.
 
         order : typing.Optional[OrderEnum]
             Sort order (ascending by default). Typically used together with the `sort` parameter.
@@ -3444,11 +3538,12 @@ class AsyncPayablesClient:
         self, payable_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> PayableResponseSchema:
         """
-        Reset payable state from rejected to new.
+        Moves payables in the `rejected` or `waiting_to_be_paid` statuses back to `new`, allowing further actions such as editing, approval, or payment. The
 
         Parameters
         ----------
         payable_id : str
+            The unique identifier of the payable you want to reopen.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3522,6 +3617,98 @@ class AsyncPayablesClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.submit_for_approval_by_id(payable_id, request_options=request_options)
+        return _response.data
+
+    async def get_payables_id_suggestions(
+        self, payable_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> SuggestedResponse:
+        """
+        Retrieves the most likely matching counterpart for a given payable, based on an AI-powered analysis of the payable's data.
+
+        When a user uploads a payable, Monite automatically compares key fields—such as `name`, `address`, `VAT ID`, and bank `account`—against existing counterparts. If a sufficiently similar match is found, this endpoint will return a suggested counterpart.
+
+        If no suitable match is identified, the response will be empty.
+
+        **Note:** Suggestions are automatically generated during payable upload. This endpoint simply retrieves the existing suggestion for a specific payable.
+
+        Parameters
+        ----------
+        payable_id : str
+            The unique identifier of the payable you want to find matching suggestions for.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SuggestedResponse
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.payables.get_payables_id_suggestions(
+                payable_id="payable_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_payables_id_suggestions(payable_id, request_options=request_options)
+        return _response.data
+
+    async def delete_payables_id_suggestions(
+        self, payable_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Deletes the automatically generated counterpart suggestion for a specific payable.
+
+        Parameters
+        ----------
+        payable_id : str
+            The unique identifier of the payable whose suggestions you want to delete.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.payables.delete_payables_id_suggestions(
+                payable_id="payable_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_payables_id_suggestions(payable_id, request_options=request_options)
         return _response.data
 
     async def validate_by_id(

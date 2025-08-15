@@ -124,7 +124,7 @@ class RolesClient:
         Parameters
         ----------
         name : str
-            Role name
+            The role name is case-sensitive and must be unique.
 
         permissions : BizObjectsSchemaInput
             Access permissions
@@ -231,7 +231,7 @@ class RolesClient:
         role_id : str
 
         name : typing.Optional[str]
-            Role name
+            The new name for this role. Case-sensitive and must be unique.
 
         permissions : typing.Optional[BizObjectsSchemaInput]
             Access permissions
@@ -379,7 +379,7 @@ class AsyncRolesClient:
         Parameters
         ----------
         name : str
-            Role name
+            The role name is case-sensitive and must be unique.
 
         permissions : BizObjectsSchemaInput
             Access permissions
@@ -510,7 +510,7 @@ class AsyncRolesClient:
         role_id : str
 
         name : typing.Optional[str]
-            Role name
+            The new name for this role. Case-sensitive and must be unique.
 
         permissions : typing.Optional[BizObjectsSchemaInput]
             Access permissions

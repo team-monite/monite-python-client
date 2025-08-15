@@ -4,13 +4,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .airwallex_plaid_verification import AirwallexPlaidVerification
+from .receipt_line_item_response_schema import ReceiptLineItemResponseSchema
 
 
-class BankAccountVerifications(UniversalBaseModel):
-    airwallex_plaid: typing.Optional[AirwallexPlaidVerification] = pydantic.Field(default=None)
+class ReceiptLineItemsPaginationResponse(UniversalBaseModel):
+    data: typing.List[ReceiptLineItemResponseSchema]
+    next_pagination_token: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Airwallex Plaid verification
+    Next page token.
+    """
+
+    prev_pagination_token: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Previous page token.
     """
 
     if IS_PYDANTIC_V2:

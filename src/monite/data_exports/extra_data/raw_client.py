@@ -13,8 +13,8 @@ from ...core.pydantic_utilities import parse_obj_as
 from ...core.request_options import RequestOptions
 from ...errors.bad_request_error import BadRequestError
 from ...errors.forbidden_error import ForbiddenError
-from ...errors.internal_server_error import InternalServerError
 from ...errors.not_found_error import NotFoundError
+from ...errors.too_many_requests_error import TooManyRequestsError
 from ...errors.unauthorized_error import UnauthorizedError
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
 from ...types.export_setting_cursor_fields import ExportSettingCursorFields
@@ -55,16 +55,18 @@ class RawExtraDataClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[ExportSettingCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         created_at_gt : typing.Optional[dt.datetime]
 
@@ -161,8 +163,8 @@ class RawExtraDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -271,8 +273,8 @@ class RawExtraDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -362,8 +364,8 @@ class RawExtraDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -453,8 +455,8 @@ class RawExtraDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -580,8 +582,8 @@ class RawExtraDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -625,16 +627,18 @@ class AsyncRawExtraDataClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
-            Max is 100
+            The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
 
         pagination_token : typing.Optional[str]
-            A token, obtained from previous page. Prior over other filters
+            A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+            If not specified, the first page of results will be returned.
 
         sort : typing.Optional[ExportSettingCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         created_at_gt : typing.Optional[dt.datetime]
 
@@ -731,8 +735,8 @@ class AsyncRawExtraDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -841,8 +845,8 @@ class AsyncRawExtraDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -932,8 +936,8 @@ class AsyncRawExtraDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1023,8 +1027,8 @@ class AsyncRawExtraDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1150,8 +1154,8 @@ class AsyncRawExtraDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

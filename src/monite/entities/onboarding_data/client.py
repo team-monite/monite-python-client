@@ -68,6 +68,7 @@ class OnboardingDataClient:
         business_profile: typing.Optional[BusinessProfileInput] = OMIT,
         ownership_declaration: typing.Optional[OwnershipDeclarationInput] = OMIT,
         tos_acceptance: typing.Optional[TermsOfServiceAcceptanceInput] = OMIT,
+        treasury_tos_acceptance: typing.Optional[TermsOfServiceAcceptanceInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityOnboardingDataResponse:
         """
@@ -83,6 +84,9 @@ class OnboardingDataClient:
 
         tos_acceptance : typing.Optional[TermsOfServiceAcceptanceInput]
             Details on the entity's acceptance of the service agreement.
+
+        treasury_tos_acceptance : typing.Optional[TermsOfServiceAcceptanceInput]
+            Details on the entity's acceptance of the Stripe Treasury service agreement.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -110,6 +114,7 @@ class OnboardingDataClient:
             business_profile=business_profile,
             ownership_declaration=ownership_declaration,
             tos_acceptance=tos_acceptance,
+            treasury_tos_acceptance=treasury_tos_acceptance,
             request_options=request_options,
         )
         return _response.data
@@ -177,6 +182,7 @@ class AsyncOnboardingDataClient:
         business_profile: typing.Optional[BusinessProfileInput] = OMIT,
         ownership_declaration: typing.Optional[OwnershipDeclarationInput] = OMIT,
         tos_acceptance: typing.Optional[TermsOfServiceAcceptanceInput] = OMIT,
+        treasury_tos_acceptance: typing.Optional[TermsOfServiceAcceptanceInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityOnboardingDataResponse:
         """
@@ -192,6 +198,9 @@ class AsyncOnboardingDataClient:
 
         tos_acceptance : typing.Optional[TermsOfServiceAcceptanceInput]
             Details on the entity's acceptance of the service agreement.
+
+        treasury_tos_acceptance : typing.Optional[TermsOfServiceAcceptanceInput]
+            Details on the entity's acceptance of the Stripe Treasury service agreement.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -227,6 +236,7 @@ class AsyncOnboardingDataClient:
             business_profile=business_profile,
             ownership_declaration=ownership_declaration,
             tos_acceptance=tos_acceptance,
+            treasury_tos_acceptance=treasury_tos_acceptance,
             request_options=request_options,
         )
         return _response.data

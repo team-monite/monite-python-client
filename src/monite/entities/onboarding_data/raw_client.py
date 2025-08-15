@@ -11,8 +11,9 @@ from ...core.pydantic_utilities import parse_obj_as
 from ...core.request_options import RequestOptions
 from ...core.serialization import convert_and_respect_annotation_metadata
 from ...errors.conflict_error import ConflictError
-from ...errors.internal_server_error import InternalServerError
 from ...errors.not_found_error import NotFoundError
+from ...errors.too_many_requests_error import TooManyRequestsError
+from ...errors.unauthorized_error import UnauthorizedError
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
 from ...types.business_profile_input import BusinessProfileInput
 from ...types.entity_onboarding_data_response import EntityOnboardingDataResponse
@@ -58,6 +59,17 @@ class RawOnboardingDataClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -91,8 +103,8 @@ class RawOnboardingDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -114,6 +126,7 @@ class RawOnboardingDataClient:
         business_profile: typing.Optional[BusinessProfileInput] = OMIT,
         ownership_declaration: typing.Optional[OwnershipDeclarationInput] = OMIT,
         tos_acceptance: typing.Optional[TermsOfServiceAcceptanceInput] = OMIT,
+        treasury_tos_acceptance: typing.Optional[TermsOfServiceAcceptanceInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[EntityOnboardingDataResponse]:
         """
@@ -129,6 +142,9 @@ class RawOnboardingDataClient:
 
         tos_acceptance : typing.Optional[TermsOfServiceAcceptanceInput]
             Details on the entity's acceptance of the service agreement.
+
+        treasury_tos_acceptance : typing.Optional[TermsOfServiceAcceptanceInput]
+            Details on the entity's acceptance of the Stripe Treasury service agreement.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -151,6 +167,9 @@ class RawOnboardingDataClient:
                 "tos_acceptance": convert_and_respect_annotation_metadata(
                     object_=tos_acceptance, annotation=TermsOfServiceAcceptanceInput, direction="write"
                 ),
+                "treasury_tos_acceptance": convert_and_respect_annotation_metadata(
+                    object_=treasury_tos_acceptance, annotation=TermsOfServiceAcceptanceInput, direction="write"
+                ),
             },
             headers={
                 "content-type": "application/json",
@@ -168,6 +187,17 @@ class RawOnboardingDataClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -201,8 +231,8 @@ class RawOnboardingDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -253,6 +283,17 @@ class AsyncRawOnboardingDataClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -286,8 +327,8 @@ class AsyncRawOnboardingDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -309,6 +350,7 @@ class AsyncRawOnboardingDataClient:
         business_profile: typing.Optional[BusinessProfileInput] = OMIT,
         ownership_declaration: typing.Optional[OwnershipDeclarationInput] = OMIT,
         tos_acceptance: typing.Optional[TermsOfServiceAcceptanceInput] = OMIT,
+        treasury_tos_acceptance: typing.Optional[TermsOfServiceAcceptanceInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[EntityOnboardingDataResponse]:
         """
@@ -324,6 +366,9 @@ class AsyncRawOnboardingDataClient:
 
         tos_acceptance : typing.Optional[TermsOfServiceAcceptanceInput]
             Details on the entity's acceptance of the service agreement.
+
+        treasury_tos_acceptance : typing.Optional[TermsOfServiceAcceptanceInput]
+            Details on the entity's acceptance of the Stripe Treasury service agreement.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -346,6 +391,9 @@ class AsyncRawOnboardingDataClient:
                 "tos_acceptance": convert_and_respect_annotation_metadata(
                     object_=tos_acceptance, annotation=TermsOfServiceAcceptanceInput, direction="write"
                 ),
+                "treasury_tos_acceptance": convert_and_respect_annotation_metadata(
+                    object_=treasury_tos_acceptance, annotation=TermsOfServiceAcceptanceInput, direction="write"
+                ),
             },
             headers={
                 "content-type": "application/json",
@@ -363,6 +411,17 @@ class AsyncRawOnboardingDataClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 404:
                 raise NotFoundError(
                     headers=dict(_response.headers),
@@ -396,8 +455,8 @@ class AsyncRawOnboardingDataClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

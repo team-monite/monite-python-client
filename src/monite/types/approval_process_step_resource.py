@@ -8,6 +8,7 @@ from .approval_process_step_status import ApprovalProcessStepStatus
 
 
 class ApprovalProcessStepResource(UniversalBaseModel):
+    approval_request_id: typing.Optional[str] = None
     approved_by: typing.List[str]
     object_id: str
     rejected_by: typing.Optional[str] = None

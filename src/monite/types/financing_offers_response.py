@@ -9,14 +9,14 @@ from .wc_business_status import WcBusinessStatus
 
 
 class FinancingOffersResponse(UniversalBaseModel):
-    offers: typing.List[FinancingOffer] = pydantic.Field()
-    """
-    A list of financing offers extended to the business.
-    """
-
     business_status: WcBusinessStatus = pydantic.Field()
     """
     The business's onboarding status.
+    """
+
+    offers: typing.List[FinancingOffer] = pydantic.Field()
+    """
+    A list of financing offers extended to the business.
     """
 
     if IS_PYDANTIC_V2:

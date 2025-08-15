@@ -47,28 +47,48 @@ class PaymentLinksClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PublicPaymentLinkResponse:
         """
+        Create a new [payment link](https://docs.monite.com/payments/payment-links) for an accounts payble invoice (to be paid by the entity) or an accounts receivable invoice (to be sent to the counterpart).
+
         Parameters
         ----------
         payment_methods : typing.Sequence[MoniteAllPaymentMethodsTypes]
+            Payment methods to be displayed on the payment page. These payment methods must already be enabled for the entity.
+
+            **Note:** Available payment methods vary per country, transaction type (B2B or B2C), and the payment link type (entity pays a bill or entity generates an invoice payment link for its counterpart). For more information, see [Payment methods](https://docs.monite.com/payments/payment-methods).
 
         recipient : PaymentAccountObject
+            Specifies the invoice vendor - entity or counterpart. This is the payee, or the recipient of the payment.
 
         amount : typing.Optional[int]
-            The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Required if `object` is not specified.
+            The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). The usage of the `amount` field depends on the type of the payment link you are creating:
+
+             * If the `invoice` object is specified (that is, when creating a payment link for an external invoice),
+              `amount` is required.
+             * If `object` is specified:
+               * If `object.type` is `payable`, `amount` must not be specified since it's taken from the payable.
+               * If `object.type` is `receivable`, you can provide a custom `amount` value to create a partial payment link.
+                 In this case, the `amount` value must not exceed the invoice's `amount_to_pay` minus all active payment links.
 
         currency : typing.Optional[CurrencyEnum]
-            The payment currency. Required if `object` is not specified.
+            The payment currency. Mutually exclusive with `object`.
 
         expires_at : typing.Optional[dt.datetime]
+            Date and time (in the ISO 8601 format) when this payment link will expire. Can be up to 70 days from the current date and time.
+            If omitted:
+
+             * Payment links for payables and receivables expire 30 days after the invoice due date.
+             * Payment links for external invoices expire 30 days after the link creation time.
+
+            For more information, see [Payment link expiration](https://docs.monite.com/payments/payment-links#expiration).
 
         invoice : typing.Optional[Invoice]
-            An object containing information about the invoice being paid. Used only if `object` is not specified.
+            An object containing information about an external invoice to be paid. Mutually exclusive with `object`.
 
         object : typing.Optional[PaymentObject]
             If the invoice being paid is a payable or receivable stored in Monite, provide the `object` object containing the invoice type and ID. Otherwise, use the `amount`, `currency`, `payment_reference`, and (optionally) `invoice` fields to specify the invoice-related data.
 
         payment_reference : typing.Optional[str]
-            A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Required if `object` is not specified.
+            A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Mutually exclusive with `object`.
 
         return_url : typing.Optional[str]
             The URL where to redirect the payer after the payment. If `return_url` is specified, then after the payment is completed the payment page will display the "Return to platform" link that navigates to this URL.
@@ -83,7 +103,7 @@ class PaymentLinksClient:
 
         Examples
         --------
-        from monite import Monite, PaymentAccountObject
+        from monite import Monite, PaymentAccountObject, PaymentObject
 
         client = Monite(
             monite_version="YOUR_MONITE_VERSION",
@@ -91,11 +111,16 @@ class PaymentLinksClient:
             token="YOUR_TOKEN",
         )
         client.payment_links.create(
+            object=PaymentObject(
+                id="5940eb3a-de95-4e7e-b5e7-8a4ad0ea341b",
+                type="payable",
+            ),
             payment_methods=["sepa_credit"],
             recipient=PaymentAccountObject(
-                id="id",
-                type="entity",
+                id="6296af34-6feb-43c1-b567-83e3bf45050c",
+                type="counterpart",
             ),
+            return_url="https://example.com/where-to-redirect-after-payment",
         )
         """
         _response = self._raw_client.create(
@@ -207,28 +232,48 @@ class AsyncPaymentLinksClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PublicPaymentLinkResponse:
         """
+        Create a new [payment link](https://docs.monite.com/payments/payment-links) for an accounts payble invoice (to be paid by the entity) or an accounts receivable invoice (to be sent to the counterpart).
+
         Parameters
         ----------
         payment_methods : typing.Sequence[MoniteAllPaymentMethodsTypes]
+            Payment methods to be displayed on the payment page. These payment methods must already be enabled for the entity.
+
+            **Note:** Available payment methods vary per country, transaction type (B2B or B2C), and the payment link type (entity pays a bill or entity generates an invoice payment link for its counterpart). For more information, see [Payment methods](https://docs.monite.com/payments/payment-methods).
 
         recipient : PaymentAccountObject
+            Specifies the invoice vendor - entity or counterpart. This is the payee, or the recipient of the payment.
 
         amount : typing.Optional[int]
-            The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Required if `object` is not specified.
+            The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). The usage of the `amount` field depends on the type of the payment link you are creating:
+
+             * If the `invoice` object is specified (that is, when creating a payment link for an external invoice),
+              `amount` is required.
+             * If `object` is specified:
+               * If `object.type` is `payable`, `amount` must not be specified since it's taken from the payable.
+               * If `object.type` is `receivable`, you can provide a custom `amount` value to create a partial payment link.
+                 In this case, the `amount` value must not exceed the invoice's `amount_to_pay` minus all active payment links.
 
         currency : typing.Optional[CurrencyEnum]
-            The payment currency. Required if `object` is not specified.
+            The payment currency. Mutually exclusive with `object`.
 
         expires_at : typing.Optional[dt.datetime]
+            Date and time (in the ISO 8601 format) when this payment link will expire. Can be up to 70 days from the current date and time.
+            If omitted:
+
+             * Payment links for payables and receivables expire 30 days after the invoice due date.
+             * Payment links for external invoices expire 30 days after the link creation time.
+
+            For more information, see [Payment link expiration](https://docs.monite.com/payments/payment-links#expiration).
 
         invoice : typing.Optional[Invoice]
-            An object containing information about the invoice being paid. Used only if `object` is not specified.
+            An object containing information about an external invoice to be paid. Mutually exclusive with `object`.
 
         object : typing.Optional[PaymentObject]
             If the invoice being paid is a payable or receivable stored in Monite, provide the `object` object containing the invoice type and ID. Otherwise, use the `amount`, `currency`, `payment_reference`, and (optionally) `invoice` fields to specify the invoice-related data.
 
         payment_reference : typing.Optional[str]
-            A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Required if `object` is not specified.
+            A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Mutually exclusive with `object`.
 
         return_url : typing.Optional[str]
             The URL where to redirect the payer after the payment. If `return_url` is specified, then after the payment is completed the payment page will display the "Return to platform" link that navigates to this URL.
@@ -245,7 +290,7 @@ class AsyncPaymentLinksClient:
         --------
         import asyncio
 
-        from monite import AsyncMonite, PaymentAccountObject
+        from monite import AsyncMonite, PaymentAccountObject, PaymentObject
 
         client = AsyncMonite(
             monite_version="YOUR_MONITE_VERSION",
@@ -256,11 +301,16 @@ class AsyncPaymentLinksClient:
 
         async def main() -> None:
             await client.payment_links.create(
+                object=PaymentObject(
+                    id="5940eb3a-de95-4e7e-b5e7-8a4ad0ea341b",
+                    type="payable",
+                ),
                 payment_methods=["sepa_credit"],
                 recipient=PaymentAccountObject(
-                    id="id",
-                    type="entity",
+                    id="6296af34-6feb-43c1-b567-83e3bf45050c",
+                    type="counterpart",
                 ),
+                return_url="https://example.com/where-to-redirect-after-payment",
             )
 
 

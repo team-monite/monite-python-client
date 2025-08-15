@@ -13,9 +13,9 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
-from ..errors.internal_server_error import InternalServerError
 from ..errors.not_acceptable_error import NotAcceptableError
 from ..errors.not_found_error import NotFoundError
+from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.order_enum import OrderEnum
@@ -234,8 +234,8 @@ class RawProjectsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -273,25 +273,25 @@ class RawProjectsClient:
             The project name.
 
         code : typing.Optional[str]
-            Project code
+            A user-defined identifier of this project.
 
         color : typing.Optional[str]
-            Project color
+            Project color as a [CSS-compatible](https://developer.mozilla.org/en-US/docs/Web/CSS/color) value. Client applications can use this to color-code the projects or project-related data.
 
         description : typing.Optional[str]
-            Description of project
+            A user-defined description of the project.
 
         end_date : typing.Optional[str]
-            Project end date
+            Project end date. If specified, must be later than or equal to the start date.
 
         parent_id : typing.Optional[str]
-            Parent project ID
+            Unused. Reserved for future use.
 
         partner_metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Project metadata
+            [Metadata](https://docs.monite.com/common/metadata) for partner needs.
 
         start_date : typing.Optional[str]
-            Project start date
+            Project start date.
 
         tag_ids : typing.Optional[typing.Sequence[str]]
             A list of IDs of user-defined tags (labels) assigned to this project.
@@ -378,8 +378,8 @@ class RawProjectsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -482,8 +482,8 @@ class RawProjectsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -578,8 +578,8 @@ class RawProjectsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -617,28 +617,28 @@ class RawProjectsClient:
         project_id : str
 
         code : typing.Optional[str]
-            Project code
+            A user-defined identifier of this project.
 
         color : typing.Optional[str]
-            Project color
+            Project color as a [CSS-compatible](https://developer.mozilla.org/en-US/docs/Web/CSS/color) value. Client applications can use this to color-code the projects or project-related data.
 
         description : typing.Optional[str]
-            Description of project
+            A user-defined description of the project.
 
         end_date : typing.Optional[str]
-            Project end date
+            Project end date. If specified, must be later than or equal to the start date.
 
         name : typing.Optional[str]
             The project name.
 
         parent_id : typing.Optional[str]
-            Parent project ID
+            Unused. Reserved for future use.
 
         partner_metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Project metadata
+            [Metadata](https://docs.monite.com/common/metadata) for partner needs.
 
         start_date : typing.Optional[str]
-            Project start date
+            Project start date.
 
         tag_ids : typing.Optional[typing.Sequence[str]]
             A list of IDs of user-defined tags (labels) assigned to this project.
@@ -736,8 +736,8 @@ class RawProjectsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -960,8 +960,8 @@ class AsyncRawProjectsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -999,25 +999,25 @@ class AsyncRawProjectsClient:
             The project name.
 
         code : typing.Optional[str]
-            Project code
+            A user-defined identifier of this project.
 
         color : typing.Optional[str]
-            Project color
+            Project color as a [CSS-compatible](https://developer.mozilla.org/en-US/docs/Web/CSS/color) value. Client applications can use this to color-code the projects or project-related data.
 
         description : typing.Optional[str]
-            Description of project
+            A user-defined description of the project.
 
         end_date : typing.Optional[str]
-            Project end date
+            Project end date. If specified, must be later than or equal to the start date.
 
         parent_id : typing.Optional[str]
-            Parent project ID
+            Unused. Reserved for future use.
 
         partner_metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Project metadata
+            [Metadata](https://docs.monite.com/common/metadata) for partner needs.
 
         start_date : typing.Optional[str]
-            Project start date
+            Project start date.
 
         tag_ids : typing.Optional[typing.Sequence[str]]
             A list of IDs of user-defined tags (labels) assigned to this project.
@@ -1104,8 +1104,8 @@ class AsyncRawProjectsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1208,8 +1208,8 @@ class AsyncRawProjectsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1304,8 +1304,8 @@ class AsyncRawProjectsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1343,28 +1343,28 @@ class AsyncRawProjectsClient:
         project_id : str
 
         code : typing.Optional[str]
-            Project code
+            A user-defined identifier of this project.
 
         color : typing.Optional[str]
-            Project color
+            Project color as a [CSS-compatible](https://developer.mozilla.org/en-US/docs/Web/CSS/color) value. Client applications can use this to color-code the projects or project-related data.
 
         description : typing.Optional[str]
-            Description of project
+            A user-defined description of the project.
 
         end_date : typing.Optional[str]
-            Project end date
+            Project end date. If specified, must be later than or equal to the start date.
 
         name : typing.Optional[str]
             The project name.
 
         parent_id : typing.Optional[str]
-            Parent project ID
+            Unused. Reserved for future use.
 
         partner_metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Project metadata
+            [Metadata](https://docs.monite.com/common/metadata) for partner needs.
 
         start_date : typing.Optional[str]
-            Project start date
+            Project start date.
 
         tag_ids : typing.Optional[typing.Sequence[str]]
             A list of IDs of user-defined tags (labels) assigned to this project.
@@ -1462,8 +1462,8 @@ class AsyncRawProjectsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

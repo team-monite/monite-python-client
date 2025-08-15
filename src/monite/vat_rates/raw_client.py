@@ -10,8 +10,8 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
-from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
+from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.product_service_type_enum import ProductServiceTypeEnum
@@ -33,17 +33,34 @@ class RawVatRatesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[VatRateListResponse]:
         """
+        Monite maintains a catalog of VAT and sales tax rates for [select countries](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries).
+
+        To query the applicable VAT/tax rates for an invoice or quote, use:
+
+        `GET /vat_rates?counterpart_id=<...>&entity_vat_id_id=<...>`
+
+        Or if the entity does not have a VAT ID:
+
+        `GET /vat_rates?counterpart_id=<...>`
+
+        **Note:** Entities from countries [not on the list](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries) should not use this endpoint. Instead, those entities can either create custom VAT/tax rates or use the invoice field `line_items[].tax_rate_value` to specify the VAT/tax rates directly.
+
         Parameters
         ----------
         counterpart_address_id : typing.Optional[str]
+            Unused. Reserved for future use.
 
         counterpart_id : typing.Optional[str]
+            ID of the counterpart that will be invoiced.
 
         counterpart_vat_id_id : typing.Optional[str]
+            Unused. Reserved for future use.
 
         entity_vat_id_id : typing.Optional[str]
+            ID of the entity's VAT number (if any) used for the sales transaction.
 
         product_type : typing.Optional[ProductServiceTypeEnum]
+            Unused. Reserved for future use.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -130,8 +147,8 @@ class RawVatRatesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -162,17 +179,34 @@ class AsyncRawVatRatesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[VatRateListResponse]:
         """
+        Monite maintains a catalog of VAT and sales tax rates for [select countries](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries).
+
+        To query the applicable VAT/tax rates for an invoice or quote, use:
+
+        `GET /vat_rates?counterpart_id=<...>&entity_vat_id_id=<...>`
+
+        Or if the entity does not have a VAT ID:
+
+        `GET /vat_rates?counterpart_id=<...>`
+
+        **Note:** Entities from countries [not on the list](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries) should not use this endpoint. Instead, those entities can either create custom VAT/tax rates or use the invoice field `line_items[].tax_rate_value` to specify the VAT/tax rates directly.
+
         Parameters
         ----------
         counterpart_address_id : typing.Optional[str]
+            Unused. Reserved for future use.
 
         counterpart_id : typing.Optional[str]
+            ID of the counterpart that will be invoiced.
 
         counterpart_vat_id_id : typing.Optional[str]
+            Unused. Reserved for future use.
 
         entity_vat_id_id : typing.Optional[str]
+            ID of the entity's VAT number (if any) used for the sales transaction.
 
         product_type : typing.Optional[ProductServiceTypeEnum]
+            Unused. Reserved for future use.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -259,8 +293,8 @@ class AsyncRawVatRatesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

@@ -1758,6 +1758,14 @@ client.approval_policies.create(
 <dl>
 <dd>
 
+**priority:** `typing.Optional[int]` — The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **starts_at:** `typing.Optional[dt.datetime]` — The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
     
 </dd>
@@ -2014,6 +2022,14 @@ client.approval_policies.update_by_id(
 <dl>
 <dd>
 
+**priority:** `typing.Optional[int]` — The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **script:** `typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]]` — A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
     
 </dd>
@@ -2095,7 +2111,7 @@ client.approval_requests.get()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -2103,7 +2119,7 @@ client.approval_requests.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -2111,7 +2127,11 @@ client.approval_requests.get()
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -2119,7 +2139,7 @@ client.approval_requests.get()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[ApprovalRequestCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[ApprovalRequestCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -2627,7 +2647,7 @@ client.access_tokens.revoke(
 <dl>
 <dd>
 
-**client_id:** `str` 
+**client_id:** `str` — Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs.
     
 </dd>
 </dl>
@@ -2635,7 +2655,7 @@ client.access_tokens.revoke(
 <dl>
 <dd>
 
-**client_secret:** `str` 
+**client_secret:** `str` — Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets.
     
 </dd>
 </dl>
@@ -2643,7 +2663,7 @@ client.access_tokens.revoke(
 <dl>
 <dd>
 
-**token:** `str` 
+**token:** `str` — The token to revoke.
     
 </dd>
 </dl>
@@ -2698,9 +2718,10 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.access_tokens.create(
-    client_id="client_id",
-    client_secret="client_secret",
-    grant_type="client_credentials",
+    client_id="eb959578-a74d-4ac3-8b25-bf0910027857",
+    client_secret="14c84a34-282b-4fd8-8af6-86b5b5f2c212",
+    entity_user_id="7abd8744-507c-40e6-a5ca-34aa480b3991",
+    grant_type="entity_user",
 )
 
 ```
@@ -2717,7 +2738,7 @@ client.access_tokens.create(
 <dl>
 <dd>
 
-**client_id:** `str` 
+**client_id:** `str` — Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs.
     
 </dd>
 </dl>
@@ -2725,7 +2746,7 @@ client.access_tokens.create(
 <dl>
 <dd>
 
-**client_secret:** `str` 
+**client_secret:** `str` — Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets.
     
 </dd>
 </dl>
@@ -2734,6 +2755,11 @@ client.access_tokens.create(
 <dd>
 
 **grant_type:** `GrantType` 
+
+The type of the access token to generate:
+
+ * `client_credentials` - partner-level access token,
+ * `entity_user` - entity user token.
     
 </dd>
 </dl>
@@ -2741,7 +2767,7 @@ client.access_tokens.create(
 <dl>
 <dd>
 
-**entity_user_id:** `typing.Optional[str]` 
+**entity_user_id:** `typing.Optional[str]` — ID of the entity user to generate the access token for. Used only if `grant_type` is `entity_user`.
     
 </dd>
 </dl>
@@ -2822,7 +2848,7 @@ client.comments.get(
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -2830,7 +2856,7 @@ client.comments.get(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -2838,7 +2864,11 @@ client.comments.get(
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -2846,7 +2876,7 @@ client.comments.get(
 <dl>
 <dd>
 
-**sort:** `typing.Optional[CommentCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[CommentCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -3992,7 +4022,7 @@ client.counterpart_e_invoicing_credentials.get_counterparts_id_einvoicing_creden
 <dd>
 
 ```python
-from monite import CreateCounterpartEinvoicingCredentialCounterpartVatId, Monite
+from monite import CounterpartEinvoicingCredentialSchema, Monite
 
 client = Monite(
     monite_version="YOUR_MONITE_VERSION",
@@ -4001,8 +4031,9 @@ client = Monite(
 )
 client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_credentials(
     counterpart_id="counterpart_id",
-    request=CreateCounterpartEinvoicingCredentialCounterpartVatId(
-        counterpart_vat_id_id="counterpart_vat_id_id",
+    request=CounterpartEinvoicingCredentialSchema(
+        network_identifier="DE087095777",
+        network_schema="DE:VAT",
     ),
 )
 
@@ -4613,7 +4644,7 @@ client.data_exports.get()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -4621,7 +4652,7 @@ client.data_exports.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -4629,7 +4660,11 @@ client.data_exports.get()
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -4637,7 +4672,7 @@ client.data_exports.get()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[DataExportCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[DataExportCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -5182,13 +5217,7 @@ If not specified, the first page of results will be returned.
 <dd>
 
 ```python
-from monite import (
-    DeliveryNoteCreateLineItem,
-    DeliveryNoteCreateRequest,
-    DeliveryNoteLineItemProduct,
-    Monite,
-    UnitRequest,
-)
+from monite import DeliveryNoteCreateBasedOnRequest, Monite
 
 client = Monite(
     monite_version="YOUR_MONITE_VERSION",
@@ -5196,30 +5225,8 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.delivery_notes.post_delivery_notes(
-    request=DeliveryNoteCreateRequest(
-        counterpart_address_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
-        counterpart_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
-        delivery_date="2025-01-01",
-        delivery_number="102-2025-0987",
-        display_signature_placeholder=True,
-        line_items=[
-            DeliveryNoteCreateLineItem(
-                product_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
-                quantity=10.0,
-            ),
-            DeliveryNoteCreateLineItem(
-                product=DeliveryNoteLineItemProduct(
-                    description="Description of product 2",
-                    measure_unit=UnitRequest(
-                        description="pieces",
-                        name="pcs",
-                    ),
-                    name="Product 2",
-                ),
-                quantity=20.0,
-            ),
-        ],
-        memo="This is a memo",
+    request=DeliveryNoteCreateBasedOnRequest(
+        based_on="e78de69c-c789-44ef-80bf-474b9e63b91d",
     ),
 )
 
@@ -5467,7 +5474,7 @@ client.delivery_notes.patch_delivery_notes_id(
 <dl>
 <dd>
 
-**memo:** `typing.Optional[str]` — Additional information regarding the delivery note
+**memo:** `typing.Optional[str]` — An optional note for the customer, displayed above the line items table in the PDF.
     
 </dd>
 </dl>
@@ -5825,6 +5832,98 @@ client.pdf_templates.make_default_by_id(
 <dd>
 
 **document_template_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## E-invoicing search
+<details><summary><code>client.e_invoicing_search.<a href="src/monite/e_invoicing_search/client.py">get_einvoice_search</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Checks if the specified VAT number or business number is registered on the PEPPOL network as a receiver. For example, you can use this endpoint to check if an entity's counterparts are registered in PEPPOL before creating e-invoices for those counterparts.
+
+The lookup is powered by PEPPOL SMPs (Service Metadata Publishers) so it also includes registrations that are not visible in the public PEPPOL directory.
+
+Both partner tokens and entity user tokens can be used for authentication.
+
+Production and sandbox lookups are separate.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.e_invoicing_search.get_einvoice_search(
+    network_identifier="DE010101010",
+    network_schema="DE:VAT",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**network_identifier:** `str` 
+
+VAT number or business number, depending on the `network_schema` used. VAT numbers must include the country prefix, for example, use `DE010101010` not `10101010`.
+
+**Note:** This endpoint does not validate the format of VAT numbers and business numbers (such as the length or characters used). Invalid values will return `{"exists": false}`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**network_schema:** `EinvoiceSchemaTypeEnum` — [PEPPOL scheme](https://docs.monite.com/e-invoicing/peppol-ids#schemes) name.
     
 </dd>
 </dl>
@@ -6524,15 +6623,7 @@ client.entities.create(
 <dl>
 <dd>
 
-**phone:** `typing.Optional[str]` — The contact phone number of the entity. Required for US organizations to use payments.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**website:** `typing.Optional[str]` — A website of the entity
+**individual:** `typing.Optional[IndividualSchema]` — A set of meta data describing the individual
     
 </dd>
 </dl>
@@ -6548,7 +6639,7 @@ client.entities.create(
 <dl>
 <dd>
 
-**individual:** `typing.Optional[IndividualSchema]` — A set of meta data describing the individual
+**phone:** `typing.Optional[str]` — The contact phone number of the entity. Required for US organizations to use payments.
     
 </dd>
 </dl>
@@ -6556,7 +6647,7 @@ client.entities.create(
 <dl>
 <dd>
 
-**tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
     
 </dd>
 </dl>
@@ -6572,7 +6663,15 @@ client.entities.create(
 <dl>
 <dd>
 
-**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+**tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `typing.Optional[str]` — A website of the entity
     
 </dd>
 </dl>
@@ -6720,39 +6819,7 @@ client.entities.patch_entities_me()
 <dl>
 <dd>
 
-**phone:** `typing.Optional[str]` — The contact phone number of the entity. Required for US organizations to use payments.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**website:** `typing.Optional[str]` — A website of the entity
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**registration_number:** `typing.Optional[str]` — (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+**individual:** `typing.Optional[OptionalIndividualSchema]` — A set of meta data describing the individual
     
 </dd>
 </dl>
@@ -6768,7 +6835,39 @@ client.entities.patch_entities_me()
 <dl>
 <dd>
 
-**individual:** `typing.Optional[OptionalIndividualSchema]` — A set of meta data describing the individual
+**phone:** `typing.Optional[str]` — The contact phone number of the entity. Required for US organizations to use payments.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_number:** `typing.Optional[str]` — (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `typing.Optional[str]` — A website of the entity
     
 </dd>
 </dl>
@@ -6800,7 +6899,15 @@ client.entities.patch_entities_me()
 <dl>
 <dd>
 
-Retrieve an entity by its ID.
+Returns entity information for the specified entity ID.
+
+This endpoint requires a partner access token and can be used to get any of the partner's entities.
+
+To get entity information by using an entity user token, use [`GET /entity_users/my_entity`](https://docs.monite.com/api/entities/get-entity-users-my-entity) instead.
+
+Related endpoints:
+
+ * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 </dd>
 </dl>
 </dd>
@@ -6872,7 +6979,16 @@ client.entities.get_by_id(
 <dl>
 <dd>
 
-Change the specified fields with the provided values.
+Update entity information for the specified entity ID.
+
+This endpoint requires a partner access token and can be used to update any of the partner's entities.
+
+To update an entity by using an entity user token, use [`PATCH /entity_users/my_entity`](https://docs.monite.com/api/entities/patch-entity-users-my-entity) instead.
+
+Related endpoints:
+
+ * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+ * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
 </dd>
 </dl>
 </dd>
@@ -6936,39 +7052,7 @@ client.entities.update_by_id(
 <dl>
 <dd>
 
-**phone:** `typing.Optional[str]` — The contact phone number of the entity. Required for US organizations to use payments.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**website:** `typing.Optional[str]` — A website of the entity
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**registration_number:** `typing.Optional[str]` — (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+**individual:** `typing.Optional[OptionalIndividualSchema]` — A set of meta data describing the individual
     
 </dd>
 </dl>
@@ -6984,7 +7068,39 @@ client.entities.update_by_id(
 <dl>
 <dd>
 
-**individual:** `typing.Optional[OptionalIndividualSchema]` — A set of meta data describing the individual
+**phone:** `typing.Optional[str]` — The contact phone number of the entity. Required for US organizations to use payments.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_number:** `typing.Optional[str]` — (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `typing.Optional[str]` — A website of the entity
     
 </dd>
 </dl>
@@ -7161,6 +7277,8 @@ client.entities.post_entities_id_deactivate(
 <dd>
 
 Entity logo can be PNG, JPG, or GIF, up to 10 MB in size. The logo is used, for example, in PDF documents created by this entity.
+
+Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
 </dd>
 </dl>
 </dd>
@@ -7233,6 +7351,20 @@ core.File` — See core.File for more documentation
 <details><summary><code>client.entities.<a href="src/monite/entities/client.py">delete_logo_by_id</a>(...)</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -7453,7 +7585,14 @@ client.entities.update_partner_metadata_by_id(
 <dl>
 <dd>
 
-Retrieve all settings for this entity.
+Entity settings include configuration options for accounts payable, accounts receivable, accounting integration, and other functionality.
+
+Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.read` permission.
+
+Related endpoints:
+
+ * [Get next document numbers](https://docs.monite.com/api/entities/get-entities-id-settings-next-document-numbers)
+ * [Get partner settings](https://docs.monite.com/api/partner-settings/get-settings)
 </dd>
 </dl>
 </dd>
@@ -7525,7 +7664,15 @@ client.entities.get_settings_by_id(
 <dl>
 <dd>
 
-Change the specified fields with the provided values.
+Entity settings include configuration options for accounts payable, accounts receivable, accounting integration, and other functionality.
+
+Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
+
+Related endpoints:
+
+ * [Update an entity](https://docs.monite.com/api/entities/patch-entities-id)
+ * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
+ * [Update partner settings](https://docs.monite.com/api/partner-settings/patch-settings)
 </dd>
 </dl>
 </dd>
@@ -7573,47 +7720,7 @@ client.entities.update_settings_by_id(
 <dl>
 <dd>
 
-**language:** `typing.Optional[LanguageCodeEnum]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**currency:** `typing.Optional[CurrencySettingsInput]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**reminder:** `typing.Optional[RemindersSettings]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**vat_mode:** `typing.Optional[VatModeEnum]` — Defines whether the prices of products in receivables will already include VAT or not.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**vat_inclusive_discount_mode:** `typing.Optional[VatModeEnum]` — Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_priority:** `typing.Optional[PaymentPriorityEnum]` — Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
+**accounting:** `typing.Optional[AccountingSettings]` 
     
 </dd>
 </dl>
@@ -7629,7 +7736,7 @@ client.entities.update_settings_by_id(
 <dl>
 <dd>
 
-**receivable_edit_flow:** `typing.Optional[ReceivableEditFlow]` 
+**currency:** `typing.Optional[CurrencySettingsInput]` 
     
 </dd>
 </dl>
@@ -7645,15 +7752,7 @@ client.entities.update_settings_by_id(
 <dl>
 <dd>
 
-**payables_ocr_auto_tagging:** `typing.Optional[typing.Sequence[OcrAutoTaggingSettingsRequest]]` — Auto tagging settings for all incoming OCR payable documents.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**quote_signature_required:** `typing.Optional[bool]` — Sets the default behavior of whether a signature is required to accept quotes.
+**document_rendering:** `typing.Optional[DocumentRenderingSettingsInput]` — Settings for rendering documents in PDF format.
     
 </dd>
 </dl>
@@ -7663,11 +7762,13 @@ client.entities.update_settings_by_id(
 
 **generate_paid_invoice_pdf:** `typing.Optional[bool]` 
 
-This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.
+This setting affects how PDF is generated for accounts receivable invoices that are paid, partially paid, or have credit notes applied.
+If this setting is `true`:
 
-The PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.
+ * The totals block in the PDF invoice will include a list of all payments made and credit notes issued.
+ * Once an invoice becomes fully paid, the payment link and QR code are removed.
 
-This field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.
+The PDF invoice gets regenerated at the moment when an invoice payment is recorded or a credit note is issued.  This PDF is not issued as a separate document, and the original PDF invoice is no longer available.
     
 </dd>
 </dl>
@@ -7675,7 +7776,15 @@ This field is deprecated and will be replaced by `document_rendering.invoice.gen
 <dl>
 <dd>
 
-**accounting:** `typing.Optional[AccountingSettings]` 
+**language:** `typing.Optional[LanguageCodeEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payables_ocr_auto_tagging:** `typing.Optional[typing.Sequence[OcrAutoTaggingSettingsRequest]]` — Auto tagging settings for all incoming OCR payable documents.
     
 </dd>
 </dl>
@@ -7691,7 +7800,129 @@ This field is deprecated and will be replaced by `document_rendering.invoice.gen
 <dl>
 <dd>
 
-**document_rendering:** `typing.Optional[DocumentRenderingSettings]` — Settings for rendering documents in PDF format.
+**payment_priority:** `typing.Optional[PaymentPriorityEnum]` — Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quote_signature_required:** `typing.Optional[bool]` — Sets the default behavior of whether a signature is required to accept quotes.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**receivable_edit_flow:** `typing.Optional[ReceivableEditFlow]` 
+
+[Invoice compliance mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance) for accounts receivable. Possible values:
+
+ * `compliant` - invoices cannot be edited once issued.
+ * `non_compliant` - issued invoices can still be edited.
+ * `partially_compliant` - deprecated mode, should not be used.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reminder:** `typing.Optional[RemindersSettings]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vat_inclusive_discount_mode:** `typing.Optional[VatModeEnum]` — Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vat_mode:** `typing.Optional[VatModeEnum]` — Defines whether the prices of products in receivables will already include VAT or not.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entities.<a href="src/monite/entities/client.py">get_entities_id_settings_next_document_numbers</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the next sequence number for various document types - invoices, quotes, credit notes, and others. For example, if the last issued invoice is `INV-00042`, the next invoice number is 43.
+
+To set the next document numbers, use `PATCH /entities/{entity_id}/settings`.
+
+For more information, see [Document number customization](https://docs.monite.com/advanced/document-number-customization).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.entities.get_entities_id_settings_next_document_numbers(
+    entity_id="entity_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `str` — Unique ID of the entity
     
 </dd>
 </dl>
@@ -8171,7 +8402,7 @@ client.entity_users.create(
 <dl>
 <dd>
 
-**first_name:** `str` — First name
+**first_name:** `str` — The user's first name.
     
 </dd>
 </dl>
@@ -8180,6 +8411,10 @@ client.entity_users.create(
 <dd>
 
 **login:** `str` 
+
+The username assigned to this user. Usernames must be unique within the entity.
+
+The `login` value is not used by Monite but may be used by partner applications, for example, to map the users between the partner's platform and Monite.
     
 </dd>
 </dl>
@@ -8187,7 +8422,7 @@ client.entity_users.create(
 <dl>
 <dd>
 
-**email:** `typing.Optional[str]` — An entity user business email
+**email:** `typing.Optional[str]` — The user's business email address.
     
 </dd>
 </dl>
@@ -8195,7 +8430,7 @@ client.entity_users.create(
 <dl>
 <dd>
 
-**last_name:** `typing.Optional[str]` — Last name
+**last_name:** `typing.Optional[str]` — The user's last name.
     
 </dd>
 </dl>
@@ -8203,7 +8438,7 @@ client.entity_users.create(
 <dl>
 <dd>
 
-**phone:** `typing.Optional[str]` — An entity user phone number in the international format
+**phone:** `typing.Optional[str]` — The user's phone number.
     
 </dd>
 </dl>
@@ -8211,7 +8446,7 @@ client.entity_users.create(
 <dl>
 <dd>
 
-**role_id:** `typing.Optional[str]` — UUID of the role assigned to this entity user
+**role_id:** `typing.Optional[str]` — ID of the role to assign to this user. The role defines the user's [access permissions](https://docs.monite.com/api/concepts/authentication#permissions) within the entity. Each user has just one role.
     
 </dd>
 </dl>
@@ -8219,7 +8454,7 @@ client.entity_users.create(
 <dl>
 <dd>
 
-**title:** `typing.Optional[str]` — Title
+**title:** `typing.Optional[str]` — The user's job title.
     
 </dd>
 </dl>
@@ -8251,7 +8486,7 @@ client.entity_users.create(
 <dl>
 <dd>
 
-Retrieve an entity user by its ID.
+The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 </dd>
 </dl>
 </dd>
@@ -8313,7 +8548,7 @@ client.entity_users.get_current()
 <dl>
 <dd>
 
-Change the specified fields with provided values.
+The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 </dd>
 </dl>
 </dd>
@@ -8351,7 +8586,7 @@ client.entity_users.update_current()
 <dl>
 <dd>
 
-**email:** `typing.Optional[str]` — An entity user business email
+**email:** `typing.Optional[str]` — The user's business email address.
     
 </dd>
 </dl>
@@ -8359,7 +8594,7 @@ client.entity_users.update_current()
 <dl>
 <dd>
 
-**first_name:** `typing.Optional[str]` — First name
+**first_name:** `typing.Optional[str]` — The user's first name.
     
 </dd>
 </dl>
@@ -8367,7 +8602,7 @@ client.entity_users.update_current()
 <dl>
 <dd>
 
-**last_name:** `typing.Optional[str]` — Last name
+**last_name:** `typing.Optional[str]` — The user's last name.
     
 </dd>
 </dl>
@@ -8375,7 +8610,7 @@ client.entity_users.update_current()
 <dl>
 <dd>
 
-**phone:** `typing.Optional[str]` — An entity user phone number in the international format
+**phone:** `typing.Optional[str]` — The user's phone number.
     
 </dd>
 </dl>
@@ -8383,7 +8618,7 @@ client.entity_users.update_current()
 <dl>
 <dd>
 
-**title:** `typing.Optional[str]` — Title
+**title:** `typing.Optional[str]` — The user's job title.
     
 </dd>
 </dl>
@@ -8415,7 +8650,13 @@ client.entity_users.update_current()
 <dl>
 <dd>
 
-Retrieves information of an entity, which this entity user belongs to.
+Returns the entity to which the authenticated user belongs. This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.read` permission.
+
+To get an entity by using a partner access token, use [`GET /entities/{entity_id}`](https://docs.monite.com/api/entities/get-entities-id) instead.
+
+Related endpoints:
+
+ * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 </dd>
 </dl>
 </dd>
@@ -8477,7 +8718,16 @@ client.entity_users.get_current_entity()
 <dl>
 <dd>
 
-Update information of an entity, which this entity user belongs to.
+Update the entity to which the authenticated user belongs.
+
+This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.update` permission.
+
+This endpoint does not use the `X-Monite-Entity-Id` header. The entity ID is inferred from the access token.
+
+Related endpoints:
+
+ * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+ * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
 </dd>
 </dl>
 </dd>
@@ -8531,39 +8781,7 @@ client.entity_users.update_current_entity()
 <dl>
 <dd>
 
-**phone:** `typing.Optional[str]` — The contact phone number of the entity. Required for US organizations to use payments.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**website:** `typing.Optional[str]` — A website of the entity
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**registration_number:** `typing.Optional[str]` — (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+**individual:** `typing.Optional[OptionalIndividualSchema]` — A set of meta data describing the individual
     
 </dd>
 </dl>
@@ -8579,7 +8797,39 @@ client.entity_users.update_current_entity()
 <dl>
 <dd>
 
-**individual:** `typing.Optional[OptionalIndividualSchema]` — A set of meta data describing the individual
+**phone:** `typing.Optional[str]` — The contact phone number of the entity. Required for US organizations to use payments.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_authority:** `typing.Optional[str]` — (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registration_number:** `typing.Optional[str]` — (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tax_id:** `typing.Optional[str]` — The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `typing.Optional[str]` — A website of the entity
     
 </dd>
 </dl>
@@ -8851,7 +9101,7 @@ client.entity_users.update_by_id(
 <dl>
 <dd>
 
-**email:** `typing.Optional[str]` — An entity user business email
+**email:** `typing.Optional[str]` — The user's business email address.
     
 </dd>
 </dl>
@@ -8859,7 +9109,7 @@ client.entity_users.update_by_id(
 <dl>
 <dd>
 
-**first_name:** `typing.Optional[str]` — First name
+**first_name:** `typing.Optional[str]` — The user's first name.
     
 </dd>
 </dl>
@@ -8867,7 +9117,7 @@ client.entity_users.update_by_id(
 <dl>
 <dd>
 
-**last_name:** `typing.Optional[str]` — Last name
+**last_name:** `typing.Optional[str]` — The user's last name.
     
 </dd>
 </dl>
@@ -8875,7 +9125,7 @@ client.entity_users.update_by_id(
 <dl>
 <dd>
 
-**login:** `typing.Optional[str]` — Login
+**login:** `typing.Optional[str]` — The new username for this user. Must be unique within the entity.
     
 </dd>
 </dl>
@@ -8883,7 +9133,7 @@ client.entity_users.update_by_id(
 <dl>
 <dd>
 
-**phone:** `typing.Optional[str]` — An entity user phone number in the international format
+**phone:** `typing.Optional[str]` — The user's phone number.
     
 </dd>
 </dl>
@@ -8891,7 +9141,7 @@ client.entity_users.update_by_id(
 <dl>
 <dd>
 
-**role_id:** `typing.Optional[str]` — UUID of the role assigned to this entity user
+**role_id:** `typing.Optional[str]` — ID of the new role to assign to this user. The new role takes effect immediately, existing access tokens of this user are not invalidated.
     
 </dd>
 </dl>
@@ -8899,7 +9149,7 @@ client.entity_users.update_by_id(
 <dl>
 <dd>
 
-**title:** `typing.Optional[str]` — Title
+**title:** `typing.Optional[str]` — The user's job title.
     
 </dd>
 </dl>
@@ -9139,6 +9389,29 @@ client.events.get_by_id(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The `/files` endpoint provides access to an entity's files hosted on Monite's servers. This includes both files uploaded by the entity and files that were automatically created by Monite (such as PDF versions of invoices).
+
+`GET /files` requires at least one query parameter, either `id__in` or `file_type`. You can use this operation to:
+
+ * Bulk fetch multiple files by IDs.
+ * Get all files with the given purpose (for example, invoice attachments).
+
+If no files matching the query parameters were found, the response contains an empty `data` array.
+
+Both partner tokens and entity user tokens can be used for authentication.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -9172,6 +9445,31 @@ client.files.get()
 <dd>
 
 **id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+
+Return only files with specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
+
+To specify multiple IDs, repeat this parameter for each value: `id__in=<id1>&id__in=<id2>`
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**file_type:** `typing.Optional[AllowedFileTypes]` 
+
+Return only files with the given purpose. Possible values:
+
+ * `additional_identity_documents` and `identity_documents` - [entity verification documents](https://docs.monite.com/payments/onboarding/via-api/documents) uploaded for payments onboarding.
+ * `attachments` - supplementary attachments for accounts receivable invoices, quotes, and credit notes.
+ * `delivery_notes` - auto-generated PDF versions of delivery notes.
+ * `einvoices_xml` - e-invoice XML generated when sending e-invoices.
+ * `payables` - payables (bills) received via email or uploaded via API.
+ * `receivable_signatures` - images of customer signatures provided during quote acceptance.
+ * `receivables` - auto-generated PDF versions of invoices, quotes, and credit notes.
+ * `zip` - data export archives created by `POST /data_exports`.
+
+Other values are unused.
     
 </dd>
 </dl>
@@ -9194,6 +9492,27 @@ client.files.get()
 <details><summary><code>client.files.<a href="src/monite/files/client.py">upload</a>(...)</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Upload files for use as:
+
+ * supplementary attachments for invoices, quotes, and credit notes,
+ * [entity verification documents](https://docs.monite.com/payments/onboarding/via-api/documents) for payments onboarding.
+
+Maximum file size is 15 MB. Each uploaded file is assigned a unique `id` that you can use to reference this file elsewhere.
+
+Both partner tokens and entity user tokens can be used for authentication.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -9240,6 +9559,14 @@ core.File` — See core.File for more documentation
 <dd>
 
 **file_type:** `AllowedFileTypes` 
+
+The intended purpose of the file. Possible values:
+
+ * `attachments` - supplemental attachments for accounts receivable invoices, quotes, and credit notes.
+ * `identity_documents` - company registration documents or a person's identity documents for payments onboarding.
+ * `additional_identity_documents` - documents that verify a person's address.
+
+Other enum values are not supposed to be used directly.
     
 </dd>
 </dl>
@@ -9262,6 +9589,22 @@ core.File` — See core.File for more documentation
 <details><summary><code>client.files.<a href="src/monite/files/client.py">get_by_id</a>(...)</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the details of an existing file. To bulk fetch multiple files by their IDs, use `GET /files?id__in=<ID1>&id__in=<ID2>`.
+
+Both partner tokens and entity user tokens can be used for authentication.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -9321,6 +9664,26 @@ client.files.get_by_id(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete a file with the specified ID.
+
+**Note:** This endpoint does not check if the specified file is in use. Use with caution.
+
+Both partner tokens and entity user tokens can be used for authentication.
+#### Considerations for invoice attachments
+Deleting a file does not delete it from the `attachments` list of accounts receivable invoices, quotes, and credit notes because these documents contain an inline copy of all referenced resources. To delete a file from attachments, call `PATCH /receivables/{receivable_id}` and update the `attachments` list to exclude the deleted file.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -9355,7 +9718,7 @@ client.files.delete(
 <dl>
 <dd>
 
-**file_id:** `str` 
+**file_id:** `str` — ID of the file you want to delete.
     
 </dd>
 </dl>
@@ -9928,7 +10291,7 @@ client.mail_templates.get()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -9952,7 +10315,7 @@ client.mail_templates.get()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[CustomTemplatesCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[CustomTemplatesCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -11021,6 +11384,7 @@ client = Monite(
 client.mailboxes.create(
     mailbox_domain_id="mailbox_domain_id",
     mailbox_name="mailbox_name",
+    related_object_type="payable",
 )
 
 ```
@@ -11046,6 +11410,14 @@ client.mailboxes.create(
 <dd>
 
 **mailbox_name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**related_object_type:** `MailboxObjectTypeEnum` — Related object type: payable and so on
     
 </dd>
 </dl>
@@ -16932,7 +17304,7 @@ client.payables.reset_validations()
 <dl>
 <dd>
 
-Get a list of placeholders allowed to insert into an email template for customization
+Returns a list of placeholders that can be used to personalize email templates  related to payables. These include payables attributes such as `currency`,  `customer_name`, `document_id`, `due_date`,  `invoice_id`, `total_amount`, and `uploaded_username`.
 </dd>
 </dl>
 </dd>
@@ -17179,6 +17551,14 @@ client.payables.update_by_id(
 <dd>
 
 **payable_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount_paid:** `typing.Optional[int]` — How much was paid on the invoice (in minor units).
     
 </dd>
 </dl>
@@ -17676,6 +18056,20 @@ client.payables.post_payables_id_cancel_ocr(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a chronological list of events related to the specified payable.  This includes changes in status, updates to data, comments, and actions taken  by users or automation rules.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -17710,7 +18104,7 @@ client.payables.get_payables_id_history(
 <dl>
 <dd>
 
-**payable_id:** `str` 
+**payable_id:** `str` — The unique identifier of the payable whose history you want to retrieve.
     
 </dd>
 </dl>
@@ -18111,7 +18505,7 @@ client.payables.reject_by_id(
 <dl>
 <dd>
 
-Reset payable state from rejected to new.
+Moves payables in the `rejected` or `waiting_to_be_paid` statuses back to `new`, allowing further actions such as editing, approval, or payment. The 
 </dd>
 </dl>
 </dd>
@@ -18151,7 +18545,7 @@ client.payables.reopen_by_id(
 <dl>
 <dd>
 
-**payable_id:** `str` 
+**payable_id:** `str` — The unique identifier of the payable you want to reopen.
     
 </dd>
 </dl>
@@ -18224,6 +18618,156 @@ client.payables.submit_for_approval_by_id(
 <dd>
 
 **payable_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payables.<a href="src/monite/payables/client.py">get_payables_id_suggestions</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the most likely matching counterpart for a given payable, based on an AI-powered analysis of the payable's data.
+
+When a user uploads a payable, Monite automatically compares key fields—such as `name`, `address`, `VAT ID`, and bank `account`—against existing counterparts. If a sufficiently similar match is found, this endpoint will return a suggested counterpart.
+
+If no suitable match is identified, the response will be empty.
+
+**Note:** Suggestions are automatically generated during payable upload. This endpoint simply retrieves the existing suggestion for a specific payable.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.get_payables_id_suggestions(
+    payable_id="payable_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payable_id:** `str` — The unique identifier of the payable you want to find matching suggestions for.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payables.<a href="src/monite/payables/client.py">delete_payables_id_suggestions</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes the automatically generated counterpart suggestion for a specific payable.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.payables.delete_payables_id_suggestions(
+    payable_id="payable_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payable_id:** `str` — The unique identifier of the payable whose suggestions you want to delete.
     
 </dd>
 </dl>
@@ -18604,6 +19148,20 @@ client.payment_intents.get_history_by_id(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new [payment link](https://docs.monite.com/payments/payment-links) for an accounts payble invoice (to be paid by the entity) or an accounts receivable invoice (to be sent to the counterpart).
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -18613,7 +19171,9 @@ client.payment_intents.get_history_by_id(
 <dd>
 
 ```python
-from monite import Monite, PaymentAccountObject
+import datetime
+
+from monite import Invoice, InvoiceFile, Monite, PaymentAccountObject
 
 client = Monite(
     monite_version="YOUR_MONITE_VERSION",
@@ -18621,11 +19181,27 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.payment_links.create(
-    payment_methods=["sepa_credit"],
+    amount=12500,
+    currency="EUR",
+    expires_at=datetime.datetime.fromisoformat(
+        "2025-08-30 23:59:59+00:00",
+    ),
+    invoice=Invoice(
+        due_date="2025-07-31",
+        file=InvoiceFile(
+            mimetype="application/pdf",
+            name="invoice.pdf",
+            url="https://example.com/path/to/invoice.pdf",
+        ),
+        issue_date="2025-07-01",
+    ),
+    payment_methods=["card", "eps", "ideal", "sepa_credit", "sepa_debit"],
+    payment_reference="INV/2025/0042",
     recipient=PaymentAccountObject(
-        id="id",
+        id="274b995b-1906-4d8a-b7fe-e8d822d731b0",
         type="entity",
     ),
+    return_url="https://example.com/where-to-redirect-after-payment",
 )
 
 ```
@@ -18643,6 +19219,10 @@ client.payment_links.create(
 <dd>
 
 **payment_methods:** `typing.Sequence[MoniteAllPaymentMethodsTypes]` 
+
+Payment methods to be displayed on the payment page. These payment methods must already be enabled for the entity.
+
+**Note:** Available payment methods vary per country, transaction type (B2B or B2C), and the payment link type (entity pays a bill or entity generates an invoice payment link for its counterpart). For more information, see [Payment methods](https://docs.monite.com/payments/payment-methods).
     
 </dd>
 </dl>
@@ -18650,7 +19230,7 @@ client.payment_links.create(
 <dl>
 <dd>
 
-**recipient:** `PaymentAccountObject` 
+**recipient:** `PaymentAccountObject` — Specifies the invoice vendor - entity or counterpart. This is the payee, or the recipient of the payment.
     
 </dd>
 </dl>
@@ -18658,7 +19238,16 @@ client.payment_links.create(
 <dl>
 <dd>
 
-**amount:** `typing.Optional[int]` — The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Required if `object` is not specified.
+**amount:** `typing.Optional[int]` 
+
+The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). The usage of the `amount` field depends on the type of the payment link you are creating:
+
+ * If the `invoice` object is specified (that is, when creating a payment link for an external invoice),
+  `amount` is required.
+ * If `object` is specified:
+   * If `object.type` is `payable`, `amount` must not be specified since it's taken from the payable.
+   * If `object.type` is `receivable`, you can provide a custom `amount` value to create a partial payment link.
+     In this case, the `amount` value must not exceed the invoice's `amount_to_pay` minus all active payment links.
     
 </dd>
 </dl>
@@ -18666,7 +19255,7 @@ client.payment_links.create(
 <dl>
 <dd>
 
-**currency:** `typing.Optional[CurrencyEnum]` — The payment currency. Required if `object` is not specified.
+**currency:** `typing.Optional[CurrencyEnum]` — The payment currency. Mutually exclusive with `object`.
     
 </dd>
 </dl>
@@ -18675,6 +19264,14 @@ client.payment_links.create(
 <dd>
 
 **expires_at:** `typing.Optional[dt.datetime]` 
+
+Date and time (in the ISO 8601 format) when this payment link will expire. Can be up to 70 days from the current date and time.
+If omitted:
+
+ * Payment links for payables and receivables expire 30 days after the invoice due date.
+ * Payment links for external invoices expire 30 days after the link creation time.
+
+For more information, see [Payment link expiration](https://docs.monite.com/payments/payment-links#expiration).
     
 </dd>
 </dl>
@@ -18682,7 +19279,7 @@ client.payment_links.create(
 <dl>
 <dd>
 
-**invoice:** `typing.Optional[Invoice]` — An object containing information about the invoice being paid. Used only if `object` is not specified.
+**invoice:** `typing.Optional[Invoice]` — An object containing information about an external invoice to be paid. Mutually exclusive with `object`.
     
 </dd>
 </dl>
@@ -18698,7 +19295,7 @@ client.payment_links.create(
 <dl>
 <dd>
 
-**payment_reference:** `typing.Optional[str]` — A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Required if `object` is not specified.
+**payment_reference:** `typing.Optional[str]` — A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Mutually exclusive with `object`.
     
 </dd>
 </dl>
@@ -18879,7 +19476,7 @@ client.payment_records.get()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -18903,7 +19500,7 @@ client.payment_records.get()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[PaymentRecordCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[PaymentRecordCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -19094,7 +19691,6 @@ client.payment_records.create(
         id="id",
         type="receivable",
     ),
-    payment_intent_id="payment_intent_id",
 )
 
 ```
@@ -19135,14 +19731,6 @@ client.payment_records.create(
 <dl>
 <dd>
 
-**payment_intent_id:** `str` — Identifier for an payment intent.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **entity_user_id:** `typing.Optional[str]` — ID of the user associated with the payment, if applicable.
     
 </dd>
@@ -19152,6 +19740,14 @@ client.payment_records.create(
 <dd>
 
 **paid_at:** `typing.Optional[dt.datetime]` — Timestamp marking when the payment was executed. Null if payment hasn't occurred yet.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_intent_id:** `typing.Optional[str]` — Identifier for an payment intent.
     
 </dd>
 </dl>
@@ -20017,7 +20613,7 @@ client.payment_terms.get()
 <dd>
 
 ```python
-from monite import Monite, TermFinalDays
+from monite import Monite, TermDiscountDays, TermFinalDays
 
 client = Monite(
     monite_version="YOUR_MONITE_VERSION",
@@ -20025,9 +20621,18 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.payment_terms.create(
-    name="name",
+    description="The invoice must be paid within 30 days. 2% discount if paid within the first 10 days, 1% discount if paid within 20 days.",
+    name="2/10, 1/20, Net 30",
+    term1=TermDiscountDays(
+        discount=200,
+        number_of_days=10,
+    ),
+    term2=TermDiscountDays(
+        discount=100,
+        number_of_days=20,
+    ),
     term_final=TermFinalDays(
-        number_of_days=1,
+        number_of_days=30,
     ),
 )
 
@@ -21203,7 +21808,7 @@ client.projects.create(
 <dl>
 <dd>
 
-**code:** `typing.Optional[str]` — Project code
+**code:** `typing.Optional[str]` — A user-defined identifier of this project.
     
 </dd>
 </dl>
@@ -21211,7 +21816,7 @@ client.projects.create(
 <dl>
 <dd>
 
-**color:** `typing.Optional[str]` — Project color
+**color:** `typing.Optional[str]` — Project color as a [CSS-compatible](https://developer.mozilla.org/en-US/docs/Web/CSS/color) value. Client applications can use this to color-code the projects or project-related data.
     
 </dd>
 </dl>
@@ -21219,7 +21824,7 @@ client.projects.create(
 <dl>
 <dd>
 
-**description:** `typing.Optional[str]` — Description of project
+**description:** `typing.Optional[str]` — A user-defined description of the project.
     
 </dd>
 </dl>
@@ -21227,7 +21832,7 @@ client.projects.create(
 <dl>
 <dd>
 
-**end_date:** `typing.Optional[str]` — Project end date
+**end_date:** `typing.Optional[str]` — Project end date. If specified, must be later than or equal to the start date.
     
 </dd>
 </dl>
@@ -21235,7 +21840,7 @@ client.projects.create(
 <dl>
 <dd>
 
-**parent_id:** `typing.Optional[str]` — Parent project ID
+**parent_id:** `typing.Optional[str]` — Unused. Reserved for future use.
     
 </dd>
 </dl>
@@ -21243,7 +21848,7 @@ client.projects.create(
 <dl>
 <dd>
 
-**partner_metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Project metadata
+**partner_metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — [Metadata](https://docs.monite.com/common/metadata) for partner needs.
     
 </dd>
 </dl>
@@ -21251,7 +21856,7 @@ client.projects.create(
 <dl>
 <dd>
 
-**start_date:** `typing.Optional[str]` — Project start date
+**start_date:** `typing.Optional[str]` — Project start date.
     
 </dd>
 </dl>
@@ -21483,7 +22088,7 @@ client.projects.update_by_id(
 <dl>
 <dd>
 
-**code:** `typing.Optional[str]` — Project code
+**code:** `typing.Optional[str]` — A user-defined identifier of this project.
     
 </dd>
 </dl>
@@ -21491,7 +22096,7 @@ client.projects.update_by_id(
 <dl>
 <dd>
 
-**color:** `typing.Optional[str]` — Project color
+**color:** `typing.Optional[str]` — Project color as a [CSS-compatible](https://developer.mozilla.org/en-US/docs/Web/CSS/color) value. Client applications can use this to color-code the projects or project-related data.
     
 </dd>
 </dl>
@@ -21499,7 +22104,7 @@ client.projects.update_by_id(
 <dl>
 <dd>
 
-**description:** `typing.Optional[str]` — Description of project
+**description:** `typing.Optional[str]` — A user-defined description of the project.
     
 </dd>
 </dl>
@@ -21507,7 +22112,7 @@ client.projects.update_by_id(
 <dl>
 <dd>
 
-**end_date:** `typing.Optional[str]` — Project end date
+**end_date:** `typing.Optional[str]` — Project end date. If specified, must be later than or equal to the start date.
     
 </dd>
 </dl>
@@ -21523,7 +22128,7 @@ client.projects.update_by_id(
 <dl>
 <dd>
 
-**parent_id:** `typing.Optional[str]` — Parent project ID
+**parent_id:** `typing.Optional[str]` — Unused. Reserved for future use.
     
 </dd>
 </dl>
@@ -21531,7 +22136,7 @@ client.projects.update_by_id(
 <dl>
 <dd>
 
-**partner_metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Project metadata
+**partner_metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — [Metadata](https://docs.monite.com/common/metadata) for partner needs.
     
 </dd>
 </dl>
@@ -21539,7 +22144,7 @@ client.projects.update_by_id(
 <dl>
 <dd>
 
-**start_date:** `typing.Optional[str]` — Project start date
+**start_date:** `typing.Optional[str]` — Project start date.
     
 </dd>
 </dl>
@@ -21548,6 +22153,1185 @@ client.projects.update_by_id(
 <dd>
 
 **tag_ids:** `typing.Optional[typing.Sequence[str]]` — A list of IDs of user-defined tags (labels) assigned to this project.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Receipts
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">get_receipts</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.get_receipts()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `typing.Optional[ReceiptCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gt:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lt:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gte:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lte:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id_in:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[CurrencyEnum]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id_contains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id_icontains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_gt:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_lt:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_gte:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount_lte:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_file:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_transaction:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">post_receipts</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.post_receipts()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**base64encoded_file:** `typing.Optional[str]` — Base64-encoded contents of the original receipt file.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[CurrencyEnum]` — Currency code used in the receipt.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id:** `typing.Optional[str]` — Unique receipt number assigned by the issuer.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at:** `typing.Optional[dt.datetime]` — Receipt issued date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchant_location:** `typing.Optional[str]` — Location of the merchant.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchant_name:** `typing.Optional[str]` — Name of the merchant.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount:** `typing.Optional[int]` — Total amount for the receipt in minor units (e.g. cents).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transaction_id:** `typing.Optional[str]` — Transaction ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">post_receipts_upload_from_file</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Upload an incoming receipt in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.post_receipts_upload_from_file()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**file:** `from __future__ import annotations
+
+core.File` — See core.File for more documentation
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">get_receipts_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.get_receipts_id(
+    receipt_id="receipt_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receipt_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">delete_receipts_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.delete_receipts_id(
+    receipt_id="receipt_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receipt_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">patch_receipts_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.patch_receipts_id(
+    receipt_id="receipt_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receipt_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**base64encoded_file:** `typing.Optional[str]` — Base64-encoded file contents.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[CurrencyEnum]` — Currency code.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id:** `typing.Optional[str]` — Receipt number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**issued_at:** `typing.Optional[dt.datetime]` — Date when the receipt was issued.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchant_location:** `typing.Optional[str]` — Merchant location.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchant_name:** `typing.Optional[str]` — Merchant name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_amount:** `typing.Optional[int]` — Total amount.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transaction_id:** `typing.Optional[str]` — Transaction ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">post_receipts_id_attach_file</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Attach file to receipt without existing attachment.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.post_receipts_id_attach_file(
+    receipt_id="receipt_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receipt_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**file:** `from __future__ import annotations
+
+core.File` — See core.File for more documentation
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">get_receipts_id_line_items</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.get_receipts_id_line_items(
+    receipt_id="receipt_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receipt_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `typing.Optional[ReceiptLineItemCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gt:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lt:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_gte:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_at_lte:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name_iexact:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name_contains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name_icontains:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_gt:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_lt:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_gte:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_lte:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_by_user_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">post_receipts_id_line_items</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.post_receipts_id_line_items(
+    receipt_id="receipt_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receipt_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accounting_tax_rate_id:** `typing.Optional[str]` — Accounting tax rate ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cost_center_id:** `typing.Optional[str]` — Cost center ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**general_ledger_id:** `typing.Optional[str]` — General ledger ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` — Line item name/description.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total:** `typing.Optional[int]` — Line item total in minor units.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">delete_receipts_id_line_items_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.delete_receipts_id_line_items_id(
+    receipt_id="receipt_id",
+    line_item_id="line_item_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receipt_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="src/monite/receipts/client.py">patch_receipts_id_line_items_id</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from monite import Monite
+
+client = Monite(
+    monite_version="YOUR_MONITE_VERSION",
+    monite_entity_id="YOUR_MONITE_ENTITY_ID",
+    token="YOUR_TOKEN",
+)
+client.receipts.patch_receipts_id_line_items_id(
+    receipt_id="receipt_id",
+    line_item_id="line_item_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receipt_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accounting_tax_rate_id:** `typing.Optional[str]` — Accounting tax rate ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cost_center_id:** `typing.Optional[str]` — Cost center ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**general_ledger_id:** `typing.Optional[str]` — General ledger ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` — Line item name/description.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total:** `typing.Optional[int]` — Line item total in minor units.
     
 </dd>
 </dl>
@@ -21865,7 +23649,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**type:** `typing.Optional[ReceivableType]` 
+**type:** `typing.Optional[ReceivableType]` — Return only receivables of the specified type. Use this parameter to get only invoices, or only quotes, or only credit notes.
     
 </dd>
 </dl>
@@ -21873,7 +23657,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**document_id:** `typing.Optional[str]` 
+**document_id:** `typing.Optional[str]` — Return a receivable with the exact specified document number (case-sensitive). The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
     
 </dd>
 </dl>
@@ -21881,7 +23665,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**document_id_contains:** `typing.Optional[str]` 
+**document_id_contains:** `typing.Optional[str]` — Return only receivables whose document number (`document_id`) contains the specified string (case-sensitive).
     
 </dd>
 </dl>
@@ -21889,7 +23673,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**document_id_icontains:** `typing.Optional[str]` 
+**document_id_icontains:** `typing.Optional[str]` — Return only receivables whose document number (`document_id`) contains the specified string (case-insensitive).
     
 </dd>
 </dl>
@@ -21897,7 +23681,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**issue_date_gt:** `typing.Optional[dt.datetime]` 
+**issue_date_gt:** `typing.Optional[dt.datetime]` — Return only non-draft receivables that were issued after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
     
 </dd>
 </dl>
@@ -21905,7 +23689,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**issue_date_lt:** `typing.Optional[dt.datetime]` 
+**issue_date_lt:** `typing.Optional[dt.datetime]` — Return only non-draft receivables that were issued before the specified date and time.
     
 </dd>
 </dl>
@@ -21913,7 +23697,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**issue_date_gte:** `typing.Optional[dt.datetime]` 
+**issue_date_gte:** `typing.Optional[dt.datetime]` — Return only non-draft receivables that were issued on or after the specified date and time.
     
 </dd>
 </dl>
@@ -21921,7 +23705,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**issue_date_lte:** `typing.Optional[dt.datetime]` 
+**issue_date_lte:** `typing.Optional[dt.datetime]` — Return only non-draft receivables that were issued before or on the specified date and time.
     
 </dd>
 </dl>
@@ -21929,7 +23713,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**created_at_gt:** `typing.Optional[dt.datetime]` 
+**created_at_gt:** `typing.Optional[dt.datetime]` — Return only receivables created after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.
     
 </dd>
 </dl>
@@ -21937,7 +23721,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**created_at_lt:** `typing.Optional[dt.datetime]` 
+**created_at_lt:** `typing.Optional[dt.datetime]` — Return only receivables created before the specified date and time.
     
 </dd>
 </dl>
@@ -21945,7 +23729,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**created_at_gte:** `typing.Optional[dt.datetime]` 
+**created_at_gte:** `typing.Optional[dt.datetime]` — Return only receivables created on or after the specified date and time.
     
 </dd>
 </dl>
@@ -21953,7 +23737,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**created_at_lte:** `typing.Optional[dt.datetime]` 
+**created_at_lte:** `typing.Optional[dt.datetime]` — Return only receivables created before or on the specified date and time.
     
 </dd>
 </dl>
@@ -21962,6 +23746,12 @@ For example, given receivables with the following product IDs:
 <dd>
 
 **counterpart_id:** `typing.Optional[str]` 
+
+Return only receivables created for the counterpart with the specified ID.
+
+Counterparts that have been deleted but have associated receivables will still return results here because the receivables contain a frozen copy of the counterpart data.
+
+If the specified counterpart ID does not exist and never existed, no results are returned.
     
 </dd>
 </dl>
@@ -21969,7 +23759,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**counterpart_name:** `typing.Optional[str]` 
+**counterpart_name:** `typing.Optional[str]` — Return only receivables created for counterparts with the specified name (exact match, case-sensitive). For counterparts of `type` = `individual`, the full name is formatted as `first_name last_name`.
     
 </dd>
 </dl>
@@ -21977,7 +23767,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**counterpart_name_contains:** `typing.Optional[str]` 
+**counterpart_name_contains:** `typing.Optional[str]` — Return only receivables created for counterparts whose name contains the specified string (case-sensitive).
     
 </dd>
 </dl>
@@ -21985,7 +23775,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**counterpart_name_icontains:** `typing.Optional[str]` 
+**counterpart_name_icontains:** `typing.Optional[str]` — Return only receivables created for counterparts whose name contains the specified string (case-insensitive).
     
 </dd>
 </dl>
@@ -21993,7 +23783,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**total_amount:** `typing.Optional[int]` 
+**total_amount:** `typing.Optional[int]` — Return only receivables with the exact specified total amount. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250."
     
 </dd>
 </dl>
@@ -22001,7 +23791,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**total_amount_gt:** `typing.Optional[int]` 
+**total_amount_gt:** `typing.Optional[int]` — Return only receivables whose total amount (in minor units) exceeds the specified value.
     
 </dd>
 </dl>
@@ -22009,7 +23799,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**total_amount_lt:** `typing.Optional[int]` 
+**total_amount_lt:** `typing.Optional[int]` — Return only receivables whose total amount (in minor units) is less than the specified value.
     
 </dd>
 </dl>
@@ -22017,7 +23807,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**total_amount_gte:** `typing.Optional[int]` 
+**total_amount_gte:** `typing.Optional[int]` — Return only receivables whose total amount (in minor units) is greater than or equal to the specified value.
     
 </dd>
 </dl>
@@ -22025,7 +23815,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**total_amount_lte:** `typing.Optional[int]` 
+**total_amount_lte:** `typing.Optional[int]` — Return only receivables whose total amount (in minor units) is less than or equal to the specified value.
     
 </dd>
 </dl>
@@ -22033,7 +23823,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**discounted_subtotal:** `typing.Optional[int]` 
+**discounted_subtotal:** `typing.Optional[int]` — Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
     
 </dd>
 </dl>
@@ -22041,7 +23831,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**discounted_subtotal_gt:** `typing.Optional[int]` 
+**discounted_subtotal_gt:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
     
 </dd>
 </dl>
@@ -22049,7 +23839,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**discounted_subtotal_lt:** `typing.Optional[int]` 
+**discounted_subtotal_lt:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
     
 </dd>
 </dl>
@@ -22057,7 +23847,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**discounted_subtotal_gte:** `typing.Optional[int]` 
+**discounted_subtotal_gte:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
     
 </dd>
 </dl>
@@ -22065,7 +23855,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**discounted_subtotal_lte:** `typing.Optional[int]` 
+**discounted_subtotal_lte:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
     
 </dd>
 </dl>
@@ -22074,6 +23864,10 @@ For example, given receivables with the following product IDs:
 <dd>
 
 **status:** `typing.Optional[ReceivablesGetRequestStatus]` 
+
+Return only receivables that have the specified status. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
+
+To query multiple statuses at once, use the `status__in` parameter instead.
     
 </dd>
 </dl>
@@ -22082,6 +23876,13 @@ For example, given receivables with the following product IDs:
 <dd>
 
 **entity_user_id:** `typing.Optional[str]` 
+
+Return only receivables created by the entity users with the specified IDs. To specify multiple user IDs, repeat this parameter for each ID:
+`entity_user_id__in=<user1>&entity_user_id__in=<user2>`
+
+If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
     
 </dd>
 </dl>
@@ -22090,6 +23891,13 @@ For example, given receivables with the following product IDs:
 <dd>
 
 **based_on:** `typing.Optional[str]` 
+
+This parameter accepts a quote ID or an invoice ID.
+
+ * Specify a quote ID to find invoices created from this quote.
+ * Specify an invoice ID to find credit notes created for this invoice or find recurring invoices created from a base invoice.
+
+Valid but nonexistent IDs do not raise errors but produce no results.
     
 </dd>
 </dl>
@@ -22098,6 +23906,10 @@ For example, given receivables with the following product IDs:
 <dd>
 
 **due_date_gt:** `typing.Optional[str]` 
+
+Return invoices that are due after the specified date (exclusive, `YYYY-MM-DD`).
+
+This filter excludes quotes, credit notes, and draft invoices.
     
 </dd>
 </dl>
@@ -22106,6 +23918,10 @@ For example, given receivables with the following product IDs:
 <dd>
 
 **due_date_lt:** `typing.Optional[str]` 
+
+Return invoices that are due before the specified date (exclusive, `YYYY-MM-DD`).
+
+This filter excludes quotes, credit notes, and draft invoices.
     
 </dd>
 </dl>
@@ -22114,6 +23930,10 @@ For example, given receivables with the following product IDs:
 <dd>
 
 **due_date_gte:** `typing.Optional[str]` 
+
+Return invoices that are due on or after the specified date (`YYYY-MM-DD`).
+
+This filter excludes quotes, credit notes, and draft invoices.
     
 </dd>
 </dl>
@@ -22122,6 +23942,10 @@ For example, given receivables with the following product IDs:
 <dd>
 
 **due_date_lte:** `typing.Optional[str]` 
+
+Return invoices that are due before or on the specified date (`YYYY-MM-DD`).
+
+This filter excludes quotes, credit notes, and draft invoices.
     
 </dd>
 </dl>
@@ -22129,7 +23953,7 @@ For example, given receivables with the following product IDs:
 <dl>
 <dd>
 
-**project_id:** `typing.Optional[str]` 
+**project_id:** `typing.Optional[str]` — Return only receivables assigned to the project with the specified ID. Valid but nonexistent project IDs do not raise errors but return no results.
     
 </dd>
 </dl>
@@ -22162,7 +23986,7 @@ For example, given receivables with the following product IDs:
 <dd>
 
 ```python
-from monite import LineItem, Monite, ReceivableFacadeCreateQuotePayload
+from monite import Monite, ReceivableCreateBasedOnPayload
 
 client = Monite(
     monite_version="YOUR_MONITE_VERSION",
@@ -22170,15 +23994,9 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.receivables.create(
-    request=ReceivableFacadeCreateQuotePayload(
-        counterpart_billing_address_id="counterpart_billing_address_id",
-        counterpart_id="counterpart_id",
-        currency="AED",
-        line_items=[
-            LineItem(
-                quantity=1.1,
-            )
-        ],
+    request=ReceivableCreateBasedOnPayload(
+        based_on="e977db242-e7d5-4d2e-83cf-a1f5051ed40a",
+        type="credit_note",
     ),
 )
 
@@ -22360,7 +24178,10 @@ client = Monite(
     monite_entity_id="YOUR_MONITE_ENTITY_ID",
     token="YOUR_TOKEN",
 )
-client.receivables.post_receivables_search()
+client.receivables.post_receivables_search(
+    status="draft",
+    type="invoice",
+)
 
 ```
 </dd>
@@ -22372,46 +24193,6 @@ client.receivables.post_receivables_search()
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**discounted_subtotal:** `typing.Optional[int]` — Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**discounted_subtotal_gt:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**discounted_subtotal_gte:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**discounted_subtotal_lt:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**discounted_subtotal_lte:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -22494,6 +24275,46 @@ If the specified counterpart ID does not exist and never existed, no results are
 <dd>
 
 **created_at_lte:** `typing.Optional[dt.datetime]` — Return only receivables created before or on the specified date and time.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal:** `typing.Optional[int]` — Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_gt:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is greater than the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_gte:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_lt:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is less than the specified value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounted_subtotal_lte:** `typing.Optional[int]` — Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value.
     
 </dd>
 </dl>
@@ -22588,6 +24409,12 @@ IDs of deleted users will still produce results here if those users had associat
 <dd>
 
 **entity_user_id_in:** `typing.Optional[typing.Sequence[str]]` 
+
+Return only receivables created by the entity users with the specified IDs.
+
+If the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.
+
+IDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.
     
 </dd>
 </dl>
@@ -22595,7 +24422,7 @@ IDs of deleted users will still produce results here if those users had associat
 <dl>
 <dd>
 
-**id_in:** `typing.Optional[typing.Sequence[str]]` 
+**id_in:** `typing.Optional[typing.Sequence[str]]` — Return only receivables with the specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
     
 </dd>
 </dl>
@@ -22636,6 +24463,10 @@ IDs of deleted users will still produce results here if those users had associat
 <dd>
 
 **limit:** `typing.Optional[int]` 
+
+The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page.
+
+When using pagination with a non-default limit, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other pagination parameters, `limit` is not inferred from `pagination_token`.
     
 </dd>
 </dl>
@@ -22643,7 +24474,7 @@ IDs of deleted users will still produce results here if those users had associat
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` 
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -22652,6 +24483,10 @@ IDs of deleted users will still produce results here if those users had associat
 <dd>
 
 **pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to `GET /receivables` or `POST /receivables/search`. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other parameters except `limit` are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -22660,6 +24495,20 @@ IDs of deleted users will still produce results here if those users had associat
 <dd>
 
 **product_ids:** `typing.Optional[typing.Sequence[str]]` 
+
+Return only receivables with line items containing all of the products with the specified IDs and optionally other products that are not specified.
+
+For example, given receivables that contain the following products:
+
+ 1. productA
+ 2. productB
+ 3. productA, productB
+ 4. productC
+ 5. productA, productB, productC
+
+`product_ids` = `[productA, productB]` will return receivables 3 and 5.
+
+Valid but nonexistent product IDs do not raise errors but produce no results.
     
 </dd>
 </dl>
@@ -22668,6 +24517,20 @@ IDs of deleted users will still produce results here if those users had associat
 <dd>
 
 **product_ids_in:** `typing.Optional[typing.Sequence[str]]` 
+
+Return only receivables with line items containing at least one of the products with the specified IDs.
+
+For example, given receivables that contain the following products:
+
+ 1. productA
+ 2. productB
+ 3. productA, productB
+ 4. productC
+ 5. productB, productC
+
+`product_ids__in` = `[productA, productB]` will return receivables 1, 2, 3, and 5.
+
+Valid but nonexistent product IDs do not raise errors but produce no results.
     
 </dd>
 </dl>
@@ -22683,7 +24546,7 @@ IDs of deleted users will still produce results here if those users had associat
 <dl>
 <dd>
 
-**project_id_in:** `typing.Optional[typing.Sequence[str]]` 
+**project_id_in:** `typing.Optional[typing.Sequence[str]]` — Return only receivables that belong to one of the projects with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
     
 </dd>
 </dl>
@@ -22691,7 +24554,7 @@ IDs of deleted users will still produce results here if those users had associat
 <dl>
 <dd>
 
-**sort:** `typing.Optional[ReceivableCursorFields2]` 
+**sort:** `typing.Optional[ReceivableCursorFields2]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -22711,7 +24574,7 @@ To query multiple statuses at once, use the `status__in` parameter instead.
 <dl>
 <dd>
 
-**status_in:** `typing.Optional[typing.Sequence[str]]` 
+**status_in:** `typing.Optional[typing.Sequence[str]]` — Return only receivables that have the specified statuses. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
     
 </dd>
 </dl>
@@ -22720,6 +24583,18 @@ To query multiple statuses at once, use the `status__in` parameter instead.
 <dd>
 
 **tag_ids:** `typing.Optional[typing.Sequence[str]]` 
+
+Return only receivables whose [tags](https://docs.monite.com/common/tags) include all of the tags with the specified IDs and optionally other tags that are not specified.
+
+For example, given receivables with the following tags:
+
+ 1. tagA
+ 2. tagB
+ 3. tagA, tagB
+ 4. tagC
+ 5. tagA, tagB, tagC
+
+`tag_ids` = `[tagA, tagB]` will return receivables 3 and 5.
     
 </dd>
 </dl>
@@ -22728,6 +24603,20 @@ To query multiple statuses at once, use the `status__in` parameter instead.
 <dd>
 
 **tag_ids_in:** `typing.Optional[typing.Sequence[str]]` 
+
+Return only receivables whose [tags](https://docs.monite.com/common/tags) include at least one of the tags with the specified IDs.
+
+For example, given receivables with the following tags:
+
+ 1. tagA
+ 2. tagB
+ 3. tagA, tagB
+ 4. tagC
+ 5. tagB, tagC
+
+`tag_ids__in` = `[tagA, tagB]` will return receivables 1, 2, 3, and 5.
+
+Valid but nonexistent tag IDs do not raise errors but produce no results.
     
 </dd>
 </dl>
@@ -22861,6 +24750,24 @@ client.receivables.get_variables()
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the details of an existing accounts receivable invoice, quote, or credit note with the specified ID.
+
+The response fields vary depending on the document type. Use the `type` field to distinguish between different document types.
+
+Entity users with the `receivable.read.allowed_for_own` permission (rather than `allowed`) can access only documents that they created themselves.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -22895,7 +24802,7 @@ client.receivables.get_by_id(
 <dl>
 <dd>
 
-**receivable_id:** `str` 
+**receivable_id:** `str` — ID of an existing invoice, quote, or credit note that you want to retrieve.
     
 </dd>
 </dl>
@@ -23046,6 +24953,22 @@ client.receivables.update_by_id(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Only quotes in the `issued` status can be accepted.
+
+When a quote is accepted, Monite automatically creates a draft invoice based on this quote. To find the newly created invoice, use `GET /receivables?based_on=QUOTE_ID`.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -23088,7 +25011,7 @@ client.receivables.accept_by_id(
 <dl>
 <dd>
 
-**signature:** `typing.Optional[Signature]` — A digital signature, if required for quote acceptance
+**signature:** `typing.Optional[Signature]` — The counterpart's signature. Required if the quote field `signature_required` is `true`.
     
 </dd>
 </dl>
@@ -23170,6 +25093,29 @@ client.receivables.cancel_by_id(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a copy of an existing accounts receivable invoice or quote. The original document can be in any status. The cloned document will have the `draft` status.
+
+Cloning a document requires that all of the referenced resource IDs (counterpart ID, product IDs, and others) still exist.
+
+Most of the original document's data is copied as is, with a few exceptions:
+
+ * Some fields are not copied: `attachments`, `document_id`, `issue_date`, quote `expiry_date`.
+ * Counterpart details, entity bank account details, and entity VAT number are fetched anew from their corresponding IDs.
+   This means, for example, that if the counterpart details have been changed since the original invoice or quote was created,
+   the cloned document will use the current counterpart details rather than the old details from the original document.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -23204,7 +25150,7 @@ client.receivables.clone_by_id(
 <dl>
 <dd>
 
-**receivable_id:** `str` 
+**receivable_id:** `str` — ID of an existing invoice or quote that you want to clone.
     
 </dd>
 </dl>
@@ -23227,6 +25173,20 @@ client.receivables.clone_by_id(
 <details><summary><code>client.receivables.<a href="src/monite/receivables/client.py">decline_by_id</a>(...)</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Only quotes in the `issued` status can be declined.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -24187,6 +26147,25 @@ client.receivables.get_pdf_link_by_id(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+You can preview emails only for documents in the following statuses:
+
+ * Invoices: `draft`, `issued`, `overdue`, `partially_paid`, `paid`.
+   In the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance): also `canceled`.
+ * Quotes: `draft`, `issued`.
+ * Credit notes: `draft`, `issued`.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -24278,6 +26257,29 @@ client.receivables.preview_by_id(
 <details><summary><code>client.receivables.<a href="src/monite/receivables/client.py">send_by_id</a>(...)</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Only documents in the following statuses can be sent via email:
+
+ * Invoices: `draft`, `issued`, `overdue`, `partially_paid`, `paid`.
+   In the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance): also `canceled`.
+ * Quotes: `draft`, `issued`.
+ * Credit notes: `draft`, `issued`.
+
+Draft documents are automatically moved to the `issued` status before sending.
+
+For more information, see [Send an invoice via email](https://docs.monite.com/accounts-receivable/invoices/create#send-via-email).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -25323,7 +27325,7 @@ client.roles.create(
 <dl>
 <dd>
 
-**name:** `str` — Role name
+**name:** `str` — The role name is case-sensitive and must be unique.
     
 </dd>
 </dl>
@@ -25541,7 +27543,7 @@ client.roles.update_by_id(
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` — Role name
+**name:** `typing.Optional[str]` — The new name for this role. Case-sensitive and must be unique.
     
 </dd>
 </dl>
@@ -25582,7 +27584,11 @@ client.roles.update_by_id(
 <dl>
 <dd>
 
-Retrieve all settings for this partner.
+Partner-level settings apply to all entities of that partner.
+
+See also:
+
+ * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 </dd>
 </dl>
 </dd>
@@ -25644,7 +27650,11 @@ client.partner_settings.get()
 <dl>
 <dd>
 
-Change the specified fields with the provided values.
+Partner-level settings apply to all entities of that partner.
+
+See also:
+
+ * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
 </dd>
 </dl>
 </dd>
@@ -25682,55 +27692,23 @@ client.partner_settings.update()
 <dl>
 <dd>
 
+**api_version:** `typing.Optional[ApiVersion]` — Default API version for partner.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**commercial_conditions:** `typing.Optional[typing.Sequence[str]]` — Unused. To specify commercial conditions for invoices and quotes, use the `commercial_condition_description` field in those documents.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **currency:** `typing.Optional[CurrencySettingsInput]` — Custom currency exchange rates.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payable:** `typing.Optional[PayableSettings]` — Settings for the payables module.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**receivable:** `typing.Optional[ReceivableSettings]` — Settings for the receivables module.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mail:** `typing.Optional[MailSettings]` — Settings for email and mailboxes.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**commercial_conditions:** `typing.Optional[typing.Sequence[str]]` — Commercial conditions for receivables.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**units:** `typing.Optional[typing.Sequence[Unit]]` — Measurement units.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**website:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -25746,6 +27724,27 @@ client.partner_settings.update()
 <dl>
 <dd>
 
+**mail:** `typing.Optional[MailSettings]` 
+
+Settings for outgoing email. Used by:
+
+ * accounts receivable emails, for example, emails sent by `POST /recevables/{receivable_id}/send`,
+ * accounts payable approval notifications.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payable:** `typing.Optional[PayableSettings]` — Settings for accounts payable.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **payments:** `typing.Optional[PaymentsSettingsInput]` — Settings for the payments module.
     
 </dd>
@@ -25754,7 +27753,23 @@ client.partner_settings.update()
 <dl>
 <dd>
 
-**api_version:** `typing.Optional[ApiVersion]` — Default API version for partner.
+**receivable:** `typing.Optional[ReceivableSettings]` — Settings for accounts receivable.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**units:** `typing.Optional[typing.Sequence[Unit]]` — Unused. To manage the [measure units](https://docs.monite.com/accounts-receivable/products#manage-measure-units) for your entities, use the `/measure_units` endpoints.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `typing.Optional[str]` — The URL of the partner's website. Must be an HTTPS URL. Required if the partner's entities use [payment links](https://docs.monite.com/payments/payment-links). The "Powered by" badge in the payment page footer will link to this website.
     
 </dd>
 </dl>
@@ -26727,6 +28742,30 @@ client.text_templates.make_default_by_id(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Monite maintains a catalog of VAT and sales tax rates for [select countries](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries).
+
+To query the applicable VAT/tax rates for an invoice or quote, use:
+
+`GET /vat_rates?counterpart_id=<...>&entity_vat_id_id=<...>`
+
+Or if the entity does not have a VAT ID:
+
+`GET /vat_rates?counterpart_id=<...>`
+
+**Note:** Entities from countries [not on the list](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries) should not use this endpoint. Instead, those entities can either create custom VAT/tax rates or use the invoice field `line_items[].tax_rate_value` to specify the VAT/tax rates directly.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -26759,7 +28798,7 @@ client.vat_rates.get()
 <dl>
 <dd>
 
-**counterpart_address_id:** `typing.Optional[str]` 
+**counterpart_address_id:** `typing.Optional[str]` — Unused. Reserved for future use.
     
 </dd>
 </dl>
@@ -26767,7 +28806,7 @@ client.vat_rates.get()
 <dl>
 <dd>
 
-**counterpart_id:** `typing.Optional[str]` 
+**counterpart_id:** `typing.Optional[str]` — ID of the counterpart that will be invoiced.
     
 </dd>
 </dl>
@@ -26775,7 +28814,7 @@ client.vat_rates.get()
 <dl>
 <dd>
 
-**counterpart_vat_id_id:** `typing.Optional[str]` 
+**counterpart_vat_id_id:** `typing.Optional[str]` — Unused. Reserved for future use.
     
 </dd>
 </dl>
@@ -26783,7 +28822,7 @@ client.vat_rates.get()
 <dl>
 <dd>
 
-**entity_vat_id_id:** `typing.Optional[str]` 
+**entity_vat_id_id:** `typing.Optional[str]` — ID of the entity's VAT number (if any) used for the sales transaction.
     
 </dd>
 </dl>
@@ -26791,7 +28830,7 @@ client.vat_rates.get()
 <dl>
 <dd>
 
-**product_type:** `typing.Optional[ProductServiceTypeEnum]` 
+**product_type:** `typing.Optional[ProductServiceTypeEnum]` — Unused. Reserved for future use.
     
 </dd>
 </dl>
@@ -26975,6 +29014,20 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of all [webhook](https://docs.monite.com/references/webhooks/index) subscriptions (both active and disabled).
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -27051,7 +29104,7 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**created_at_gt:** `typing.Optional[dt.datetime]` 
+**created_at_gt:** `typing.Optional[dt.datetime]` — Return only subscriptions created after the specified date and time.
     
 </dd>
 </dl>
@@ -27059,7 +29112,7 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**created_at_lt:** `typing.Optional[dt.datetime]` 
+**created_at_lt:** `typing.Optional[dt.datetime]` — Return only subscriptions created before the specified date and time.
     
 </dd>
 </dl>
@@ -27067,7 +29120,7 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**created_at_gte:** `typing.Optional[dt.datetime]` 
+**created_at_gte:** `typing.Optional[dt.datetime]` — Return only subscriptions created on or after the specified date and time.
     
 </dd>
 </dl>
@@ -27075,7 +29128,7 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
-**created_at_lte:** `typing.Optional[dt.datetime]` 
+**created_at_lte:** `typing.Optional[dt.datetime]` — Return only subscriptions created before or on the specified date and time.
     
 </dd>
 </dl>
@@ -27099,6 +29152,20 @@ If not specified, the first page of results will be returned.
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Related guide: [Webhooks](https://docs.monite.com/references/webhooks/index).
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -27116,8 +29183,13 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.webhook_subscriptions.create(
-    object_type="account",
-    url="url",
+    event_types=[
+        "created",
+        "onboarding_requirements.updated",
+        "onboarding_requirements.status_updated",
+    ],
+    object_type="entity",
+    url="https://example.com/your-webhook-listener",
 )
 
 ```
@@ -27135,6 +29207,10 @@ client.webhook_subscriptions.create(
 <dd>
 
 **object_type:** `WebhookObjectType` 
+
+The [object type](https://docs.monite.com/references/webhooks/index#events) to whose events you want to subscribe.
+
+To subscribe to events from multiple object types, create a separate subscription for each object type.
     
 </dd>
 </dl>
@@ -27143,6 +29219,10 @@ client.webhook_subscriptions.create(
 <dd>
 
 **url:** `str` 
+
+An HTTPS URL to which Monite will send webhooks. This URL must be accessible over the public Internet, accept POST requests, and respond with status code 200. It must be a direct URL (no redirects).
+
+The same URL can be used by multiple webhook subscriptions.
     
 </dd>
 </dl>
@@ -27150,7 +29230,7 @@ client.webhook_subscriptions.create(
 <dl>
 <dd>
 
-**event_types:** `typing.Optional[typing.Sequence[str]]` 
+**event_types:** `typing.Optional[typing.Sequence[str]]` — A list of [events](https://docs.monite.com/references/webhooks/index#events) to subscribe to. If set to an empty array, the subscription includes all events triggered by the specified `object_type`. 
     
 </dd>
 </dl>
@@ -27173,6 +29253,22 @@ client.webhook_subscriptions.create(
 <details><summary><code>client.webhook_subscriptions.<a href="src/monite/webhook_subscriptions/client.py">get_by_id</a>(...)</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the details of the webhook subscription with the specified ID.
+
+The response does not include the [webhook signing secret](https://docs.monite.com/references/webhooks/signatures). If you lost the secret, you can [regenerate it](https://docs.monite.com/api/webhook-subscriptions/post-webhook-subscriptions-id-regenerate-secret).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -27208,7 +29304,7 @@ client.webhook_subscriptions.get_by_id(
 <dl>
 <dd>
 
-**webhook_subscription_id:** `str` 
+**webhook_subscription_id:** `str` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
     
 </dd>
 </dl>
@@ -27266,7 +29362,7 @@ client.webhook_subscriptions.delete_by_id(
 <dl>
 <dd>
 
-**webhook_subscription_id:** `str` 
+**webhook_subscription_id:** `str` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
     
 </dd>
 </dl>
@@ -27289,6 +29385,20 @@ client.webhook_subscriptions.delete_by_id(
 <details><summary><code>client.webhook_subscriptions.<a href="src/monite/webhook_subscriptions/client.py">update_by_id</a>(...)</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+You can update the webhook listener URL or the event list.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -27324,7 +29434,7 @@ client.webhook_subscriptions.update_by_id(
 <dl>
 <dd>
 
-**webhook_subscription_id:** `str` 
+**webhook_subscription_id:** `str` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
     
 </dd>
 </dl>
@@ -27332,7 +29442,7 @@ client.webhook_subscriptions.update_by_id(
 <dl>
 <dd>
 
-**event_types:** `typing.Optional[typing.Sequence[str]]` 
+**event_types:** `typing.Optional[typing.Sequence[str]]` — A list of [events](https://docs.monite.com/references/webhooks/index#events) to subscribe to. If set to an empty array, the subscription includes all events triggered by the specified `object_type`. 
     
 </dd>
 </dl>
@@ -27341,6 +29451,10 @@ client.webhook_subscriptions.update_by_id(
 <dd>
 
 **object_type:** `typing.Optional[WebhookObjectType]` 
+
+The [object type](https://docs.monite.com/references/webhooks/index#events) to whose events you want to subscribe.
+
+To subscribe to events from multiple object types, create a separate subscription for each object type.
     
 </dd>
 </dl>
@@ -27349,6 +29463,10 @@ client.webhook_subscriptions.update_by_id(
 <dd>
 
 **url:** `typing.Optional[str]` 
+
+An HTTPS URL to which Monite will send webhooks. This URL must be accessible over the public Internet, accept POST requests, and respond with status code 200. It must be a direct URL (no redirects).
+
+The same URL can be used by multiple webhook subscriptions.
     
 </dd>
 </dl>
@@ -27406,7 +29524,7 @@ client.webhook_subscriptions.disable_by_id(
 <dl>
 <dd>
 
-**webhook_subscription_id:** `str` 
+**webhook_subscription_id:** `str` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
     
 </dd>
 </dl>
@@ -27464,7 +29582,7 @@ client.webhook_subscriptions.enable_by_id(
 <dl>
 <dd>
 
-**webhook_subscription_id:** `str` 
+**webhook_subscription_id:** `str` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
     
 </dd>
 </dl>
@@ -27487,6 +29605,20 @@ client.webhook_subscriptions.enable_by_id(
 <details><summary><code>client.webhook_subscriptions.<a href="src/monite/webhook_subscriptions/client.py">regenerate_secret_by_id</a>(...)</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The webhook signing secret lets you [verify webhook signatures](https://docs.monite.com/references/webhooks/signatures). If you lost the original secret generated for any of your webhook subscriptions, you can regenerate it.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -27522,7 +29654,7 @@ client.webhook_subscriptions.regenerate_secret_by_id(
 <dl>
 <dd>
 
-**webhook_subscription_id:** `str` 
+**webhook_subscription_id:** `str` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
     
 </dd>
 </dl>
@@ -29331,7 +31463,7 @@ client.counterparts.addresses.create(
 <dl>
 <dd>
 
-**state:** `typing.Optional[str]` — State, region, province, or county.
+**state:** `typing.Optional[str]` — State, county, province, prefecture, region, or similar component of the counterpart's address. For US counterparts, `state` is required and must be a two-letter [USPS state abbreviation](https://pe.usps.com/text/pub28/28apb.htm), for example, NY or CA.
     
 </dd>
 </dl>
@@ -31048,7 +33180,7 @@ client.data_exports.extra_data.get()
 <dl>
 <dd>
 
-**order:** `typing.Optional[OrderEnum]` — Order by
+**order:** `typing.Optional[OrderEnum]` — Sort order (ascending by default). Typically used together with the `sort` parameter.
     
 </dd>
 </dl>
@@ -31056,7 +33188,7 @@ client.data_exports.extra_data.get()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max is 100
+**limit:** `typing.Optional[int]` — The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
     
 </dd>
 </dl>
@@ -31064,7 +33196,11 @@ client.data_exports.extra_data.get()
 <dl>
 <dd>
 
-**pagination_token:** `typing.Optional[str]` — A token, obtained from previous page. Prior over other filters
+**pagination_token:** `typing.Optional[str]` 
+
+A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+
+If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
@@ -31072,7 +33208,7 @@ client.data_exports.extra_data.get()
 <dl>
 <dd>
 
-**sort:** `typing.Optional[ExportSettingCursorFields]` — Allowed sort fields
+**sort:** `typing.Optional[ExportSettingCursorFields]` — The field to sort the results by. Typically used together with the `order` parameter.
     
 </dd>
 </dl>
@@ -31573,8 +33709,14 @@ client = Monite(
     token="YOUR_TOKEN",
 )
 client.entities.bank_accounts.create(
-    country="AF",
-    currency="AED",
+    account_holder_name="Bob Jones",
+    account_number="2571714302",
+    bank_name="WELLS FARGO",
+    country="US",
+    currency="USD",
+    display_name="Primary account",
+    is_default_for_currency=True,
+    routing_number="061000227",
 )
 
 ```
@@ -32132,6 +34274,14 @@ client.entities.onboarding_data.update(
 <dl>
 <dd>
 
+**treasury_tos_acceptance:** `typing.Optional[TermsOfServiceAcceptanceInput]` — Details on the entity's acceptance of the Stripe Treasury service agreement.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -32253,6 +34403,7 @@ client = Monite(
 )
 client.entities.payment_methods.set(
     entity_id="entity_id",
+    payment_methods_receive=["card", "us_ach", "affirm", "klarna"],
 )
 
 ```
@@ -32277,7 +34428,7 @@ client.entities.payment_methods.set(
 <dl>
 <dd>
 
-**payment_methods:** `typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]` — Deprecated. Use payment_methods_receive instead.
+**payment_methods:** `typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]` — Deprecated. Replaced by `payment_methods_receive`.
     
 </dd>
 </dl>
@@ -32285,7 +34436,13 @@ client.entities.payment_methods.set(
 <dl>
 <dd>
 
-**payment_methods_receive:** `typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]` — Enable payment methods to receive money.
+**payment_methods_receive:** `typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]` 
+
+Payment methods to receive money from customers. Supported payment methods [vary per country](https://docs.monite.com/payments/payment-methods).
+
+`card` includes card payments, Apple Pay, and Google Pay. The values `applepay` and `googlepay` are deprecated and unused.
+
+`sofort` is deprecated and replaced by `klarna`.
     
 </dd>
 </dl>
@@ -32293,7 +34450,11 @@ client.entities.payment_methods.set(
 <dl>
 <dd>
 
-**payment_methods_send:** `typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]` — Enable payment methods to send money.
+**payment_methods_send:** `typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]` 
+
+Only for entities in the EU and UK. Payment methods used to make payments to vendors.
+
+Currently only `sepa_credit` is supported for making payments.
     
 </dd>
 </dl>

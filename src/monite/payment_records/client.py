@@ -66,7 +66,7 @@ class PaymentRecordsClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
             Max is 100
@@ -75,7 +75,7 @@ class PaymentRecordsClient:
             A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[PaymentRecordCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         is_external : typing.Optional[bool]
             Identifies whether payment is from our rails or external system
@@ -183,9 +183,9 @@ class PaymentRecordsClient:
         amount: int,
         currency: CurrencyEnum,
         object: PaymentRecordObjectRequest,
-        payment_intent_id: str,
         entity_user_id: typing.Optional[str] = OMIT,
         paid_at: typing.Optional[dt.datetime] = OMIT,
+        payment_intent_id: typing.Optional[str] = OMIT,
         payment_intent_status: typing.Optional[str] = OMIT,
         payment_method: typing.Optional[str] = OMIT,
         planned_payment_date: typing.Optional[str] = OMIT,
@@ -204,14 +204,14 @@ class PaymentRecordsClient:
         object : PaymentRecordObjectRequest
             Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier.
 
-        payment_intent_id : str
-            Identifier for an payment intent.
-
         entity_user_id : typing.Optional[str]
             ID of the user associated with the payment, if applicable.
 
         paid_at : typing.Optional[dt.datetime]
             Timestamp marking when the payment was executed. Null if payment hasn't occurred yet.
+
+        payment_intent_id : typing.Optional[str]
+            Identifier for an payment intent.
 
         payment_intent_status : typing.Optional[str]
             Raw status string of the external payment intent.
@@ -249,16 +249,15 @@ class PaymentRecordsClient:
                 id="id",
                 type="receivable",
             ),
-            payment_intent_id="payment_intent_id",
         )
         """
         _response = self._raw_client.create(
             amount=amount,
             currency=currency,
             object=object,
-            payment_intent_id=payment_intent_id,
             entity_user_id=entity_user_id,
             paid_at=paid_at,
+            payment_intent_id=payment_intent_id,
             payment_intent_status=payment_intent_status,
             payment_method=payment_method,
             planned_payment_date=planned_payment_date,
@@ -564,7 +563,7 @@ class AsyncPaymentRecordsClient:
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
-            Order by
+            Sort order (ascending by default). Typically used together with the `sort` parameter.
 
         limit : typing.Optional[int]
             Max is 100
@@ -573,7 +572,7 @@ class AsyncPaymentRecordsClient:
             A token, obtained from previous page. Prior over other filters
 
         sort : typing.Optional[PaymentRecordCursorFields]
-            Allowed sort fields
+            The field to sort the results by. Typically used together with the `order` parameter.
 
         is_external : typing.Optional[bool]
             Identifies whether payment is from our rails or external system
@@ -689,9 +688,9 @@ class AsyncPaymentRecordsClient:
         amount: int,
         currency: CurrencyEnum,
         object: PaymentRecordObjectRequest,
-        payment_intent_id: str,
         entity_user_id: typing.Optional[str] = OMIT,
         paid_at: typing.Optional[dt.datetime] = OMIT,
+        payment_intent_id: typing.Optional[str] = OMIT,
         payment_intent_status: typing.Optional[str] = OMIT,
         payment_method: typing.Optional[str] = OMIT,
         planned_payment_date: typing.Optional[str] = OMIT,
@@ -710,14 +709,14 @@ class AsyncPaymentRecordsClient:
         object : PaymentRecordObjectRequest
             Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier.
 
-        payment_intent_id : str
-            Identifier for an payment intent.
-
         entity_user_id : typing.Optional[str]
             ID of the user associated with the payment, if applicable.
 
         paid_at : typing.Optional[dt.datetime]
             Timestamp marking when the payment was executed. Null if payment hasn't occurred yet.
+
+        payment_intent_id : typing.Optional[str]
+            Identifier for an payment intent.
 
         payment_intent_status : typing.Optional[str]
             Raw status string of the external payment intent.
@@ -760,7 +759,6 @@ class AsyncPaymentRecordsClient:
                     id="id",
                     type="receivable",
                 ),
-                payment_intent_id="payment_intent_id",
             )
 
 
@@ -770,9 +768,9 @@ class AsyncPaymentRecordsClient:
             amount=amount,
             currency=currency,
             object=object,
-            payment_intent_id=payment_intent_id,
             entity_user_id=entity_user_id,
             paid_at=paid_at,
+            payment_intent_id=payment_intent_id,
             payment_intent_status=payment_intent_status,
             payment_method=payment_method,
             planned_payment_date=planned_payment_date,

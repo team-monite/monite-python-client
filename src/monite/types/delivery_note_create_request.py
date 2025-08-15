@@ -49,7 +49,7 @@ class DeliveryNoteCreateRequest(UniversalBaseModel):
 
     memo: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Additional information regarding the delivery note
+    An optional note for the customer, displayed above the line items table in the PDF.
     """
 
     if IS_PYDANTIC_V2:

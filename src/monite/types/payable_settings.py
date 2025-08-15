@@ -7,22 +7,45 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class PayableSettings(UniversalBaseModel):
-    allow_cancel_duplicates_automatically: typing.Optional[bool] = None
-    allow_counterpart_autocreation: typing.Optional[bool] = None
-    allow_counterpart_autolinking: typing.Optional[bool] = None
-    allow_credit_note_autolinking: typing.Optional[bool] = None
-    approve_page_url: str
+    allow_cancel_duplicates_automatically: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    When enabled, Monite will automatically detect and cancel payables  identified as duplicates during ingestion—reducing manual review overhead.
+    """
+
+    allow_counterpart_autocreation: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Enables creation of a new counterpart record (supplier)  when incoming payable data doesn't match any existing counterpart.
+    """
+
+    allow_counterpart_autolinking: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Automatically links incoming payables to existing counterpart  records using matching logic (e.g., tax ID, IBAN, name/address).
+    """
+
+    allow_credit_note_autolinking: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If true, Monite will attempt to automatically attach credit notes  to the corresponding payables when processing them.
+    """
+
+    approve_page_url: str = pydantic.Field()
+    """
+    The URL included in approval notification emails and UI buttons, directing approvers to complete the invoice approval workflow.   Useful for linking to your custom approval portal.
+    """
+
     default_state: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A state each new payable will have upon creation
+    The initial status assigned to newly created payables  (e.g., `draft`, `new`). Determines whether they require approval or review.
     """
 
     enable_line_items: typing.Optional[bool] = pydantic.Field(default=None)
     """
-    Starting from version 2024-05-25 by default is always set to True.
+    Partners can set this to True or False to control line item detection in OCR flows.
     """
 
-    skip_approval_for_paid_invoice: typing.Optional[bool] = None
+    skip_approval_for_paid_invoice: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    When set to true, payables that are already marked as paid  bypass the approval workflow entirely.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

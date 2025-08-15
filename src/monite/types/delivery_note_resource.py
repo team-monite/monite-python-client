@@ -112,7 +112,7 @@ class DeliveryNoteResource(UniversalBaseModel):
 
     memo: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Additional information regarding the delivery note
+    An optional note for the customer, displayed above the line items table in the PDF.
     """
 
     original_file_language: LanguageCodeEnum = pydantic.Field()

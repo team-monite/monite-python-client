@@ -14,40 +14,37 @@ from .unit import Unit
 
 
 class PartnerProjectSettingsPayloadOutput(UniversalBaseModel):
+    api_version: typing.Optional[ApiVersion] = pydantic.Field(default=None)
+    """
+    Default API version for partner.
+    """
+
+    commercial_conditions: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Unused. To specify commercial conditions for invoices and quotes, use the `commercial_condition_description` field in those documents.
+    """
+
     currency: typing.Optional[CurrencySettingsOutput] = pydantic.Field(default=None)
     """
     Custom currency exchange rates.
     """
 
-    payable: typing.Optional[PayableSettings] = pydantic.Field(default=None)
+    default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
     """
-    Settings for the payables module.
-    """
-
-    receivable: typing.Optional[ReceivableSettings] = pydantic.Field(default=None)
-    """
-    Settings for the receivables module.
+    A default role to provision upon new entity creation.
     """
 
     mail: typing.Optional[MailSettings] = pydantic.Field(default=None)
     """
-    Settings for email and mailboxes.
+    Settings for outgoing email. Used by:
+    
+     * accounts receivable emails, for example, emails sent by `POST /recevables/{receivable_id}/send`,
+     * accounts payable approval notifications.
     """
 
-    commercial_conditions: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    payable: typing.Optional[PayableSettings] = pydantic.Field(default=None)
     """
-    Commercial conditions for receivables.
-    """
-
-    units: typing.Optional[typing.List[Unit]] = pydantic.Field(default=None)
-    """
-    Measurement units.
-    """
-
-    website: typing.Optional[str] = None
-    default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    A default role to provision upon new entity creation.
+    Settings for accounts payable.
     """
 
     payments: typing.Optional[PaymentsSettingsOutput] = pydantic.Field(default=None)
@@ -55,9 +52,19 @@ class PartnerProjectSettingsPayloadOutput(UniversalBaseModel):
     Settings for the payments module.
     """
 
-    api_version: typing.Optional[ApiVersion] = pydantic.Field(default=None)
+    receivable: typing.Optional[ReceivableSettings] = pydantic.Field(default=None)
     """
-    Default API version for partner.
+    Settings for accounts receivable.
+    """
+
+    units: typing.Optional[typing.List[Unit]] = pydantic.Field(default=None)
+    """
+    Unused. To manage the [measure units](https://docs.monite.com/accounts-receivable/products#manage-measure-units) for your entities, use the `/measure_units` endpoints.
+    """
+
+    website: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The URL of the partner's website. Must be an HTTPS URL. Required if the partner's entities use [payment links](https://docs.monite.com/payments/payment-links). The "Powered by" badge in the payment page footer will link to this website.
     """
 
     if IS_PYDANTIC_V2:

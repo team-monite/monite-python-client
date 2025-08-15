@@ -22,14 +22,14 @@ class PricingPlan(UniversalBaseModel):
     Transaction fee percentage. 300 means 3.00%
     """
 
-    repayment_type: WcRepaymentType = pydantic.Field()
-    """
-    Repayment type of the loan.
-    """
-
     repayment_duration_days: typing.Optional[int] = pydantic.Field(default=None)
     """
     This amount of days after which the repayment duration is due. This is only applicable for FIXED_DURATION repayment type
+    """
+
+    repayment_type: WcRepaymentType = pydantic.Field()
+    """
+    Repayment type of the loan.
     """
 
     if IS_PYDANTIC_V2:

@@ -33,12 +33,41 @@ class FilesClient:
         self,
         *,
         id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        file_type: typing.Optional[AllowedFileTypes] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FilesResponse:
         """
+        The `/files` endpoint provides access to an entity's files hosted on Monite's servers. This includes both files uploaded by the entity and files that were automatically created by Monite (such as PDF versions of invoices).
+
+        `GET /files` requires at least one query parameter, either `id__in` or `file_type`. You can use this operation to:
+
+         * Bulk fetch multiple files by IDs.
+         * Get all files with the given purpose (for example, invoice attachments).
+
+        If no files matching the query parameters were found, the response contains an empty `data` array.
+
+        Both partner tokens and entity user tokens can be used for authentication.
+
         Parameters
         ----------
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only files with specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
+
+            To specify multiple IDs, repeat this parameter for each value: `id__in=<id1>&id__in=<id2>`
+
+        file_type : typing.Optional[AllowedFileTypes]
+            Return only files with the given purpose. Possible values:
+
+             * `additional_identity_documents` and `identity_documents` - [entity verification documents](https://docs.monite.com/payments/onboarding/via-api/documents) uploaded for payments onboarding.
+             * `attachments` - supplementary attachments for accounts receivable invoices, quotes, and credit notes.
+             * `delivery_notes` - auto-generated PDF versions of delivery notes.
+             * `einvoices_xml` - e-invoice XML generated when sending e-invoices.
+             * `payables` - payables (bills) received via email or uploaded via API.
+             * `receivable_signatures` - images of customer signatures provided during quote acceptance.
+             * `receivables` - auto-generated PDF versions of invoices, quotes, and credit notes.
+             * `zip` - data export archives created by `POST /data_exports`.
+
+            Other values are unused.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -59,19 +88,35 @@ class FilesClient:
         )
         client.files.get()
         """
-        _response = self._raw_client.get(id_in=id_in, request_options=request_options)
+        _response = self._raw_client.get(id_in=id_in, file_type=file_type, request_options=request_options)
         return _response.data
 
     def upload(
         self, *, file: core.File, file_type: AllowedFileTypes, request_options: typing.Optional[RequestOptions] = None
     ) -> FileResponse:
         """
+        Upload files for use as:
+
+         * supplementary attachments for invoices, quotes, and credit notes,
+         * [entity verification documents](https://docs.monite.com/payments/onboarding/via-api/documents) for payments onboarding.
+
+        Maximum file size is 15 MB. Each uploaded file is assigned a unique `id` that you can use to reference this file elsewhere.
+
+        Both partner tokens and entity user tokens can be used for authentication.
+
         Parameters
         ----------
         file : core.File
             See core.File for more documentation
 
         file_type : AllowedFileTypes
+            The intended purpose of the file. Possible values:
+
+             * `attachments` - supplemental attachments for accounts receivable invoices, quotes, and credit notes.
+             * `identity_documents` - company registration documents or a person's identity documents for payments onboarding.
+             * `additional_identity_documents` - documents that verify a person's address.
+
+            Other enum values are not supposed to be used directly.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -99,6 +144,10 @@ class FilesClient:
 
     def get_by_id(self, file_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FileResponse:
         """
+        Returns the details of an existing file. To bulk fetch multiple files by their IDs, use `GET /files?id__in=<ID1>&id__in=<ID2>`.
+
+        Both partner tokens and entity user tokens can be used for authentication.
+
         Parameters
         ----------
         file_id : str
@@ -129,9 +178,18 @@ class FilesClient:
 
     def delete(self, file_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
+        Delete a file with the specified ID.
+
+        **Note:** This endpoint does not check if the specified file is in use. Use with caution.
+
+        Both partner tokens and entity user tokens can be used for authentication.
+        #### Considerations for invoice attachments
+        Deleting a file does not delete it from the `attachments` list of accounts receivable invoices, quotes, and credit notes because these documents contain an inline copy of all referenced resources. To delete a file from attachments, call `PATCH /receivables/{receivable_id}` and update the `attachments` list to exclude the deleted file.
+
         Parameters
         ----------
         file_id : str
+            ID of the file you want to delete.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -176,12 +234,41 @@ class AsyncFilesClient:
         self,
         *,
         id_in: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        file_type: typing.Optional[AllowedFileTypes] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FilesResponse:
         """
+        The `/files` endpoint provides access to an entity's files hosted on Monite's servers. This includes both files uploaded by the entity and files that were automatically created by Monite (such as PDF versions of invoices).
+
+        `GET /files` requires at least one query parameter, either `id__in` or `file_type`. You can use this operation to:
+
+         * Bulk fetch multiple files by IDs.
+         * Get all files with the given purpose (for example, invoice attachments).
+
+        If no files matching the query parameters were found, the response contains an empty `data` array.
+
+        Both partner tokens and entity user tokens can be used for authentication.
+
         Parameters
         ----------
         id_in : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return only files with specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
+
+            To specify multiple IDs, repeat this parameter for each value: `id__in=<id1>&id__in=<id2>`
+
+        file_type : typing.Optional[AllowedFileTypes]
+            Return only files with the given purpose. Possible values:
+
+             * `additional_identity_documents` and `identity_documents` - [entity verification documents](https://docs.monite.com/payments/onboarding/via-api/documents) uploaded for payments onboarding.
+             * `attachments` - supplementary attachments for accounts receivable invoices, quotes, and credit notes.
+             * `delivery_notes` - auto-generated PDF versions of delivery notes.
+             * `einvoices_xml` - e-invoice XML generated when sending e-invoices.
+             * `payables` - payables (bills) received via email or uploaded via API.
+             * `receivable_signatures` - images of customer signatures provided during quote acceptance.
+             * `receivables` - auto-generated PDF versions of invoices, quotes, and credit notes.
+             * `zip` - data export archives created by `POST /data_exports`.
+
+            Other values are unused.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -210,19 +297,35 @@ class AsyncFilesClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get(id_in=id_in, request_options=request_options)
+        _response = await self._raw_client.get(id_in=id_in, file_type=file_type, request_options=request_options)
         return _response.data
 
     async def upload(
         self, *, file: core.File, file_type: AllowedFileTypes, request_options: typing.Optional[RequestOptions] = None
     ) -> FileResponse:
         """
+        Upload files for use as:
+
+         * supplementary attachments for invoices, quotes, and credit notes,
+         * [entity verification documents](https://docs.monite.com/payments/onboarding/via-api/documents) for payments onboarding.
+
+        Maximum file size is 15 MB. Each uploaded file is assigned a unique `id` that you can use to reference this file elsewhere.
+
+        Both partner tokens and entity user tokens can be used for authentication.
+
         Parameters
         ----------
         file : core.File
             See core.File for more documentation
 
         file_type : AllowedFileTypes
+            The intended purpose of the file. Possible values:
+
+             * `attachments` - supplemental attachments for accounts receivable invoices, quotes, and credit notes.
+             * `identity_documents` - company registration documents or a person's identity documents for payments onboarding.
+             * `additional_identity_documents` - documents that verify a person's address.
+
+            Other enum values are not supposed to be used directly.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -258,6 +361,10 @@ class AsyncFilesClient:
 
     async def get_by_id(self, file_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FileResponse:
         """
+        Returns the details of an existing file. To bulk fetch multiple files by their IDs, use `GET /files?id__in=<ID1>&id__in=<ID2>`.
+
+        Both partner tokens and entity user tokens can be used for authentication.
+
         Parameters
         ----------
         file_id : str
@@ -296,9 +403,18 @@ class AsyncFilesClient:
 
     async def delete(self, file_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
+        Delete a file with the specified ID.
+
+        **Note:** This endpoint does not check if the specified file is in use. Use with caution.
+
+        Both partner tokens and entity user tokens can be used for authentication.
+        #### Considerations for invoice attachments
+        Deleting a file does not delete it from the `attachments` list of accounts receivable invoices, quotes, and credit notes because these documents contain an inline copy of all referenced resources. To delete a file from attachments, call `PATCH /receivables/{receivable_id}` and update the `attachments` list to exclude the deleted file.
+
         Parameters
         ----------
         file_id : str
+            ID of the file you want to delete.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

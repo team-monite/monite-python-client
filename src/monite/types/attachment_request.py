@@ -4,23 +4,18 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .airwallex_mandate_type import AirwallexMandateType
-from .airwallex_mandate_version import AirwallexMandateVersion
 
 
-class AirwallexMandate(UniversalBaseModel):
-    email: str = pydantic.Field()
+class AttachmentRequest(UniversalBaseModel):
+    id: str = pydantic.Field()
     """
-    PDF copy of mandate will be sent to the email by Airwallex
-    """
-
-    signatory: str = pydantic.Field()
-    """
-    Name of the person signed the mandate, must be a bank account owner
+    Unique ID of the file with file_type=attachment from /v1/files.
     """
 
-    type: AirwallexMandateType = "us_ach_debit"
-    version: AirwallexMandateVersion = "1.0"
+    include_in_email: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Indicates whether the file would be included in the email.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -10,7 +10,10 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
-from ..errors.internal_server_error import InternalServerError
+from ..errors.forbidden_error import ForbiddenError
+from ..errors.not_found_error import NotFoundError
+from ..errors.too_many_requests_error import TooManyRequestsError
+from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.api_version import ApiVersion
 from ..types.currency_settings_input import CurrencySettingsInput
@@ -33,7 +36,11 @@ class RawPartnerSettingsClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[PartnerProjectSettingsPayloadOutput]:
         """
-        Retrieve all settings for this partner.
+        Partner-level settings apply to all entities of that partner.
+
+        See also:
+
+         * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 
         Parameters
         ----------
@@ -71,6 +78,39 @@ class RawPartnerSettingsClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -82,8 +122,8 @@ class RawPartnerSettingsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -101,51 +141,59 @@ class RawPartnerSettingsClient:
     def update(
         self,
         *,
-        currency: typing.Optional[CurrencySettingsInput] = OMIT,
-        payable: typing.Optional[PayableSettings] = OMIT,
-        receivable: typing.Optional[ReceivableSettings] = OMIT,
-        mail: typing.Optional[MailSettings] = OMIT,
+        api_version: typing.Optional[ApiVersion] = OMIT,
         commercial_conditions: typing.Optional[typing.Sequence[str]] = OMIT,
+        currency: typing.Optional[CurrencySettingsInput] = OMIT,
+        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        mail: typing.Optional[MailSettings] = OMIT,
+        payable: typing.Optional[PayableSettings] = OMIT,
+        payments: typing.Optional[PaymentsSettingsInput] = OMIT,
+        receivable: typing.Optional[ReceivableSettings] = OMIT,
         units: typing.Optional[typing.Sequence[Unit]] = OMIT,
         website: typing.Optional[str] = OMIT,
-        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        payments: typing.Optional[PaymentsSettingsInput] = OMIT,
-        api_version: typing.Optional[ApiVersion] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[PartnerProjectSettingsPayloadOutput]:
         """
-        Change the specified fields with the provided values.
+        Partner-level settings apply to all entities of that partner.
+
+        See also:
+
+         * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
 
         Parameters
         ----------
-        currency : typing.Optional[CurrencySettingsInput]
-            Custom currency exchange rates.
-
-        payable : typing.Optional[PayableSettings]
-            Settings for the payables module.
-
-        receivable : typing.Optional[ReceivableSettings]
-            Settings for the receivables module.
-
-        mail : typing.Optional[MailSettings]
-            Settings for email and mailboxes.
+        api_version : typing.Optional[ApiVersion]
+            Default API version for partner.
 
         commercial_conditions : typing.Optional[typing.Sequence[str]]
-            Commercial conditions for receivables.
+            Unused. To specify commercial conditions for invoices and quotes, use the `commercial_condition_description` field in those documents.
 
-        units : typing.Optional[typing.Sequence[Unit]]
-            Measurement units.
-
-        website : typing.Optional[str]
+        currency : typing.Optional[CurrencySettingsInput]
+            Custom currency exchange rates.
 
         default_role : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             A default role to provision upon new entity creation.
 
+        mail : typing.Optional[MailSettings]
+            Settings for outgoing email. Used by:
+
+             * accounts receivable emails, for example, emails sent by `POST /recevables/{receivable_id}/send`,
+             * accounts payable approval notifications.
+
+        payable : typing.Optional[PayableSettings]
+            Settings for accounts payable.
+
         payments : typing.Optional[PaymentsSettingsInput]
             Settings for the payments module.
 
-        api_version : typing.Optional[ApiVersion]
-            Default API version for partner.
+        receivable : typing.Optional[ReceivableSettings]
+            Settings for accounts receivable.
+
+        units : typing.Optional[typing.Sequence[Unit]]
+            Unused. To manage the [measure units](https://docs.monite.com/accounts-receivable/products#manage-measure-units) for your entities, use the `/measure_units` endpoints.
+
+        website : typing.Optional[str]
+            The URL of the partner's website. Must be an HTTPS URL. Required if the partner's entities use [payment links](https://docs.monite.com/payments/payment-links). The "Powered by" badge in the payment page footer will link to this website.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -159,28 +207,28 @@ class RawPartnerSettingsClient:
             "settings",
             method="PATCH",
             json={
+                "api_version": api_version,
+                "commercial_conditions": commercial_conditions,
                 "currency": convert_and_respect_annotation_metadata(
                     object_=currency, annotation=CurrencySettingsInput, direction="write"
+                ),
+                "default_role": default_role,
+                "mail": convert_and_respect_annotation_metadata(
+                    object_=mail, annotation=MailSettings, direction="write"
                 ),
                 "payable": convert_and_respect_annotation_metadata(
                     object_=payable, annotation=PayableSettings, direction="write"
                 ),
+                "payments": convert_and_respect_annotation_metadata(
+                    object_=payments, annotation=PaymentsSettingsInput, direction="write"
+                ),
                 "receivable": convert_and_respect_annotation_metadata(
                     object_=receivable, annotation=ReceivableSettings, direction="write"
                 ),
-                "mail": convert_and_respect_annotation_metadata(
-                    object_=mail, annotation=MailSettings, direction="write"
-                ),
-                "commercial_conditions": commercial_conditions,
                 "units": convert_and_respect_annotation_metadata(
                     object_=units, annotation=typing.Sequence[Unit], direction="write"
                 ),
                 "website": website,
-                "default_role": default_role,
-                "payments": convert_and_respect_annotation_metadata(
-                    object_=payments, annotation=PaymentsSettingsInput, direction="write"
-                ),
-                "api_version": api_version,
             },
             headers={
                 "content-type": "application/json",
@@ -209,6 +257,39 @@ class RawPartnerSettingsClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -220,8 +301,8 @@ class RawPartnerSettingsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -245,7 +326,11 @@ class AsyncRawPartnerSettingsClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[PartnerProjectSettingsPayloadOutput]:
         """
-        Retrieve all settings for this partner.
+        Partner-level settings apply to all entities of that partner.
+
+        See also:
+
+         * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 
         Parameters
         ----------
@@ -283,6 +368,39 @@ class AsyncRawPartnerSettingsClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -294,8 +412,8 @@ class AsyncRawPartnerSettingsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -313,51 +431,59 @@ class AsyncRawPartnerSettingsClient:
     async def update(
         self,
         *,
-        currency: typing.Optional[CurrencySettingsInput] = OMIT,
-        payable: typing.Optional[PayableSettings] = OMIT,
-        receivable: typing.Optional[ReceivableSettings] = OMIT,
-        mail: typing.Optional[MailSettings] = OMIT,
+        api_version: typing.Optional[ApiVersion] = OMIT,
         commercial_conditions: typing.Optional[typing.Sequence[str]] = OMIT,
+        currency: typing.Optional[CurrencySettingsInput] = OMIT,
+        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        mail: typing.Optional[MailSettings] = OMIT,
+        payable: typing.Optional[PayableSettings] = OMIT,
+        payments: typing.Optional[PaymentsSettingsInput] = OMIT,
+        receivable: typing.Optional[ReceivableSettings] = OMIT,
         units: typing.Optional[typing.Sequence[Unit]] = OMIT,
         website: typing.Optional[str] = OMIT,
-        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        payments: typing.Optional[PaymentsSettingsInput] = OMIT,
-        api_version: typing.Optional[ApiVersion] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[PartnerProjectSettingsPayloadOutput]:
         """
-        Change the specified fields with the provided values.
+        Partner-level settings apply to all entities of that partner.
+
+        See also:
+
+         * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
 
         Parameters
         ----------
-        currency : typing.Optional[CurrencySettingsInput]
-            Custom currency exchange rates.
-
-        payable : typing.Optional[PayableSettings]
-            Settings for the payables module.
-
-        receivable : typing.Optional[ReceivableSettings]
-            Settings for the receivables module.
-
-        mail : typing.Optional[MailSettings]
-            Settings for email and mailboxes.
+        api_version : typing.Optional[ApiVersion]
+            Default API version for partner.
 
         commercial_conditions : typing.Optional[typing.Sequence[str]]
-            Commercial conditions for receivables.
+            Unused. To specify commercial conditions for invoices and quotes, use the `commercial_condition_description` field in those documents.
 
-        units : typing.Optional[typing.Sequence[Unit]]
-            Measurement units.
-
-        website : typing.Optional[str]
+        currency : typing.Optional[CurrencySettingsInput]
+            Custom currency exchange rates.
 
         default_role : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             A default role to provision upon new entity creation.
 
+        mail : typing.Optional[MailSettings]
+            Settings for outgoing email. Used by:
+
+             * accounts receivable emails, for example, emails sent by `POST /recevables/{receivable_id}/send`,
+             * accounts payable approval notifications.
+
+        payable : typing.Optional[PayableSettings]
+            Settings for accounts payable.
+
         payments : typing.Optional[PaymentsSettingsInput]
             Settings for the payments module.
 
-        api_version : typing.Optional[ApiVersion]
-            Default API version for partner.
+        receivable : typing.Optional[ReceivableSettings]
+            Settings for accounts receivable.
+
+        units : typing.Optional[typing.Sequence[Unit]]
+            Unused. To manage the [measure units](https://docs.monite.com/accounts-receivable/products#manage-measure-units) for your entities, use the `/measure_units` endpoints.
+
+        website : typing.Optional[str]
+            The URL of the partner's website. Must be an HTTPS URL. Required if the partner's entities use [payment links](https://docs.monite.com/payments/payment-links). The "Powered by" badge in the payment page footer will link to this website.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -371,28 +497,28 @@ class AsyncRawPartnerSettingsClient:
             "settings",
             method="PATCH",
             json={
+                "api_version": api_version,
+                "commercial_conditions": commercial_conditions,
                 "currency": convert_and_respect_annotation_metadata(
                     object_=currency, annotation=CurrencySettingsInput, direction="write"
+                ),
+                "default_role": default_role,
+                "mail": convert_and_respect_annotation_metadata(
+                    object_=mail, annotation=MailSettings, direction="write"
                 ),
                 "payable": convert_and_respect_annotation_metadata(
                     object_=payable, annotation=PayableSettings, direction="write"
                 ),
+                "payments": convert_and_respect_annotation_metadata(
+                    object_=payments, annotation=PaymentsSettingsInput, direction="write"
+                ),
                 "receivable": convert_and_respect_annotation_metadata(
                     object_=receivable, annotation=ReceivableSettings, direction="write"
                 ),
-                "mail": convert_and_respect_annotation_metadata(
-                    object_=mail, annotation=MailSettings, direction="write"
-                ),
-                "commercial_conditions": commercial_conditions,
                 "units": convert_and_respect_annotation_metadata(
                     object_=units, annotation=typing.Sequence[Unit], direction="write"
                 ),
                 "website": website,
-                "default_role": default_role,
-                "payments": convert_and_respect_annotation_metadata(
-                    object_=payments, annotation=PaymentsSettingsInput, direction="write"
-                ),
-                "api_version": api_version,
             },
             headers={
                 "content-type": "application/json",
@@ -421,6 +547,39 @@ class AsyncRawPartnerSettingsClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -432,8 +591,8 @@ class AsyncRawPartnerSettingsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

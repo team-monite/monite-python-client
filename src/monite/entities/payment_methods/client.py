@@ -78,13 +78,19 @@ class PaymentMethodsClient:
         entity_id : str
 
         payment_methods : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Deprecated. Use payment_methods_receive instead.
+            Deprecated. Replaced by `payment_methods_receive`.
 
         payment_methods_receive : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Enable payment methods to receive money.
+            Payment methods to receive money from customers. Supported payment methods [vary per country](https://docs.monite.com/payments/payment-methods).
+
+            `card` includes card payments, Apple Pay, and Google Pay. The values `applepay` and `googlepay` are deprecated and unused.
+
+            `sofort` is deprecated and replaced by `klarna`.
 
         payment_methods_send : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Enable payment methods to send money.
+            Only for entities in the EU and UK. Payment methods used to make payments to vendors.
+
+            Currently only `sepa_credit` is supported for making payments.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -105,6 +111,8 @@ class PaymentMethodsClient:
         )
         client.entities.payment_methods.set(
             entity_id="entity_id",
+            payment_methods_receive=["card", "sepa_credit", "sepa_debit"],
+            payment_methods_send=["sepa_credit"],
         )
         """
         _response = self._raw_client.set(
@@ -191,13 +199,19 @@ class AsyncPaymentMethodsClient:
         entity_id : str
 
         payment_methods : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Deprecated. Use payment_methods_receive instead.
+            Deprecated. Replaced by `payment_methods_receive`.
 
         payment_methods_receive : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Enable payment methods to receive money.
+            Payment methods to receive money from customers. Supported payment methods [vary per country](https://docs.monite.com/payments/payment-methods).
+
+            `card` includes card payments, Apple Pay, and Google Pay. The values `applepay` and `googlepay` are deprecated and unused.
+
+            `sofort` is deprecated and replaced by `klarna`.
 
         payment_methods_send : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Enable payment methods to send money.
+            Only for entities in the EU and UK. Payment methods used to make payments to vendors.
+
+            Currently only `sepa_credit` is supported for making payments.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -223,6 +237,8 @@ class AsyncPaymentMethodsClient:
         async def main() -> None:
             await client.entities.payment_methods.set(
                 entity_id="entity_id",
+                payment_methods_receive=["card", "sepa_credit", "sepa_debit"],
+                payment_methods_send=["sepa_credit"],
             )
 
 

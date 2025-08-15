@@ -7,8 +7,15 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class RelatedDocuments(UniversalBaseModel):
-    credit_note_ids: typing.Optional[typing.List[str]] = None
-    proforma_invoice_id: typing.Optional[str] = None
+    credit_note_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    IDs of credit notes created from this invoice. The list includes both draft and issued credit notes.
+    """
+
+    proforma_invoice_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unused. Always returns `null`.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

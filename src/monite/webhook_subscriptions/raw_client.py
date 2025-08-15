@@ -11,7 +11,9 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
-from ..errors.internal_server_error import InternalServerError
+from ..errors.not_found_error import NotFoundError
+from ..errors.too_many_requests_error import TooManyRequestsError
+from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.order_enum import OrderEnum
 from ..types.webhook_object_type import WebhookObjectType
@@ -43,6 +45,8 @@ class RawWebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[WebhookSubscriptionPaginationResource]:
         """
+        Returns a list of all [webhook](https://docs.monite.com/references/webhooks/index) subscriptions (both active and disabled).
+
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
@@ -62,12 +66,16 @@ class RawWebhookSubscriptionsClient:
         object_type : typing.Optional[WebhookObjectType]
 
         created_at_gt : typing.Optional[dt.datetime]
+            Return only subscriptions created after the specified date and time.
 
         created_at_lt : typing.Optional[dt.datetime]
+            Return only subscriptions created before the specified date and time.
 
         created_at_gte : typing.Optional[dt.datetime]
+            Return only subscriptions created on or after the specified date and time.
 
         created_at_lte : typing.Optional[dt.datetime]
+            Return only subscriptions created before or on the specified date and time.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -103,6 +111,17 @@ class RawWebhookSubscriptionsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -114,8 +133,8 @@ class RawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -139,13 +158,22 @@ class RawWebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[WebhookSubscriptionResourceWithSecret]:
         """
+        Related guide: [Webhooks](https://docs.monite.com/references/webhooks/index).
+
         Parameters
         ----------
         object_type : WebhookObjectType
+            The [object type](https://docs.monite.com/references/webhooks/index#events) to whose events you want to subscribe.
+
+            To subscribe to events from multiple object types, create a separate subscription for each object type.
 
         url : str
+            An HTTPS URL to which Monite will send webhooks. This URL must be accessible over the public Internet, accept POST requests, and respond with status code 200. It must be a direct URL (no redirects).
+
+            The same URL can be used by multiple webhook subscriptions.
 
         event_types : typing.Optional[typing.Sequence[str]]
+            A list of [events](https://docs.monite.com/references/webhooks/index#events) to subscribe to. If set to an empty array, the subscription includes all events triggered by the specified `object_type`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -179,6 +207,17 @@ class RawWebhookSubscriptionsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -190,8 +229,8 @@ class RawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -210,9 +249,14 @@ class RawWebhookSubscriptionsClient:
         self, webhook_subscription_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[WebhookSubscriptionResource]:
         """
+        Returns the details of the webhook subscription with the specified ID.
+
+        The response does not include the [webhook signing secret](https://docs.monite.com/references/webhooks/signatures). If you lost the secret, you can [regenerate it](https://docs.monite.com/api/webhook-subscriptions/post-webhook-subscriptions-id-regenerate-secret).
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -237,6 +281,28 @@ class RawWebhookSubscriptionsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -248,8 +314,8 @@ class RawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -271,6 +337,7 @@ class RawWebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -287,6 +354,28 @@ class RawWebhookSubscriptionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 return HttpResponse(response=_response, data=None)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -298,8 +387,8 @@ class RawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -324,15 +413,25 @@ class RawWebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[WebhookSubscriptionResource]:
         """
+        You can update the webhook listener URL or the event list.
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         event_types : typing.Optional[typing.Sequence[str]]
+            A list of [events](https://docs.monite.com/references/webhooks/index#events) to subscribe to. If set to an empty array, the subscription includes all events triggered by the specified `object_type`.
 
         object_type : typing.Optional[WebhookObjectType]
+            The [object type](https://docs.monite.com/references/webhooks/index#events) to whose events you want to subscribe.
+
+            To subscribe to events from multiple object types, create a separate subscription for each object type.
 
         url : typing.Optional[str]
+            An HTTPS URL to which Monite will send webhooks. This URL must be accessible over the public Internet, accept POST requests, and respond with status code 200. It must be a direct URL (no redirects).
+
+            The same URL can be used by multiple webhook subscriptions.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -366,6 +465,28 @@ class RawWebhookSubscriptionsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -377,8 +498,8 @@ class RawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -400,6 +521,7 @@ class RawWebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -424,6 +546,17 @@ class RawWebhookSubscriptionsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -435,8 +568,8 @@ class RawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -458,6 +591,7 @@ class RawWebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -482,6 +616,17 @@ class RawWebhookSubscriptionsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -493,8 +638,8 @@ class RawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -513,9 +658,12 @@ class RawWebhookSubscriptionsClient:
         self, webhook_subscription_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[WebhookSubscriptionResourceWithSecret]:
         """
+        The webhook signing secret lets you [verify webhook signatures](https://docs.monite.com/references/webhooks/signatures). If you lost the original secret generated for any of your webhook subscriptions, you can regenerate it.
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -540,6 +688,28 @@ class RawWebhookSubscriptionsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -551,8 +721,8 @@ class RawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -587,6 +757,8 @@ class AsyncRawWebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[WebhookSubscriptionPaginationResource]:
         """
+        Returns a list of all [webhook](https://docs.monite.com/references/webhooks/index) subscriptions (both active and disabled).
+
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
@@ -606,12 +778,16 @@ class AsyncRawWebhookSubscriptionsClient:
         object_type : typing.Optional[WebhookObjectType]
 
         created_at_gt : typing.Optional[dt.datetime]
+            Return only subscriptions created after the specified date and time.
 
         created_at_lt : typing.Optional[dt.datetime]
+            Return only subscriptions created before the specified date and time.
 
         created_at_gte : typing.Optional[dt.datetime]
+            Return only subscriptions created on or after the specified date and time.
 
         created_at_lte : typing.Optional[dt.datetime]
+            Return only subscriptions created before or on the specified date and time.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -647,6 +823,17 @@ class AsyncRawWebhookSubscriptionsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -658,8 +845,8 @@ class AsyncRawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -683,13 +870,22 @@ class AsyncRawWebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[WebhookSubscriptionResourceWithSecret]:
         """
+        Related guide: [Webhooks](https://docs.monite.com/references/webhooks/index).
+
         Parameters
         ----------
         object_type : WebhookObjectType
+            The [object type](https://docs.monite.com/references/webhooks/index#events) to whose events you want to subscribe.
+
+            To subscribe to events from multiple object types, create a separate subscription for each object type.
 
         url : str
+            An HTTPS URL to which Monite will send webhooks. This URL must be accessible over the public Internet, accept POST requests, and respond with status code 200. It must be a direct URL (no redirects).
+
+            The same URL can be used by multiple webhook subscriptions.
 
         event_types : typing.Optional[typing.Sequence[str]]
+            A list of [events](https://docs.monite.com/references/webhooks/index#events) to subscribe to. If set to an empty array, the subscription includes all events triggered by the specified `object_type`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -723,6 +919,17 @@ class AsyncRawWebhookSubscriptionsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -734,8 +941,8 @@ class AsyncRawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -754,9 +961,14 @@ class AsyncRawWebhookSubscriptionsClient:
         self, webhook_subscription_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[WebhookSubscriptionResource]:
         """
+        Returns the details of the webhook subscription with the specified ID.
+
+        The response does not include the [webhook signing secret](https://docs.monite.com/references/webhooks/signatures). If you lost the secret, you can [regenerate it](https://docs.monite.com/api/webhook-subscriptions/post-webhook-subscriptions-id-regenerate-secret).
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -781,6 +993,28 @@ class AsyncRawWebhookSubscriptionsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -792,8 +1026,8 @@ class AsyncRawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -815,6 +1049,7 @@ class AsyncRawWebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -831,6 +1066,28 @@ class AsyncRawWebhookSubscriptionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 return AsyncHttpResponse(response=_response, data=None)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -842,8 +1099,8 @@ class AsyncRawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -868,15 +1125,25 @@ class AsyncRawWebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[WebhookSubscriptionResource]:
         """
+        You can update the webhook listener URL or the event list.
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         event_types : typing.Optional[typing.Sequence[str]]
+            A list of [events](https://docs.monite.com/references/webhooks/index#events) to subscribe to. If set to an empty array, the subscription includes all events triggered by the specified `object_type`.
 
         object_type : typing.Optional[WebhookObjectType]
+            The [object type](https://docs.monite.com/references/webhooks/index#events) to whose events you want to subscribe.
+
+            To subscribe to events from multiple object types, create a separate subscription for each object type.
 
         url : typing.Optional[str]
+            An HTTPS URL to which Monite will send webhooks. This URL must be accessible over the public Internet, accept POST requests, and respond with status code 200. It must be a direct URL (no redirects).
+
+            The same URL can be used by multiple webhook subscriptions.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -910,6 +1177,28 @@ class AsyncRawWebhookSubscriptionsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -921,8 +1210,8 @@ class AsyncRawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -944,6 +1233,7 @@ class AsyncRawWebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -968,6 +1258,17 @@ class AsyncRawWebhookSubscriptionsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -979,8 +1280,8 @@ class AsyncRawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1002,6 +1303,7 @@ class AsyncRawWebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1026,6 +1328,17 @@ class AsyncRawWebhookSubscriptionsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1037,8 +1350,8 @@ class AsyncRawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1057,9 +1370,12 @@ class AsyncRawWebhookSubscriptionsClient:
         self, webhook_subscription_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[WebhookSubscriptionResourceWithSecret]:
         """
+        The webhook signing secret lets you [verify webhook signatures](https://docs.monite.com/references/webhooks/signatures). If you lost the original secret generated for any of your webhook subscriptions, you can regenerate it.
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1084,6 +1400,28 @@ class AsyncRawWebhookSubscriptionsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1095,8 +1433,8 @@ class AsyncRawWebhookSubscriptionsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
