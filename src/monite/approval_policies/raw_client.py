@@ -14,8 +14,8 @@ from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
 from ..errors.conflict_error import ConflictError
-from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
+from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.approval_policy_cursor_fields import ApprovalPolicyCursorFields
@@ -196,8 +196,8 @@ class RawApprovalPoliciesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -219,6 +219,7 @@ class RawApprovalPoliciesClient:
         script: typing.Sequence[ApprovalPolicyCreateScriptItem],
         description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
+        priority: typing.Optional[int] = OMIT,
         starts_at: typing.Optional[dt.datetime] = OMIT,
         trigger: typing.Optional[ApprovalPolicyCreateTrigger] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -239,6 +240,9 @@ class RawApprovalPoliciesClient:
 
         ends_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
+
+        priority : typing.Optional[int]
+            The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
 
         starts_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
@@ -261,6 +265,7 @@ class RawApprovalPoliciesClient:
                 "description": description,
                 "ends_at": ends_at,
                 "name": name,
+                "priority": priority,
                 "script": convert_and_respect_annotation_metadata(
                     object_=script, annotation=typing.Sequence[ApprovalPolicyCreateScriptItem], direction="write"
                 ),
@@ -329,8 +334,8 @@ class RawApprovalPoliciesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -422,8 +427,8 @@ class RawApprovalPoliciesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -507,8 +512,8 @@ class RawApprovalPoliciesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -530,6 +535,7 @@ class RawApprovalPoliciesClient:
         description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        priority: typing.Optional[int] = OMIT,
         script: typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]] = OMIT,
         starts_at: typing.Optional[dt.datetime] = OMIT,
         status: typing.Optional[ApprovalPolicyStatus] = OMIT,
@@ -551,6 +557,9 @@ class RawApprovalPoliciesClient:
 
         name : typing.Optional[str]
             The name of the approval policy.
+
+        priority : typing.Optional[int]
+            The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
 
         script : typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]]
             A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
@@ -579,6 +588,7 @@ class RawApprovalPoliciesClient:
                 "description": description,
                 "ends_at": ends_at,
                 "name": name,
+                "priority": priority,
                 "script": convert_and_respect_annotation_metadata(
                     object_=script, annotation=typing.Sequence[ApprovalPolicyUpdateScriptItem], direction="write"
                 ),
@@ -659,8 +669,8 @@ class RawApprovalPoliciesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -838,8 +848,8 @@ class AsyncRawApprovalPoliciesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -861,6 +871,7 @@ class AsyncRawApprovalPoliciesClient:
         script: typing.Sequence[ApprovalPolicyCreateScriptItem],
         description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
+        priority: typing.Optional[int] = OMIT,
         starts_at: typing.Optional[dt.datetime] = OMIT,
         trigger: typing.Optional[ApprovalPolicyCreateTrigger] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -881,6 +892,9 @@ class AsyncRawApprovalPoliciesClient:
 
         ends_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
+
+        priority : typing.Optional[int]
+            The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
 
         starts_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
@@ -903,6 +917,7 @@ class AsyncRawApprovalPoliciesClient:
                 "description": description,
                 "ends_at": ends_at,
                 "name": name,
+                "priority": priority,
                 "script": convert_and_respect_annotation_metadata(
                     object_=script, annotation=typing.Sequence[ApprovalPolicyCreateScriptItem], direction="write"
                 ),
@@ -971,8 +986,8 @@ class AsyncRawApprovalPoliciesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1064,8 +1079,8 @@ class AsyncRawApprovalPoliciesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1149,8 +1164,8 @@ class AsyncRawApprovalPoliciesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1172,6 +1187,7 @@ class AsyncRawApprovalPoliciesClient:
         description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        priority: typing.Optional[int] = OMIT,
         script: typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]] = OMIT,
         starts_at: typing.Optional[dt.datetime] = OMIT,
         status: typing.Optional[ApprovalPolicyStatus] = OMIT,
@@ -1193,6 +1209,9 @@ class AsyncRawApprovalPoliciesClient:
 
         name : typing.Optional[str]
             The name of the approval policy.
+
+        priority : typing.Optional[int]
+            The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
 
         script : typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]]
             A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
@@ -1221,6 +1240,7 @@ class AsyncRawApprovalPoliciesClient:
                 "description": description,
                 "ends_at": ends_at,
                 "name": name,
+                "priority": priority,
                 "script": convert_and_respect_annotation_metadata(
                     object_=script, annotation=typing.Sequence[ApprovalPolicyUpdateScriptItem], direction="write"
                 ),
@@ -1301,8 +1321,8 @@ class AsyncRawApprovalPoliciesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

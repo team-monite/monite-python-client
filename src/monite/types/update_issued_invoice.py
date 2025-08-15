@@ -5,12 +5,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .attachment_request import AttachmentRequest
+from .document_rendering_settings import DocumentRenderingSettings
 from .inline_payment_terms_request_payload import InlinePaymentTermsRequestPayload
 from .receivable_entity_address_schema import ReceivableEntityAddressSchema
 from .update_issued_invoice_entity import UpdateIssuedInvoiceEntity
 
 
 class UpdateIssuedInvoice(UniversalBaseModel):
+    attachments: typing.Optional[typing.List[AttachmentRequest]] = pydantic.Field(default=None)
+    """
+    List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated.
+    """
+
     contact_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Unique ID of the counterpart contact.
@@ -24,6 +31,11 @@ class UpdateIssuedInvoice(UniversalBaseModel):
     counterpart_vat_id_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Counterpart VAT ID id
+    """
+
+    document_rendering: typing.Optional[DocumentRenderingSettings] = pydantic.Field(default=None)
+    """
+    Settings for rendering documents in PDF format, including settings for line items and specific document types.
     """
 
     due_date: typing.Optional[str] = pydantic.Field(default=None)
@@ -40,7 +52,9 @@ class UpdateIssuedInvoice(UniversalBaseModel):
 
     footer: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Optional text displayed below the line items table in the PDF.
+    Optional text displayed below the line items table in the PDF. The text can include [variables](https://docs.monite.com/advanced/variables).
+    
+    See also: `memo`, `commercial_condition_description`.
     """
 
     fulfillment_date: typing.Optional[str] = pydantic.Field(default=None)
@@ -59,7 +73,9 @@ class UpdateIssuedInvoice(UniversalBaseModel):
 
     memo: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A note with additional information for a receivable
+    An optional note for the customer that will be displayed above the line items table in the PDF. The text can include [variables](https://docs.monite.com/advanced/variables).
+    
+    See also: `footer`, `commercial_condition_description`.
     """
 
     overdue_reminder_id: typing.Optional[str] = None
@@ -73,7 +89,7 @@ class UpdateIssuedInvoice(UniversalBaseModel):
     payment_terms_id: typing.Optional[str] = None
     project_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A project related to current receivable
+    ID of the [project](https://docs.monite.com/common/projects) associated with this invoice. If specified, the project name will be included in the header of the PDF invoice.
     """
 
     tag_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)

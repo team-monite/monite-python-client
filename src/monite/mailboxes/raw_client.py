@@ -11,11 +11,12 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.conflict_error import ConflictError
 from ..errors.forbidden_error import ForbiddenError
-from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
+from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.mailbox_data_response import MailboxDataResponse
+from ..types.mailbox_object_type_enum import MailboxObjectTypeEnum
 from ..types.mailbox_response import MailboxResponse
 
 # this is used as the default value for optional parameters
@@ -88,8 +89,8 @@ class RawMailboxesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -105,7 +106,12 @@ class RawMailboxesClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def create(
-        self, *, mailbox_domain_id: str, mailbox_name: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        mailbox_domain_id: str,
+        mailbox_name: str,
+        related_object_type: MailboxObjectTypeEnum,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[MailboxResponse]:
         """
         Create a new mailbox
@@ -115,6 +121,9 @@ class RawMailboxesClient:
         mailbox_domain_id : str
 
         mailbox_name : str
+
+        related_object_type : MailboxObjectTypeEnum
+            Related object type: payable and so on
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -130,7 +139,7 @@ class RawMailboxesClient:
             json={
                 "mailbox_domain_id": mailbox_domain_id,
                 "mailbox_name": mailbox_name,
-                "related_object_type": "payable",
+                "related_object_type": related_object_type,
             },
             headers={
                 "content-type": "application/json",
@@ -192,8 +201,8 @@ class RawMailboxesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -281,8 +290,8 @@ class RawMailboxesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -366,8 +375,8 @@ class RawMailboxesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -451,8 +460,8 @@ class AsyncRawMailboxesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -468,7 +477,12 @@ class AsyncRawMailboxesClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def create(
-        self, *, mailbox_domain_id: str, mailbox_name: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        mailbox_domain_id: str,
+        mailbox_name: str,
+        related_object_type: MailboxObjectTypeEnum,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[MailboxResponse]:
         """
         Create a new mailbox
@@ -478,6 +492,9 @@ class AsyncRawMailboxesClient:
         mailbox_domain_id : str
 
         mailbox_name : str
+
+        related_object_type : MailboxObjectTypeEnum
+            Related object type: payable and so on
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -493,7 +510,7 @@ class AsyncRawMailboxesClient:
             json={
                 "mailbox_domain_id": mailbox_domain_id,
                 "mailbox_name": mailbox_name,
-                "related_object_type": "payable",
+                "related_object_type": related_object_type,
             },
             headers={
                 "content-type": "application/json",
@@ -555,8 +572,8 @@ class AsyncRawMailboxesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -644,8 +661,8 @@ class AsyncRawMailboxesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -729,8 +746,8 @@ class AsyncRawMailboxesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

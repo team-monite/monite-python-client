@@ -44,6 +44,7 @@ WebhookObjectType = typing.Union[
         "workflow_pipeline",
         "ocr_task",
         "delivery_note",
+        "receipt",
     ],
     typing.Any,
 ]

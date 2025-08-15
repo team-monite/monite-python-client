@@ -35,7 +35,11 @@ class PartnerSettingsClient:
 
     def get(self, *, request_options: typing.Optional[RequestOptions] = None) -> PartnerProjectSettingsPayloadOutput:
         """
-        Retrieve all settings for this partner.
+        Partner-level settings apply to all entities of that partner.
+
+        See also:
+
+         * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 
         Parameters
         ----------
@@ -64,51 +68,59 @@ class PartnerSettingsClient:
     def update(
         self,
         *,
-        currency: typing.Optional[CurrencySettingsInput] = OMIT,
-        payable: typing.Optional[PayableSettings] = OMIT,
-        receivable: typing.Optional[ReceivableSettings] = OMIT,
-        mail: typing.Optional[MailSettings] = OMIT,
+        api_version: typing.Optional[ApiVersion] = OMIT,
         commercial_conditions: typing.Optional[typing.Sequence[str]] = OMIT,
+        currency: typing.Optional[CurrencySettingsInput] = OMIT,
+        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        mail: typing.Optional[MailSettings] = OMIT,
+        payable: typing.Optional[PayableSettings] = OMIT,
+        payments: typing.Optional[PaymentsSettingsInput] = OMIT,
+        receivable: typing.Optional[ReceivableSettings] = OMIT,
         units: typing.Optional[typing.Sequence[Unit]] = OMIT,
         website: typing.Optional[str] = OMIT,
-        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        payments: typing.Optional[PaymentsSettingsInput] = OMIT,
-        api_version: typing.Optional[ApiVersion] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PartnerProjectSettingsPayloadOutput:
         """
-        Change the specified fields with the provided values.
+        Partner-level settings apply to all entities of that partner.
+
+        See also:
+
+         * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
 
         Parameters
         ----------
-        currency : typing.Optional[CurrencySettingsInput]
-            Custom currency exchange rates.
-
-        payable : typing.Optional[PayableSettings]
-            Settings for the payables module.
-
-        receivable : typing.Optional[ReceivableSettings]
-            Settings for the receivables module.
-
-        mail : typing.Optional[MailSettings]
-            Settings for email and mailboxes.
+        api_version : typing.Optional[ApiVersion]
+            Default API version for partner.
 
         commercial_conditions : typing.Optional[typing.Sequence[str]]
-            Commercial conditions for receivables.
+            Unused. To specify commercial conditions for invoices and quotes, use the `commercial_condition_description` field in those documents.
 
-        units : typing.Optional[typing.Sequence[Unit]]
-            Measurement units.
-
-        website : typing.Optional[str]
+        currency : typing.Optional[CurrencySettingsInput]
+            Custom currency exchange rates.
 
         default_role : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             A default role to provision upon new entity creation.
 
+        mail : typing.Optional[MailSettings]
+            Settings for outgoing email. Used by:
+
+             * accounts receivable emails, for example, emails sent by `POST /recevables/{receivable_id}/send`,
+             * accounts payable approval notifications.
+
+        payable : typing.Optional[PayableSettings]
+            Settings for accounts payable.
+
         payments : typing.Optional[PaymentsSettingsInput]
             Settings for the payments module.
 
-        api_version : typing.Optional[ApiVersion]
-            Default API version for partner.
+        receivable : typing.Optional[ReceivableSettings]
+            Settings for accounts receivable.
+
+        units : typing.Optional[typing.Sequence[Unit]]
+            Unused. To manage the [measure units](https://docs.monite.com/accounts-receivable/products#manage-measure-units) for your entities, use the `/measure_units` endpoints.
+
+        website : typing.Optional[str]
+            The URL of the partner's website. Must be an HTTPS URL. Required if the partner's entities use [payment links](https://docs.monite.com/payments/payment-links). The "Powered by" badge in the payment page footer will link to this website.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -130,16 +142,16 @@ class PartnerSettingsClient:
         client.partner_settings.update()
         """
         _response = self._raw_client.update(
-            currency=currency,
-            payable=payable,
-            receivable=receivable,
-            mail=mail,
+            api_version=api_version,
             commercial_conditions=commercial_conditions,
+            currency=currency,
+            default_role=default_role,
+            mail=mail,
+            payable=payable,
+            payments=payments,
+            receivable=receivable,
             units=units,
             website=website,
-            default_role=default_role,
-            payments=payments,
-            api_version=api_version,
             request_options=request_options,
         )
         return _response.data
@@ -164,7 +176,11 @@ class AsyncPartnerSettingsClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> PartnerProjectSettingsPayloadOutput:
         """
-        Retrieve all settings for this partner.
+        Partner-level settings apply to all entities of that partner.
+
+        See also:
+
+         * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 
         Parameters
         ----------
@@ -201,51 +217,59 @@ class AsyncPartnerSettingsClient:
     async def update(
         self,
         *,
-        currency: typing.Optional[CurrencySettingsInput] = OMIT,
-        payable: typing.Optional[PayableSettings] = OMIT,
-        receivable: typing.Optional[ReceivableSettings] = OMIT,
-        mail: typing.Optional[MailSettings] = OMIT,
+        api_version: typing.Optional[ApiVersion] = OMIT,
         commercial_conditions: typing.Optional[typing.Sequence[str]] = OMIT,
+        currency: typing.Optional[CurrencySettingsInput] = OMIT,
+        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        mail: typing.Optional[MailSettings] = OMIT,
+        payable: typing.Optional[PayableSettings] = OMIT,
+        payments: typing.Optional[PaymentsSettingsInput] = OMIT,
+        receivable: typing.Optional[ReceivableSettings] = OMIT,
         units: typing.Optional[typing.Sequence[Unit]] = OMIT,
         website: typing.Optional[str] = OMIT,
-        default_role: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        payments: typing.Optional[PaymentsSettingsInput] = OMIT,
-        api_version: typing.Optional[ApiVersion] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PartnerProjectSettingsPayloadOutput:
         """
-        Change the specified fields with the provided values.
+        Partner-level settings apply to all entities of that partner.
+
+        See also:
+
+         * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
 
         Parameters
         ----------
-        currency : typing.Optional[CurrencySettingsInput]
-            Custom currency exchange rates.
-
-        payable : typing.Optional[PayableSettings]
-            Settings for the payables module.
-
-        receivable : typing.Optional[ReceivableSettings]
-            Settings for the receivables module.
-
-        mail : typing.Optional[MailSettings]
-            Settings for email and mailboxes.
+        api_version : typing.Optional[ApiVersion]
+            Default API version for partner.
 
         commercial_conditions : typing.Optional[typing.Sequence[str]]
-            Commercial conditions for receivables.
+            Unused. To specify commercial conditions for invoices and quotes, use the `commercial_condition_description` field in those documents.
 
-        units : typing.Optional[typing.Sequence[Unit]]
-            Measurement units.
-
-        website : typing.Optional[str]
+        currency : typing.Optional[CurrencySettingsInput]
+            Custom currency exchange rates.
 
         default_role : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             A default role to provision upon new entity creation.
 
+        mail : typing.Optional[MailSettings]
+            Settings for outgoing email. Used by:
+
+             * accounts receivable emails, for example, emails sent by `POST /recevables/{receivable_id}/send`,
+             * accounts payable approval notifications.
+
+        payable : typing.Optional[PayableSettings]
+            Settings for accounts payable.
+
         payments : typing.Optional[PaymentsSettingsInput]
             Settings for the payments module.
 
-        api_version : typing.Optional[ApiVersion]
-            Default API version for partner.
+        receivable : typing.Optional[ReceivableSettings]
+            Settings for accounts receivable.
+
+        units : typing.Optional[typing.Sequence[Unit]]
+            Unused. To manage the [measure units](https://docs.monite.com/accounts-receivable/products#manage-measure-units) for your entities, use the `/measure_units` endpoints.
+
+        website : typing.Optional[str]
+            The URL of the partner's website. Must be an HTTPS URL. Required if the partner's entities use [payment links](https://docs.monite.com/payments/payment-links). The "Powered by" badge in the payment page footer will link to this website.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -275,16 +299,16 @@ class AsyncPartnerSettingsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update(
-            currency=currency,
-            payable=payable,
-            receivable=receivable,
-            mail=mail,
+            api_version=api_version,
             commercial_conditions=commercial_conditions,
+            currency=currency,
+            default_role=default_role,
+            mail=mail,
+            payable=payable,
+            payments=payments,
+            receivable=receivable,
             units=units,
             website=website,
-            default_role=default_role,
-            payments=payments,
-            api_version=api_version,
             request_options=request_options,
         )
         return _response.data

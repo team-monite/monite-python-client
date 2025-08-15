@@ -6,23 +6,43 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .credit_note_rendering_settings import CreditNoteRenderingSettings
 from .invoice_rendering_settings import InvoiceRenderingSettings
+from .line_items_rendering_settings import LineItemsRenderingSettings
 from .quote_rendering_settings import QuoteRenderingSettings
 
 
 class DocumentRenderingSettings(UniversalBaseModel):
+    """
+    Settings for rendering documents in PDF format, including settings for line items and specific document types.
+    """
+
     credit_note: typing.Optional[CreditNoteRenderingSettings] = pydantic.Field(default=None)
     """
-    Settings for rendering credit notes in PDF documents.
+    Credit note-specific rendering settings for PDF documents.
+    """
+
+    display_entity_bank_account: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If set to `true`, the entity's bank account details will be displayed on the PDF documents. Defaults to `true`.
+    """
+
+    display_line_items: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If set to `true`, the line items table will be displayed on the quote PDF. Defaults to `true`.
     """
 
     invoice: typing.Optional[InvoiceRenderingSettings] = pydantic.Field(default=None)
     """
-    Settings for rendering invoices in PDF documents.
+    Invoice-specific rendering settings for PDF documents.
+    """
+
+    line_items: typing.Optional[LineItemsRenderingSettings] = pydantic.Field(default=None)
+    """
+    Settings for rendering line items in PDF documents. 
     """
 
     quote: typing.Optional[QuoteRenderingSettings] = pydantic.Field(default=None)
     """
-    Settings for rendering quotes in PDF documents.
+    Quote-specific rendering settings for PDF documents.
     """
 
     if IS_PYDANTIC_V2:

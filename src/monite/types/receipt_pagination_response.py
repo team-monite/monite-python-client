@@ -4,14 +4,20 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .payment_intent_payout_method import PaymentIntentPayoutMethod
+from .receipt_response_schema import ReceiptResponseSchema
 
 
-class PaymentIntentsRecipient(UniversalBaseModel):
-    id: str
-    bank_account_id: typing.Optional[str] = None
-    payout_method: typing.Optional[PaymentIntentPayoutMethod] = None
-    type: typing.Literal["counterpart"] = "counterpart"
+class ReceiptPaginationResponse(UniversalBaseModel):
+    data: typing.List[ReceiptResponseSchema]
+    next_pagination_token: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Next page token.
+    """
+
+    prev_pagination_token: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Previous page token.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

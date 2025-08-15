@@ -11,7 +11,8 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
-from ..errors.internal_server_error import InternalServerError
+from ..errors.too_many_requests_error import TooManyRequestsError
+from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.currency_enum import CurrencyEnum
 from ..types.invoice import Invoice
@@ -43,28 +44,48 @@ class RawPaymentLinksClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[PublicPaymentLinkResponse]:
         """
+        Create a new [payment link](https://docs.monite.com/payments/payment-links) for an accounts payble invoice (to be paid by the entity) or an accounts receivable invoice (to be sent to the counterpart).
+
         Parameters
         ----------
         payment_methods : typing.Sequence[MoniteAllPaymentMethodsTypes]
+            Payment methods to be displayed on the payment page. These payment methods must already be enabled for the entity.
+
+            **Note:** Available payment methods vary per country, transaction type (B2B or B2C), and the payment link type (entity pays a bill or entity generates an invoice payment link for its counterpart). For more information, see [Payment methods](https://docs.monite.com/payments/payment-methods).
 
         recipient : PaymentAccountObject
+            Specifies the invoice vendor - entity or counterpart. This is the payee, or the recipient of the payment.
 
         amount : typing.Optional[int]
-            The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Required if `object` is not specified.
+            The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). The usage of the `amount` field depends on the type of the payment link you are creating:
+
+             * If the `invoice` object is specified (that is, when creating a payment link for an external invoice),
+              `amount` is required.
+             * If `object` is specified:
+               * If `object.type` is `payable`, `amount` must not be specified since it's taken from the payable.
+               * If `object.type` is `receivable`, you can provide a custom `amount` value to create a partial payment link.
+                 In this case, the `amount` value must not exceed the invoice's `amount_to_pay` minus all active payment links.
 
         currency : typing.Optional[CurrencyEnum]
-            The payment currency. Required if `object` is not specified.
+            The payment currency. Mutually exclusive with `object`.
 
         expires_at : typing.Optional[dt.datetime]
+            Date and time (in the ISO 8601 format) when this payment link will expire. Can be up to 70 days from the current date and time.
+            If omitted:
+
+             * Payment links for payables and receivables expire 30 days after the invoice due date.
+             * Payment links for external invoices expire 30 days after the link creation time.
+
+            For more information, see [Payment link expiration](https://docs.monite.com/payments/payment-links#expiration).
 
         invoice : typing.Optional[Invoice]
-            An object containing information about the invoice being paid. Used only if `object` is not specified.
+            An object containing information about an external invoice to be paid. Mutually exclusive with `object`.
 
         object : typing.Optional[PaymentObject]
             If the invoice being paid is a payable or receivable stored in Monite, provide the `object` object containing the invoice type and ID. Otherwise, use the `amount`, `currency`, `payment_reference`, and (optionally) `invoice` fields to specify the invoice-related data.
 
         payment_reference : typing.Optional[str]
-            A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Required if `object` is not specified.
+            A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Mutually exclusive with `object`.
 
         return_url : typing.Optional[str]
             The URL where to redirect the payer after the payment. If `return_url` is specified, then after the payment is completed the payment page will display the "Return to platform" link that navigates to this URL.
@@ -113,6 +134,17 @@ class RawPaymentLinksClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -124,8 +156,8 @@ class RawPaymentLinksClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -171,6 +203,17 @@ class RawPaymentLinksClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -182,8 +225,8 @@ class RawPaymentLinksClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -229,6 +272,17 @@ class RawPaymentLinksClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -240,8 +294,8 @@ class RawPaymentLinksClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -276,28 +330,48 @@ class AsyncRawPaymentLinksClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[PublicPaymentLinkResponse]:
         """
+        Create a new [payment link](https://docs.monite.com/payments/payment-links) for an accounts payble invoice (to be paid by the entity) or an accounts receivable invoice (to be sent to the counterpart).
+
         Parameters
         ----------
         payment_methods : typing.Sequence[MoniteAllPaymentMethodsTypes]
+            Payment methods to be displayed on the payment page. These payment methods must already be enabled for the entity.
+
+            **Note:** Available payment methods vary per country, transaction type (B2B or B2C), and the payment link type (entity pays a bill or entity generates an invoice payment link for its counterpart). For more information, see [Payment methods](https://docs.monite.com/payments/payment-methods).
 
         recipient : PaymentAccountObject
+            Specifies the invoice vendor - entity or counterpart. This is the payee, or the recipient of the payment.
 
         amount : typing.Optional[int]
-            The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Required if `object` is not specified.
+            The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). The usage of the `amount` field depends on the type of the payment link you are creating:
+
+             * If the `invoice` object is specified (that is, when creating a payment link for an external invoice),
+              `amount` is required.
+             * If `object` is specified:
+               * If `object.type` is `payable`, `amount` must not be specified since it's taken from the payable.
+               * If `object.type` is `receivable`, you can provide a custom `amount` value to create a partial payment link.
+                 In this case, the `amount` value must not exceed the invoice's `amount_to_pay` minus all active payment links.
 
         currency : typing.Optional[CurrencyEnum]
-            The payment currency. Required if `object` is not specified.
+            The payment currency. Mutually exclusive with `object`.
 
         expires_at : typing.Optional[dt.datetime]
+            Date and time (in the ISO 8601 format) when this payment link will expire. Can be up to 70 days from the current date and time.
+            If omitted:
+
+             * Payment links for payables and receivables expire 30 days after the invoice due date.
+             * Payment links for external invoices expire 30 days after the link creation time.
+
+            For more information, see [Payment link expiration](https://docs.monite.com/payments/payment-links#expiration).
 
         invoice : typing.Optional[Invoice]
-            An object containing information about the invoice being paid. Used only if `object` is not specified.
+            An object containing information about an external invoice to be paid. Mutually exclusive with `object`.
 
         object : typing.Optional[PaymentObject]
             If the invoice being paid is a payable or receivable stored in Monite, provide the `object` object containing the invoice type and ID. Otherwise, use the `amount`, `currency`, `payment_reference`, and (optionally) `invoice` fields to specify the invoice-related data.
 
         payment_reference : typing.Optional[str]
-            A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Required if `object` is not specified.
+            A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Mutually exclusive with `object`.
 
         return_url : typing.Optional[str]
             The URL where to redirect the payer after the payment. If `return_url` is specified, then after the payment is completed the payment page will display the "Return to platform" link that navigates to this URL.
@@ -346,6 +420,17 @@ class AsyncRawPaymentLinksClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -357,8 +442,8 @@ class AsyncRawPaymentLinksClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -404,6 +489,17 @@ class AsyncRawPaymentLinksClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -415,8 +511,8 @@ class AsyncRawPaymentLinksClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -462,6 +558,17 @@ class AsyncRawPaymentLinksClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -473,8 +580,8 @@ class AsyncRawPaymentLinksClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

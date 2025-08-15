@@ -7,16 +7,16 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class OcrLineItem(UniversalBaseModel):
+    description: typing.Optional[str] = None
     line_reference: typing.Optional[str] = None
     name: typing.Optional[str] = None
-    description: typing.Optional[str] = None
     quantity: typing.Optional[float] = None
-    unit_price: typing.Optional[float] = None
-    unit: typing.Optional[str] = None
     subtotal: typing.Optional[float] = None
-    tax_rate: typing.Optional[float] = None
     tax_amount: typing.Optional[float] = None
+    tax_rate: typing.Optional[float] = None
     total_amount: typing.Optional[float] = None
+    unit: typing.Optional[str] = None
+    unit_price: typing.Optional[float] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

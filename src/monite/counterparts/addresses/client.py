@@ -93,7 +93,7 @@ class AddressesClient:
             Additional address information (if any).
 
         state : typing.Optional[str]
-            State, region, province, or county.
+            State, county, province, prefecture, region, or similar component of the counterpart's address. For US counterparts, `state` is required and must be a two-letter [USPS state abbreviation](https://pe.usps.com/text/pub28/28apb.htm), for example, NY or CA.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -363,7 +363,7 @@ class AsyncAddressesClient:
             Additional address information (if any).
 
         state : typing.Optional[str]
-            State, region, province, or county.
+            State, county, province, prefecture, region, or similar component of the counterpart's address. For US counterparts, `state` is required and must be a two-letter [USPS state abbreviation](https://pe.usps.com/text/pub28/28apb.htm), for example, NY or CA.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

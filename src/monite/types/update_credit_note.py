@@ -4,12 +4,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .attachment_request import AttachmentRequest
+from .document_rendering_settings import DocumentRenderingSettings
 from .receivable_counterpart_contact import ReceivableCounterpartContact
 from .receivable_entity_base import ReceivableEntityBase
 from .update_line_item_for_credit_note import UpdateLineItemForCreditNote
 
 
 class UpdateCreditNote(UniversalBaseModel):
+    attachments: typing.Optional[typing.List[AttachmentRequest]] = pydantic.Field(default=None)
+    """
+    List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated.
+    """
+
     counterpart_billing_address_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Address of invoicing, need to state as a separate fields for some countries if it differs from address of a company.
@@ -25,16 +32,25 @@ class UpdateCreditNote(UniversalBaseModel):
     Address where goods were shipped / where services were provided.
     """
 
+    document_rendering: typing.Optional[DocumentRenderingSettings] = pydantic.Field(default=None)
+    """
+    Settings for rendering documents in PDF format, including settings for line items and specific document types.
+    """
+
     entity: typing.Optional[ReceivableEntityBase] = None
     footer: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Optional text displayed below the line items table in the PDF.
+    Optional text displayed below the line items table in the PDF. The text can include [variables](https://docs.monite.com/advanced/variables).
+    
+    See also: `memo`, `commercial_condition_description`.
     """
 
     line_items: typing.Optional[UpdateLineItemForCreditNote] = None
     memo: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A note with additional information for a receivable
+    An optional note for the customer that will be displayed above the line items table in the PDF. The text can include [variables](https://docs.monite.com/advanced/variables).
+    
+    See also: `footer`, `commercial_condition_description`.
     """
 
     partner_metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
@@ -44,7 +60,7 @@ class UpdateCreditNote(UniversalBaseModel):
 
     project_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A project related to current receivable
+    ID of the [project](https://docs.monite.com/common/projects) associated with this credit note. If specified, the project name will be included in the header of the PDF credit note.
     """
 
     tag_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)

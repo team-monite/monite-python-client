@@ -14,8 +14,8 @@ from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
-from ..errors.internal_server_error import InternalServerError
 from ..errors.not_acceptable_error import NotAcceptableError
+from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.entity_response import EntityResponse
@@ -196,8 +196,8 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -230,24 +230,27 @@ class RawEntityUsersClient:
         Parameters
         ----------
         first_name : str
-            First name
+            The user's first name.
 
         login : str
+            The username assigned to this user. Usernames must be unique within the entity.
+
+            The `login` value is not used by Monite but may be used by partner applications, for example, to map the users between the partner's platform and Monite.
 
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         role_id : typing.Optional[str]
-            UUID of the role assigned to this entity user
+            ID of the role to assign to this user. The role defines the user's [access permissions](https://docs.monite.com/api/concepts/authentication#permissions) within the entity. Each user has just one role.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -296,6 +299,17 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -307,8 +321,8 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -327,7 +341,7 @@ class RawEntityUsersClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[EntityUserResponse]:
         """
-        Retrieve an entity user by its ID.
+        The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 
         Parameters
         ----------
@@ -365,6 +379,17 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -376,8 +401,8 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -403,24 +428,24 @@ class RawEntityUsersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[EntityUserResponse]:
         """
-        Change the specified fields with provided values.
+        The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 
         Parameters
         ----------
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         first_name : typing.Optional[str]
-            First name
+            The user's first name.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -467,6 +492,17 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -478,8 +514,8 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -498,7 +534,13 @@ class RawEntityUsersClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[EntityResponse]:
         """
-        Retrieves information of an entity, which this entity user belongs to.
+        Returns the entity to which the authenticated user belongs. This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.read` permission.
+
+        To get an entity by using a partner access token, use [`GET /entities/{entity_id}`](https://docs.monite.com/api/entities/get-entities-id) instead.
+
+        Related endpoints:
+
+         * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 
         Parameters
         ----------
@@ -536,6 +578,17 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -547,8 +600,8 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -568,17 +621,26 @@ class RawEntityUsersClient:
         *,
         address: typing.Optional[UpdateEntityAddressSchema] = OMIT,
         email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        registration_number: typing.Optional[str] = OMIT,
-        registration_authority: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
+        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[EntityResponse]:
         """
-        Update information of an entity, which this entity user belongs to.
+        Update the entity to which the authenticated user belongs.
+
+        This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.update` permission.
+
+        This endpoint does not use the `X-Monite-Entity-Id` header. The entity ID is inferred from the access token.
+
+        Related endpoints:
+
+         * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+         * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
 
         Parameters
         ----------
@@ -588,26 +650,26 @@ class RawEntityUsersClient:
         email : typing.Optional[str]
             An official email address of the entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
-
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-
-        registration_number : typing.Optional[str]
-            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-
-        registration_authority : typing.Optional[str]
-            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+        individual : typing.Optional[OptionalIndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[OptionalIndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            The contact phone number of the entity. Required for US organizations to use payments.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -625,17 +687,17 @@ class RawEntityUsersClient:
                     object_=address, annotation=UpdateEntityAddressSchema, direction="write"
                 ),
                 "email": email,
-                "phone": phone,
-                "website": website,
-                "tax_id": tax_id,
-                "registration_number": registration_number,
-                "registration_authority": registration_authority,
-                "organization": convert_and_respect_annotation_metadata(
-                    object_=organization, annotation=OptionalOrganizationSchema, direction="write"
-                ),
                 "individual": convert_and_respect_annotation_metadata(
                     object_=individual, annotation=OptionalIndividualSchema, direction="write"
                 ),
+                "organization": convert_and_respect_annotation_metadata(
+                    object_=organization, annotation=OptionalOrganizationSchema, direction="write"
+                ),
+                "phone": phone,
+                "registration_authority": registration_authority,
+                "registration_number": registration_number,
+                "tax_id": tax_id,
+                "website": website,
             },
             headers={
                 "content-type": "application/json",
@@ -664,6 +726,17 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -675,8 +748,8 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -722,6 +795,17 @@ class RawEntityUsersClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -733,8 +817,8 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -793,6 +877,17 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -804,8 +899,8 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -854,6 +949,17 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -865,8 +971,8 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -902,25 +1008,25 @@ class RawEntityUsersClient:
         entity_user_id : str
 
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         first_name : typing.Optional[str]
-            First name
+            The user's first name.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         login : typing.Optional[str]
-            Login
+            The new username for this user. Must be unique within the entity.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         role_id : typing.Optional[str]
-            UUID of the role assigned to this entity user
+            ID of the new role to assign to this user. The new role takes effect immediately, existing access tokens of this user are not invalidated.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -969,6 +1075,17 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -980,8 +1097,8 @@ class RawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1161,8 +1278,8 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1195,24 +1312,27 @@ class AsyncRawEntityUsersClient:
         Parameters
         ----------
         first_name : str
-            First name
+            The user's first name.
 
         login : str
+            The username assigned to this user. Usernames must be unique within the entity.
+
+            The `login` value is not used by Monite but may be used by partner applications, for example, to map the users between the partner's platform and Monite.
 
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         role_id : typing.Optional[str]
-            UUID of the role assigned to this entity user
+            ID of the role to assign to this user. The role defines the user's [access permissions](https://docs.monite.com/api/concepts/authentication#permissions) within the entity. Each user has just one role.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1261,6 +1381,17 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1272,8 +1403,8 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1292,7 +1423,7 @@ class AsyncRawEntityUsersClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[EntityUserResponse]:
         """
-        Retrieve an entity user by its ID.
+        The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 
         Parameters
         ----------
@@ -1330,6 +1461,17 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1341,8 +1483,8 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1368,24 +1510,24 @@ class AsyncRawEntityUsersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[EntityUserResponse]:
         """
-        Change the specified fields with provided values.
+        The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 
         Parameters
         ----------
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         first_name : typing.Optional[str]
-            First name
+            The user's first name.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1432,6 +1574,17 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1443,8 +1596,8 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1463,7 +1616,13 @@ class AsyncRawEntityUsersClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[EntityResponse]:
         """
-        Retrieves information of an entity, which this entity user belongs to.
+        Returns the entity to which the authenticated user belongs. This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.read` permission.
+
+        To get an entity by using a partner access token, use [`GET /entities/{entity_id}`](https://docs.monite.com/api/entities/get-entities-id) instead.
+
+        Related endpoints:
+
+         * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 
         Parameters
         ----------
@@ -1501,6 +1660,17 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1512,8 +1682,8 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1533,17 +1703,26 @@ class AsyncRawEntityUsersClient:
         *,
         address: typing.Optional[UpdateEntityAddressSchema] = OMIT,
         email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        registration_number: typing.Optional[str] = OMIT,
-        registration_authority: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
+        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[EntityResponse]:
         """
-        Update information of an entity, which this entity user belongs to.
+        Update the entity to which the authenticated user belongs.
+
+        This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.update` permission.
+
+        This endpoint does not use the `X-Monite-Entity-Id` header. The entity ID is inferred from the access token.
+
+        Related endpoints:
+
+         * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+         * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
 
         Parameters
         ----------
@@ -1553,26 +1732,26 @@ class AsyncRawEntityUsersClient:
         email : typing.Optional[str]
             An official email address of the entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
-
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-
-        registration_number : typing.Optional[str]
-            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-
-        registration_authority : typing.Optional[str]
-            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+        individual : typing.Optional[OptionalIndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[OptionalIndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            The contact phone number of the entity. Required for US organizations to use payments.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1590,17 +1769,17 @@ class AsyncRawEntityUsersClient:
                     object_=address, annotation=UpdateEntityAddressSchema, direction="write"
                 ),
                 "email": email,
-                "phone": phone,
-                "website": website,
-                "tax_id": tax_id,
-                "registration_number": registration_number,
-                "registration_authority": registration_authority,
-                "organization": convert_and_respect_annotation_metadata(
-                    object_=organization, annotation=OptionalOrganizationSchema, direction="write"
-                ),
                 "individual": convert_and_respect_annotation_metadata(
                     object_=individual, annotation=OptionalIndividualSchema, direction="write"
                 ),
+                "organization": convert_and_respect_annotation_metadata(
+                    object_=organization, annotation=OptionalOrganizationSchema, direction="write"
+                ),
+                "phone": phone,
+                "registration_authority": registration_authority,
+                "registration_number": registration_number,
+                "tax_id": tax_id,
+                "website": website,
             },
             headers={
                 "content-type": "application/json",
@@ -1629,6 +1808,17 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1640,8 +1830,8 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1687,6 +1877,17 @@ class AsyncRawEntityUsersClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1698,8 +1899,8 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1758,6 +1959,17 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1769,8 +1981,8 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1819,6 +2031,17 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1830,8 +2053,8 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1867,25 +2090,25 @@ class AsyncRawEntityUsersClient:
         entity_user_id : str
 
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         first_name : typing.Optional[str]
-            First name
+            The user's first name.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         login : typing.Optional[str]
-            Login
+            The new username for this user. Must be unique within the entity.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         role_id : typing.Optional[str]
-            UUID of the role assigned to this entity user
+            ID of the new role to assign to this user. The new role takes effect immediately, existing access tokens of this user are not invalidated.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1934,6 +2157,17 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -1945,8 +2179,8 @@ class AsyncRawEntityUsersClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

@@ -13,7 +13,7 @@ class PaymentReceivedEventData(UniversalBaseModel):
 
     amount_due: int = pydantic.Field()
     """
-    The remainimg amount due of the invoice, in [minor units](https://docs.monite.com/references/currencies#minor-units) of the currency. For example, $12.5 is represented as 1250.
+    The remaining amount due of the invoice, in [minor units](https://docs.monite.com/references/currencies#minor-units) of the currency. For example, $12.5 is represented as 1250.
     """
 
     amount_paid: int = pydantic.Field()

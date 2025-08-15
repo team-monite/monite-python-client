@@ -146,8 +146,14 @@ class BankAccountsClient:
             token="YOUR_TOKEN",
         )
         client.entities.bank_accounts.create(
-            country="AF",
-            currency="AED",
+            account_holder_name="Tobias Weingart",
+            bank_name="DEUTSCHE BANK AG",
+            bic="DEUTDEFFXXX",
+            country="DE",
+            currency="EUR",
+            display_name="Primary account",
+            iban="DE74500700100100000900",
+            is_default_for_currency=True,
         )
         """
         _response = self._raw_client.create(
@@ -463,8 +469,14 @@ class AsyncBankAccountsClient:
 
         async def main() -> None:
             await client.entities.bank_accounts.create(
-                country="AF",
-                currency="AED",
+                account_holder_name="Tobias Weingart",
+                bank_name="DEUTSCHE BANK AG",
+                bic="DEUTDEFFXXX",
+                country="DE",
+                currency="EUR",
+                display_name="Primary account",
+                iban="DE74500700100100000900",
+                is_default_for_currency=True,
             )
 
 

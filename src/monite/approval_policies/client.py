@@ -170,6 +170,7 @@ class ApprovalPoliciesClient:
         script: typing.Sequence[ApprovalPolicyCreateScriptItem],
         description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
+        priority: typing.Optional[int] = OMIT,
         starts_at: typing.Optional[dt.datetime] = OMIT,
         trigger: typing.Optional[ApprovalPolicyCreateTrigger] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -190,6 +191,9 @@ class ApprovalPoliciesClient:
 
         ends_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
+
+        priority : typing.Optional[int]
+            The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
 
         starts_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
@@ -224,6 +228,7 @@ class ApprovalPoliciesClient:
             script=script,
             description=description,
             ends_at=ends_at,
+            priority=priority,
             starts_at=starts_at,
             trigger=trigger,
             request_options=request_options,
@@ -302,6 +307,7 @@ class ApprovalPoliciesClient:
         description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        priority: typing.Optional[int] = OMIT,
         script: typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]] = OMIT,
         starts_at: typing.Optional[dt.datetime] = OMIT,
         status: typing.Optional[ApprovalPolicyStatus] = OMIT,
@@ -323,6 +329,9 @@ class ApprovalPoliciesClient:
 
         name : typing.Optional[str]
             The name of the approval policy.
+
+        priority : typing.Optional[int]
+            The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
 
         script : typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]]
             A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
@@ -362,6 +371,7 @@ class ApprovalPoliciesClient:
             description=description,
             ends_at=ends_at,
             name=name,
+            priority=priority,
             script=script,
             starts_at=starts_at,
             status=status,
@@ -526,6 +536,7 @@ class AsyncApprovalPoliciesClient:
         script: typing.Sequence[ApprovalPolicyCreateScriptItem],
         description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
+        priority: typing.Optional[int] = OMIT,
         starts_at: typing.Optional[dt.datetime] = OMIT,
         trigger: typing.Optional[ApprovalPolicyCreateTrigger] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -546,6 +557,9 @@ class AsyncApprovalPoliciesClient:
 
         ends_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC.
+
+        priority : typing.Optional[int]
+            The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
 
         starts_at : typing.Optional[dt.datetime]
             The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC.
@@ -588,6 +602,7 @@ class AsyncApprovalPoliciesClient:
             script=script,
             description=description,
             ends_at=ends_at,
+            priority=priority,
             starts_at=starts_at,
             trigger=trigger,
             request_options=request_options,
@@ -684,6 +699,7 @@ class AsyncApprovalPoliciesClient:
         description: typing.Optional[str] = OMIT,
         ends_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        priority: typing.Optional[int] = OMIT,
         script: typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]] = OMIT,
         starts_at: typing.Optional[dt.datetime] = OMIT,
         status: typing.Optional[ApprovalPolicyStatus] = OMIT,
@@ -705,6 +721,9 @@ class AsyncApprovalPoliciesClient:
 
         name : typing.Optional[str]
             The name of the approval policy.
+
+        priority : typing.Optional[int]
+            The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
 
         script : typing.Optional[typing.Sequence[ApprovalPolicyUpdateScriptItem]]
             A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.
@@ -752,6 +771,7 @@ class AsyncApprovalPoliciesClient:
             description=description,
             ends_at=ends_at,
             name=name,
+            priority=priority,
             script=script,
             starts_at=starts_at,
             status=status,

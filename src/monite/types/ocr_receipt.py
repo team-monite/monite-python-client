@@ -11,17 +11,17 @@ from .ocr_receipt_line_item import OcrReceiptLineItem
 
 
 class OcrReceipt(UniversalBaseModel):
+    currency: typing.Optional[CurrencyEnum] = None
+    discount: typing.Optional[float] = None
     document_number: typing.Optional[str] = None
     issued_at: typing.Optional[dt.datetime] = None
-    currency: typing.Optional[CurrencyEnum] = None
-    subtotal: typing.Optional[float] = None
-    tax_rate: typing.Optional[float] = None
-    tax_amount: typing.Optional[float] = None
-    total_amount: typing.Optional[float] = None
-    discount: typing.Optional[float] = None
-    tax_type: typing.Optional[str] = None
     line_items: typing.List[OcrReceiptLineItem]
     sender: OcrCounterpartDetails
+    subtotal: typing.Optional[float] = None
+    tax_amount: typing.Optional[float] = None
+    tax_rate: typing.Optional[float] = None
+    tax_type: typing.Optional[str] = None
+    total_amount: typing.Optional[float] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

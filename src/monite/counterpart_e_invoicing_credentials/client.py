@@ -97,7 +97,7 @@ class CounterpartEInvoicingCredentialsClient:
         client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_credentials(
             counterpart_id="counterpart_id",
             request=CreateCounterpartEinvoicingCredentialCounterpartVatId(
-                counterpart_vat_id_id="counterpart_vat_id_id",
+                counterpart_vat_id_id="14c84a34-282b-4fd8-8af6-86b5b5f2c212",
             ),
         )
         """
@@ -330,7 +330,7 @@ class AsyncCounterpartEInvoicingCredentialsClient:
             await client.counterpart_e_invoicing_credentials.post_counterparts_id_einvoicing_credentials(
                 counterpart_id="counterpart_id",
                 request=CreateCounterpartEinvoicingCredentialCounterpartVatId(
-                    counterpart_vat_id_id="counterpart_vat_id_id",
+                    counterpart_vat_id_id="14c84a34-282b-4fd8-8af6-86b5b5f2c212",
                 ),
             )
 

@@ -44,7 +44,7 @@ class PaymentRecordResponse(UniversalBaseModel):
     Timestamp marking when the payment was executed. Null if payment hasn't occurred yet.
     """
 
-    payment_intent_id: str = pydantic.Field()
+    payment_intent_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Identifier for an payment intent.
     """

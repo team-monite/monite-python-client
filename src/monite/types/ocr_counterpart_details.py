@@ -9,12 +9,12 @@ from .ocr_bank_details import OcrBankDetails
 
 
 class OcrCounterpartDetails(UniversalBaseModel):
-    vat_number: typing.Optional[str] = None
-    tax_number: typing.Optional[str] = None
-    email: typing.Optional[str] = None
-    name: typing.Optional[str] = None
     address: OcrAddressDetails
     bank_account: OcrBankDetails
+    email: typing.Optional[str] = None
+    name: typing.Optional[str] = None
+    tax_number: typing.Optional[str] = None
+    vat_number: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

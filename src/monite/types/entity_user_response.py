@@ -11,55 +11,60 @@ from .status_enum import StatusEnum
 class EntityUserResponse(UniversalBaseModel):
     id: str = pydantic.Field()
     """
-    UUID entity user ID
+    A unique Monite-assigned ID of this entity user. Can be used with `POST /auth/token` to generate an API access token for this user.
     """
 
     created_at: dt.datetime = pydantic.Field()
     """
-    UTC datetime
+    UTC date and time when this user was created in Monite.
     """
 
     updated_at: dt.datetime = pydantic.Field()
     """
-    UTC datetime
+    UTC date and time when this user was last updated.
     """
 
     email: typing.Optional[str] = pydantic.Field(default=None)
     """
-    An entity user business email
+    The user's business email address.
     """
 
     first_name: typing.Optional[str] = pydantic.Field(default=None)
     """
-    First name
+    The user's first name.
     """
 
     last_name: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Last name
+    The user's last name.
     """
 
     login: str = pydantic.Field()
     """
-    Login
+    The username assigned to this user. Usernames must be unique within the entity.
+    
+    The `login` value is not used by Monite but may be used by partner applications, for example, to map the users between the partner's platform and Monite.
     """
 
     phone: typing.Optional[str] = pydantic.Field(default=None)
     """
-    An entity user phone number in the international format
+    The user's phone number.
     """
 
     role_id: str = pydantic.Field()
     """
-    UUID role ID
+    ID of the role assigned to this user. The role defines the user's [access permissions](https://docs.monite.com/api/concepts/authentication#permissions) within the entity. Each user has just one role.
     """
 
     status: StatusEnum = pydantic.Field()
     """
-    record status, 'active' by default
+    The user's status. Always `active`.
     """
 
-    userpic_file_id: typing.Optional[str] = None
+    userpic_file_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unused. Reserved for future use. Currently always returns `null`.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

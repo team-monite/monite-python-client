@@ -14,9 +14,9 @@ class OcrTaskResponseSchema(UniversalBaseModel):
     id: str
     created_at: dt.datetime
     updated_at: dt.datetime
-    status: OcrTaskStatus
     document_type: typing.Optional[OcrDocumentTypeEnum] = None
     recognized_data: typing.Optional[OcrTaskResponseSchemaRecognizedData] = None
+    status: OcrTaskStatus
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

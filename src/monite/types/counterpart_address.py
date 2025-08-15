@@ -39,7 +39,7 @@ class CounterpartAddress(UniversalBaseModel):
 
     state: typing.Optional[str] = pydantic.Field(default=None)
     """
-    State, region, province, or county.
+    State, county, province, prefecture, region, or similar component of the counterpart's address. For US counterparts, `state` is required and must be a two-letter [USPS state abbreviation](https://pe.usps.com/text/pub28/28apb.htm), for example, NY or CA.
     """
 
     if IS_PYDANTIC_V2:

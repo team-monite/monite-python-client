@@ -6,20 +6,20 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class VerificationAirwallexPlaidRequest(UniversalBaseModel):
-    client_name: str = pydantic.Field()
+class LineItemNumericColumnSettings(UniversalBaseModel):
     """
-    The name of your application to be displayed in Plaid Modal
-    """
-
-    link_customization_name: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The name of the Link customization configured on the Plaid Dashboard. If not specified, the default customization will be applied
+    Extended settings for numeric columns in line items.
     """
 
-    redirect_url: str = pydantic.Field()
+    display: typing.Optional[bool] = None
+    label: typing.Optional[str] = pydantic.Field(default=None)
     """
-    URL to handle the OAuth verification flow
+    Line item table column header to override Monite's default. If not set, the Monite's default will be used.
+    """
+
+    precision: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Number of decimal places to display for numeric values in this column.
     """
 
     if IS_PYDANTIC_V2:

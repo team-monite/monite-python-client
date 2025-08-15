@@ -14,17 +14,17 @@ from .vat_rate_status_enum import VatRateStatusEnum
 class VatRateResponse(UniversalBaseModel):
     id: str = pydantic.Field()
     """
-    Unique identifier of the vat rate object.
+    A unique ID assigned to this VAT rate. Use this ID as the value of the `line_items[].vat_rate_id` field in invoices and quotes.
     """
 
     created_at: dt.datetime = pydantic.Field()
     """
-    Date/time when this rate was recorded in the table.
+    UTC date and time when this VAT rate was recorded in Monite.
     """
 
     updated_at: dt.datetime = pydantic.Field()
     """
-    Date/time when this rate was updated in the table.
+    UTC date and time when this VAT rate was last updated by Monite.
     """
 
     components: typing.Optional[typing.List[VatRateComponent]] = pydantic.Field(default=None)
@@ -39,7 +39,7 @@ class VatRateResponse(UniversalBaseModel):
 
     created_by: typing.Optional[VatRateCreator] = pydantic.Field(default=None)
     """
-    By whom this rate was recorded: monite employee | accounting system.
+    Unused.
     """
 
     status: typing.Optional[VatRateStatusEnum] = pydantic.Field(default=None)
@@ -59,7 +59,7 @@ class VatRateResponse(UniversalBaseModel):
 
     value: int = pydantic.Field()
     """
-    Percent minor units. Example: 12.5% is 1250.
+    VAT percentage multiplied by 100. For example, 12.5% is represented as 1250.
     """
 
     if IS_PYDANTIC_V2:

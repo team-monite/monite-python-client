@@ -9,7 +9,7 @@ from ..core.request_options import RequestOptions
 from ..types.accounting_settings import AccountingSettings
 from ..types.currency_settings_input import CurrencySettingsInput
 from ..types.document_i_ds_settings_request import DocumentIDsSettingsRequest
-from ..types.document_rendering_settings import DocumentRenderingSettings
+from ..types.document_rendering_settings_input import DocumentRenderingSettingsInput
 from ..types.entity_address_schema import EntityAddressSchema
 from ..types.entity_cursor_fields import EntityCursorFields
 from ..types.entity_pagination_response import EntityPaginationResponse
@@ -20,6 +20,7 @@ from ..types.file_schema2 import FileSchema2
 from ..types.get_onboarding_requirements_response import GetOnboardingRequirementsResponse
 from ..types.individual_schema import IndividualSchema
 from ..types.language_code_enum import LanguageCodeEnum
+from ..types.next_document_numbers import NextDocumentNumbers
 from ..types.ocr_auto_tagging_settings_request import OcrAutoTaggingSettingsRequest
 from ..types.optional_individual_schema import OptionalIndividualSchema
 from ..types.optional_organization_schema import OptionalOrganizationSchema
@@ -173,13 +174,13 @@ class EntitiesClient:
         address: EntityAddressSchema,
         email: str,
         type: EntityTypeEnum,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OrganizationSchema] = OMIT,
         individual: typing.Optional[IndividualSchema] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        registration_number: typing.Optional[str] = OMIT,
+        organization: typing.Optional[OrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
         registration_authority: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -196,26 +197,26 @@ class EntitiesClient:
         type : EntityTypeEnum
             A type for an entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
+        individual : typing.Optional[IndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[IndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            The contact phone number of the entity. Required for US organizations to use payments.
 
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
 
         registration_number : typing.Optional[str]
             (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
 
-        registration_authority : typing.Optional[str]
-            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -249,13 +250,13 @@ class EntitiesClient:
             address=address,
             email=email,
             type=type,
-            phone=phone,
-            website=website,
-            organization=organization,
             individual=individual,
-            tax_id=tax_id,
-            registration_number=registration_number,
+            organization=organization,
+            phone=phone,
             registration_authority=registration_authority,
+            registration_number=registration_number,
+            tax_id=tax_id,
+            website=website,
             request_options=request_options,
         )
         return _response.data
@@ -293,13 +294,13 @@ class EntitiesClient:
         *,
         address: typing.Optional[UpdateEntityAddressSchema] = OMIT,
         email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        registration_number: typing.Optional[str] = OMIT,
-        registration_authority: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
+        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -313,26 +314,26 @@ class EntitiesClient:
         email : typing.Optional[str]
             An official email address of the entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
-
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-
-        registration_number : typing.Optional[str]
-            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-
-        registration_authority : typing.Optional[str]
-            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+        individual : typing.Optional[OptionalIndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[OptionalIndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            The contact phone number of the entity. Required for US organizations to use payments.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -356,20 +357,28 @@ class EntitiesClient:
         _response = self._raw_client.patch_entities_me(
             address=address,
             email=email,
-            phone=phone,
-            website=website,
-            tax_id=tax_id,
-            registration_number=registration_number,
-            registration_authority=registration_authority,
-            organization=organization,
             individual=individual,
+            organization=organization,
+            phone=phone,
+            registration_authority=registration_authority,
+            registration_number=registration_number,
+            tax_id=tax_id,
+            website=website,
             request_options=request_options,
         )
         return _response.data
 
     def get_by_id(self, entity_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> EntityResponse:
         """
-        Retrieve an entity by its ID.
+        Returns entity information for the specified entity ID.
+
+        This endpoint requires a partner access token and can be used to get any of the partner's entities.
+
+        To get entity information by using an entity user token, use [`GET /entity_users/my_entity`](https://docs.monite.com/api/entities/get-entity-users-my-entity) instead.
+
+        Related endpoints:
+
+         * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 
         Parameters
         ----------
@@ -406,17 +415,26 @@ class EntitiesClient:
         *,
         address: typing.Optional[UpdateEntityAddressSchema] = OMIT,
         email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        registration_number: typing.Optional[str] = OMIT,
-        registration_authority: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
+        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
-        Change the specified fields with the provided values.
+        Update entity information for the specified entity ID.
+
+        This endpoint requires a partner access token and can be used to update any of the partner's entities.
+
+        To update an entity by using an entity user token, use [`PATCH /entity_users/my_entity`](https://docs.monite.com/api/entities/patch-entity-users-my-entity) instead.
+
+        Related endpoints:
+
+         * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+         * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
 
         Parameters
         ----------
@@ -429,26 +447,26 @@ class EntitiesClient:
         email : typing.Optional[str]
             An official email address of the entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
-
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-
-        registration_number : typing.Optional[str]
-            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-
-        registration_authority : typing.Optional[str]
-            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+        individual : typing.Optional[OptionalIndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[OptionalIndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            The contact phone number of the entity. Required for US organizations to use payments.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -475,13 +493,13 @@ class EntitiesClient:
             entity_id,
             address=address,
             email=email,
-            phone=phone,
-            website=website,
-            tax_id=tax_id,
-            registration_number=registration_number,
-            registration_authority=registration_authority,
-            organization=organization,
             individual=individual,
+            organization=organization,
+            phone=phone,
+            registration_authority=registration_authority,
+            registration_number=registration_number,
+            tax_id=tax_id,
+            website=website,
             request_options=request_options,
         )
         return _response.data
@@ -562,6 +580,8 @@ class EntitiesClient:
         """
         Entity logo can be PNG, JPG, or GIF, up to 10 MB in size. The logo is used, for example, in PDF documents created by this entity.
 
+        Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
+
         Parameters
         ----------
         entity_id : str
@@ -596,6 +616,8 @@ class EntitiesClient:
 
     def delete_logo_by_id(self, entity_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
+        Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
+
         Parameters
         ----------
         entity_id : str
@@ -706,7 +728,14 @@ class EntitiesClient:
         self, entity_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> SettingsResponse:
         """
-        Retrieve all settings for this entity.
+        Entity settings include configuration options for accounts payable, accounts receivable, accounting integration, and other functionality.
+
+        Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.read` permission.
+
+        Related endpoints:
+
+         * [Get next document numbers](https://docs.monite.com/api/entities/get-entities-id-settings-next-document-numbers)
+         * [Get partner settings](https://docs.monite.com/api/partner-settings/get-settings)
 
         Parameters
         ----------
@@ -741,73 +770,88 @@ class EntitiesClient:
         self,
         entity_id: str,
         *,
-        language: typing.Optional[LanguageCodeEnum] = OMIT,
-        currency: typing.Optional[CurrencySettingsInput] = OMIT,
-        reminder: typing.Optional[RemindersSettings] = OMIT,
-        vat_mode: typing.Optional[VatModeEnum] = OMIT,
-        vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = OMIT,
-        payment_priority: typing.Optional[PaymentPriorityEnum] = OMIT,
-        allow_purchase_order_autolinking: typing.Optional[bool] = OMIT,
-        receivable_edit_flow: typing.Optional[ReceivableEditFlow] = OMIT,
-        document_ids: typing.Optional[DocumentIDsSettingsRequest] = OMIT,
-        payables_ocr_auto_tagging: typing.Optional[typing.Sequence[OcrAutoTaggingSettingsRequest]] = OMIT,
-        quote_signature_required: typing.Optional[bool] = OMIT,
-        generate_paid_invoice_pdf: typing.Optional[bool] = OMIT,
         accounting: typing.Optional[AccountingSettings] = OMIT,
+        allow_purchase_order_autolinking: typing.Optional[bool] = OMIT,
+        currency: typing.Optional[CurrencySettingsInput] = OMIT,
+        document_ids: typing.Optional[DocumentIDsSettingsRequest] = OMIT,
+        document_rendering: typing.Optional[DocumentRenderingSettingsInput] = OMIT,
+        generate_paid_invoice_pdf: typing.Optional[bool] = OMIT,
+        language: typing.Optional[LanguageCodeEnum] = OMIT,
+        payables_ocr_auto_tagging: typing.Optional[typing.Sequence[OcrAutoTaggingSettingsRequest]] = OMIT,
         payables_skip_approval_flow: typing.Optional[bool] = OMIT,
-        document_rendering: typing.Optional[DocumentRenderingSettings] = OMIT,
+        payment_priority: typing.Optional[PaymentPriorityEnum] = OMIT,
+        quote_signature_required: typing.Optional[bool] = OMIT,
+        receivable_edit_flow: typing.Optional[ReceivableEditFlow] = OMIT,
+        reminder: typing.Optional[RemindersSettings] = OMIT,
+        vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = OMIT,
+        vat_mode: typing.Optional[VatModeEnum] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SettingsResponse:
         """
-        Change the specified fields with the provided values.
+        Entity settings include configuration options for accounts payable, accounts receivable, accounting integration, and other functionality.
+
+        Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
+
+        Related endpoints:
+
+         * [Update an entity](https://docs.monite.com/api/entities/patch-entities-id)
+         * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
+         * [Update partner settings](https://docs.monite.com/api/partner-settings/patch-settings)
 
         Parameters
         ----------
         entity_id : str
             A unique ID to specify the entity.
 
-        language : typing.Optional[LanguageCodeEnum]
-
-        currency : typing.Optional[CurrencySettingsInput]
-
-        reminder : typing.Optional[RemindersSettings]
-
-        vat_mode : typing.Optional[VatModeEnum]
-            Defines whether the prices of products in receivables will already include VAT or not.
-
-        vat_inclusive_discount_mode : typing.Optional[VatModeEnum]
-            Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
-
-        payment_priority : typing.Optional[PaymentPriorityEnum]
-            Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
+        accounting : typing.Optional[AccountingSettings]
 
         allow_purchase_order_autolinking : typing.Optional[bool]
             Automatically attempt to find a corresponding purchase order for all incoming payables.
 
-        receivable_edit_flow : typing.Optional[ReceivableEditFlow]
+        currency : typing.Optional[CurrencySettingsInput]
 
         document_ids : typing.Optional[DocumentIDsSettingsRequest]
+
+        document_rendering : typing.Optional[DocumentRenderingSettingsInput]
+            Settings for rendering documents in PDF format.
+
+        generate_paid_invoice_pdf : typing.Optional[bool]
+            This setting affects how PDF is generated for accounts receivable invoices that are paid, partially paid, or have credit notes applied.
+            If this setting is `true`:
+
+             * The totals block in the PDF invoice will include a list of all payments made and credit notes issued.
+             * Once an invoice becomes fully paid, the payment link and QR code are removed.
+
+            The PDF invoice gets regenerated at the moment when an invoice payment is recorded or a credit note is issued.  This PDF is not issued as a separate document, and the original PDF invoice is no longer available.
+
+        language : typing.Optional[LanguageCodeEnum]
 
         payables_ocr_auto_tagging : typing.Optional[typing.Sequence[OcrAutoTaggingSettingsRequest]]
             Auto tagging settings for all incoming OCR payable documents.
 
-        quote_signature_required : typing.Optional[bool]
-            Sets the default behavior of whether a signature is required to accept quotes.
-
-        generate_paid_invoice_pdf : typing.Optional[bool]
-            This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.
-
-            The PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.
-
-            This field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.
-
-        accounting : typing.Optional[AccountingSettings]
-
         payables_skip_approval_flow : typing.Optional[bool]
             If enabled, the approval policy will be skipped and the payable will be moved to `waiting_to_be_paid` status.
 
-        document_rendering : typing.Optional[DocumentRenderingSettings]
-            Settings for rendering documents in PDF format.
+        payment_priority : typing.Optional[PaymentPriorityEnum]
+            Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
+
+        quote_signature_required : typing.Optional[bool]
+            Sets the default behavior of whether a signature is required to accept quotes.
+
+        receivable_edit_flow : typing.Optional[ReceivableEditFlow]
+            [Invoice compliance mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance) for accounts receivable. Possible values:
+
+             * `compliant` - invoices cannot be edited once issued.
+             * `non_compliant` - issued invoices can still be edited.
+             * `partially_compliant` - deprecated mode, should not be used.
+
+        reminder : typing.Optional[RemindersSettings]
+
+        vat_inclusive_discount_mode : typing.Optional[VatModeEnum]
+            Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
+
+        vat_mode : typing.Optional[VatModeEnum]
+            Defines whether the prices of products in receivables will already include VAT or not.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -832,22 +876,63 @@ class EntitiesClient:
         """
         _response = self._raw_client.update_settings_by_id(
             entity_id,
-            language=language,
-            currency=currency,
-            reminder=reminder,
-            vat_mode=vat_mode,
-            vat_inclusive_discount_mode=vat_inclusive_discount_mode,
-            payment_priority=payment_priority,
-            allow_purchase_order_autolinking=allow_purchase_order_autolinking,
-            receivable_edit_flow=receivable_edit_flow,
-            document_ids=document_ids,
-            payables_ocr_auto_tagging=payables_ocr_auto_tagging,
-            quote_signature_required=quote_signature_required,
-            generate_paid_invoice_pdf=generate_paid_invoice_pdf,
             accounting=accounting,
-            payables_skip_approval_flow=payables_skip_approval_flow,
+            allow_purchase_order_autolinking=allow_purchase_order_autolinking,
+            currency=currency,
+            document_ids=document_ids,
             document_rendering=document_rendering,
+            generate_paid_invoice_pdf=generate_paid_invoice_pdf,
+            language=language,
+            payables_ocr_auto_tagging=payables_ocr_auto_tagging,
+            payables_skip_approval_flow=payables_skip_approval_flow,
+            payment_priority=payment_priority,
+            quote_signature_required=quote_signature_required,
+            receivable_edit_flow=receivable_edit_flow,
+            reminder=reminder,
+            vat_inclusive_discount_mode=vat_inclusive_discount_mode,
+            vat_mode=vat_mode,
             request_options=request_options,
+        )
+        return _response.data
+
+    def get_entities_id_settings_next_document_numbers(
+        self, entity_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> NextDocumentNumbers:
+        """
+        Returns the next sequence number for various document types - invoices, quotes, credit notes, and others. For example, if the last issued invoice is `INV-00042`, the next invoice number is 43.
+
+        To set the next document numbers, use `PATCH /entities/{entity_id}/settings`.
+
+        For more information, see [Document number customization](https://docs.monite.com/advanced/document-number-customization).
+
+        Parameters
+        ----------
+        entity_id : str
+            Unique ID of the entity
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        NextDocumentNumbers
+            Successful Response
+
+        Examples
+        --------
+        from monite import Monite
+
+        client = Monite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+        client.entities.get_entities_id_settings_next_document_numbers(
+            entity_id="entity_id",
+        )
+        """
+        _response = self._raw_client.get_entities_id_settings_next_document_numbers(
+            entity_id, request_options=request_options
         )
         return _response.data
 
@@ -1097,13 +1182,13 @@ class AsyncEntitiesClient:
         address: EntityAddressSchema,
         email: str,
         type: EntityTypeEnum,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OrganizationSchema] = OMIT,
         individual: typing.Optional[IndividualSchema] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        registration_number: typing.Optional[str] = OMIT,
+        organization: typing.Optional[OrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
         registration_authority: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -1120,26 +1205,26 @@ class AsyncEntitiesClient:
         type : EntityTypeEnum
             A type for an entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
+        individual : typing.Optional[IndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[IndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            The contact phone number of the entity. Required for US organizations to use payments.
 
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
 
         registration_number : typing.Optional[str]
             (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
 
-        registration_authority : typing.Optional[str]
-            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1181,13 +1266,13 @@ class AsyncEntitiesClient:
             address=address,
             email=email,
             type=type,
-            phone=phone,
-            website=website,
-            organization=organization,
             individual=individual,
-            tax_id=tax_id,
-            registration_number=registration_number,
+            organization=organization,
+            phone=phone,
             registration_authority=registration_authority,
+            registration_number=registration_number,
+            tax_id=tax_id,
+            website=website,
             request_options=request_options,
         )
         return _response.data
@@ -1233,13 +1318,13 @@ class AsyncEntitiesClient:
         *,
         address: typing.Optional[UpdateEntityAddressSchema] = OMIT,
         email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        registration_number: typing.Optional[str] = OMIT,
-        registration_authority: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
+        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -1253,26 +1338,26 @@ class AsyncEntitiesClient:
         email : typing.Optional[str]
             An official email address of the entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
-
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-
-        registration_number : typing.Optional[str]
-            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-
-        registration_authority : typing.Optional[str]
-            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+        individual : typing.Optional[OptionalIndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[OptionalIndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            The contact phone number of the entity. Required for US organizations to use payments.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1304,13 +1389,13 @@ class AsyncEntitiesClient:
         _response = await self._raw_client.patch_entities_me(
             address=address,
             email=email,
-            phone=phone,
-            website=website,
-            tax_id=tax_id,
-            registration_number=registration_number,
-            registration_authority=registration_authority,
-            organization=organization,
             individual=individual,
+            organization=organization,
+            phone=phone,
+            registration_authority=registration_authority,
+            registration_number=registration_number,
+            tax_id=tax_id,
+            website=website,
             request_options=request_options,
         )
         return _response.data
@@ -1319,7 +1404,15 @@ class AsyncEntitiesClient:
         self, entity_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> EntityResponse:
         """
-        Retrieve an entity by its ID.
+        Returns entity information for the specified entity ID.
+
+        This endpoint requires a partner access token and can be used to get any of the partner's entities.
+
+        To get entity information by using an entity user token, use [`GET /entity_users/my_entity`](https://docs.monite.com/api/entities/get-entity-users-my-entity) instead.
+
+        Related endpoints:
+
+         * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 
         Parameters
         ----------
@@ -1364,17 +1457,26 @@ class AsyncEntitiesClient:
         *,
         address: typing.Optional[UpdateEntityAddressSchema] = OMIT,
         email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        registration_number: typing.Optional[str] = OMIT,
-        registration_authority: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
+        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
-        Change the specified fields with the provided values.
+        Update entity information for the specified entity ID.
+
+        This endpoint requires a partner access token and can be used to update any of the partner's entities.
+
+        To update an entity by using an entity user token, use [`PATCH /entity_users/my_entity`](https://docs.monite.com/api/entities/patch-entity-users-my-entity) instead.
+
+        Related endpoints:
+
+         * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+         * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
 
         Parameters
         ----------
@@ -1387,26 +1489,26 @@ class AsyncEntitiesClient:
         email : typing.Optional[str]
             An official email address of the entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
-
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-
-        registration_number : typing.Optional[str]
-            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-
-        registration_authority : typing.Optional[str]
-            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+        individual : typing.Optional[OptionalIndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[OptionalIndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            The contact phone number of the entity. Required for US organizations to use payments.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1441,13 +1543,13 @@ class AsyncEntitiesClient:
             entity_id,
             address=address,
             email=email,
-            phone=phone,
-            website=website,
-            tax_id=tax_id,
-            registration_number=registration_number,
-            registration_authority=registration_authority,
-            organization=organization,
             individual=individual,
+            organization=organization,
+            phone=phone,
+            registration_authority=registration_authority,
+            registration_number=registration_number,
+            tax_id=tax_id,
+            website=website,
             request_options=request_options,
         )
         return _response.data
@@ -1544,6 +1646,8 @@ class AsyncEntitiesClient:
         """
         Entity logo can be PNG, JPG, or GIF, up to 10 MB in size. The logo is used, for example, in PDF documents created by this entity.
 
+        Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
+
         Parameters
         ----------
         entity_id : str
@@ -1588,6 +1692,8 @@ class AsyncEntitiesClient:
         self, entity_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
+        Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
+
         Parameters
         ----------
         entity_id : str
@@ -1722,7 +1828,14 @@ class AsyncEntitiesClient:
         self, entity_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> SettingsResponse:
         """
-        Retrieve all settings for this entity.
+        Entity settings include configuration options for accounts payable, accounts receivable, accounting integration, and other functionality.
+
+        Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.read` permission.
+
+        Related endpoints:
+
+         * [Get next document numbers](https://docs.monite.com/api/entities/get-entities-id-settings-next-document-numbers)
+         * [Get partner settings](https://docs.monite.com/api/partner-settings/get-settings)
 
         Parameters
         ----------
@@ -1765,73 +1878,88 @@ class AsyncEntitiesClient:
         self,
         entity_id: str,
         *,
-        language: typing.Optional[LanguageCodeEnum] = OMIT,
-        currency: typing.Optional[CurrencySettingsInput] = OMIT,
-        reminder: typing.Optional[RemindersSettings] = OMIT,
-        vat_mode: typing.Optional[VatModeEnum] = OMIT,
-        vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = OMIT,
-        payment_priority: typing.Optional[PaymentPriorityEnum] = OMIT,
-        allow_purchase_order_autolinking: typing.Optional[bool] = OMIT,
-        receivable_edit_flow: typing.Optional[ReceivableEditFlow] = OMIT,
-        document_ids: typing.Optional[DocumentIDsSettingsRequest] = OMIT,
-        payables_ocr_auto_tagging: typing.Optional[typing.Sequence[OcrAutoTaggingSettingsRequest]] = OMIT,
-        quote_signature_required: typing.Optional[bool] = OMIT,
-        generate_paid_invoice_pdf: typing.Optional[bool] = OMIT,
         accounting: typing.Optional[AccountingSettings] = OMIT,
+        allow_purchase_order_autolinking: typing.Optional[bool] = OMIT,
+        currency: typing.Optional[CurrencySettingsInput] = OMIT,
+        document_ids: typing.Optional[DocumentIDsSettingsRequest] = OMIT,
+        document_rendering: typing.Optional[DocumentRenderingSettingsInput] = OMIT,
+        generate_paid_invoice_pdf: typing.Optional[bool] = OMIT,
+        language: typing.Optional[LanguageCodeEnum] = OMIT,
+        payables_ocr_auto_tagging: typing.Optional[typing.Sequence[OcrAutoTaggingSettingsRequest]] = OMIT,
         payables_skip_approval_flow: typing.Optional[bool] = OMIT,
-        document_rendering: typing.Optional[DocumentRenderingSettings] = OMIT,
+        payment_priority: typing.Optional[PaymentPriorityEnum] = OMIT,
+        quote_signature_required: typing.Optional[bool] = OMIT,
+        receivable_edit_flow: typing.Optional[ReceivableEditFlow] = OMIT,
+        reminder: typing.Optional[RemindersSettings] = OMIT,
+        vat_inclusive_discount_mode: typing.Optional[VatModeEnum] = OMIT,
+        vat_mode: typing.Optional[VatModeEnum] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SettingsResponse:
         """
-        Change the specified fields with the provided values.
+        Entity settings include configuration options for accounts payable, accounts receivable, accounting integration, and other functionality.
+
+        Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
+
+        Related endpoints:
+
+         * [Update an entity](https://docs.monite.com/api/entities/patch-entities-id)
+         * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
+         * [Update partner settings](https://docs.monite.com/api/partner-settings/patch-settings)
 
         Parameters
         ----------
         entity_id : str
             A unique ID to specify the entity.
 
-        language : typing.Optional[LanguageCodeEnum]
-
-        currency : typing.Optional[CurrencySettingsInput]
-
-        reminder : typing.Optional[RemindersSettings]
-
-        vat_mode : typing.Optional[VatModeEnum]
-            Defines whether the prices of products in receivables will already include VAT or not.
-
-        vat_inclusive_discount_mode : typing.Optional[VatModeEnum]
-            Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
-
-        payment_priority : typing.Optional[PaymentPriorityEnum]
-            Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
+        accounting : typing.Optional[AccountingSettings]
 
         allow_purchase_order_autolinking : typing.Optional[bool]
             Automatically attempt to find a corresponding purchase order for all incoming payables.
 
-        receivable_edit_flow : typing.Optional[ReceivableEditFlow]
+        currency : typing.Optional[CurrencySettingsInput]
 
         document_ids : typing.Optional[DocumentIDsSettingsRequest]
+
+        document_rendering : typing.Optional[DocumentRenderingSettingsInput]
+            Settings for rendering documents in PDF format.
+
+        generate_paid_invoice_pdf : typing.Optional[bool]
+            This setting affects how PDF is generated for accounts receivable invoices that are paid, partially paid, or have credit notes applied.
+            If this setting is `true`:
+
+             * The totals block in the PDF invoice will include a list of all payments made and credit notes issued.
+             * Once an invoice becomes fully paid, the payment link and QR code are removed.
+
+            The PDF invoice gets regenerated at the moment when an invoice payment is recorded or a credit note is issued.  This PDF is not issued as a separate document, and the original PDF invoice is no longer available.
+
+        language : typing.Optional[LanguageCodeEnum]
 
         payables_ocr_auto_tagging : typing.Optional[typing.Sequence[OcrAutoTaggingSettingsRequest]]
             Auto tagging settings for all incoming OCR payable documents.
 
-        quote_signature_required : typing.Optional[bool]
-            Sets the default behavior of whether a signature is required to accept quotes.
-
-        generate_paid_invoice_pdf : typing.Optional[bool]
-            This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.
-
-            The PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.
-
-            This field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.
-
-        accounting : typing.Optional[AccountingSettings]
-
         payables_skip_approval_flow : typing.Optional[bool]
             If enabled, the approval policy will be skipped and the payable will be moved to `waiting_to_be_paid` status.
 
-        document_rendering : typing.Optional[DocumentRenderingSettings]
-            Settings for rendering documents in PDF format.
+        payment_priority : typing.Optional[PaymentPriorityEnum]
+            Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.
+
+        quote_signature_required : typing.Optional[bool]
+            Sets the default behavior of whether a signature is required to accept quotes.
+
+        receivable_edit_flow : typing.Optional[ReceivableEditFlow]
+            [Invoice compliance mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance) for accounts receivable. Possible values:
+
+             * `compliant` - invoices cannot be edited once issued.
+             * `non_compliant` - issued invoices can still be edited.
+             * `partially_compliant` - deprecated mode, should not be used.
+
+        reminder : typing.Optional[RemindersSettings]
+
+        vat_inclusive_discount_mode : typing.Optional[VatModeEnum]
+            Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.
+
+        vat_mode : typing.Optional[VatModeEnum]
+            Defines whether the prices of products in receivables will already include VAT or not.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1864,22 +1992,71 @@ class AsyncEntitiesClient:
         """
         _response = await self._raw_client.update_settings_by_id(
             entity_id,
-            language=language,
-            currency=currency,
-            reminder=reminder,
-            vat_mode=vat_mode,
-            vat_inclusive_discount_mode=vat_inclusive_discount_mode,
-            payment_priority=payment_priority,
-            allow_purchase_order_autolinking=allow_purchase_order_autolinking,
-            receivable_edit_flow=receivable_edit_flow,
-            document_ids=document_ids,
-            payables_ocr_auto_tagging=payables_ocr_auto_tagging,
-            quote_signature_required=quote_signature_required,
-            generate_paid_invoice_pdf=generate_paid_invoice_pdf,
             accounting=accounting,
-            payables_skip_approval_flow=payables_skip_approval_flow,
+            allow_purchase_order_autolinking=allow_purchase_order_autolinking,
+            currency=currency,
+            document_ids=document_ids,
             document_rendering=document_rendering,
+            generate_paid_invoice_pdf=generate_paid_invoice_pdf,
+            language=language,
+            payables_ocr_auto_tagging=payables_ocr_auto_tagging,
+            payables_skip_approval_flow=payables_skip_approval_flow,
+            payment_priority=payment_priority,
+            quote_signature_required=quote_signature_required,
+            receivable_edit_flow=receivable_edit_flow,
+            reminder=reminder,
+            vat_inclusive_discount_mode=vat_inclusive_discount_mode,
+            vat_mode=vat_mode,
             request_options=request_options,
+        )
+        return _response.data
+
+    async def get_entities_id_settings_next_document_numbers(
+        self, entity_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> NextDocumentNumbers:
+        """
+        Returns the next sequence number for various document types - invoices, quotes, credit notes, and others. For example, if the last issued invoice is `INV-00042`, the next invoice number is 43.
+
+        To set the next document numbers, use `PATCH /entities/{entity_id}/settings`.
+
+        For more information, see [Document number customization](https://docs.monite.com/advanced/document-number-customization).
+
+        Parameters
+        ----------
+        entity_id : str
+            Unique ID of the entity
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        NextDocumentNumbers
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from monite import AsyncMonite
+
+        client = AsyncMonite(
+            monite_version="YOUR_MONITE_VERSION",
+            monite_entity_id="YOUR_MONITE_ENTITY_ID",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entities.get_entities_id_settings_next_document_numbers(
+                entity_id="entity_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_entities_id_settings_next_document_numbers(
+            entity_id, request_options=request_options
         )
         return _response.data
 

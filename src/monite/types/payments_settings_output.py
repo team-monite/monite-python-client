@@ -9,10 +9,14 @@ from .payment_page_theme import PaymentPageTheme
 
 class PaymentsSettingsOutput(UniversalBaseModel):
     payment_page_domain: typing.Optional[str] = None
-    payment_page_theme: typing.Optional[PaymentPageTheme] = None
+    payment_page_theme: typing.Optional[PaymentPageTheme] = pydantic.Field(default=None)
+    """
+    See [Payment page customization](https://docs.monite.com/payments/payment-page-customization).
+    """
+
     support_email: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The support email address
+    Required if the partner has UK entities that want to accept Bacs Direct Debit payments. This email address will be included in Bacs debit notification emails sent to the payers, as the contact email address where the payers can send payments-related inquiries.
     """
 
     if IS_PYDANTIC_V2:

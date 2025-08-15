@@ -9,7 +9,8 @@ from ...core.http_response import AsyncHttpResponse, HttpResponse
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import parse_obj_as
 from ...core.request_options import RequestOptions
-from ...errors.internal_server_error import InternalServerError
+from ...errors.too_many_requests_error import TooManyRequestsError
+from ...errors.unauthorized_error import UnauthorizedError
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
 from ...types.monite_all_payment_methods_types import MoniteAllPaymentMethodsTypes
 from ...types.onboarding_payment_methods_response import OnboardingPaymentMethodsResponse
@@ -55,6 +56,17 @@ class RawPaymentMethodsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -66,8 +78,8 @@ class RawPaymentMethodsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -99,13 +111,19 @@ class RawPaymentMethodsClient:
         entity_id : str
 
         payment_methods : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Deprecated. Use payment_methods_receive instead.
+            Deprecated. Replaced by `payment_methods_receive`.
 
         payment_methods_receive : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Enable payment methods to receive money.
+            Payment methods to receive money from customers. Supported payment methods [vary per country](https://docs.monite.com/payments/payment-methods).
+
+            `card` includes card payments, Apple Pay, and Google Pay. The values `applepay` and `googlepay` are deprecated and unused.
+
+            `sofort` is deprecated and replaced by `klarna`.
 
         payment_methods_send : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Enable payment methods to send money.
+            Only for entities in the EU and UK. Payment methods used to make payments to vendors.
+
+            Currently only `sepa_credit` is supported for making payments.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -139,6 +157,17 @@ class RawPaymentMethodsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -150,8 +179,8 @@ class RawPaymentMethodsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -204,6 +233,17 @@ class AsyncRawPaymentMethodsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -215,8 +255,8 @@ class AsyncRawPaymentMethodsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -248,13 +288,19 @@ class AsyncRawPaymentMethodsClient:
         entity_id : str
 
         payment_methods : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Deprecated. Use payment_methods_receive instead.
+            Deprecated. Replaced by `payment_methods_receive`.
 
         payment_methods_receive : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Enable payment methods to receive money.
+            Payment methods to receive money from customers. Supported payment methods [vary per country](https://docs.monite.com/payments/payment-methods).
+
+            `card` includes card payments, Apple Pay, and Google Pay. The values `applepay` and `googlepay` are deprecated and unused.
+
+            `sofort` is deprecated and replaced by `klarna`.
 
         payment_methods_send : typing.Optional[typing.Sequence[MoniteAllPaymentMethodsTypes]]
-            Enable payment methods to send money.
+            Only for entities in the EU and UK. Payment methods used to make payments to vendors.
+
+            Currently only `sepa_credit` is supported for making payments.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -288,6 +334,17 @@ class AsyncRawPaymentMethodsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -299,8 +356,8 @@ class AsyncRawPaymentMethodsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

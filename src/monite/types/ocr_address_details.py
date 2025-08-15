@@ -8,11 +8,11 @@ from .allowed_countries import AllowedCountries
 
 
 class OcrAddressDetails(UniversalBaseModel):
-    street_and_number: typing.Optional[str] = None
     city: typing.Optional[str] = None
-    postal_code: typing.Optional[str] = None
     country: typing.Optional[AllowedCountries] = None
+    postal_code: typing.Optional[str] = None
     state: typing.Optional[str] = None
+    street_and_number: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

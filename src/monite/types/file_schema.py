@@ -29,16 +29,6 @@ class FileSchema(UniversalBaseModel):
     The type of the business object associated with this file.
     """
 
-    name: str = pydantic.Field()
-    """
-    The original file name (if available).
-    """
-
-    region: str = pydantic.Field()
-    """
-    Geographical region of the data center where the file is stored.
-    """
-
     md5: str = pydantic.Field()
     """
     The MD5 hash of the file.
@@ -49,14 +39,14 @@ class FileSchema(UniversalBaseModel):
     The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types).
     """
 
-    url: str = pydantic.Field()
+    name: str = pydantic.Field()
     """
-    The URL to download the file.
+    The original file name (if available).
     """
 
-    size: int = pydantic.Field()
+    pages: typing.Optional[typing.List[PageSchema2]] = pydantic.Field(default=None)
     """
-    The file size in bytes.
+    If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.
     """
 
     previews: typing.Optional[typing.List[PreviewSchema2]] = pydantic.Field(default=None)
@@ -64,9 +54,19 @@ class FileSchema(UniversalBaseModel):
     Preview images generated for this file. There can be multiple images with different sizes.
     """
 
-    pages: typing.Optional[typing.List[PageSchema2]] = pydantic.Field(default=None)
+    region: str = pydantic.Field()
     """
-    If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.
+    Geographical region of the data center where the file is stored.
+    """
+
+    size: int = pydantic.Field()
+    """
+    The file size in bytes.
+    """
+
+    url: str = pydantic.Field()
+    """
+    The URL to download the file.
     """
 
     if IS_PYDANTIC_V2:

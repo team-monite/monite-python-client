@@ -10,17 +10,17 @@ from .ocr_line_item import OcrLineItem
 
 
 class OcrCreditNote(UniversalBaseModel):
-    document_number: typing.Optional[str] = None
-    original_invoice_number: typing.Optional[str] = None
-    issue_date: typing.Optional[str] = None
     currency: typing.Optional[CurrencyEnum] = None
-    subtotal: typing.Optional[float] = None
-    tax_rate: typing.Optional[float] = None
-    tax_amount: typing.Optional[float] = None
-    total_amount: typing.Optional[float] = None
-    sender: OcrCounterpartDetails
-    recipient: OcrCounterpartDetails
+    document_number: typing.Optional[str] = None
+    issue_date: typing.Optional[str] = None
     line_items: typing.List[OcrLineItem]
+    original_invoice_number: typing.Optional[str] = None
+    recipient: OcrCounterpartDetails
+    sender: OcrCounterpartDetails
+    subtotal: typing.Optional[float] = None
+    tax_amount: typing.Optional[float] = None
+    tax_rate: typing.Optional[float] = None
+    total_amount: typing.Optional[float] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

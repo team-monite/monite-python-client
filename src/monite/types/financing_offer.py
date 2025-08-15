@@ -10,16 +10,6 @@ from .wc_offer_status import WcOfferStatus
 
 
 class FinancingOffer(UniversalBaseModel):
-    status: WcOfferStatus = pydantic.Field()
-    """
-    The status of the financing offer.
-    """
-
-    total_amount: int = pydantic.Field()
-    """
-    The total credit limit in minor units.
-    """
-
     available_amount: typing.Optional[int] = pydantic.Field(default=None)
     """
     The available credit limit in minor units.
@@ -33,6 +23,16 @@ class FinancingOffer(UniversalBaseModel):
     pricing_plans: typing.List[PricingPlan] = pydantic.Field()
     """
     A list of pricing plans for the offer.
+    """
+
+    status: WcOfferStatus = pydantic.Field()
+    """
+    The status of the financing offer.
+    """
+
+    total_amount: int = pydantic.Field()
+    """
+    The total credit limit in minor units.
     """
 
     if IS_PYDANTIC_V2:

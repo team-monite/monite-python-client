@@ -14,14 +14,14 @@ class OcrRecognitionResponse(UniversalBaseModel):
     Legacy schema used for AWS textract recognition.
     """
 
-    summary: typing.Optional[typing.List[LabelNValue]] = pydantic.Field(default=None)
-    """
-    Invoice text content other than the line items. Such as the invoice issue and due dates, vendor name and address, and other general information.
-    """
-
     line_items: typing.Optional[typing.List[LabelNValue]] = pydantic.Field(default=None)
     """
     Text content of the invoice line items as recognized by OCR.
+    """
+
+    summary: typing.Optional[typing.List[LabelNValue]] = pydantic.Field(default=None)
+    """
+    Invoice text content other than the line items. Such as the invoice issue and due dates, vendor name and address, and other general information.
     """
 
     if IS_PYDANTIC_V2:

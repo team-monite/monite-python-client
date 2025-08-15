@@ -47,6 +47,8 @@ class WebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> WebhookSubscriptionPaginationResource:
         """
+        Returns a list of all [webhook](https://docs.monite.com/references/webhooks/index) subscriptions (both active and disabled).
+
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
@@ -66,12 +68,16 @@ class WebhookSubscriptionsClient:
         object_type : typing.Optional[WebhookObjectType]
 
         created_at_gt : typing.Optional[dt.datetime]
+            Return only subscriptions created after the specified date and time.
 
         created_at_lt : typing.Optional[dt.datetime]
+            Return only subscriptions created before the specified date and time.
 
         created_at_gte : typing.Optional[dt.datetime]
+            Return only subscriptions created on or after the specified date and time.
 
         created_at_lte : typing.Optional[dt.datetime]
+            Return only subscriptions created before or on the specified date and time.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -115,13 +121,22 @@ class WebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> WebhookSubscriptionResourceWithSecret:
         """
+        Related guide: [Webhooks](https://docs.monite.com/references/webhooks/index).
+
         Parameters
         ----------
         object_type : WebhookObjectType
+            The [object type](https://docs.monite.com/references/webhooks/index#events) to whose events you want to subscribe.
+
+            To subscribe to events from multiple object types, create a separate subscription for each object type.
 
         url : str
+            An HTTPS URL to which Monite will send webhooks. This URL must be accessible over the public Internet, accept POST requests, and respond with status code 200. It must be a direct URL (no redirects).
+
+            The same URL can be used by multiple webhook subscriptions.
 
         event_types : typing.Optional[typing.Sequence[str]]
+            A list of [events](https://docs.monite.com/references/webhooks/index#events) to subscribe to. If set to an empty array, the subscription includes all events triggered by the specified `object_type`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -141,8 +156,13 @@ class WebhookSubscriptionsClient:
             token="YOUR_TOKEN",
         )
         client.webhook_subscriptions.create(
-            object_type="account",
-            url="url",
+            event_types=[
+                "created",
+                "onboarding_requirements.updated",
+                "onboarding_requirements.status_updated",
+            ],
+            object_type="entity",
+            url="https://example.com/your-webhook-listener",
         )
         """
         _response = self._raw_client.create(
@@ -154,9 +174,14 @@ class WebhookSubscriptionsClient:
         self, webhook_subscription_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> WebhookSubscriptionResource:
         """
+        Returns the details of the webhook subscription with the specified ID.
+
+        The response does not include the [webhook signing secret](https://docs.monite.com/references/webhooks/signatures). If you lost the secret, you can [regenerate it](https://docs.monite.com/api/webhook-subscriptions/post-webhook-subscriptions-id-regenerate-secret).
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -189,6 +214,7 @@ class WebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -223,15 +249,25 @@ class WebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> WebhookSubscriptionResource:
         """
+        You can update the webhook listener URL or the event list.
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         event_types : typing.Optional[typing.Sequence[str]]
+            A list of [events](https://docs.monite.com/references/webhooks/index#events) to subscribe to. If set to an empty array, the subscription includes all events triggered by the specified `object_type`.
 
         object_type : typing.Optional[WebhookObjectType]
+            The [object type](https://docs.monite.com/references/webhooks/index#events) to whose events you want to subscribe.
+
+            To subscribe to events from multiple object types, create a separate subscription for each object type.
 
         url : typing.Optional[str]
+            An HTTPS URL to which Monite will send webhooks. This URL must be accessible over the public Internet, accept POST requests, and respond with status code 200. It must be a direct URL (no redirects).
+
+            The same URL can be used by multiple webhook subscriptions.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -270,6 +306,7 @@ class WebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -302,6 +339,7 @@ class WebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -331,9 +369,12 @@ class WebhookSubscriptionsClient:
         self, webhook_subscription_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> WebhookSubscriptionResourceWithSecret:
         """
+        The webhook signing secret lets you [verify webhook signatures](https://docs.monite.com/references/webhooks/signatures). If you lost the original secret generated for any of your webhook subscriptions, you can regenerate it.
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -390,6 +431,8 @@ class AsyncWebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> WebhookSubscriptionPaginationResource:
         """
+        Returns a list of all [webhook](https://docs.monite.com/references/webhooks/index) subscriptions (both active and disabled).
+
         Parameters
         ----------
         order : typing.Optional[OrderEnum]
@@ -409,12 +452,16 @@ class AsyncWebhookSubscriptionsClient:
         object_type : typing.Optional[WebhookObjectType]
 
         created_at_gt : typing.Optional[dt.datetime]
+            Return only subscriptions created after the specified date and time.
 
         created_at_lt : typing.Optional[dt.datetime]
+            Return only subscriptions created before the specified date and time.
 
         created_at_gte : typing.Optional[dt.datetime]
+            Return only subscriptions created on or after the specified date and time.
 
         created_at_lte : typing.Optional[dt.datetime]
+            Return only subscriptions created before or on the specified date and time.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -466,13 +513,22 @@ class AsyncWebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> WebhookSubscriptionResourceWithSecret:
         """
+        Related guide: [Webhooks](https://docs.monite.com/references/webhooks/index).
+
         Parameters
         ----------
         object_type : WebhookObjectType
+            The [object type](https://docs.monite.com/references/webhooks/index#events) to whose events you want to subscribe.
+
+            To subscribe to events from multiple object types, create a separate subscription for each object type.
 
         url : str
+            An HTTPS URL to which Monite will send webhooks. This URL must be accessible over the public Internet, accept POST requests, and respond with status code 200. It must be a direct URL (no redirects).
+
+            The same URL can be used by multiple webhook subscriptions.
 
         event_types : typing.Optional[typing.Sequence[str]]
+            A list of [events](https://docs.monite.com/references/webhooks/index#events) to subscribe to. If set to an empty array, the subscription includes all events triggered by the specified `object_type`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -497,8 +553,13 @@ class AsyncWebhookSubscriptionsClient:
 
         async def main() -> None:
             await client.webhook_subscriptions.create(
-                object_type="account",
-                url="url",
+                event_types=[
+                    "created",
+                    "onboarding_requirements.updated",
+                    "onboarding_requirements.status_updated",
+                ],
+                object_type="entity",
+                url="https://example.com/your-webhook-listener",
             )
 
 
@@ -513,9 +574,14 @@ class AsyncWebhookSubscriptionsClient:
         self, webhook_subscription_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> WebhookSubscriptionResource:
         """
+        Returns the details of the webhook subscription with the specified ID.
+
+        The response does not include the [webhook signing secret](https://docs.monite.com/references/webhooks/signatures). If you lost the secret, you can [regenerate it](https://docs.monite.com/api/webhook-subscriptions/post-webhook-subscriptions-id-regenerate-secret).
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -556,6 +622,7 @@ class AsyncWebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -598,15 +665,25 @@ class AsyncWebhookSubscriptionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> WebhookSubscriptionResource:
         """
+        You can update the webhook listener URL or the event list.
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         event_types : typing.Optional[typing.Sequence[str]]
+            A list of [events](https://docs.monite.com/references/webhooks/index#events) to subscribe to. If set to an empty array, the subscription includes all events triggered by the specified `object_type`.
 
         object_type : typing.Optional[WebhookObjectType]
+            The [object type](https://docs.monite.com/references/webhooks/index#events) to whose events you want to subscribe.
+
+            To subscribe to events from multiple object types, create a separate subscription for each object type.
 
         url : typing.Optional[str]
+            An HTTPS URL to which Monite will send webhooks. This URL must be accessible over the public Internet, accept POST requests, and respond with status code 200. It must be a direct URL (no redirects).
+
+            The same URL can be used by multiple webhook subscriptions.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -653,6 +730,7 @@ class AsyncWebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -693,6 +771,7 @@ class AsyncWebhookSubscriptionsClient:
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -730,9 +809,12 @@ class AsyncWebhookSubscriptionsClient:
         self, webhook_subscription_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> WebhookSubscriptionResourceWithSecret:
         """
+        The webhook signing secret lets you [verify webhook signatures](https://docs.monite.com/references/webhooks/signatures). If you lost the original secret generated for any of your webhook subscriptions, you can regenerate it.
+
         Parameters
         ----------
         webhook_subscription_id : str
+            ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

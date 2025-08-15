@@ -7,11 +7,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .attachment_response import AttachmentResponse
 from .counterpart_type import CounterpartType
 from .credit_note_response_payload_entity import CreditNoteResponsePayloadEntity
 from .credit_note_state_enum import CreditNoteStateEnum
 from .currency_enum import CurrencyEnum
 from .discount_response import DiscountResponse
+from .document_rendering_settings import DocumentRenderingSettings
 from .einvoicing_credentials import EinvoicingCredentials
 from .invoice_response_payload_entity import InvoiceResponsePayloadEntity
 from .language_code_enum import LanguageCodeEnum
@@ -37,6 +39,7 @@ class ReceivableResponse_Quote(UniversalBaseModel):
     id: str
     created_at: dt.datetime
     updated_at: dt.datetime
+    attachments: typing.Optional[typing.List[AttachmentResponse]] = None
     based_on: typing.Optional[str] = None
     based_on_document_id: typing.Optional[str] = None
     comment: typing.Optional[str] = None
@@ -57,6 +60,7 @@ class ReceivableResponse_Quote(UniversalBaseModel):
     discount: typing.Optional[DiscountResponse] = None
     discounted_subtotal: typing.Optional[int] = None
     document_id: typing.Optional[str] = None
+    document_rendering: typing.Optional[DocumentRenderingSettings] = None
     due_date: typing.Optional[str] = None
     einvoice_file_url: typing.Optional[str] = None
     entity: QuoteResponsePayloadEntity
@@ -110,6 +114,7 @@ class ReceivableResponse_Invoice(UniversalBaseModel):
     amount_due: int
     amount_paid: int
     amount_to_pay: typing.Optional[int] = None
+    attachments: typing.Optional[typing.List[AttachmentResponse]] = None
     based_on: typing.Optional[str] = None
     based_on_document_id: typing.Optional[str] = None
     comment: typing.Optional[str] = None
@@ -131,6 +136,7 @@ class ReceivableResponse_Invoice(UniversalBaseModel):
     discount: typing.Optional[DiscountResponse] = None
     discounted_subtotal: typing.Optional[int] = None
     document_id: typing.Optional[str] = None
+    document_rendering: typing.Optional[DocumentRenderingSettings] = None
     due_date: typing.Optional[str] = None
     einvoice_error_comment: typing.Optional[str] = None
     einvoice_file_url: typing.Optional[str] = None
@@ -191,6 +197,7 @@ class ReceivableResponse_CreditNote(UniversalBaseModel):
     id: str
     created_at: dt.datetime
     updated_at: dt.datetime
+    attachments: typing.Optional[typing.List[AttachmentResponse]] = None
     based_on: typing.Optional[str] = None
     based_on_document_id: typing.Optional[str] = None
     commercial_condition_description: typing.Optional[str] = None
@@ -211,6 +218,7 @@ class ReceivableResponse_CreditNote(UniversalBaseModel):
     discount: typing.Optional[DiscountResponse] = None
     discounted_subtotal: typing.Optional[int] = None
     document_id: typing.Optional[str] = None
+    document_rendering: typing.Optional[DocumentRenderingSettings] = None
     due_date: typing.Optional[str] = None
     einvoice_error_comment: typing.Optional[str] = None
     einvoice_file_url: typing.Optional[str] = None
@@ -222,6 +230,7 @@ class ReceivableResponse_CreditNote(UniversalBaseModel):
     file_language: LanguageCodeEnum
     file_url: typing.Optional[str] = None
     footer: typing.Optional[str] = None
+    is_einvoice: typing.Optional[bool] = None
     issue_date: typing.Optional[dt.datetime] = None
     line_items: typing.List[ResponseItem]
     memo: typing.Optional[str] = None

@@ -194,7 +194,6 @@ class DeliveryNotesClient:
             DeliveryNoteCreateRequest,
             DeliveryNoteLineItemProduct,
             Monite,
-            UnitRequest,
         )
 
         client = Monite(
@@ -204,29 +203,23 @@ class DeliveryNotesClient:
         )
         client.delivery_notes.post_delivery_notes(
             request=DeliveryNoteCreateRequest(
-                counterpart_address_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
-                counterpart_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
-                delivery_date="2025-01-01",
-                delivery_number="102-2025-0987",
+                counterpart_address_id="9a0282e1-bae7-49c9-a6f3-152dbe6fe6b8",
+                counterpart_id="18a45457-377e-4b7c-b9a1-7b2e7f264d46",
+                delivery_date="2025-07-01",
+                delivery_number="INV-042",
                 display_signature_placeholder=True,
                 line_items=[
                     DeliveryNoteCreateLineItem(
-                        product_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+                        product=DeliveryNoteLineItemProduct(
+                            name="LG WH1000XM Monitor",
+                        ),
                         quantity=10.0,
                     ),
                     DeliveryNoteCreateLineItem(
-                        product=DeliveryNoteLineItemProduct(
-                            description="Description of product 2",
-                            measure_unit=UnitRequest(
-                                description="pieces",
-                                name="pcs",
-                            ),
-                            name="Product 2",
-                        ),
-                        quantity=20.0,
+                        product_id="e0c21d00-6556-4536-8390-830c4d3cf4ca",
+                        quantity=5.0,
                     ),
                 ],
-                memo="This is a memo",
             ),
         )
         """
@@ -333,7 +326,7 @@ class DeliveryNotesClient:
             List of line items in the delivery note
 
         memo : typing.Optional[str]
-            Additional information regarding the delivery note
+            An optional note for the customer, displayed above the line items table in the PDF.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -622,7 +615,6 @@ class AsyncDeliveryNotesClient:
             DeliveryNoteCreateLineItem,
             DeliveryNoteCreateRequest,
             DeliveryNoteLineItemProduct,
-            UnitRequest,
         )
 
         client = AsyncMonite(
@@ -635,29 +627,23 @@ class AsyncDeliveryNotesClient:
         async def main() -> None:
             await client.delivery_notes.post_delivery_notes(
                 request=DeliveryNoteCreateRequest(
-                    counterpart_address_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
-                    counterpart_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
-                    delivery_date="2025-01-01",
-                    delivery_number="102-2025-0987",
+                    counterpart_address_id="9a0282e1-bae7-49c9-a6f3-152dbe6fe6b8",
+                    counterpart_id="18a45457-377e-4b7c-b9a1-7b2e7f264d46",
+                    delivery_date="2025-07-01",
+                    delivery_number="INV-042",
                     display_signature_placeholder=True,
                     line_items=[
                         DeliveryNoteCreateLineItem(
-                            product_id="a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+                            product=DeliveryNoteLineItemProduct(
+                                name="LG WH1000XM Monitor",
+                            ),
                             quantity=10.0,
                         ),
                         DeliveryNoteCreateLineItem(
-                            product=DeliveryNoteLineItemProduct(
-                                description="Description of product 2",
-                                measure_unit=UnitRequest(
-                                    description="pieces",
-                                    name="pcs",
-                                ),
-                                name="Product 2",
-                            ),
-                            quantity=20.0,
+                            product_id="e0c21d00-6556-4536-8390-830c4d3cf4ca",
+                            quantity=5.0,
                         ),
                     ],
-                    memo="This is a memo",
                 ),
             )
 
@@ -783,7 +769,7 @@ class AsyncDeliveryNotesClient:
             List of line items in the delivery note
 
         memo : typing.Optional[str]
-            Additional information regarding the delivery note
+            An optional note for the customer, displayed above the line items table in the PDF.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

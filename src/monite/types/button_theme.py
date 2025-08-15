@@ -8,9 +8,20 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class ButtonTheme(UniversalBaseModel):
     primary_color: typing.Optional[str] = None
-    primary_hover_color: typing.Optional[str] = None
-    secondary_color: typing.Optional[str] = None
-    secondary_hover_color: typing.Optional[str] = None
+    primary_hover_color: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unused.
+    """
+
+    secondary_color: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unused.
+    """
+
+    secondary_hover_color: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unused.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

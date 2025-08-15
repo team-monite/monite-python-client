@@ -35,17 +35,34 @@ class VatRatesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> VatRateListResponse:
         """
+        Monite maintains a catalog of VAT and sales tax rates for [select countries](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries).
+
+        To query the applicable VAT/tax rates for an invoice or quote, use:
+
+        `GET /vat_rates?counterpart_id=<...>&entity_vat_id_id=<...>`
+
+        Or if the entity does not have a VAT ID:
+
+        `GET /vat_rates?counterpart_id=<...>`
+
+        **Note:** Entities from countries [not on the list](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries) should not use this endpoint. Instead, those entities can either create custom VAT/tax rates or use the invoice field `line_items[].tax_rate_value` to specify the VAT/tax rates directly.
+
         Parameters
         ----------
         counterpart_address_id : typing.Optional[str]
+            Unused. Reserved for future use.
 
         counterpart_id : typing.Optional[str]
+            ID of the counterpart that will be invoiced.
 
         counterpart_vat_id_id : typing.Optional[str]
+            Unused. Reserved for future use.
 
         entity_vat_id_id : typing.Optional[str]
+            ID of the entity's VAT number (if any) used for the sales transaction.
 
         product_type : typing.Optional[ProductServiceTypeEnum]
+            Unused. Reserved for future use.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -103,17 +120,34 @@ class AsyncVatRatesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> VatRateListResponse:
         """
+        Monite maintains a catalog of VAT and sales tax rates for [select countries](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries).
+
+        To query the applicable VAT/tax rates for an invoice or quote, use:
+
+        `GET /vat_rates?counterpart_id=<...>&entity_vat_id_id=<...>`
+
+        Or if the entity does not have a VAT ID:
+
+        `GET /vat_rates?counterpart_id=<...>`
+
+        **Note:** Entities from countries [not on the list](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries) should not use this endpoint. Instead, those entities can either create custom VAT/tax rates or use the invoice field `line_items[].tax_rate_value` to specify the VAT/tax rates directly.
+
         Parameters
         ----------
         counterpart_address_id : typing.Optional[str]
+            Unused. Reserved for future use.
 
         counterpart_id : typing.Optional[str]
+            ID of the counterpart that will be invoiced.
 
         counterpart_vat_id_id : typing.Optional[str]
+            Unused. Reserved for future use.
 
         entity_vat_id_id : typing.Optional[str]
+            ID of the entity's VAT number (if any) used for the sales transaction.
 
         product_type : typing.Optional[ProductServiceTypeEnum]
+            Unused. Reserved for future use.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

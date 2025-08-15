@@ -35,6 +35,11 @@ class PurchaseOrderCounterpartIndividualRootResponse(UniversalBaseModel):
     `true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.
     """
 
+    created_by_entity_user_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Entity user ID of counterpart creator.
+    """
+
     default_billing_address_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     ID of the counterpart's billing address. If the counterpart is US-based and needs to accept ACH payments, this address must have all fields filled in. If `default_billing_address_id` is not defined, the default address is instead used as the billing address for ACH payments.
@@ -43,11 +48,6 @@ class PurchaseOrderCounterpartIndividualRootResponse(UniversalBaseModel):
     default_shipping_address_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     ID of the shipping address.
-    """
-
-    created_by_entity_user_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Entity user ID of counterpart creator.
     """
 
     individual: PurchaseOrderCounterpartIndividualResponse

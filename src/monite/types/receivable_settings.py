@@ -7,8 +7,15 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class ReceivableSettings(UniversalBaseModel):
-    create_without_personal_info: bool
-    deduction_title: typing.Optional[str] = None
+    create_without_personal_info: bool = pydantic.Field()
+    """
+    Unused.
+    """
+
+    deduction_title: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The title for the section in PDF invoices that contains [special deductions or incentives](https://docs.monite.com/accounts-receivable/special-deductions). If `null`, the title defaults to "Incentives" (localized). Custom title is not automatically localized.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

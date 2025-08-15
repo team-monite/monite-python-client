@@ -5,6 +5,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.mailbox_data_response import MailboxDataResponse
+from ..types.mailbox_object_type_enum import MailboxObjectTypeEnum
 from ..types.mailbox_response import MailboxResponse
 from .raw_client import AsyncRawMailboxesClient, RawMailboxesClient
 
@@ -56,7 +57,12 @@ class MailboxesClient:
         return _response.data
 
     def create(
-        self, *, mailbox_domain_id: str, mailbox_name: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        mailbox_domain_id: str,
+        mailbox_name: str,
+        related_object_type: MailboxObjectTypeEnum,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> MailboxResponse:
         """
         Create a new mailbox
@@ -66,6 +72,9 @@ class MailboxesClient:
         mailbox_domain_id : str
 
         mailbox_name : str
+
+        related_object_type : MailboxObjectTypeEnum
+            Related object type: payable and so on
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -87,10 +96,14 @@ class MailboxesClient:
         client.mailboxes.create(
             mailbox_domain_id="mailbox_domain_id",
             mailbox_name="mailbox_name",
+            related_object_type="payable",
         )
         """
         _response = self._raw_client.create(
-            mailbox_domain_id=mailbox_domain_id, mailbox_name=mailbox_name, request_options=request_options
+            mailbox_domain_id=mailbox_domain_id,
+            mailbox_name=mailbox_name,
+            related_object_type=related_object_type,
+            request_options=request_options,
         )
         return _response.data
 
@@ -212,7 +225,12 @@ class AsyncMailboxesClient:
         return _response.data
 
     async def create(
-        self, *, mailbox_domain_id: str, mailbox_name: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        mailbox_domain_id: str,
+        mailbox_name: str,
+        related_object_type: MailboxObjectTypeEnum,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> MailboxResponse:
         """
         Create a new mailbox
@@ -222,6 +240,9 @@ class AsyncMailboxesClient:
         mailbox_domain_id : str
 
         mailbox_name : str
+
+        related_object_type : MailboxObjectTypeEnum
+            Related object type: payable and so on
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -248,13 +269,17 @@ class AsyncMailboxesClient:
             await client.mailboxes.create(
                 mailbox_domain_id="mailbox_domain_id",
                 mailbox_name="mailbox_name",
+                related_object_type="payable",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
-            mailbox_domain_id=mailbox_domain_id, mailbox_name=mailbox_name, request_options=request_options
+            mailbox_domain_id=mailbox_domain_id,
+            mailbox_name=mailbox_name,
+            related_object_type=related_object_type,
+            request_options=request_options,
         )
         return _response.data
 

@@ -20,6 +20,7 @@ from .custom_vat_rates.client import AsyncCustomVatRatesClient, CustomVatRatesCl
 from .data_exports.client import AsyncDataExportsClient, DataExportsClient
 from .delivery_notes.client import AsyncDeliveryNotesClient, DeliveryNotesClient
 from .e_invoicing_connections.client import AsyncEInvoicingConnectionsClient, EInvoicingConnectionsClient
+from .e_invoicing_search.client import AsyncEInvoicingSearchClient, EInvoicingSearchClient
 from .entities.client import AsyncEntitiesClient, EntitiesClient
 from .entity_users.client import AsyncEntityUsersClient, EntityUsersClient
 from .environment import MoniteEnvironment
@@ -43,6 +44,7 @@ from .pdf_templates.client import AsyncPdfTemplatesClient, PdfTemplatesClient
 from .products.client import AsyncProductsClient, ProductsClient
 from .projects.client import AsyncProjectsClient, ProjectsClient
 from .purchase_orders.client import AsyncPurchaseOrdersClient, PurchaseOrdersClient
+from .receipts.client import AsyncReceiptsClient, ReceiptsClient
 from .receivables.client import AsyncReceivablesClient, ReceivablesClient
 from .recurrences.client import AsyncRecurrencesClient, RecurrencesClient
 from .roles.client import AsyncRolesClient, RolesClient
@@ -139,6 +141,7 @@ class Monite:
         self.data_exports = DataExportsClient(client_wrapper=self._client_wrapper)
         self.delivery_notes = DeliveryNotesClient(client_wrapper=self._client_wrapper)
         self.pdf_templates = PdfTemplatesClient(client_wrapper=self._client_wrapper)
+        self.e_invoicing_search = EInvoicingSearchClient(client_wrapper=self._client_wrapper)
         self.e_invoicing_connections = EInvoicingConnectionsClient(client_wrapper=self._client_wrapper)
         self.entities = EntitiesClient(client_wrapper=self._client_wrapper)
         self.entity_users = EntityUsersClient(client_wrapper=self._client_wrapper)
@@ -161,6 +164,7 @@ class Monite:
         self.payment_terms = PaymentTermsClient(client_wrapper=self._client_wrapper)
         self.products = ProductsClient(client_wrapper=self._client_wrapper)
         self.projects = ProjectsClient(client_wrapper=self._client_wrapper)
+        self.receipts = ReceiptsClient(client_wrapper=self._client_wrapper)
         self.receivables = ReceivablesClient(client_wrapper=self._client_wrapper)
         self.recurrences = RecurrencesClient(client_wrapper=self._client_wrapper)
         self.roles = RolesClient(client_wrapper=self._client_wrapper)
@@ -259,6 +263,7 @@ class AsyncMonite:
         self.data_exports = AsyncDataExportsClient(client_wrapper=self._client_wrapper)
         self.delivery_notes = AsyncDeliveryNotesClient(client_wrapper=self._client_wrapper)
         self.pdf_templates = AsyncPdfTemplatesClient(client_wrapper=self._client_wrapper)
+        self.e_invoicing_search = AsyncEInvoicingSearchClient(client_wrapper=self._client_wrapper)
         self.e_invoicing_connections = AsyncEInvoicingConnectionsClient(client_wrapper=self._client_wrapper)
         self.entities = AsyncEntitiesClient(client_wrapper=self._client_wrapper)
         self.entity_users = AsyncEntityUsersClient(client_wrapper=self._client_wrapper)
@@ -281,6 +286,7 @@ class AsyncMonite:
         self.payment_terms = AsyncPaymentTermsClient(client_wrapper=self._client_wrapper)
         self.products = AsyncProductsClient(client_wrapper=self._client_wrapper)
         self.projects = AsyncProjectsClient(client_wrapper=self._client_wrapper)
+        self.receipts = AsyncReceiptsClient(client_wrapper=self._client_wrapper)
         self.receivables = AsyncReceivablesClient(client_wrapper=self._client_wrapper)
         self.recurrences = AsyncRecurrencesClient(client_wrapper=self._client_wrapper)
         self.roles = AsyncRolesClient(client_wrapper=self._client_wrapper)

@@ -37,10 +37,13 @@ class AccessTokensClient:
         Parameters
         ----------
         client_id : str
+            Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs.
 
         client_secret : str
+            Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets.
 
         token : str
+            The token to revoke.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -85,12 +88,19 @@ class AccessTokensClient:
         Parameters
         ----------
         client_id : str
+            Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs.
 
         client_secret : str
+            Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets.
 
         grant_type : GrantType
+            The type of the access token to generate:
+
+             * `client_credentials` - partner-level access token,
+             * `entity_user` - entity user token.
 
         entity_user_id : typing.Optional[str]
+            ID of the entity user to generate the access token for. Used only if `grant_type` is `entity_user`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -110,8 +120,8 @@ class AccessTokensClient:
             token="YOUR_TOKEN",
         )
         client.access_tokens.create(
-            client_id="client_id",
-            client_secret="client_secret",
+            client_id="eb959578-a74d-4ac3-8b25-bf0910027857",
+            client_secret="14c84a34-282b-4fd8-8af6-86b5b5f2c212",
             grant_type="client_credentials",
         )
         """
@@ -149,10 +159,13 @@ class AsyncAccessTokensClient:
         Parameters
         ----------
         client_id : str
+            Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs.
 
         client_secret : str
+            Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets.
 
         token : str
+            The token to revoke.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -205,12 +218,19 @@ class AsyncAccessTokensClient:
         Parameters
         ----------
         client_id : str
+            Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs.
 
         client_secret : str
+            Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets.
 
         grant_type : GrantType
+            The type of the access token to generate:
+
+             * `client_credentials` - partner-level access token,
+             * `entity_user` - entity user token.
 
         entity_user_id : typing.Optional[str]
+            ID of the entity user to generate the access token for. Used only if `grant_type` is `entity_user`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -235,8 +255,8 @@ class AsyncAccessTokensClient:
 
         async def main() -> None:
             await client.access_tokens.create(
-                client_id="client_id",
-                client_secret="client_secret",
+                client_id="eb959578-a74d-4ac3-8b25-bf0910027857",
+                client_secret="14c84a34-282b-4fd8-8af6-86b5b5f2c212",
                 grant_type="client_credentials",
             )
 

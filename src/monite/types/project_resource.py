@@ -16,42 +16,42 @@ class ProjectResource(UniversalBaseModel):
 
     created_at: dt.datetime = pydantic.Field()
     """
-    Project created at
+    UTC date and time when this project was created.
     """
 
     updated_at: dt.datetime = pydantic.Field()
     """
-    Last time project was updated at
+    UTC date and time when this project was last updated.
     """
 
     code: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Project code
+    A user-defined identifier of this project.
     """
 
     color: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Project color
+    Project color as a [CSS-compatible](https://developer.mozilla.org/en-US/docs/Web/CSS/color) value. Client applications can use this to color-code the projects or project-related data.
     """
 
     created_by_entity_user_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Project created by entity user
+    ID of the entity user who created this project, or `null` if it was created using a partner access token.
     """
 
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Description of project
+    A user-defined description of the project.
     """
 
     end_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Project end date
+    Project end date.
     """
 
     entity_id: str = pydantic.Field()
     """
-    The ID of the entity to which the project was issued.
+    ID of the entity that owns this project.
     """
 
     name: str = pydantic.Field()
@@ -61,17 +61,17 @@ class ProjectResource(UniversalBaseModel):
 
     parent_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Parent project ID
+    Unused. Reserved for future use.
     """
 
     partner_metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
     """
-    Project metadata
+    [Metadata](https://docs.monite.com/common/metadata) for partner needs.
     """
 
     start_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Project start date
+    Project start date.
     """
 
     tags: typing.Optional[typing.List[TagReadSchema]] = pydantic.Field(default=None)

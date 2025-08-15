@@ -7,9 +7,30 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class MailSettings(UniversalBaseModel):
-    attach_documents_as_pdf: bool
-    from_email_username: typing.Optional[str] = None
-    from_name: typing.Optional[str] = None
+    attach_documents_as_pdf: bool = pydantic.Field()
+    """
+    This setting affects accounts receivable emails.
+    
+    If it is `true`, emails sent by [`POST /receivables/{receivable_id}/send`](https://docs.monite.com/api/receivables/post-receivables-id-send) will include the PDF version of the specified invoice, quote, or credit note as an attachment. When emailing [e-invoices](https://docs.monite.com/e-invoicing/send), e-invoice XML will also be attached to the email.
+    
+    If it is `false`, PDFs and e-invoice XML is not attached to outgoing emails.
+    """
+
+    from_email_username: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The local part of the sender email address (the part before the @domain). If `null`, defaults to `noreply`.
+    
+    For example, to send emails from `Acme Inc. <invoicing@example.com>` use "invoicing" as the `from_email_username` value.
+    
+    To customize the domain name for outgoing emails, [set up a mailbox](https://docs.monite.com/advanced/mailboxes#manage-mailboxes) for the entity.
+    """
+
+    from_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The sender name in outgoing emails. For example, to send emails from `Acme Inc. <invoicing@example.com>` use "Acme Inc." as the `from_name` value.
+    
+    If `null`, the sender address will be just an email address without a name.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

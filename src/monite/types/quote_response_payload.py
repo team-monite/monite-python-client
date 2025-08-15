@@ -5,9 +5,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .attachment_response import AttachmentResponse
 from .counterpart_type import CounterpartType
 from .currency_enum import CurrencyEnum
 from .discount_response import DiscountResponse
+from .document_rendering_settings import DocumentRenderingSettings
 from .language_code_enum import LanguageCodeEnum
 from .quote_response_payload_entity import QuoteResponsePayloadEntity
 from .quote_state_enum import QuoteStateEnum
@@ -35,14 +37,19 @@ class QuoteResponsePayload(UniversalBaseModel):
     Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard.
     """
 
+    attachments: typing.Optional[typing.List[AttachmentResponse]] = pydantic.Field(default=None)
+    """
+    List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated.
+    """
+
     based_on: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The unique ID of a previous document related to the receivable if applicable.
+    Unused. Always returns `null`.
     """
 
     based_on_document_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The unique document ID of a previous document related to the receivable if applicable.
+    Unused. Always returns `null`.
     """
 
     comment: typing.Optional[str] = pydantic.Field(default=None)
@@ -135,14 +142,19 @@ class QuoteResponsePayload(UniversalBaseModel):
     The sequential code systematically assigned to invoices.
     """
 
+    document_rendering: typing.Optional[DocumentRenderingSettings] = pydantic.Field(default=None)
+    """
+    Settings for rendering documents in PDF format, including settings for line items and specific document types.
+    """
+
     due_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Optional field representing date until which invoice should be paid
+    Unused. Always returns `null`.
     """
 
     einvoice_file_url: typing.Optional[str] = pydantic.Field(default=None)
     """
-    E-invoice XML file that was sent to the counterpart via an e-invoicing network. Available only if `is_einvoice` is `true`.
+    Unused. Always returns `null`.
     """
 
     entity: QuoteResponsePayloadEntity
@@ -171,7 +183,7 @@ class QuoteResponsePayload(UniversalBaseModel):
 
     footer: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Optional text displayed below the line items table in the PDF.
+    Optional text displayed below the line items table in the PDF. See also: `memo`, `commercial_condition_description`.
     """
 
     issue_date: typing.Optional[dt.datetime] = pydantic.Field(default=None)
@@ -182,7 +194,7 @@ class QuoteResponsePayload(UniversalBaseModel):
     line_items: typing.List[ResponseItem]
     memo: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A note with additional information for a receivable.
+    An optional note for the customer, displayed above the line items table in the PDF. See also: `footer`, `commercial_condition_description`.
     """
 
     original_file_language: LanguageCodeEnum = pydantic.Field()
@@ -202,7 +214,7 @@ class QuoteResponsePayload(UniversalBaseModel):
 
     project_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    A project related to current receivable
+    ID of the [project](https://docs.monite.com/common/projects) associated with this quote. If specified, the project name will be included in the header of the PDF quote.
     """
 
     quote_accept_page_url: typing.Optional[str] = pydantic.Field(default=None)

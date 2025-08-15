@@ -9,11 +9,26 @@ from .webhook_subscription_status import WebhookSubscriptionStatus
 
 
 class WebhookSubscriptionResource(UniversalBaseModel):
-    id: str
-    event_types: typing.List[str]
-    object_type: WebhookObjectType
+    id: str = pydantic.Field()
+    """
+    A unique URL assigned to this webhook subscription. This ID is also included in the webhook data as the `webhook_subscription_id` field.
+    """
+
+    event_types: typing.List[str] = pydantic.Field()
+    """
+    [Events](https://docs.monite.com/references/webhooks/index#events) included in this webhook subscription. An empty array means the subscription includes all events triggered by the specified `object_type`. 
+    """
+
+    object_type: WebhookObjectType = pydantic.Field()
+    """
+    The object type associated with this webhook subscription.
+    """
+
     status: WebhookSubscriptionStatus
-    url: str
+    url: str = pydantic.Field()
+    """
+    URL to which the webhooks are sent. The same URL can be used by multiple webhook subscriptions.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

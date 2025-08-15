@@ -2,4 +2,4 @@
 
 import typing
 
-MailboxObjectTypeEnum = typing.Literal["payable"]
+MailboxObjectTypeEnum = typing.Union[typing.Literal["payable", "receipt"], typing.Any]

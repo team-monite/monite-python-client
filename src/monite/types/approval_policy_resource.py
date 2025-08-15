@@ -30,6 +30,11 @@ class ApprovalPolicyResource(UniversalBaseModel):
     The name of the approval policy.
     """
 
+    priority: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.
+    """
+
     script: typing.List[ApprovalPolicyResourceScriptItem] = pydantic.Field()
     """
     A list of JSON objects that represents the approval policy script. The script contains the logic that determines whether an action should be sent to approval. This field is required, and it should contain at least one script object.

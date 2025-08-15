@@ -157,24 +157,27 @@ class EntityUsersClient:
         Parameters
         ----------
         first_name : str
-            First name
+            The user's first name.
 
         login : str
+            The username assigned to this user. Usernames must be unique within the entity.
+
+            The `login` value is not used by Monite but may be used by partner applications, for example, to map the users between the partner's platform and Monite.
 
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         role_id : typing.Optional[str]
-            UUID of the role assigned to this entity user
+            ID of the role to assign to this user. The role defines the user's [access permissions](https://docs.monite.com/api/concepts/authentication#permissions) within the entity. Each user has just one role.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -212,7 +215,7 @@ class EntityUsersClient:
 
     def get_current(self, *, request_options: typing.Optional[RequestOptions] = None) -> EntityUserResponse:
         """
-        Retrieve an entity user by its ID.
+        The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 
         Parameters
         ----------
@@ -249,24 +252,24 @@ class EntityUsersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityUserResponse:
         """
-        Change the specified fields with provided values.
+        The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 
         Parameters
         ----------
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         first_name : typing.Optional[str]
-            First name
+            The user's first name.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -299,7 +302,13 @@ class EntityUsersClient:
 
     def get_current_entity(self, *, request_options: typing.Optional[RequestOptions] = None) -> EntityResponse:
         """
-        Retrieves information of an entity, which this entity user belongs to.
+        Returns the entity to which the authenticated user belongs. This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.read` permission.
+
+        To get an entity by using a partner access token, use [`GET /entities/{entity_id}`](https://docs.monite.com/api/entities/get-entities-id) instead.
+
+        Related endpoints:
+
+         * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 
         Parameters
         ----------
@@ -330,17 +339,26 @@ class EntityUsersClient:
         *,
         address: typing.Optional[UpdateEntityAddressSchema] = OMIT,
         email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        registration_number: typing.Optional[str] = OMIT,
-        registration_authority: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
+        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
-        Update information of an entity, which this entity user belongs to.
+        Update the entity to which the authenticated user belongs.
+
+        This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.update` permission.
+
+        This endpoint does not use the `X-Monite-Entity-Id` header. The entity ID is inferred from the access token.
+
+        Related endpoints:
+
+         * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+         * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
 
         Parameters
         ----------
@@ -350,26 +368,26 @@ class EntityUsersClient:
         email : typing.Optional[str]
             An official email address of the entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
-
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-
-        registration_number : typing.Optional[str]
-            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-
-        registration_authority : typing.Optional[str]
-            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+        individual : typing.Optional[OptionalIndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[OptionalIndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            The contact phone number of the entity. Required for US organizations to use payments.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -393,13 +411,13 @@ class EntityUsersClient:
         _response = self._raw_client.update_current_entity(
             address=address,
             email=email,
-            phone=phone,
-            website=website,
-            tax_id=tax_id,
-            registration_number=registration_number,
-            registration_authority=registration_authority,
-            organization=organization,
             individual=individual,
+            organization=organization,
+            phone=phone,
+            registration_authority=registration_authority,
+            registration_number=registration_number,
+            tax_id=tax_id,
+            website=website,
             request_options=request_options,
         )
         return _response.data
@@ -516,25 +534,25 @@ class EntityUsersClient:
         entity_user_id : str
 
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         first_name : typing.Optional[str]
-            First name
+            The user's first name.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         login : typing.Optional[str]
-            Login
+            The new username for this user. Must be unique within the entity.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         role_id : typing.Optional[str]
-            UUID of the role assigned to this entity user
+            ID of the new role to assign to this user. The new role takes effect immediately, existing access tokens of this user are not invalidated.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -716,24 +734,27 @@ class AsyncEntityUsersClient:
         Parameters
         ----------
         first_name : str
-            First name
+            The user's first name.
 
         login : str
+            The username assigned to this user. Usernames must be unique within the entity.
+
+            The `login` value is not used by Monite but may be used by partner applications, for example, to map the users between the partner's platform and Monite.
 
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         role_id : typing.Optional[str]
-            UUID of the role assigned to this entity user
+            ID of the role to assign to this user. The role defines the user's [access permissions](https://docs.monite.com/api/concepts/authentication#permissions) within the entity. Each user has just one role.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -779,7 +800,7 @@ class AsyncEntityUsersClient:
 
     async def get_current(self, *, request_options: typing.Optional[RequestOptions] = None) -> EntityUserResponse:
         """
-        Retrieve an entity user by its ID.
+        The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 
         Parameters
         ----------
@@ -824,24 +845,24 @@ class AsyncEntityUsersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityUserResponse:
         """
-        Change the specified fields with provided values.
+        The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 
         Parameters
         ----------
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         first_name : typing.Optional[str]
-            First name
+            The user's first name.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -882,7 +903,13 @@ class AsyncEntityUsersClient:
 
     async def get_current_entity(self, *, request_options: typing.Optional[RequestOptions] = None) -> EntityResponse:
         """
-        Retrieves information of an entity, which this entity user belongs to.
+        Returns the entity to which the authenticated user belongs. This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.read` permission.
+
+        To get an entity by using a partner access token, use [`GET /entities/{entity_id}`](https://docs.monite.com/api/entities/get-entities-id) instead.
+
+        Related endpoints:
+
+         * [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
 
         Parameters
         ----------
@@ -921,17 +948,26 @@ class AsyncEntityUsersClient:
         *,
         address: typing.Optional[UpdateEntityAddressSchema] = OMIT,
         email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        website: typing.Optional[str] = OMIT,
-        tax_id: typing.Optional[str] = OMIT,
-        registration_number: typing.Optional[str] = OMIT,
-        registration_authority: typing.Optional[str] = OMIT,
-        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
         individual: typing.Optional[OptionalIndividualSchema] = OMIT,
+        organization: typing.Optional[OptionalOrganizationSchema] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        registration_authority: typing.Optional[str] = OMIT,
+        registration_number: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[str] = OMIT,
+        website: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
-        Update information of an entity, which this entity user belongs to.
+        Update the entity to which the authenticated user belongs.
+
+        This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.update` permission.
+
+        This endpoint does not use the `X-Monite-Entity-Id` header. The entity ID is inferred from the access token.
+
+        Related endpoints:
+
+         * [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+         * [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
 
         Parameters
         ----------
@@ -941,26 +977,26 @@ class AsyncEntityUsersClient:
         email : typing.Optional[str]
             An official email address of the entity
 
-        phone : typing.Optional[str]
-            The contact phone number of the entity. Required for US organizations to use payments.
-
-        website : typing.Optional[str]
-            A website of the entity
-
-        tax_id : typing.Optional[str]
-            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
-
-        registration_number : typing.Optional[str]
-            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
-
-        registration_authority : typing.Optional[str]
-            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+        individual : typing.Optional[OptionalIndividualSchema]
+            A set of meta data describing the individual
 
         organization : typing.Optional[OptionalOrganizationSchema]
             A set of meta data describing the organization
 
-        individual : typing.Optional[OptionalIndividualSchema]
-            A set of meta data describing the individual
+        phone : typing.Optional[str]
+            The contact phone number of the entity. Required for US organizations to use payments.
+
+        registration_authority : typing.Optional[str]
+            (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.
+
+        registration_number : typing.Optional[str]
+            (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.
+
+        tax_id : typing.Optional[str]
+            The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered.
+
+        website : typing.Optional[str]
+            A website of the entity
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -992,13 +1028,13 @@ class AsyncEntityUsersClient:
         _response = await self._raw_client.update_current_entity(
             address=address,
             email=email,
-            phone=phone,
-            website=website,
-            tax_id=tax_id,
-            registration_number=registration_number,
-            registration_authority=registration_authority,
-            organization=organization,
             individual=individual,
+            organization=organization,
+            phone=phone,
+            registration_authority=registration_authority,
+            registration_number=registration_number,
+            tax_id=tax_id,
+            website=website,
             request_options=request_options,
         )
         return _response.data
@@ -1141,25 +1177,25 @@ class AsyncEntityUsersClient:
         entity_user_id : str
 
         email : typing.Optional[str]
-            An entity user business email
+            The user's business email address.
 
         first_name : typing.Optional[str]
-            First name
+            The user's first name.
 
         last_name : typing.Optional[str]
-            Last name
+            The user's last name.
 
         login : typing.Optional[str]
-            Login
+            The new username for this user. Must be unique within the entity.
 
         phone : typing.Optional[str]
-            An entity user phone number in the international format
+            The user's phone number.
 
         role_id : typing.Optional[str]
-            UUID of the role assigned to this entity user
+            ID of the new role to assign to this user. The new role takes effect immediately, existing access tokens of this user are not invalidated.
 
         title : typing.Optional[str]
-            Title
+            The user's job title.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

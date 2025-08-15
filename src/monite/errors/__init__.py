@@ -7,10 +7,10 @@ from .conflict_error import ConflictError
 from .content_too_large_error import ContentTooLargeError
 from .failed_dependency_error import FailedDependencyError
 from .forbidden_error import ForbiddenError
-from .internal_server_error import InternalServerError
 from .misdirected_request_error import MisdirectedRequestError
 from .not_acceptable_error import NotAcceptableError
 from .not_found_error import NotFoundError
+from .too_many_requests_error import TooManyRequestsError
 from .unauthorized_error import UnauthorizedError
 from .unprocessable_entity_error import UnprocessableEntityError
 from .unsupported_media_type_error import UnsupportedMediaTypeError
@@ -21,10 +21,10 @@ __all__ = [
     "ContentTooLargeError",
     "FailedDependencyError",
     "ForbiddenError",
-    "InternalServerError",
     "MisdirectedRequestError",
     "NotAcceptableError",
     "NotFoundError",
+    "TooManyRequestsError",
     "UnauthorizedError",
     "UnprocessableEntityError",
     "UnsupportedMediaTypeError",

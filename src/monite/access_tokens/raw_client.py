@@ -8,7 +8,8 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
-from ..errors.internal_server_error import InternalServerError
+from ..errors.bad_request_error import BadRequestError
+from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.access_token_response import AccessTokenResponse
@@ -32,10 +33,13 @@ class RawAccessTokensClient:
         Parameters
         ----------
         client_id : str
+            Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs.
 
         client_secret : str
+            Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets.
 
         token : str
+            The token to revoke.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -69,6 +73,17 @@ class RawAccessTokensClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -80,8 +95,8 @@ class RawAccessTokensClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -111,12 +126,19 @@ class RawAccessTokensClient:
         Parameters
         ----------
         client_id : str
+            Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs.
 
         client_secret : str
+            Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets.
 
         grant_type : GrantType
+            The type of the access token to generate:
+
+             * `client_credentials` - partner-level access token,
+             * `entity_user` - entity user token.
 
         entity_user_id : typing.Optional[str]
+            ID of the entity user to generate the access token for. Used only if `grant_type` is `entity_user`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -151,8 +173,8 @@ class RawAccessTokensClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
+            if _response.status_code == 400:
+                raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -173,8 +195,8 @@ class RawAccessTokensClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -203,10 +225,13 @@ class AsyncRawAccessTokensClient:
         Parameters
         ----------
         client_id : str
+            Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs.
 
         client_secret : str
+            Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets.
 
         token : str
+            The token to revoke.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -240,6 +265,17 @@ class AsyncRawAccessTokensClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
@@ -251,8 +287,8 @@ class AsyncRawAccessTokensClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -282,12 +318,19 @@ class AsyncRawAccessTokensClient:
         Parameters
         ----------
         client_id : str
+            Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs.
 
         client_secret : str
+            Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets.
 
         grant_type : GrantType
+            The type of the access token to generate:
+
+             * `client_credentials` - partner-level access token,
+             * `entity_user` - entity user token.
 
         entity_user_id : typing.Optional[str]
+            ID of the entity user to generate the access token for. Used only if `grant_type` is `entity_user`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -322,8 +365,8 @@ class AsyncRawAccessTokensClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
+            if _response.status_code == 400:
+                raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -344,8 +387,8 @@ class AsyncRawAccessTokensClient:
                         ),
                     ),
                 )
-            if _response.status_code == 500:
-                raise InternalServerError(
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

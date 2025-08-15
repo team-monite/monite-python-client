@@ -9,17 +9,17 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 class Signature(UniversalBaseModel):
     email: str = pydantic.Field()
     """
-    The email of a person who signed a quote
+    The email of the person who signed the quote.
     """
 
     full_name: str = pydantic.Field()
     """
-    The full name of a person who signed a quote
+    The full name of the person who signed the quote.
     """
 
     signature_image: str = pydantic.Field()
     """
-    Base64 encoded PNG image of a signature
+    Base64-encoded PNG image of the signature of the person who signed the quote.
     """
 
     if IS_PYDANTIC_V2:
